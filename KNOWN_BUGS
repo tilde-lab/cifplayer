@@ -1,0 +1,5 @@
+Balls are rotated incorrectly while rendering
+Math library is too bulky
+Window resize doesn't work properly
+Labels are incorrectly positioned
+Atoms are neither translated nor recreated by symmetry

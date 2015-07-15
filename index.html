@@ -1,7 +1,7 @@
 <!--
 Chemical structure renderer
 based on canvas three.js / tween.js
-v250415
+v150715
 author Evgeny Blokhin (eb@tilde.pro)
 License: MIT
 -->
@@ -13,9 +13,9 @@ License: MIT
 body{margin:0;padding:0;overflow:hidden;background:#ccc;}
 html, body{height:100%;}
 #infopanel{position:absolute;top:20px;left:20px;width:150px;height:150px;text-align:left;z-index:100;line-height:22px;font-family:Arial;font-size:12px;}
-#zoompanel{position:absolute;top:8px;right:8px;width:50px;height:150px;z-index:100;background:url(zoom.gif) no-repeat;}
-#optionpanel{position:absolute;bottom:2px;left:0;width:100%;height:30px;z-index:100;text-align:center;font-family:'Courier New';font-size:12px;}
-div.L{display:block;position:absolute;font-size:0.55em;z-index:200;font-family:sans-serif;}
+#zoompanel{position:absolute;top:8px;right:8px;width:50px;height:150px;z-index:100;background:no-repeat url(data:image/gif;base64,R0lGODlhMgCWAJEAAAAAAP///8zMzP///yH5BAEAAAMALAAAAAAyAJYAAAL/3ISpae2+onj0yFjhXbltnH1cZ4kMZSpkCa7dtW7uC5PfjMr2jRtizJD0hKodwtcyFou0I3LUZDJDp+f0IfRUqU4tVPNlubZWchaM64LNYWTvwJ3k1JA3kGbP6/f8vv8PGCg4aCf3ImiIRYdWkTjmWNZ45TZDxsLWZjnneLaGCamo1hk6NUnqZerZlYpatig5wmp1+RoXpKnaBqQTlTTEayu767sp/EhMagKbMvwTDLzM0wtdXNNsTZitvc3d7f0NHi4+Tl7+59ydYqy3vp6G2wQIf9yHi/y0B3+PXwiqutvv2qM3tf4NrOQvWUJGd47N03DQYcFQDSUuVLTjlzsL/xnfbdR30eA7PK7USeNIBZVJdCglqVwJrOAqmMq0kKRFM4nMkC8JJpyo0OdNi0JTenzIcM5RoBA7Eh1pBKG7h0hpQQUokJ5WJUyr8ps2zOfCfV81grXFjilXtZvSHtHVTONMr7nOenK7Em2+mnb5wA1mzlVgnIFHiTMcjmy6v982bmNbjBwzbsgU45XK06Pbc5CV+s1cMWCgzpQQgS5BiC7pq6FT81xt1unji7CLDtUGEtxO3T8N5WS5u+TvLcFxDhfV++Vx5DeXdyruXGfyxtO97Ty9+Xa2ebV/YcXdFbvYrYO80tXsvXxnx1HysI/s/rxC8Zf63ZJv9Wn9+L6wRSDCO1k09ZwEWGGMWXfgYgnOtiB4DW73oGvvmdbdaHIUAAA7);}
+#optionpanel{position:absolute;bottom:2px;left:0;width:100%;height:30px;z-index:100;text-align:center;font-family:Arial;font-size:12px;}
+div.L{display:block;position:absolute;font-size:0.55em;z-index:200;font-family:Arial;}
 </style>
 <script type="text/javascript" src="three.custom.js"></script>
 <!--script type="text/javascript" src="stats.min.js"></script-->
@@ -379,7 +379,7 @@ var forced_labels = false, active_overlay = "", overlay_backup = "", loaded_3D =
 
 //var sample = '{"atoms": [{"x": "0", "y": "0", "z": "0", "c": "0x000000", "r": "1.25", "o": {"m": 42, "mm": -0.0022, "t": "Uuo"}}, {"x": "1.25", "y": "1.25", "z": "1.25", "c": "0xFF0000", "r": "1", "o": {"m": 8, "t": "O"}}], "cell": [[3, 0, 0], [0, 3, 0], [0, 0, 3]], "descr": {"a": 3.00, "b": 3.00, "c": 3.00, "alpha": 90, "beta": 90, "gamma": 90}, "overlayed": {"m": "atomic ambivalence", "mm": "my test property"}}';
 
-var JmolColors = { "D": 0xFFFFC0, "H": 0xFFFFFF, "He": 0xD9FFFF, "Li": 0xCC80FF, "Be": 0xC2FF00, "B": 0xFFB5B5, "C": 0x909090, "N": 0x3050F8, "O": 0xFF0D0D, "F": 0x90E050, "Ne": 0xB3E3F5, "Na": 0xAB5CF2, "Mg": 0x8AFF00, "Al": 0xBFA6A6, "Si": 0xF0C8A0, "P": 0xFF8000, "S": 0xFFFF30, "Cl": 0x1FF01F, "Ar": 0x80D1E3, "K": 0x8F40D4, "Ca": 0x3DFF00, "Sc": 0xE6E6E6, "Ti": 0xBFC2C7, "V": 0xA6A6AB, "Cr": 0x8A99C7, "Mn": 0x9C7AC7, "Fe": 0xE06633, "Co": 0xF090A0, "Ni": 0x50D050, "Cu": 0xC88033, "Zn": 0x7D80B0, "Ga": 0xC28F8F, "Ge": 0x668F8F, "As": 0xBD80E3, "Se": 0xFFA100, "Br": 0xA62929, "Kr": 0x5CB8D1, "Rb": 0x702EB0, "Sr": 0x00FF00, "Y": 0x94FFFF, "Zr": 0x94E0E0, "Nb": 0x73C2C9, "Mo": 0x54B5B5, "Tc": 0x3B9E9E, "Ru": 0x248F8F, "Rh": 0x0A7D8C, "Pd": 0x006985, "Ag": 0xC0C0C0, "Cd": 0xFFD98F, "In": 0xA67573, "Sn": 0x668080, "Sb": 0x9E63B5, "Te": 0xD47A00, "I": 0x940094, "Xe": 0x429EB0, "Cs": 0x57178F, "Ba": 0x00C900, "La": 0x70D4FF, "Ce": 0xFFFFC7, "Pr": 0xD9FFC7, "Nd": 0xC7FFC7, "Pm": 0xA3FFC7, "Sm": 0x8FFFC7, "Eu": 0x61FFC7, "Gd": 0x45FFC7, "Tb": 0x30FFC7, "Dy": 0x1FFFC7, "Ho": 0x00FF9C, "Er": 0x00E675, "Tm": 0x00D452, "Yb": 0x00BF38, "Lu": 0x00AB24, "Hf": 0x4DC2FF, "Ta": 0x4DA6FF, "W": 0x2194D6, "Re": 0x267DAB, "Os": 0x266696, "Ir": 0x175487, "Pt": 0xD0D0E0, "Au": 0xFFD123, "Hg": 0xB8B8D0, "Tl": 0xA6544D, "Pb": 0x575961, "Bi": 0x9E4FB5, "Po": 0xAB5C00, "At": 0x754F45, "Rn": 0x428296, "Fr": 0x420066, "Ra": 0x007D00, "Ac": 0x70ABFA, "Th": 0x00BAFF, "Pa": 0x00A1FF, "U": 0x008FFF, "Np": 0x0080FF, "Pu": 0x006BFF, "Am": 0x545CF2, "Cm": 0x785CE3, "Bk": 0x8A4FE3, "Cf": 0xA136D4, "Es": 0xB31FD4, "Fm": 0xB31FBA, "Md": 0xB30DA6, "No": 0xBD0D87, "Lr": 0xC70066, "Rf": 0xCC0059, "Db": 0xD1004F, "Sg": 0xD90045, "Bh": 0xE00038, "Hs": 0xE6002E, "Mt": 0xEB0026 };
+var JmolColors = { "D": "#FFFFC0", "H": "#FFFFFF", "He": "#D9FFFF", "Li": "#CC80FF", "Be": "#C2FF00", "B": "#FFB5B5", "C": "#909090", "N": "#3050F8", "O": "#FF0D0D", "F": "#90E050", "Ne": "#B3E3F5", "Na": "#AB5CF2", "Mg": "#8AFF00", "Al": "#BFA6A6", "Si": "#F0C8A0", "P": "#FF8000", "S": "#FFFF30", "Cl": "#1FF01F", "Ar": "#80D1E3", "K": "#8F40D4", "Ca": "#3DFF00", "Sc": "#E6E6E6", "Ti": "#BFC2C7", "V": "#A6A6AB", "Cr": "#8A99C7", "Mn": "#9C7AC7", "Fe": "#E06633", "Co": "#F090A0", "Ni": "#50D050", "Cu": "#C88033", "Zn": "#7D80B0", "Ga": "#C28F8F", "Ge": "#668F8F", "As": "#BD80E3", "Se": "#FFA100", "Br": "#A62929", "Kr": "#5CB8D1", "Rb": "#702EB0", "Sr": "#00FF00", "Y": "#94FFFF", "Zr": "#94E0E0", "Nb": "#73C2C9", "Mo": "#54B5B5", "Tc": "#3B9E9E", "Ru": "#248F8F", "Rh": "#0A7D8C", "Pd": "#006985", "Ag": "#C0C0C0", "Cd": "#FFD98F", "In": "#A67573", "Sn": "#668080", "Sb": "#9E63B5", "Te": "#D47A00", "I": "#940094", "Xe": "#429EB0", "Cs": "#57178F", "Ba": "#00C900", "La": "#70D4FF", "Ce": "#FFFFC7", "Pr": "#D9FFC7", "Nd": "#C7FFC7", "Pm": "#A3FFC7", "Sm": "#8FFFC7", "Eu": "#61FFC7", "Gd": "#45FFC7", "Tb": "#30FFC7", "Dy": "#1FFFC7", "Ho": "#00FF9C", "Er": "#00E675", "Tm": "#00D452", "Yb": "#00BF38", "Lu": "#00AB24", "Hf": "#4DC2FF", "Ta": "#4DA6FF", "W": "#2194D6", "Re": "#267DAB", "Os": "#266696", "Ir": "#175487", "Pt": "#D0D0E0", "Au": "#FFD123", "Hg": "#B8B8D0", "Tl": "#A6544D", "Pb": "#575961", "Bi": "#9E4FB5", "Po": "#AB5C00", "At": "#754F45", "Rn": "#428296", "Fr": "#420066", "Ra": "#007D00", "Ac": "#70ABFA", "Th": "#00BAFF", "Pa": "#00A1FF", "U": "#008FFF", "Np": "#0080FF", "Pu": "#006BFF", "Am": "#545CF2", "Cm": "#785CE3", "Bk": "#8A4FE3", "Cf": "#A136D4", "Es": "#B31FD4", "Fm": "#B31FBA", "Md": "#B30DA6", "No": "#BD0D87", "Lr": "#C70066", "Rf": "#CC0059", "Db": "#D1004F", "Sg": "#D90045", "Bh": "#E00038", "Hs": "#E6002E", "Mt": "#EB0026" };
 
 var AseRadii = { "X": 0.66, "H": 0.31, "He": 0.28, "Li": 1.28, "Be": 0.96, "B": 0.84, "C": 0.76, "N": 0.71, "O": 0.66, "F": 0.57, "Ne": 0.58, "Na": 1.66, "Mg": 1.41, "Al": 1.21, "Si": 1.11, "P": 1.07, "S": 1.05, "Cl": 1.02, "Ar": 1.06, "K": 2.03, "Ca": 1.76, "Sc": 1.70, "Ti": 1.60, "V": 1.53, "Cr": 1.39, "Mn": 1.39, "Fe": 1.32, "Co": 1.26, "Ni": 1.24, "Cu": 1.32, "Zn": 1.22, "Ga": 1.22, "Ge": 1.20, "As": 1.19, "Se": 1.20, "Br": 1.20, "Kr": 1.16, "Rb": 2.20, "Sr": 1.95, "Y": 1.90, "Zr": 1.75, "Nb": 1.64, "Mo": 1.54, "Tc": 1.47, "Ru": 1.46, "Rh": 1.42, "Pd": 1.39, "Ag": 1.45, "Cd": 1.44, "In": 1.42, "Sn": 1.39, "Sb": 1.39, "Te": 1.38, "I": 1.39, "Xe": 1.40, "Cs": 2.44, "Ba": 2.15, "La": 2.07, "Ce": 2.04, "Pr": 2.03, "Nd": 2.01, "Pm": 1.99, "Sm": 1.98, "Eu": 1.98, "Gd": 1.96, "Tb": 1.94, "Dy": 1.92, "Ho": 1.92, "Er": 1.89, "Tm": 1.90, "Yb": 1.87, "Lu": 1.87, "Hf": 1.75, "Ta": 1.70, "W": 1.62, "Re": 1.51, "Os": 1.44, "Ir": 1.41, "Pt": 1.36, "Au": 1.36, "Hg": 1.32, "Tl": 1.45, "Pb": 1.46, "Bi": 1.48, "Po": 1.40, "At": 1.50, "Rn": 1.50, "Fr": 2.60, "Ra": 2.21, "Ac": 2.15, "Th": 2.06, "Pa": 2.00, "U": 1.96, "Np": 1.90, "Pu": 1.87, "Am": 1.80, "Cm": 1.69, "Bk": 3.0, "Cf": 3.0, "Es": 3.0, "Fm": 3.0, "Md": 3.0, "No": 3.0, "Lr": 3.0, "Rf": 3.0, "Db": 3.0, "Sg": 3.0, "Bh": 3.0, "Hs": 3.0, "Mt": 3.0 }; // NB starting from Bk the data are incorrect
 
@@ -583,7 +583,7 @@ function render_3D(){
         if (!!test) test.parentNode.removeChild(test);
         var infopanel = document.createElement('div');
         infopanel.setAttribute('id', 'infopanel');
-        infopanel.innerHTML = '<span style=color:#900>a='+descr['a']+'&#8491;</span><br /><span style=color:#090>b='+descr['b']+'&#8491;</span><br /><span style=color:#009>c='+descr['c']+'&#8491;</span><br />&#945;='+descr['alpha']+'&deg;<br />&#946;='+descr['beta']+'&deg;<br />&#947;='+descr['gamma']+'&deg;<br />';
+        infopanel.innerHTML = '<span style=color:#900>a = '+descr['a']+' &#8491;</span><br /><span style=color:#090>b = '+descr['b']+' &#8491;</span><br /><span style=color:#009>c = '+descr['c']+' &#8491;</span><br />&#945; = '+descr['alpha']+'&deg;<br />&#946; = '+descr['beta']+'&deg;<br />&#947; = '+descr['gamma']+'&deg;<br />';
         container.appendChild( infopanel );
     }
 
@@ -612,7 +612,7 @@ function render_3D(){
 
     var i, len = obj_3D.atoms.length;
     for (i = 0; i < len; i++){
-        var atom = new THREE.Mesh( new THREE.SphereGeometry( obj_3D.atoms[i].r*40, actd.w, actd.h ), new THREE.MeshLambertMaterial( { color: parseInt(obj_3D.atoms[i].c, 16), shading: THREE.FlatShading, overdraw: 0.5 } ) );
+        var atom = new THREE.Mesh( new THREE.SphereGeometry( obj_3D.atoms[i].r*40, actd.w, actd.h ), new THREE.MeshLambertMaterial( { color: obj_3D.atoms[i].c, shading: THREE.FlatShading, overdraw: 0.25 } ) );
         atom.position.x = parseInt( obj_3D.atoms[i].x*100 );
         atom.position.y = parseInt( obj_3D.atoms[i].y*100 );
         atom.position.z = parseInt( obj_3D.atoms[i].z*100 );
@@ -715,17 +715,17 @@ function init_3D(){
 
     scene = new THREE.Scene();
     camera = new THREE.OrthographicCamera( -window.innerWidth*1.5, window.innerWidth*1.5, -window.innerHeight*1.5, window.innerHeight*1.5, -2000, 2000 );
-    camera.position.set(50, 50, 50);
+    camera.position.set(0, 0, 1);
     scene.add(camera);
 
-    var AmbientLight = new THREE.AmbientLight( 0xffffff );
+    var AmbientLight = new THREE.AmbientLight( 0x999999 );
     scene.add( AmbientLight );
-    var PointLight = new THREE.PointLight( 0xffffff, 1 );
+    var PointLight = new THREE.PointLight( 0x666666, 1 );
     PointLight.position = camera.position;
     scene.add( PointLight );
 
     renderer = new THREE.CanvasRenderer();
-    renderer.setClearColor( 0xffffff, 0 );
+    renderer.setClearColor( 0xffffff, 1 );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
 
@@ -745,7 +745,7 @@ function init_3D(){
         if (y<44){
             /*var uri = document.location.hash.substr(1).split('/');
             if (uri.length == 2){
-                if (!!window.parent._gui) window.open('/static/player.html#' + uri[0] + '/' + uri[1]);
+                if (!!window.parent._gui) window.open('/static/#' + uri[0] + '/' + uri[1]);
                 else self.close();
             }*/
             return;
@@ -821,11 +821,7 @@ function file_download(url){
     var parser = document.createElement('a');
     parser.href = url;
     if (parser.hostname !== window.location.hostname){
-        // PHP proxy
         url = '/proxy.php?url=' + url;
-        // Python proxy
-        //url = '/?url=' + url;
-        console.log("Proxying download via " + url);
     }
 
     var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -834,7 +830,7 @@ function file_download(url){
             if (xmlhttp.status == 200){
                 obj_3D = xmlhttp.responseText || "";
                 accept_data();
-            } else alert("Error code: " + xmlhttp.status);
+            } else alert("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
         }
     }
     xmlhttp.open("GET", url);
@@ -847,9 +843,9 @@ function accept_data(){
 
     if (obj_3D.indexOf("_cell_length_a ") > -1){
         obj_3D = cif2player(obj_3D);
-        if (!obj_3D) return alert("Invalid data format!");
+        if (!obj_3D) return alert("Error: received file has invalid format!");
     } else {
-        return alert("Not supported data format!");
+        return alert("Error: received file format is not supported!");
     }
 
     loaded_3D ? render_3D() : init_3D();
@@ -859,19 +855,18 @@ function handleFileSelect(evt){
     evt.stopPropagation();
     evt.preventDefault();
 
-    if (evt.dataTransfer.files.length > 1) return alert("Only one file at the time may be rendered!");
+    if (evt.dataTransfer.files.length > 1) return alert("Error: only one file at the time may be rendered!");
     var file = evt.dataTransfer.files[0];
-    if (!file || !file.size) return alert("File cannot be read (unaccessible?)");
+    if (!file || !file.size) return alert("Error: file cannot be read (unaccessible?)");
 
     var reader = new FileReader();
-    // return alert("Browser does not support this feature!");
 
     reader.onloadend = function(evt){
         obj_3D = evt.target.result;
         accept_data();
     }
-    reader.abort = function(){ alert("Reading has been cancelled!") }
-    reader.onerror = function(evt){ alert("Reading has been cancelled: " + evt.target.error.name) }
+    reader.abort = function(){ alert("Error: file reading has been cancelled!") }
+    reader.onerror = function(evt){ alert("Error: file reading has been cancelled: " + evt.target.error.name) }
 
     reader.readAsText(file);
 }
@@ -884,6 +879,10 @@ function handleDragOver(evt){
 }
 
 window.onload = function(){
+    if (!window.location.protocol.startswith('http')){
+        return alert('Error: this page must be served by a PHP- or Python-enabled web server');
+    }
+
     window.addEventListener('DOMMouseScroll', rescale, false);
     window.addEventListener('mousewheel', rescale, false);
     window.addEventListener('hashchange', url_redraw_react, false);
@@ -905,7 +904,8 @@ window.onload = function(){
     } else init_3D();*/
 
     if (document.location.hash.length) url_redraw_react();
-    else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/test.cif');
+    else document.location.hash = '#http://www.nwchem-sw.org/images/Diamond.opt.cif';
+    //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/test.cif');
 }
 </script>
 </body>

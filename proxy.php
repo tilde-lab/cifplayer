@@ -18,8 +18,14 @@ if (!$is_allowed){
     exit("Forbidden");
 }
 
-if(ini_get('allow_url_fopen')){
-    $output = utf8_encode(file_get_contents($url, null, null, 0, MAX_SIZE));
+if (ini_get('allow_url_fopen')){
+    $resource = @file_get_contents($url, null, null, 0, MAX_SIZE);
+    if (!$resource){
+        header("HTTP/1.1 404 Not Found");
+        header(':', false, 404);
+        exit("Not Found");
+    }
+    $output = utf8_encode($resource);
 } else if (function_exists('curl_version')){
     $output = '';
     function download_callback($ch, $chunk) {

@@ -1,3 +1,4 @@
+
 import os, sys
 import re
 import BaseHTTPServer
@@ -34,10 +35,10 @@ class UrlHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.wfile.write(msg)
 
     def do_GET(self):
-        if self.path.startswith("/?url="):
+        if self.path.startswith("/proxy.php?url="): # compat. with PHP backend
             ref = self.headers.get('Referer')
             if not ref or not ref.startswith(SERVER_NAME): return self.answer("Forbidden", 403)
-            url = self.path[6:]
+            url = self.path[15:]
             if not urlregex.match(url): return self.answer("Invalid URL", 400)
             try: u = urllib2.urlopen(url)
             except urllib2.HTTPError: return self.answer("Not found", 404)
@@ -54,6 +55,7 @@ class UrlHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.wfile.write(out)
         else:
             path = self.path[1:]
+            if not path: path = 'index.html'
             if not os.path.exists(os.path.join(cur_dir, path)): return self.answer("Not found", 404)
             try: f = open(os.path.join(cur_dir, path), 'rb')
             except: return self.answer("Not found", 404)
