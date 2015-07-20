@@ -821,7 +821,7 @@ function file_download(url){
     var parser = document.createElement('a');
     parser.href = url;
     if (parser.hostname !== window.location.hostname){
-        url = '/proxy.php?url=' + url;
+        url = 'proxy.php?url=' + url;
     }
 
     var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
