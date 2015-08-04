@@ -1,4 +1,3 @@
 Balls are rotated incorrectly while rendering
 Window resize doesn't work properly
-Labels are incorrectly positioned
 Atoms are neither translated nor recreated by symmetry

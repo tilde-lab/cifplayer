@@ -341,10 +341,10 @@ THREE.TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototy
 
 function calc_2D_pos(vector){
     var projector = new THREE.Projector();
-    vector = projector.projectVector( new THREE.Vector3( vector.x, vector.y, vector.z ), player.camera );
+    v = projector.projectVector( new THREE.Vector3( vector.x, vector.y, vector.z ), player.camera );
     return {
-        x: parseInt(document.body.clientWidth/2) + Math.round(vector.x * (player.renderer.domElement.width/2)),
-        y: parseInt(document.body.clientHeight/2) - Math.round(vector.y * (player.renderer.domElement.height/2))
+        x: (v.x + 1) / 2 * window.innerWidth,
+        y: (-v.y + 1) / 2 * window.innerHeight
     };
 }
 
@@ -785,7 +785,7 @@ function file_download(url){
             if (xmlhttp.status == 200){
                 player.obj3d = xmlhttp.responseText || "";
                 accept_data();
-            } else console.log("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
+            } else alert("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
         }
     }
     xmlhttp.open("GET", url);
@@ -829,26 +829,25 @@ function handleFileSelect(evt){
 function handleDragOver(evt){
     evt.stopPropagation();
     evt.preventDefault();
-    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy
-    //console.log("Ready...");
+    evt.dataTransfer.dropEffect = 'copy';
 }
 
-    domReady(function(){
-        if (!window.location.protocol.startswith('http')){
-            return alert('Error: this page must be served by a PHP- or Python-enabled web server');
-        }
+domReady(function(){
+    if (!window.location.protocol.startswith('http')){
+        return alert('Error: this page must be served by a PHP- or Python-enabled web server');
+    }
 
-        window.addEventListener('DOMMouseScroll', rescale, false);
-        window.addEventListener('mousewheel', rescale, false);
-        window.addEventListener('hashchange', url_redraw_react, false);
-        if (window.FileReader){
-            window.addEventListener('dragover', handleDragOver, false);
-            window.addEventListener('drop', handleFileSelect, false);
-        }
+    window.addEventListener('DOMMouseScroll', rescale, false);
+    window.addEventListener('mousewheel', rescale, false);
+    window.addEventListener('hashchange', url_redraw_react, false);
+    if (window.FileReader){
+        window.addEventListener('dragover', handleDragOver, false);
+        window.addEventListener('drop', handleFileSelect, false);
+    }
 
-        if (document.location.hash.length) url_redraw_react();
-        else document.location.hash = '#http://www.rsc.org/suppdata/cp/c0/c003971c/pccp_c003971c_suppl_info_optimised_experimental_crystal_structures.txt';
-        //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/test.cif');
-    });
+    if (document.location.hash.length) url_redraw_react();
+    else document.location.hash = '#http://www.rsc.org/suppdata/cp/c0/c003971c/pccp_c003971c_suppl_info_optimised_experimental_crystal_structures.txt';
+    //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/test.cif');
+});
 
 });
