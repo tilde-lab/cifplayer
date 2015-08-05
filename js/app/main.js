@@ -1,12 +1,10 @@
 /**
-*
-* CIF renderer
-* Author: Evgeny Blokhin
-* Web: http://tilde.pro
-* Email: eb@tilde.pro
-* License: MIT
-*
-*/
+ * CIF renderer
+ * Author: Evgeny Blokhin
+ * Web: http://tilde.pro
+ * Email: eb@tilde.pro
+ * License: MIT
+ */
 var player = {};
 player.loaded = false;
 player.container = null;
@@ -17,362 +15,29 @@ player.renderer = null;
 player.controls = null;
 player.atombox = null;
 player.active_overlay = "";
-player.overlay_backup = null;
+//player.overlay_backup = null;
 player.obj3d = null;
 
 require.config({
     baseUrl: 'js/app',
     paths: { deps: '../deps' }
 });
-require(['deps/math.custom.min', 'domReady'], function(math, domReady){
+require(['polyfills', 'chemical_elements', 'deps/three.custom', 'deps/math.custom', 'domReady'], function(polyfills, chemical_elements, th, math, domReady){
 
-/**
-* TrackballControls by Eberhard Graether and Mark Lundin
-* modified by EB
-*/
-THREE.TrackballControls = function ( object, domElement ) {
-    var _this = this;
-    var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
-    this.object = object;
-    this.domElement = ( domElement !== undefined ) ? domElement : document;
-    // API
-    this.enabled = true;
-    this.screen = { width: 0, height: 0, offsetLeft: 0, offsetTop: 0 };
-    this.radius = ( this.screen.width + this.screen.height ) / 4;
-    this.rotateSpeed = 1.5;
-    this.zoomSpeed = 1.2;
-    this.panSpeed = 0.3;
-    this.noRotate = false;
-    this.noZoom = false;
-    this.noPan = false;
-    this.staticMoving = false;
-    this.dynamicDampingFactor = 0.2;
-    this.minDistance = 0;
-    this.maxDistance = Infinity;
-    // internals
-    this.target = new THREE.Vector3();
-    var lastPosition = new THREE.Vector3();
-    var _state = STATE.NONE,
-    _prevState = STATE.NONE,
-    _eye = new THREE.Vector3(),
-    _rotateStart = new THREE.Vector3(),
-    _rotateEnd = new THREE.Vector3(),
-    _zoomStart = new THREE.Vector2(),
-    _zoomEnd = new THREE.Vector2(),
-    _touchZoomDistanceStart = 0,
-    _touchZoomDistanceEnd = 0,
-    _panStart = new THREE.Vector2(),
-    _panEnd = new THREE.Vector2();
-    // for reset
-    this.target0 = this.target.clone();
-    this.position0 = this.object.position.clone();
-    this.up0 = this.object.up.clone();
-    // events
-    var changeEvent = { type: 'change' }
-
-    // methods
-    this.handleResize = function () {
-        this.screen.width = window.innerWidth;
-        this.screen.height = window.innerHeight;
-        this.screen.offsetLeft = 0;
-        this.screen.offsetTop = 0;
-        this.radius = ( this.screen.width + this.screen.height ) / 4;
-    }
-
-    this.handleEvent = function ( event ) {
-        if ( typeof this[ event.type ] == 'function' ) {
-            this[ event.type ]( event );
-        }
-    }
-
-    this.getMouseOnScreen = function ( clientX, clientY ) {
-        return new THREE.Vector2(
-            ( clientX - _this.screen.offsetLeft ) / _this.radius * 0.5,
-            ( clientY - _this.screen.offsetTop ) / _this.radius * 0.5
-        );
-    }
-
-    this.getMouseProjectionOnBall = function ( clientX, clientY ) {
-        var mouseOnBall = new THREE.Vector3(
-            ( clientX - _this.screen.width * 0.5 - _this.screen.offsetLeft ) / _this.radius,
-            ( _this.screen.height * 0.5 + _this.screen.offsetTop - clientY ) / _this.radius,
-            0.0
-        );
-        var length = mouseOnBall.length();
-        if ( length > 1.0 ) {
-            mouseOnBall.normalize();
-        } else {
-            mouseOnBall.z = Math.sqrt( 1.0 - length * length );
-        }
-        _eye.copy( _this.object.position ).sub( _this.target );
-        var projection = _this.object.up.clone().setLength( mouseOnBall.y );
-        projection.add( _this.object.up.clone().cross( _eye ).setLength( mouseOnBall.x ) );
-        projection.add( _eye.setLength( mouseOnBall.z ) );
-        return projection;
-    }
-
-    this.rotateCamera = function () {
-        var angle = Math.acos( _rotateStart.dot( _rotateEnd ) / _rotateStart.length() / _rotateEnd.length() );
-        if ( angle ) {
-            var axis = ( new THREE.Vector3() ).crossVectors( _rotateStart, _rotateEnd ).normalize(),
-                quaternion = new THREE.Quaternion();
-            angle *= _this.rotateSpeed;
-            quaternion.setFromAxisAngle( axis, -angle );
-            _eye.applyQuaternion( quaternion );
-            _this.object.up.applyQuaternion( quaternion );
-            _rotateEnd.applyQuaternion( quaternion );
-            if ( _this.staticMoving ) {
-                _rotateStart.copy( _rotateEnd );
-            } else {
-                quaternion.setFromAxisAngle( axis, angle * ( _this.dynamicDampingFactor - 1.0 ) );
-                _rotateStart.applyQuaternion( quaternion );
-            }
-        }
-    }
-
-    this.zoomCamera = function () {
-        if ( _state === STATE.TOUCH_ZOOM ) {
-            var factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
-            _touchZoomDistanceStart = _touchZoomDistanceEnd;
-            _eye.multiplyScalar( factor );
-        } else {
-            var factor = 1.0 + ( _zoomEnd.y - _zoomStart.y ) * _this.zoomSpeed;
-            if ( factor !== 1.0 && factor > 0.0 ) {
-                _eye.multiplyScalar( factor );
-                if ( _this.staticMoving ) {
-                    _zoomStart.copy( _zoomEnd );
-                } else {
-                    _zoomStart.y += ( _zoomEnd.y - _zoomStart.y ) * this.dynamicDampingFactor;
-                }
-            }
-        }
-    }
-
-    this.panCamera = function () {
-        var mouseChange = _panEnd.clone().sub( _panStart );
-        if ( mouseChange.lengthSq() ) {
-            mouseChange.multiplyScalar( _eye.length() * _this.panSpeed );
-            var pan = _eye.clone().cross( _this.object.up ).setLength( mouseChange.x );
-            pan.add( _this.object.up.clone().setLength( mouseChange.y ) );
-            _this.object.position.add( pan );
-            _this.target.add( pan );
-            if ( _this.staticMoving ) {
-                _panStart = _panEnd;
-            } else {
-                _panStart.add( mouseChange.subVectors( _panEnd, _panStart ).multiplyScalar( _this.dynamicDampingFactor ) );
-            }
-        }
-    }
-
-    this.checkDistances = function () {
-        if ( !_this.noZoom || !_this.noPan ) {
-            if ( _this.object.position.lengthSq() > _this.maxDistance * _this.maxDistance ) {
-                _this.object.position.setLength( _this.maxDistance );
-            }
-            if ( _eye.lengthSq() < _this.minDistance * _this.minDistance ) {
-                _this.object.position.addVectors( _this.target, _eye.setLength( _this.minDistance ) );
-            }
-        }
-    }
-
-    this.update = function () {
-        _eye.subVectors( _this.object.position, _this.target );
-        if ( !_this.noRotate ) {
-            _this.rotateCamera();
-        }
-        if ( !_this.noZoom ) {
-            _this.zoomCamera();
-        }
-        if ( !_this.noPan ) {
-            _this.panCamera();
-        }
-        _this.object.position.addVectors( _this.target, _eye );
-        _this.checkDistances();
-        _this.object.lookAt( _this.target );
-        if ( lastPosition.distanceToSquared( _this.object.position ) > 0.000001 ) {
-            _this.dispatchEvent( changeEvent );
-            lastPosition.copy( _this.object.position );
-        }
-    }
-
-    this.reset = function () {
-        _state = STATE.NONE;
-        _prevState = STATE.NONE;
-        _this.target.copy( _this.target0 );
-        _this.object.position.copy( _this.position0 );
-        _this.object.up.copy( _this.up0 );
-        _eye.subVectors( _this.object.position, _this.target );
-        _this.object.lookAt( _this.target );
-        _this.dispatchEvent( changeEvent );
-        lastPosition.copy( _this.object.position );
-    }
-
-    // listeners
-    function mousedown( event ) {
-        if ( _this.enabled === false ) return;
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (!window.active_renderer) window.active_renderer = requestAnimationFrame(vivify);
-
-        if ( _state === STATE.NONE ) {
-            _state = event.button;
-        }
-        if ( _state === STATE.ROTATE && !_this.noRotate ) {
-            _rotateStart = _rotateEnd = _this.getMouseProjectionOnBall( event.clientX, event.clientY );
-        } else if ( _state === STATE.ZOOM && !_this.noZoom ) {
-            _zoomStart = _zoomEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
-        } else if ( _state === STATE.PAN && !_this.noPan ) {
-            _panStart = _panEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
-        }
-        document.addEventListener( 'mousemove', mousemove, false );
-        document.addEventListener( 'mouseup', mouseup, false );
-        remove_2D_labels();
-    }
-
-    function mousemove( event ) {
-        if ( _this.enabled === false ) return;
-        event.preventDefault();
-        event.stopPropagation();
-        if ( _state === STATE.ROTATE && !_this.noRotate ) {
-            _rotateEnd = _this.getMouseProjectionOnBall( event.clientX, event.clientY );
-        } else if ( _state === STATE.ZOOM && !_this.noZoom ) {
-            _zoomEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
-        } else if ( _state === STATE.PAN && !_this.noPan ) {
-            _panEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
-        }
-    }
-
-    function mouseup( event ) {
-        if ( _this.enabled === false ) return;
-        event.preventDefault();
-        event.stopPropagation();
-        _state = STATE.NONE;
-
-        if (!window.active_tween) { cancelAnimationFrame(window.active_renderer); window.active_renderer = false; }
-
-        document.removeEventListener( 'mousemove', mousemove );
-        document.removeEventListener( 'mouseup', mouseup );
-        add_2D_labels();
-    }
-
-    function touchstart( event ) {
-        if ( _this.enabled === false ) return;
-
-        if (!window.active_renderer) window.active_renderer = requestAnimationFrame(vivify);
-
-        switch ( event.touches.length ) {
-            case 1:
-                _state = STATE.TOUCH_ROTATE;
-                _rotateStart = _rotateEnd = _this.getMouseProjectionOnBall( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-                break;
-            case 2:
-                _state = STATE.TOUCH_ZOOM_PAN;
-                var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
-                var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
-                _touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt( dx * dx + dy * dy );
-
-                var x = ( event.touches[ 0 ].pageX + event.touches[ 1 ].pageX ) / 2;
-                var y = ( event.touches[ 0 ].pageY + event.touches[ 1 ].pageY ) / 2;
-                _panStart = _panEnd = _this.getMouseOnScreen( x, y );
-                break;
-            default:
-                _state = STATE.NONE;
-        }
-        remove_2D_labels();
-    }
-
-    function touchmove( event ) {
-        if ( _this.enabled === false ) return;
-        event.preventDefault();
-        event.stopPropagation();
-
-        switch ( event.touches.length ) {
-            case 1:
-                _rotateEnd = _this.getMouseProjectionOnBall( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-                break;
-            case 2:
-                var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
-                var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
-                _touchZoomDistanceEnd = Math.sqrt( dx * dx + dy * dy );
-
-                var x = ( event.touches[ 0 ].pageX + event.touches[ 1 ].pageX ) / 2;
-                var y = ( event.touches[ 0 ].pageY + event.touches[ 1 ].pageY ) / 2;
-                _panEnd = _this.getMouseOnScreen( x, y );
-                break;
-            default:
-                _state = STATE.NONE;
-        }
-    }
-
-    function touchend( event ) {
-        if ( _this.enabled === false ) return;
-        switch ( event.touches.length ) {
-            case 1:
-                _rotateEnd = _rotateStart = _this.getMouseProjectionOnBall( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-                break;
-            case 2:
-                _touchZoomDistanceStart = _touchZoomDistanceEnd = 0;
-
-                var x = ( event.touches[ 0 ].pageX + event.touches[ 1 ].pageX ) / 2;
-                var y = ( event.touches[ 0 ].pageY + event.touches[ 1 ].pageY ) / 2;
-                _panEnd = _panStart = _this.getMouseOnScreen( x, y );
-                break;
-        }
-
-        if (!window.active_tween) { cancelAnimationFrame(window.active_renderer); window.active_renderer = false; }
-
-        _state = STATE.NONE;
-        add_2D_labels();
-    }
-
-    this.domElement.addEventListener( 'mousedown', mousedown, false );
-    this.domElement.addEventListener( 'touchstart', touchstart, false );
-    this.domElement.addEventListener( 'touchend', touchend, false );
-    this.domElement.addEventListener( 'touchmove', touchmove, false );
-    this.handleResize();
-}
-
-THREE.TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
-
-/**
-* Three.js invocation
-*/
+var THREE = th.THREE;
 
 function calc_2D_pos(vector){
-    var projector = new THREE.Projector();
-    v = projector.projectVector( new THREE.Vector3( vector.x, vector.y, vector.z ), player.camera );
+    var v = new THREE.Vector3( vector.x, vector.y, vector.z );
+    v.project( player.camera );
     return {
         x: (v.x + 1) / 2 * window.innerWidth,
         y: (-v.y + 1) / 2 * window.innerHeight
-    };
-}
-
-function remove_2D_labels(){ // added to Controls!
-    var labels = document.getElementsByClassName('L');
-    while (labels[0]){ labels[0].parentNode.removeChild(labels[0]) }
-}
-
-function add_2D_labels(){ // added to Controls!
-    if (!player.active_overlay.length) return;
-
-    var obj = player.scene.getObjectByName("atoms3d");
-    obj = obj.children;
-    var i, len = obj.length;
-    for (i = 0; i < len; i++){
-        if (obj[i].name == 'atom3d'){
-            var p2d = calc_2D_pos(obj[i].position);
-            var s = document.createElement('div');
-            var c = (player.active_overlay == 'N') ? (i+1) : player.obj3d.atoms[i].o[player.active_overlay];
-            if (c) s.innerHTML = c;
-            else continue;
-            s.setAttribute('class', 'L');
-            s.style.left = p2d.x + 'px';
-            s.style.top = p2d.y + 'px';
-            player.container.appendChild( s );
-        }
     }
 }
+
+function remove_2D_labels(){}
+
+function add_2D_labels(){}
 
 function unit(vec){
     return math.divide(vec, math.norm(vec));
@@ -425,8 +90,8 @@ function jsobj2player(crystal){
     var color, radius;
     var i, len = crystal.atoms.length;
     for (i = 0; i < len; i++){
-        color = (JmolColors[ crystal.atoms[i].symbol ]) ? JmolColors[ crystal.atoms[i].symbol ] : '0xffff00';
-        radius = (AseRadii[ crystal.atoms[i].symbol ]) ? AseRadii[ crystal.atoms[i].symbol ] : 0.66;
+        color = (chemical_elements.JmolColors[ crystal.atoms[i].symbol ]) ? chemical_elements.JmolColors[ crystal.atoms[i].symbol ] : '0xffff00';
+        radius = (chemical_elements.AseRadii[ crystal.atoms[i].symbol ]) ? chemical_elements.AseRadii[ crystal.atoms[i].symbol ] : 0.66;
         player_output.atoms.push( {"x": positions[i][0], "y": positions[i][1], "z": positions[i][2], "c": color, "r": radius, "o": {"t": crystal.atoms[i].symbol}} )
     }
     //console.log(player_output);
@@ -495,8 +160,8 @@ function cif2player(str){
                 }
                 if (atom.x !== undefined && atom.y !== undefined && atom.z !== undefined){ // NB zero coord
                     if (!atom.symbol && !!atom.label) atom.symbol = atom.label.replace(/[0-9]/g, '');
-                    if (!JmolColors[atom.symbol] && atom.symbol.length > 2) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
-                    if (!JmolColors[atom.symbol] && atom.symbol.length > 1) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
+                    if (!chemical_elements.JmolColors[atom.symbol] && atom.symbol.length > 2) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
+                    if (!chemical_elements.JmolColors[atom.symbol] && atom.symbol.length > 1) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
                     if (!!atom.symbol) cur_structure.atoms.push(atom);
                 }
             }
@@ -614,51 +279,10 @@ function render_3D(){
     }
     player.atombox.name = "atoms3d";
     player.scene.add(player.atombox);
-    TWEEN.removeAll();
-    vivify();
-
+    //TWEEN.removeAll();
+    play();
     //var fake_phonon = ''; for (var i=0; i<player.obj3d.atoms.length; i++){ fake_phonon += '1,1,1, ' } // debug phonon animation
     //vibrate_3D( '[' + fake_phonon.substr(0, fake_phonon.length-2) + ']' );
-}
-
-function vibrate_3D(objPH){
-
-    TWEEN.removeAll();
-
-    if (objPH) {
-        // displace atoms
-        objPH = JSON.parse(objPH);
-        //if (objPH.length/3 !== player.obj3d.atoms.length) console.log('Internal atomic inconsistency error!');
-
-        remove_2D_labels();
-        var i, len = objPH.length/3;
-        for (i = 0; i < len; i++){
-            var x = parseInt( player.obj3d.atoms[i].x*100 );
-            var y = parseInt( player.obj3d.atoms[i].y*100 );
-            var z = parseInt( player.obj3d.atoms[i].z*100 );
-            var distb_pos = { x: x + objPH[i*3]*200, y: y + objPH[i*3+1]*200, z: z + objPH[i*3+2]*200 };
-            var tweenHead = new TWEEN.Tween( player.atombox.children[i].position ).to(distb_pos, 750).repeat(Infinity).delay(500).yoyo(true).start();
-        }
-
-        window.active_tween = true;
-        if (!window.active_renderer) window.active_renderer = requestAnimationFrame(vivify);
-
-        player.overlay_backup = player.active_overlay;
-        player.active_overlay = "";
-    } else {
-        // return atoms back
-        var i, len = player.obj3d.atoms.length;
-        for (i = 0; i < len; i++){
-            var x = parseInt( player.obj3d.atoms[i].x*100 );
-            var y = parseInt( player.obj3d.atoms[i].y*100 );
-            var z = parseInt( player.obj3d.atoms[i].z*100 );
-            var equil_pos = { x: x, y: y, z: z };
-            var tweenBack = new TWEEN.Tween( player.atombox.children[i].position ).to(equil_pos, 750).start();
-            if (i==len-1) tweenBack.onComplete(function(){ cancelAnimationFrame(window.active_renderer); window.active_tween = false; }); // we need to cancel rendering in order to save CPU
-        }
-        player.active_overlay = player.overlay_backup;
-        add_2D_labels();
-    }
 }
 
 function init_3D(){
@@ -676,7 +300,8 @@ function init_3D(){
     var AmbientLight = new THREE.AmbientLight( 0x999999 );
     player.scene.add( AmbientLight );
     var PointLight = new THREE.PointLight( 0x666666, 1 );
-    PointLight.position = player.camera.position;
+    //PointLight.position = player.camera.position;
+    PointLight.position.set(500, 500, 500);
     player.scene.add( PointLight );
 
     player.renderer = new THREE.CanvasRenderer();
@@ -696,6 +321,7 @@ function init_3D(){
         if (!e) e = window.event;
         if (e.cancelBubble) e.cancelBubble = true;
         else e.stopPropagation();
+
         var y = (e.pageY) ? e.pageY : e.clientY;
         if (y<44){
             /*var uri = document.location.hash.substr(1).split('/');
@@ -705,45 +331,31 @@ function init_3D(){
             }*/
             return;
         }
-        var fov = (y > 99) ? -100 : 100, c = window.innerHeight/window.innerWidth;
+        var fov = ((y > 99) ? -1 : 1) * 333, c = window.innerHeight/window.innerWidth;
         player.camera.left += fov;
         player.camera.right -= fov;
         player.camera.top += fov*c;
         player.camera.bottom -= fov*c;
         player.camera.updateProjectionMatrix();
+        remove_2D_labels();
+        add_2D_labels();
+        play();
     }
 
-    player.controls = new THREE.TrackballControls( player.camera );
-    player.controls.staticMoving = true;
+    player.controls = new THREE.OrthographicTrackballControls( player.camera );
     render_3D();
 }
 
-function vivify(){
-    if (!!window.active_renderer) requestAnimationFrame(vivify);
+function play(){
+    //if (!!window.active_renderer) requestAnimationFrame(play);
+    requestAnimationFrame(play);
     player.renderer.render(player.scene, player.camera);
     player.controls.update();
-    TWEEN.update();
+    //TWEEN.update();
     //player.stats.update();
 }
 
-function rescale(event){
-    var fov = -((event.wheelDelta) ? event.wheelDelta/120 : event.detail/-3) * 100, c = window.innerHeight/window.innerWidth;
-    player.camera.left += fov;
-    player.camera.right -= fov;
-    player.camera.top += fov*c;
-    player.camera.bottom -= fov*c;
-    player.camera.updateProjectionMatrix();
-    remove_2D_labels();
-    add_2D_labels();
-    vivify();
-    event.preventDefault();
-    event.stopPropagation();
-}
-
 function url_redraw_react(){
-    //var uri = document.location.hash.substr(1).split('/');
-    //if (uri.length == 2 || uri.length == 3) json_download( 'json3d/' + uri.join('/') );
-
     var t = document.location.hash.substr(1);
     file_download(t);
 }
@@ -756,19 +368,6 @@ function url_redraw_react(){
     dl.style.display = "none";
     document.body.appendChild(dl);
     dl.submit();
-}*/
-
-/*function json_download(request){
-    var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-    xmlhttp.onreadystatechange = function(){
-        if ((xmlhttp.readyState == 4) && (xmlhttp.status == 200)){
-            player.obj3d = xmlhttp.responseText;
-            player.loaded ? render_3D() : init_3D();
-        }
-    }
-    xmlhttp.open("GET", '/' + request);
-    xmlhttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
-    xmlhttp.send(1);
 }*/
 
 function file_download(url){
@@ -796,7 +395,7 @@ function file_download(url){
 function accept_data(){
     //console.log("Contents follow:", player.obj3d);
 
-    if (player.obj3d.indexOf("_cell_length_a ") > -1){
+    if (player.obj3d.indexOf("_cell_angle_gamma ") > -1){
         player.obj3d = cif2player(player.obj3d);
         if (!player.obj3d) return alert("Error: the file has invalid format!");
     } else {
@@ -837,17 +436,19 @@ domReady(function(){
         return alert('Error: this page must be served by a PHP- or Python-enabled web server');
     }
 
-    window.addEventListener('DOMMouseScroll', rescale, false);
-    window.addEventListener('mousewheel', rescale, false);
+    //window.addEventListener('DOMMouseScroll', rescale, false);
+    //window.addEventListener('mousewheel', rescale, false);
     window.addEventListener('hashchange', url_redraw_react, false);
     if (window.FileReader){
         window.addEventListener('dragover', handleDragOver, false);
         window.addEventListener('drop', handleFileSelect, false);
     }
+    window.addEventListener('mousedown', function(){ console.log(player.controls._state) }, false);
+    window.addEventListener('touchmove', function(){ console.log(player.controls._state) }, false);
 
     if (document.location.hash.length) url_redraw_react();
-    else document.location.hash = '#http://www.rsc.org/suppdata/cp/c0/c003971c/pccp_c003971c_suppl_info_optimised_experimental_crystal_structures.txt';
-    //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/test.cif');
+    //else document.location.hash = '#http://www.rsc.org/suppdata/nj/b6/b617452n/b617452n.txt';
+    else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/Ag.cif');
 });
 
 });

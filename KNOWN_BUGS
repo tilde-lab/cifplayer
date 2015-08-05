@@ -1,3 +1,6 @@
 Balls are rotated incorrectly while rendering
 Window resize doesn't work properly
 Atoms are neither translated nor recreated by symmetry
+CIF frames not supported
+Phonon visualization with tween.js temporarily dropped
+Labels temporarily dropped

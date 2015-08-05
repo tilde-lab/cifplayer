@@ -1,3 +1,5 @@
+define(function(){
+
 String.prototype.startswith = function(prefix){
     return this.indexOf(prefix) === 0;
 }
@@ -54,3 +56,5 @@ if (!Object.keys) {
     };
   }());
 }
+
+});
