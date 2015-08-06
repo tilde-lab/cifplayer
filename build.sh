@@ -18,7 +18,6 @@ NPATT=$(grep -n 'REPLACED_IN_PRODUCTION' src/index.html | cut -d ":" -f 1)
 { head -n $(($NPATT-1)) src/index.html; echo '<script type="text/javascript">'; cat player.js; echo '</script>'; tail -n +$(($NPATT+1)) src/index.html; } > player.html
 
 rm player.dist.js player.js
-#cp src/proxy.* .
 
 echo "====================================================================="
 echo "Compiled successfully as player.html"

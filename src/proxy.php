@@ -1,4 +1,6 @@
 <?php
+# A proxy for remote ajax requests
+# @author Evgeny Blokhin
 
 define('MAX_SIZE', 500 * 1024);
 

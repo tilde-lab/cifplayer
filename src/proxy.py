@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# A demo server and proxy for remote ajax requests
+# @known_bugs Errors like connection reset by peer or broken pipe
+# @author Evgeny Blokhin
 
 import os, sys
 import re

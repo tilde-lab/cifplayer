@@ -19,7 +19,7 @@ player.controls = null;
 player.atombox = null;
 player.active_overlay = "";
 //player.overlay_backup = null;
-player.obj3d = null;
+player.obj3d = "";
 
 var THREE = th.THREE || th;
 
@@ -96,8 +96,6 @@ function jsobj2player(crystal){
 }
 
 function cif2player(str){
-    //var sample = '{"atoms": [{"x": "0", "y": "0", "z": "0", "c": "0x000000", "r": "1.25", "o": {"m": 42, "mm": -0.0022, "t": "Uuo"}}, {"x": "1.25", "y": "1.25", "z": "1.25", "c": "0xFF0000", "r": "1", "o": {"m": 8, "t": "O"}}], "cell": [[3, 0, 0], [0, 3, 0], [0, 0, 3]], "descr": {"a": 3.00, "b": 3.00, "c": 3.00, "alpha": 90, "beta": 90, "gamma": 90}, "overlayed": {"m": "atomic ambivalence", "mm": "my test property"}}';
-
     var structures = [], lines = str.split("\n"), cur_structure = {'cell':{}, 'atoms':[]}, loop_active = false;
     var i=0, s=[], ss=[], new_structure=false;
     var cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'];
@@ -190,9 +188,6 @@ function render_3D(){
     var old = player.scene.getObjectByName("atoms3d");
     if (!!old) player.scene.remove( old );
     player.atombox = new THREE.Object3D();
-
-    //player.obj3d = player.obj3d || sample;
-    //player.obj3d = JSON.parse(player.obj3d);
 
     if (player.obj3d.descr && 'a' in player.obj3d.descr){
         var descr = player.obj3d.descr;
@@ -367,6 +362,25 @@ function url_redraw_react(){
     dl.submit();
 }*/
 
+function display_startup(){
+    if (window.FileReader){
+        var test = document.getElementById('landing');
+        if (!!test) test.parentNode.removeChild(test);
+        var panel = document.createElement('div');
+        panel.setAttribute('id', 'landing');
+        panel.innerHTML = 'Please drag\'n\'drop a file here<br>or <a href=/ id=play_demo>display example</a>.';
+        document.body.appendChild(panel);
+        var demo = document.getElementById('play_demo');
+        demo.onclick = play_demo;
+    } else play_demo();
+}
+
+function play_demo(){
+    player.obj3d = "data_global\n_cell_length_a 4.16424\n_cell_length_b 4.16424\n_cell_length_c 4.16424\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P 1'\n_symmetry_Int_Tables_number 1\nloop_\n_symmetry_equiv_pos_as_xyz\n'x, y, z'\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\nAg1 Ag 0 0 0\nAg2 Ag 0 0.5 0.5\nAg3 Ag 0.5 0 0.5\nAg4 Ag 0.5 0.5 0";
+    accept_data();
+    return false;
+}
+
 function file_download(url){
     if (url.indexOf('://') == -1) return;
     var parser = document.createElement('a');
@@ -399,6 +413,9 @@ function accept_data(){
         return alert("Error: the file format is not supported!");
     }
 
+    var test = document.getElementById('landing');
+    if (!!test) test.parentNode.removeChild(test);
+
     player.loaded ? render_3D() : init_3D();
 }
 
@@ -429,19 +446,15 @@ function handleDragOver(evt){
 }
 
 domReady(function(){
-    if (!window.location.protocol.startswith('http')){
-        return alert('Error: this page must be served by a PHP- or Python-enabled web server');
-    }
-
     window.addEventListener('hashchange', url_redraw_react, false);
+
     if (window.FileReader){
         window.addEventListener('dragover', handleDragOver, false);
         window.addEventListener('drop', handleFileSelect, false);
     }
 
     if (document.location.hash.length) url_redraw_react();
-    else document.location.hash = '#http://www.rsc.org/suppdata/nj/b6/b617452n/b617452n.txt';
-    //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/Ag.cif');
+    else display_startup();
 });
 
 });
