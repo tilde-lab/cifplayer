@@ -4,3 +4,4 @@ Atoms are neither translated nor recreated by symmetry
 CIF frames not supported
 Phonon visualization with tween.js temporarily dropped
 Labels temporarily dropped
+Connection reset by peer errors in Python stdlib proxy

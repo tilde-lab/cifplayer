@@ -63,5 +63,6 @@
 	"examples/js/renderers/CanvasRenderer.js",
 
 	"examples/js/controls/OrthographicTrackballControls.js",
-	"src/extras/geometries/SphereGeometry.js"
+	"src/extras/geometries/SphereGeometry.js",
+	"src/extras/geometries/SphereBufferGeometry.js"
 ]

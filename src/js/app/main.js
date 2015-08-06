@@ -5,6 +5,9 @@
  * Email: eb@tilde.pro
  * License: MIT
  */
+require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
+require(['polyfills', 'chemical_elements', 'libs/three.custom', 'libs/math.custom', 'libs/domReady'], function(polyfills, chemical_elements, th, math, domReady){
+
 var player = {};
 player.loaded = false;
 player.container = null;
@@ -18,13 +21,7 @@ player.active_overlay = "";
 //player.overlay_backup = null;
 player.obj3d = null;
 
-require.config({
-    baseUrl: 'js/app',
-    paths: { deps: '../deps' }
-});
-require(['polyfills', 'chemical_elements', 'deps/three.custom', 'deps/math.custom', 'domReady'], function(polyfills, chemical_elements, th, math, domReady){
-
-var THREE = th.THREE;
+var THREE = th.THREE || th;
 
 function calc_2D_pos(vector){
     var v = new THREE.Vector3( vector.x, vector.y, vector.z );
@@ -232,7 +229,7 @@ function render_3D(){
 
     var i, len = player.obj3d.atoms.length;
     for (i = 0; i < len; i++){
-        var atom = new THREE.Mesh( new THREE.SphereGeometry( player.obj3d.atoms[i].r*40, actd.w, actd.h ), new THREE.MeshLambertMaterial( { color: player.obj3d.atoms[i].c, shading: THREE.FlatShading, overdraw: 0.25 } ) );
+        var atom = new THREE.Mesh( new THREE.SphereBufferGeometry( player.obj3d.atoms[i].r*40, actd.w, actd.h ), new THREE.MeshLambertMaterial( { color: player.obj3d.atoms[i].c, shading: THREE.FlatShading, overdraw: 0.25 } ) );
         atom.position.x = parseInt( player.obj3d.atoms[i].x*100 );
         atom.position.y = parseInt( player.obj3d.atoms[i].y*100 );
         atom.position.z = parseInt( player.obj3d.atoms[i].z*100 );
@@ -436,19 +433,15 @@ domReady(function(){
         return alert('Error: this page must be served by a PHP- or Python-enabled web server');
     }
 
-    //window.addEventListener('DOMMouseScroll', rescale, false);
-    //window.addEventListener('mousewheel', rescale, false);
     window.addEventListener('hashchange', url_redraw_react, false);
     if (window.FileReader){
         window.addEventListener('dragover', handleDragOver, false);
         window.addEventListener('drop', handleFileSelect, false);
     }
-    window.addEventListener('mousedown', function(){ console.log(player.controls._state) }, false);
-    window.addEventListener('touchmove', function(){ console.log(player.controls._state) }, false);
 
     if (document.location.hash.length) url_redraw_react();
-    //else document.location.hash = '#http://www.rsc.org/suppdata/nj/b6/b617452n/b617452n.txt';
-    else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/Ag.cif');
+    else document.location.hash = '#http://www.rsc.org/suppdata/nj/b6/b617452n/b617452n.txt';
+    //else file_download(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/Ag.cif');
 });
 
 });

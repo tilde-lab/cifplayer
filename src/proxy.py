@@ -32,7 +32,8 @@ class UrlHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def answer(self, msg, code):
         self.send_response(code)
         self.end_headers()
-        self.wfile.write(msg)
+        try: self.wfile.write(msg)
+        except: pass
 
     def do_GET(self):
         if self.path.startswith("/proxy.php?url="): # compat. with PHP backend
@@ -41,7 +42,7 @@ class UrlHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             url = self.path[15:]
             if not urlregex.match(url): return self.answer("Invalid URL", 400)
             try: u = urllib2.urlopen(url)
-            except urllib2.HTTPError: return self.answer("Not found", 404)
+            except: return self.answer("Not found", 404)
             out, size = "", 0
             while True:
                 buf = u.read(50000)
@@ -50,18 +51,14 @@ class UrlHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 if size > MAX_SIZE: return self.answer("File too large", 400)
                 out += buf
             if not out: return self.answer("Not found", 404)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(out)
+            self.answer(out, 200)
         else:
             path = self.path[1:]
             if not path: path = 'index.html'
             if not os.path.exists(os.path.join(cur_dir, path)): return self.answer("Not found", 404)
             try: f = open(os.path.join(cur_dir, path), 'rb')
             except: return self.answer("Not found", 404)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(f.read())
+            self.answer(f.read(), 200)
             f.close()
 
 if __name__ == '__main__':
