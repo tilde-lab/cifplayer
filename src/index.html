@@ -1,6 +1,6 @@
 <!--
 CIF renderer
-v040815
+v070815
 Author: Evgeny Blokhin
 Web: http://tilde.pro
 Email: eb@tilde.pro
@@ -10,15 +10,16 @@ License: MIT
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 <style>
 body{margin:0;padding:0;overflow:hidden;background:#fff;}
 html, body{height:100%;}
-#infopanel{position:absolute;top:20px;left:20px;width:150px;height:150px;text-align:left;z-index:100;line-height:22px;font-family:Arial;font-size:12px;}
-#zoompanel{position:absolute;top:8px;right:8px;width:50px;height:150px;z-index:100;background:no-repeat url(data:image/gif;base64,R0lGODlhMgCWAJEAAAAAAP///8zMzP///yH5BAEAAAMALAAAAAAyAJYAAAL/3ISpae2+onj0yFjhXbltnH1cZ4kMZSpkCa7dtW7uC5PfjMr2jRtizJD0hKodwtcyFou0I3LUZDJDp+f0IfRUqU4tVPNlubZWchaM64LNYWTvwJ3k1JA3kGbP6/f8vv8PGCg4aCf3ImiIRYdWkTjmWNZ45TZDxsLWZjnneLaGCamo1hk6NUnqZerZlYpatig5wmp1+RoXpKnaBqQTlTTEayu767sp/EhMagKbMvwTDLzM0wtdXNNsTZitvc3d7f0NHi4+Tl7+59ydYqy3vp6G2wQIf9yHi/y0B3+PXwiqutvv2qM3tf4NrOQvWUJGd47N03DQYcFQDSUuVLTjlzsL/xnfbdR30eA7PK7USeNIBZVJdCglqVwJrOAqmMq0kKRFM4nMkC8JJpyo0OdNi0JTenzIcM5RoBA7Eh1pBKG7h0hpQQUokJ5WJUyr8ps2zOfCfV81grXFjilXtZvSHtHVTONMr7nOenK7Em2+mnb5wA1mzlVgnIFHiTMcjmy6v982bmNbjBwzbsgU45XK06Pbc5CV+s1cMWCgzpQQgS5BiC7pq6FT81xt1unji7CLDtUGEtxO3T8N5WS5u+TvLcFxDhfV++Vx5DeXdyruXGfyxtO97Ty9+Xa2ebV/YcXdFbvYrYO80tXsvXxnx1HysI/s/rxC8Zf63ZJv9Wn9+L6wRSDCO1k09ZwEWGGMWXfgYgnOtiB4DW73oGvvmdbdaHIUAAA7);}
-#optionpanel{position:absolute;bottom:2px;left:0;width:100%;height:30px;z-index:100;text-align:center;font-family:Arial;font-size:12px;}
-#landing{position:fixed;top:75px;left:50%;width:590px;margin-left:-295px;height:200px;padding-top:75px;border:8px #ccc dashed;text-align:center;font-family:Verdana;font-size:1.85em;color:#ccc;letter-spacing:1px;font-style:italic;font-weight:bold;line-height:1.75em;}
-#landing a{color:#ccc;font-size:0.9em;}
-div.L{display:block;position:absolute;font-size:0.57em;z-index:200;font-family:Verdana;}
+#infopanel{position:absolute;top:20px;left:20px;width:150px;height:150px;text-align:left;z-index:100;line-height:22px;font-family:Arial;font-size:0.75em;}
+#zoompanel{position:absolute;top:28px;right:20px;width:50px;height:102px;z-index:100;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
+#dpanel{position:absolute;top:134px;right:20px;width:50px;height:50px;z-index:100;background:no-repeat url(data:image/gif;base64,R0lGODlhMgAyAIABAMzMzAAAACH5BAEKAAEALAAAAAAyADIAAAKtjI+py+0Po5y02nuB3rz731HgSIJTiaKnhjXbCrTMK9FyYkP5bey85fuJWLUSJjgzZogR1TJWJB2ZOiWQ+nBeoU1rBbnQfrEO8ZBblT5hoykakUp134e4OUnv2dVZcn3/EVUGyAHTR3iWZjeWp7C3FeVlGGmyxuZxyEcJpieZ1ckJWrkCOjc66RfWBsmIaXkW4rZV2BKqSlubOmirSMjb6yvki/sz3CiEnKxsUAAAOw==);}
+#optionpanel{position:absolute;bottom:2px;left:0;width:100%;height:30px;z-index:500;text-align:center;font-family:Arial;font-size:1.33em;}
+#landing{position:absolute;left:0;top:0;right:0;bottom:0;height:auto;margin:50px;border:10px #ddd dashed;text-align:center;font-family:Verdana;font-size:2.5em;color:#ddd;letter-spacing:-1px;padding:50px 25px 25px;font-weight:bold;line-height:2.75em;}
+#landing a{color:#ddd;font-size:0.9em;}
 </style>
 </head>
 <body>
