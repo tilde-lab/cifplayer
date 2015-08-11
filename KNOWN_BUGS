@@ -1,5 +1,0 @@
-Window resize doesn't work properly
-Atoms are neither translated nor recreated by symmetry
-CIF frames not supported
-CIF tag _atom_site_occupancy not supported
-Phonon visualization with tween.js temporarily dropped

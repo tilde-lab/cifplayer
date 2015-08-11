@@ -1,5 +1,4 @@
 /**
- * CIF renderer
  * Author: Evgeny Blokhin
  * Web: http://tilde.pro
  * Email: eb@tilde.pro
@@ -9,6 +8,7 @@ require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['polyfills', 'chemical_elements', 'libs/three.custom', 'libs/math.custom', 'libs/domReady'], function(polyfills, chemical_elements, th, math, domReady){
 
 var player = {};
+player.version = '0.10';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -384,7 +384,7 @@ function display_startup(){
         if (!!test) test.parentNode.removeChild(test);
         var panel = document.createElement('div');
         panel.setAttribute('id', 'landing');
-        panel.innerHTML = 'Please drag & drop a file here<br>or <a href=/ id=play_demo>display example</a>.';
+        panel.innerHTML = 'Please drag & drop a CIF file here<br>or <a href=/ id=play_demo>display example</a>.';
         document.body.appendChild(panel);
         var demo = document.getElementById('play_demo');
         demo.onclick = play_demo;
