@@ -14,12 +14,5 @@ module.exports = {
     output: {
         library: 'player',
         libraryTarget: 'var'
-    },
-
-
-    module: {
-        loaders: [
-            { test: /matinfio/, loader: '../../../blockremover' }
-        ]
     }
 }

@@ -6,7 +6,10 @@
  * Version: 0.12.0
  */
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
-require(['libs/matinfio', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, th, domReady){
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, math, th, domReady){
+
+var logger = {warning: window.alert.bind(window), error: window.alert.bind(window)};
+MatinfIO = MatinfIO(math, logger);
 
 var player = {};
 player.version = '0.12.0';

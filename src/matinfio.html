@@ -11,10 +11,28 @@
 <script type="text/javascript">
 var CIF = "data_global\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\nO1 O 0.425 0.262 0.009\nO2 O -0.425 0.262 0.009\nH3 H 0.444 0.258 0.154\nH4 H -0.444 0.258 0.154\nH5 H 0.396 0.124 0.012\nH6 H -0.396 0.124 0.012\nO7 O 0.425 0.236 0.510\nO8 O -0.425 0.236 0.510\nH9 H 0.444 0.239 0.656\nH10 H -0.444 0.239 0.656\nH11 H 0.396 0.374 0.512\nH12 H -0.396 0.374 0.512\nSr13 Sr 0.342 0.964 0.467\nSr14 Sr -0.342 0.964 0.467\nSr15 Sr 0.342 0.535 0.967\nSr16 Sr -0.342 0.535 0.967\nO17 O 0.348 0.971 0.019\nO18 O -0.348 0.971 0.019\nO19 O 0.348 0.528 0.519\nO20 O -0.348 0.528 0.519\nO21 O 0.263 0.803 0.701\nO22 O -0.263 0.803 0.701\nO23 O 0.264 0.695 0.200\nO24 O -0.264 0.695 0.200\nZr25 Zr 0.261 0.000 0.998\nZr26 Zr -0.261 0.000 0.998\nZr27 Zr 0.261 0.499 0.498\nZr28 Zr -0.261 0.499 0.498\nO29 O 0.257 0.304 0.806\nO30 O -0.257 0.304 0.806\nO31 O 0.257 0.195 0.306\nO32 O -0.257 0.195 0.306\nSr33 Sr 0.173 0.993 0.524\nSr34 Sr -0.173 0.993 0.524\nSr35 Sr 0.173 0.506 0.024\nSr36 Sr -0.173 0.506 0.024\nO37 O 0.173 0.947 0.986\nO38 O -0.173 0.947 0.986\nO39 O 0.173 0.551 0.486\nO40 O -0.173 0.551 0.486\nO41 O 0.098 0.204 0.295\nO42 O -0.098 0.204 0.295\nO43 O 0.098 0.295 0.795\nO44 O -0.098 0.295 0.795\nZr45 Zr 0.086 0.004 0.998\nZr46 Zr -0.086 0.004 0.998\nZr47 Zr 0.086 0.495 0.498\nZr48 Zr -0.086 0.495 0.498\nO49 O 0.074 0.709 0.211\nO50 O -0.074 0.709 0.211\nO51 O 0.074 0.790 0.711\nO52 O -0.074 0.790 0.711\nSr53 Sr 0 0.991 0.467\nSr54 Sr 0 0.508 0.967\nO55 O 0 0.076 0.020\nO56 O 0 0.423 0.520";
 var POSCAR = "test\n1.016396\n4.28087413362457   0.00000000000000   0.00000000000000\n0.00000000000000   4.28087413362457   0.00000000000000\n0.00000000000000   0.00000000000000   4.28087413362457\n1 1 3\nDirect(5)\n0.00000000000000   0.00000000000000   0.00000000000000\n0.50000000000000   0.50000000000000   0.50000000000000\n0.00000000000000   0.50000000000000   0.50000000000000\n0.50000000000000   0.00000000000000   0.50000000000000\n0.50000000000000   0.50000000000000   0.00000000000000";
+
+var logger = {warning: window.confirm.bind(window), error: window.confirm.bind(window)};
+MatinfIO = MatinfIO(math, logger);
+
 console.log(MatinfIO.to_flatten(CIF));
 console.log(MatinfIO.to_flatten(POSCAR));
 console.log(MatinfIO.to_player(CIF));
 console.log(MatinfIO.to_player(POSCAR));
+/*
+var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+xmlhttp.onreadystatechange = function(){
+    if (xmlhttp.readyState == 4){
+        if (xmlhttp.status == 200){
+            console.log(MatinfIO.to_flatten(xmlhttp.responseText));
+        } else alert("Error: cannot load sample data!");
+    }
+}
+xmlhttp.open("GET", '../tests/data/lfp.cif');
+//xmlhttp.open("GET", '../build.sh');
+xmlhttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
+xmlhttp.send(1);
+*/
 </script>
 </body>
 </html>

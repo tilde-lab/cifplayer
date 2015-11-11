@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var MatinfIO = require('./js/libs/MatinfIO');
+var matinf = require('./js/libs/MatinfIO');
+var math = require('./js/libs/math.custom');
+
+var logger = {warning: console.error, error: console.error};
+MatinfIO = matinf(math, logger);
 
 if (process.argv.length < 3){
     console.error("Path/file must be given.");
@@ -16,7 +20,7 @@ var walk = function(dir, done){
         (function next(){
             var file = list[i++];
             if (!file) return done(null, results);
-            file = dir + '/' + file;
+            file = dir + file;
             fs.stat(file, function(err, stat){
                 if (stat && stat.isDirectory()){
                     walk(file, function(err, res){
