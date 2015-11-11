@@ -1,18 +1,13 @@
 /**
  * Author: Evgeny Blokhin
- * Web: http://tilde.pro
- * Email: eb@tilde.pro
  * License: MIT
- * Version: 0.12.0
+ * Version: 0.13.0
  */
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
-require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, math, th, domReady){
-
-var logger = {warning: window.alert.bind(window), error: window.alert.bind(window)};
-MatinfIO = MatinfIO(math, logger);
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.12.0';
+player.version = '0.13.0';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -21,13 +16,29 @@ player.scene = null;
 player.renderer = null;
 player.controls = null;
 player.atombox = null;
-player.available_overlays = ["S", "N"];
-player.current_overlay = "S"; // default overlay
+player.available_overlays = ["none", "S", "N"];
+player.current_overlay = "S";
 player.obj3d = false;
+player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
 player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
 player.sample = "data_global\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\nO1 O 0.425 0.262 0.009\nO2 O -0.425 0.262 0.009\nH3 H 0.444 0.258 0.154\nH4 H -0.444 0.258 0.154\nH5 H 0.396 0.124 0.012\nH6 H -0.396 0.124 0.012\nO7 O 0.425 0.236 0.510\nO8 O -0.425 0.236 0.510\nH9 H 0.444 0.239 0.656\nH10 H -0.444 0.239 0.656\nH11 H 0.396 0.374 0.512\nH12 H -0.396 0.374 0.512\nSr13 Sr 0.342 0.964 0.467\nSr14 Sr -0.342 0.964 0.467\nSr15 Sr 0.342 0.535 0.967\nSr16 Sr -0.342 0.535 0.967\nO17 O 0.348 0.971 0.019\nO18 O -0.348 0.971 0.019\nO19 O 0.348 0.528 0.519\nO20 O -0.348 0.528 0.519\nO21 O 0.263 0.803 0.701\nO22 O -0.263 0.803 0.701\nO23 O 0.264 0.695 0.200\nO24 O -0.264 0.695 0.200\nZr25 Zr 0.261 0.000 0.998\nZr26 Zr -0.261 0.000 0.998\nZr27 Zr 0.261 0.499 0.498\nZr28 Zr -0.261 0.499 0.498\nO29 O 0.257 0.304 0.806\nO30 O -0.257 0.304 0.806\nO31 O 0.257 0.195 0.306\nO32 O -0.257 0.195 0.306\nSr33 Sr 0.173 0.993 0.524\nSr34 Sr -0.173 0.993 0.524\nSr35 Sr 0.173 0.506 0.024\nSr36 Sr -0.173 0.506 0.024\nO37 O 0.173 0.947 0.986\nO38 O -0.173 0.947 0.986\nO39 O 0.173 0.551 0.486\nO40 O -0.173 0.551 0.486\nO41 O 0.098 0.204 0.295\nO42 O -0.098 0.204 0.295\nO43 O 0.098 0.295 0.795\nO44 O -0.098 0.295 0.795\nZr45 Zr 0.086 0.004 0.998\nZr46 Zr -0.086 0.004 0.998\nZr47 Zr 0.086 0.495 0.498\nZr48 Zr -0.086 0.495 0.498\nO49 O 0.074 0.709 0.211\nO50 O -0.074 0.709 0.211\nO51 O 0.074 0.790 0.711\nO52 O -0.074 0.790 0.711\nSr53 Sr 0 0.991 0.467\nSr54 Sr 0 0.508 0.967\nO55 O 0 0.076 0.020\nO56 O 0 0.423 0.520";
 
 var THREE = th.THREE || th;
+
+function notify(msg){
+    var notifybox = document.getElementById('notifybox'), message = document.getElementById('message');
+    notifybox.style.display = 'block';
+    message.innerHTML = '';
+    setTimeout(function(){ message.innerHTML = msg }, 250);
+}
+
+function create_box(id, html){
+    var elem = document.createElement('div');
+    elem.setAttribute('id', id);
+    if (!!html) elem.innerHTML = html;
+    document.body.appendChild(elem);
+    return elem;
+}
 
 function draw_3d_line(start_arr, finish_arr, color){
     if (!color) var color = 0xEEEEEE;
@@ -67,9 +78,7 @@ function create_sprite(text){
 function init_3D(){
     player.loaded = true;
 
-    player.container = document.createElement('div');
-    player.container.style.backgroundColor = '#ffffff';
-    document.body.appendChild(player.container);
+    player.container = create_box('player');
 
     player.scene = new THREE.Scene();
     player.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 20000);
@@ -91,9 +100,7 @@ function init_3D(){
     //player.stats.domElement.style.top = '0px';
     //document.body.appendChild( player.stats.domElement );
 
-    var zoompanel = document.createElement('div');
-    zoompanel.setAttribute('id', 'zoompanel');
-    document.body.appendChild(zoompanel);
+    var zoompanel = create_box('zoompanel');
     zoompanel.onclick = function(evt){
         evt = evt || window.event;
         if (evt.cancelBubble)
@@ -117,54 +124,51 @@ function init_3D(){
 
 function render_3D(){
     var old = player.scene.getObjectByName("atombox");
-    if (!!old) player.scene.remove(old);
+    if (old){
+        player.scene.remove(old);
+        player.controls.reset();
+    }
     player.atombox = new THREE.Object3D();
 
     var test = document.getElementById('infopanel');
-    if (!!test) test.parentNode.removeChild(test);
+    if (test) test.parentNode.removeChild(test);
     if (player.obj3d.descr){
-        var infopanel = document.createElement('div');
-        infopanel.setAttribute('id', 'infopanel');
-        infopanel.innerHTML = '<span style=color:#900>a = '+player.obj3d.descr['a']+' &#8491;</span><br /><span style=color:#090>b = '+player.obj3d.descr['b']+' &#8491;</span><br /><span style=color:#009>c = '+player.obj3d.descr['c']+' &#8491;</span><br />&#945; = '+player.obj3d.descr['alpha']+'&deg;<br />&#946; = '+player.obj3d.descr['beta']+'&deg;<br />&#947; = '+player.obj3d.descr['gamma']+'&deg;<br />';
-        document.body.appendChild(infopanel);
+        create_box('infopanel', '<span style=color:#900>a = '+player.obj3d.descr['a']+' &#8491;</span><br /><span style=color:#090>b = '+player.obj3d.descr['b']+' &#8491;</span><br /><span style=color:#009>c = '+player.obj3d.descr['c']+' &#8491;</span><br />&#945; = '+player.obj3d.descr['alpha']+'&deg;<br />&#946; = '+player.obj3d.descr['beta']+'&deg;<br />&#947; = '+player.obj3d.descr['gamma']+'&deg;<br />');
     }
 
     var test = document.getElementById('optionpanel');
-    if (!!test) test.parentNode.removeChild(test);
-    var optionpanel = document.createElement('div');
-    optionpanel.setAttribute('id', 'optionpanel');
-    optionpanel.innerHTML = '<input type=radio name=optionpanel id=optionpanel_none /><label for=optionpanel_none>none</label>';
-    optionpanel.innerHTML += ' <input type=radio name=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>chemical elements</label>';
-    optionpanel.innerHTML += ' <input type=radio name=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>';
+    if (test) test.parentNode.removeChild(test);
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel id=optionpanel_none /><label for=optionpanel_none>none</label> <input type=radio name=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>chemical elements</label> <input type=radio name=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
     if (player.obj3d.overlayed){
         for (var prop in player.obj3d.overlayed){
             optionpanel.innerHTML += ' <input type=radio name=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
         }
     }
-    document.body.appendChild( optionpanel );
     optionpanel.onclick = function(evt){
         evt = evt || window.event;
-        player.current_overlay = (evt.target || evt.srcElement).id.replace('optionpanel_', '');
-        var obj = player.scene.getObjectByName("atombox");
-        obj = obj.children;
-        var labels = obj.filter(function(item){ return item.name == 'label' })
-        var i, len = labels.length;
-        for (i = 0; i < len; i++){
-            player.atombox.remove(labels[i]);
-            player.scene.remove(labels[i]);
-        }
-        if (player.available_overlays.indexOf(player.current_overlay) !== -1){
-            var balls = obj.filter(function(item){ return item.name == 'atom' });
-            var len = balls.length;
+        var catched = (evt.target || evt.srcElement).id.replace('optionpanel_', '');
+        if (player.available_overlays.indexOf(catched) !== -1){
+            var obj = player.scene.getObjectByName("atombox");
+            obj = obj.children;
+            var labels = obj.filter(function(item){ return item.name == 'label' });
+            var i, len = labels.length;
             for (i = 0; i < len; i++){
-                var label = create_sprite(balls[i].overlays[player.current_overlay]);
-                label.position.set(balls[i].position.x, balls[i].position.y, balls[i].position.z);
-                player.atombox.add(label);
+                player.atombox.remove(labels[i]);
+                player.scene.remove(labels[i]);
+            }
+            if (catched !== 'none'){
+                var balls = obj.filter(function(item){ return item.name == 'atom' });
+                var len = balls.length;
+                for (i = 0; i < len; i++){
+                    var label = create_sprite(balls[i].overlays[catched]);
+                    label.position.set(balls[i].position.x, balls[i].position.y, balls[i].position.z);
+                    player.atombox.add(label);
+                }
+                player.current_overlay = catched;
             }
         }
         player.renderer.render(player.scene, player.camera);
     }
-
     player.current_overlay = "S";
 
     var actd, sphd = {lodim:{w:6, h:6}, hidim:{w:10, h:8}};
@@ -237,7 +241,7 @@ function resize(){
 }
 
 function play(){
-    //if (!!player.active_renderer) requestAnimationFrame(play);
+    //if (player.active_renderer) requestAnimationFrame(play);
     requestAnimationFrame(play);
     player.renderer.render(player.scene, player.camera);
     player.controls.update();
@@ -247,23 +251,17 @@ function play(){
 
 function url_redraw_react(){
     var url = document.location.hash.substr(1);
-    if (url.indexOf('://') == -1) return alert('Error: not a valid url!');
-
+    if (url.indexOf('://') == -1){
+        if (!player.loaded) display_landing();
+        return notify('Error: not a valid url!');
+    }
     ajax_download(url);
 }
 
-function display_startup(){
-    if (window.parent && window.parent.cifdata){ // iframe integration
-        accept_data(window.parent.cifdata, false);
-    } else if (window.FileReader) {
-        var test = document.getElementById('landing');
-        if (!!test) test.parentNode.removeChild(test);
-        var panel = document.createElement('div');
-        panel.setAttribute('id', 'landing');
-        panel.innerHTML = 'Please drag & drop a CIF file here<br>or <a href=/ id=play_demo>display example</a>.';
-        document.body.appendChild(panel);
-        var demo = document.getElementById('play_demo');
-        demo.onclick = play_demo;
+function display_landing(){
+    if (player.local_supported){
+        var landing = document.getElementById('landing');
+        landing.style.display = 'block';
     } else play_demo();
 }
 
@@ -295,8 +293,8 @@ function ajax_download(url){
         if (xmlhttp.readyState == 4){
             if (xmlhttp.status == 200) accept_data(xmlhttp.responseText, true);
             else {
-                alert("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
-                if (!player.loaded) display_startup();
+                notify("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
+                if (!player.loaded) display_landing();
             }
         }
     }
@@ -308,40 +306,38 @@ function ajax_download(url){
 function accept_data(str, allow_download){
     //console.log("Data:", str);
     var dpanel_ready = document.getElementById('dpanel');
-    if (!!dpanel_ready) dpanel_ready.style.display = 'none';
+    if (dpanel_ready) dpanel_ready.style.display = 'none';
 
     player.obj3d = MatinfIO.to_player(str);
     if (player.obj3d){
-        var test = document.getElementById('landing');
-        if (!!test) test.parentNode.removeChild(test);
+        var landing = document.getElementById('landing');
+        landing.style.display = 'none';
 
         if (allow_download){
             if (!dpanel_ready){
-                var dpanel = document.createElement('div');
-                dpanel.setAttribute('id', 'dpanel');
-                document.body.appendChild(dpanel);
+                var dpanel = create_box('dpanel');
                 dpanel.onclick = direct_download;
             } else dpanel_ready.style.display = 'block';
         }
         player.loaded ? render_3D() : init_3D();
-    }
+    } else if (!player.loaded) display_landing();
 }
 
 function handleFileSelect(evt){
     evt.stopPropagation();
     evt.preventDefault();
 
-    if (evt.dataTransfer.files.length > 1) return alert("Error: only one file at the time may be rendered!");
+    if (evt.dataTransfer.files.length > 1) return notify("Error: only one file at the time may be rendered!");
     var file = evt.dataTransfer.files[0];
-    if (!file || !file.size) return alert("Error: file cannot be read (unaccessible?)");
+    if (!file || !file.size) return notify("Error: file cannot be read (unaccessible?)");
 
     var reader = new FileReader();
 
     reader.onloadend = function(evt){
         accept_data(evt.target.result, false);
     }
-    reader.abort = function(){ alert("Error: file reading has been cancelled!") }
-    reader.onerror = function(evt){ alert("Error: file reading has been cancelled: " + evt.target.error.name) }
+    reader.abort = function(){ notify("Error: file reading has been cancelled!") }
+    reader.onerror = function(evt){ notify("Error: file reading has been cancelled: " + evt.target.error.name) }
 
     reader.readAsText(file);
 }
@@ -353,16 +349,45 @@ function handleDragOver(evt){
 }
 
 domReady(function(){
+    var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>');
+    var crossbox = document.getElementById('cross');
+    crossbox.onclick = function(){ notifybox.style.display = 'none' }
+
+    create_box('versionbox', 'v' + player.version);
+    var cmdbox = create_box('cmdbox', 'New model');
+    cmdbox.onclick = display_landing;
+
+    create_box('landing', '<div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag & drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id=play_demo>Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    var demo = document.getElementById('play_demo');
+    demo.onclick = play_demo;
+
+    var logger = {warning: window.alert.bind(window), error: notify};
+    MatinfIO = MatinfIO(mathjs, logger);
+
     window.addEventListener('resize', resize, false );
     window.addEventListener('hashchange', url_redraw_react, false);
 
-    if (window.FileReader){
+    if (player.local_supported){
         window.addEventListener('dragover', handleDragOver, false);
         window.addEventListener('drop', handleFileSelect, false);
+        var fileapi = document.getElementById('fileapi');
+        var reader = new FileReader();
+        fileapi.onchange = function(){
+            if (!this.files[0] || !this.files[0].size) return notify("Error: file cannot be read (unaccessible?)");
+            reader.currentFilename = this.files[0].name;
+            reader.readAsText(this.files[0]);
+        }
+        reader.onloadend = function(evt){
+            accept_data(evt.target.result, false);
+        }
     }
 
-    if (document.location.hash.length) url_redraw_react();
-    else display_startup();
+    if (window.parent && window.parent.cifdata){ // iframe integration
+        accept_data(window.parent.cifdata, false);
+    } else {
+        if (document.location.hash.length) url_redraw_react();
+        else display_landing();
+    }
 });
 
 });
