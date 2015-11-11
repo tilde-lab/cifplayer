@@ -5,6 +5,7 @@ module.exports = {
     root: path.resolve('.'),
     extensions: ['', '.js'],
     alias: {
+        'libs/matinfio': '../libs/matinfio',
         'libs/math.custom': '../libs/math.custom',
         'libs/three.custom': '../libs/three.custom',
         'libs/domReady': '../libs/domReady'
@@ -13,5 +14,12 @@ module.exports = {
     output: {
         library: 'player',
         libraryTarget: 'var'
+    },
+
+
+    module: {
+        loaders: [
+            { test: /matinfio/, loader: '../../../blockremover' }
+        ]
     }
 }

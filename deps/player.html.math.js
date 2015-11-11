@@ -14,7 +14,6 @@ math.import(require('mathjs/lib/function/arithmetic/sqrt'));
 math.import(require('mathjs/lib/function/arithmetic/norm'));
 math.import(require('mathjs/lib/function/arithmetic/divide'));
 math.import(require('mathjs/lib/function/arithmetic/multiply'));
-math.import(require('mathjs/lib/function/arithmetic/dotMultiply'));
 math.import(require('mathjs/lib/function/arithmetic/subtract'));
 math.import(require('mathjs/lib/function/matrix/cross'));
 math.import(require('mathjs/lib/function/matrix/dot'));
