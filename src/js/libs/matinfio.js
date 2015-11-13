@@ -2,7 +2,24 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.0.2.1
+ * Version: 0.0.2.3
+ *
+ * Usage: initialized with math.js and logger objects, e.g.:
+ *
+ * var logger = {warning: alert.bind(window), error: alert.bind(window)};
+ * MatinfIO = matinf(math, logger);
+ *
+ * CIF and POSCAR formats can be detected and parsed.
+ * "to_player" and "to_flatten" are public methods,
+ * they return objects to be used in either
+ * player.html (to visualize) or spglibjs (to detect symmetry),
+ * respectively:
+ *
+ * player.obj3d = MatinfIO.to_player(file_as_str);
+ * init_3D();
+ *
+ * var symobj = MatinfIO.to_flatten(file_as_str);
+ * get_spacegroup(symobj);
  */
 // Polyfills
 String.prototype.startswith = function(prefix){
@@ -21,16 +38,22 @@ String.prototype.trim = function(){
 
 var MatinfIO = function(Mimpl, root){
 
-var version = '0.0.2.1';
+var version = '0.0.2.3';
 
 var chemical_elements = {
 JmolColors: { "D": "#FFFFC0", "H": "#FFFFFF", "He": "#D9FFFF", "Li": "#CC80FF", "Be": "#C2FF00", "B": "#FFB5B5", "C": "#909090", "N": "#3050F8", "O": "#FF0D0D", "F": "#90E050", "Ne": "#B3E3F5", "Na": "#AB5CF2", "Mg": "#8AFF00", "Al": "#BFA6A6", "Si": "#F0C8A0", "P": "#FF8000", "S": "#FFFF30", "Cl": "#1FF01F", "Ar": "#80D1E3", "K": "#8F40D4", "Ca": "#3DFF00", "Sc": "#E6E6E6", "Ti": "#BFC2C7", "V": "#A6A6AB", "Cr": "#8A99C7", "Mn": "#9C7AC7", "Fe": "#E06633", "Co": "#F090A0", "Ni": "#50D050", "Cu": "#C88033", "Zn": "#7D80B0", "Ga": "#C28F8F", "Ge": "#668F8F", "As": "#BD80E3", "Se": "#FFA100", "Br": "#A62929", "Kr": "#5CB8D1", "Rb": "#702EB0", "Sr": "#00FF00", "Y": "#94FFFF", "Zr": "#94E0E0", "Nb": "#73C2C9", "Mo": "#54B5B5", "Tc": "#3B9E9E", "Ru": "#248F8F", "Rh": "#0A7D8C", "Pd": "#006985", "Ag": "#C0C0C0", "Cd": "#FFD98F", "In": "#A67573", "Sn": "#668080", "Sb": "#9E63B5", "Te": "#D47A00", "I": "#940094", "Xe": "#429EB0", "Cs": "#57178F", "Ba": "#00C900", "La": "#70D4FF", "Ce": "#FFFFC7", "Pr": "#D9FFC7", "Nd": "#C7FFC7", "Pm": "#A3FFC7", "Sm": "#8FFFC7", "Eu": "#61FFC7", "Gd": "#45FFC7", "Tb": "#30FFC7", "Dy": "#1FFFC7", "Ho": "#00FF9C", "Er": "#00E675", "Tm": "#00D452", "Yb": "#00BF38", "Lu": "#00AB24", "Hf": "#4DC2FF", "Ta": "#4DA6FF", "W": "#2194D6", "Re": "#267DAB", "Os": "#266696", "Ir": "#175487", "Pt": "#D0D0E0", "Au": "#FFD123", "Hg": "#B8B8D0", "Tl": "#A6544D", "Pb": "#575961", "Bi": "#9E4FB5", "Po": "#AB5C00", "At": "#754F45", "Rn": "#428296", "Fr": "#420066", "Ra": "#007D00", "Ac": "#70ABFA", "Th": "#00BAFF", "Pa": "#00A1FF", "U": "#008FFF", "Np": "#0080FF", "Pu": "#006BFF", "Am": "#545CF2", "Cm": "#785CE3", "Bk": "#8A4FE3", "Cf": "#A136D4", "Es": "#B31FD4", "Fm": "#B31FBA", "Md": "#B30DA6", "No": "#BD0D87", "Lr": "#C70066", "Rf": "#CC0059", "Db": "#D1004F", "Sg": "#D90045", "Bh": "#E00038", "Hs": "#E6002E", "Mt": "#EB0026" },
 // NB starting from Bk the radii data are incorrect
 AseRadii: { "X": 0.66, "H": 0.31, "He": 0.28, "Li": 1.28, "Be": 0.96, "B": 0.84, "C": 0.76, "N": 0.71, "O": 0.66, "F": 0.57, "Ne": 0.58, "Na": 1.66, "Mg": 1.41, "Al": 1.21, "Si": 1.11, "P": 1.07, "S": 1.05, "Cl": 1.02, "Ar": 1.06, "K": 2.03, "Ca": 1.76, "Sc": 1.70, "Ti": 1.60, "V": 1.53, "Cr": 1.39, "Mn": 1.39, "Fe": 1.32, "Co": 1.26, "Ni": 1.24, "Cu": 1.32, "Zn": 1.22, "Ga": 1.22, "Ge": 1.20, "As": 1.19, "Se": 1.20, "Br": 1.20, "Kr": 1.16, "Rb": 2.20, "Sr": 1.95, "Y": 1.90, "Zr": 1.75, "Nb": 1.64, "Mo": 1.54, "Tc": 1.47, "Ru": 1.46, "Rh": 1.42, "Pd": 1.39, "Ag": 1.45, "Cd": 1.44, "In": 1.42, "Sn": 1.39, "Sb": 1.39, "Te": 1.38, "I": 1.39, "Xe": 1.40, "Cs": 2.44, "Ba": 2.15, "La": 2.07, "Ce": 2.04, "Pr": 2.03, "Nd": 2.01, "Pm": 1.99, "Sm": 1.98, "Eu": 1.98, "Gd": 1.96, "Tb": 1.94, "Dy": 1.92, "Ho": 1.92, "Er": 1.89, "Tm": 1.90, "Yb": 1.87, "Lu": 1.87, "Hf": 1.75, "Ta": 1.70, "W": 1.62, "Re": 1.51, "Os": 1.44, "Ir": 1.41, "Pt": 1.36, "Au": 1.36, "Hg": 1.32, "Tl": 1.45, "Pb": 1.46, "Bi": 1.48, "Po": 1.40, "At": 1.50, "Rn": 1.50, "Fr": 2.60, "Ra": 2.21, "Ac": 2.15, "Th": 2.06, "Pa": 2.00, "U": 1.96, "Np": 1.90, "Pu": 1.87, "Am": 1.80, "Cm": 1.69, "Bk": 3.0, "Cf": 3.0, "Es": 3.0, "Fm": 3.0, "Md": 3.0, "No": 3.0, "Lr": 3.0, "Rf": 3.0, "Db": 3.0, "Sg": 3.0, "Bh": 3.0, "Hs": 3.0, "Mt": 3.0 }};
 
+// These props are stored in the atom's "overlays" object
+// TODO-1 currently only floats
+// TODO-2 _atom_site_occupancy
+// TODO-3 auto-adjust player.html's CSS width media query
+var custom_CIF_loop_props = {'_atom_site_occupancy': 'site occupancies', '_atom_site_charge': 'formal charges'};
+
 function detect_format(str){
     if (str.indexOf("_cell_angle_gamma ") > 0 && str.indexOf("loop_") > 0) return 'CIF';
-    var lines = str.toString().split("\n");
+    var lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n");
     if (lines.length > 6){
         if (lines[6].toLowerCase().substr(0, 6) == 'direct') return 'POSCAR';
     }
@@ -47,12 +70,6 @@ function cell2vec(a, b, c, alpha, beta, gamma){
         return false;
     }
     alpha = alpha * Math.PI/180, beta = beta * Math.PI/180, gamma = gamma * Math.PI/180;
-    //console.log("alpha", alpha);
-    //console.log("beta", beta);
-    //console.log("gamma", gamma);
-    //console.log("a", a);
-    //console.log("b", b);
-    //console.log("c", c);
     var ab_norm = [0, 0, 1]; // TODO
     var a_dir = [1, 0, 0]; // TODO
     var Z = unit(ab_norm);
@@ -96,14 +113,24 @@ function jsobj2player(crystal){
     }
     var positions = Mimpl.multiply(scpositions, cell);
     //console.log("positions", positions);
-    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": null};
-    var color, radius;
+    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": {}};
+    var color, radius, oprop, overlays = {};
+    var occ_flag = false;
     var i, len = crystal.atoms.length;
     for (i = 0; i < len; i++){
         color = (chemical_elements.JmolColors[ crystal.atoms[i].symbol ]) ? chemical_elements.JmolColors[ crystal.atoms[i].symbol ] : '0xffff00';
         radius = (chemical_elements.AseRadii[ crystal.atoms[i].symbol ]) ? chemical_elements.AseRadii[ crystal.atoms[i].symbol ] : 0.66;
-        player_output.atoms.push( {"x": positions[i][0], "y": positions[i][1], "z": positions[i][2], "c": color, "r": radius, "overlays": {"S": crystal.atoms[i].symbol, "N": i+1}} )
+        overlays = {"S": crystal.atoms[i].symbol, "N": i+1};
+
+        if (crystal.atoms[i].overlays['_atom_site_occupancy'] && crystal.atoms[i].overlays['_atom_site_occupancy'] < 1) occ_flag = true; // TODO: issue #4 _atom_site_occupancy
+
+        for (oprop in crystal.atoms[i].overlays) { overlays[oprop] = crystal.atoms[i].overlays[oprop] }
+        player_output.atoms.push( {"x": positions[i][0], "y": positions[i][1], "z": positions[i][2], "c": color, "r": radius, "overlays": overlays} )
     }
+    for (oprop in overlays){
+        if (oprop !== "S" && oprop !== "N") player_output.overlayed[oprop] = custom_CIF_loop_props[oprop];
+    }
+    if (occ_flag) root.warning("Warning! Rendering of alloys (with fractional site occupancies) is not yet implemented.");
     //console.log(player_output);
     return player_output;
 }
@@ -152,75 +179,82 @@ function jsobj2flatten(crystal){
 }
 
 function cif2jsobj(str){
-    var structures = [], symops = [], atprop_seq = [], lines = str.toString().split("\n"), cur_structure = {'cell': {}, 'atoms': []};
+    var structures = [], symops = [], atprop_seq = [], lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n"), cur_structure = {'cell': {}, 'atoms': []};
     var loop_active = false, new_structure = false, symops_active = false;
-    var current = "", s = [], ss = [], symmetry_seq = [];
+    var cur_line = "", line_data = [], symmetry_seq = [];
     var cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'];
-    var atom_vals = ['_atom_site_label', '_atom_site_type_symbol', '_atom_site_fract_x', '_atom_site_fract_y', '_atom_site_fract_z'];
+
+    var loop_vals = ['_atom_site_label', '_atom_site_type_symbol', '_atom_site_fract_x', '_atom_site_fract_y', '_atom_site_fract_z'];
     var atom_props = ['label', 'symbol', 'x', 'y', 'z'];
+    var chem_element_idxs = [0, 1], overlayed_idxs = [];
+
+    for (var oprop in custom_CIF_loop_props){
+        overlayed_idxs.push(loop_vals.length);
+        loop_vals.push(oprop);
+    }
+
     var i, len = lines.length;
     for (i = 0; i < len; i++){
         if (lines[i].startswith('#')) continue;
-        current = lines[i].toLowerCase().trim();
-
-        if (!current){
+        cur_line = lines[i].toLowerCase().trim();
+        if (!cur_line){
             loop_active = false, atprop_seq = [], symops_active = false;
             continue;
         }
         new_structure = false;
 
-        if (current.startswith('data_'))
+        if (cur_line.startswith('data_'))
             new_structure = true, loop_active = false, atprop_seq = [], symops_active = false;
-        else if (current.startswith('_cell_')){
+        else if (cur_line.startswith('_cell_')){
             loop_active = false;
-            s = current.split(" ");
-            ss = s[0].split("_");
-            var cell_value = ss[ ss.length-1 ];
-            if (cell_props.indexOf(cell_value) !== -1 && s[ s.length-1 ]){
-                cur_structure.cell[cell_value] = parseFloat(s[ s.length-1 ]);
+            line_data = cur_line.split(" ");
+            var cell_data = line_data[0].split("_");
+            var cell_value = cell_data[ cell_data.length-1 ];
+            if (cell_props.indexOf(cell_value) !== -1 && line_data[ line_data.length-1 ]){
+                cur_structure.cell[cell_value] = parseFloat(line_data[ line_data.length-1 ]);
             }
             continue;
 
-        } else if (current.startswith('_symmetry_space_group_name_h-m') || current.startswith('_space_group.patterson_name_h-m')){
+        } else if (cur_line.startswith('_symmetry_space_group_name_h-m') || cur_line.startswith('_space_group.patterson_name_h-m')){
             loop_active = false;
-            cur_structure.sg_name = lines[i].substr(31).replace(/"/g, '').replace(/'/g, '');
+            cur_structure.sg_name = lines[i].substr(31).replace(/"/g, '').replace(/'/g, '').trim();
             continue;
 
-        } else if (current.startswith('_space_group.it_number') || current.startswith('_space_group_it_number') || current.startswith('_symmetry_int_tables_number')){
+        } else if (cur_line.startswith('_space_group.it_number') || cur_line.startswith('_space_group_it_number') || cur_line.startswith('_symmetry_int_tables_number')){
             loop_active = false;
-            s = current.split(" ");
-            cur_structure.ng_name = s[s.length-1]
+            line_data = cur_line.split(" ");
+            cur_structure.ng_name = line_data[line_data.length-1].trim();
             continue;
 
-        } else if (current.startswith('loop_')){
+        } else if (cur_line.startswith('loop_')){
             loop_active = true, atprop_seq = [], symops_active = false;
             continue;
         }
 
         if (loop_active){
-            if (current.startswith('_symmetry_equiv') || current.startswith('_space_group')){
+            if (cur_line.startswith('_symmetry_equiv') || cur_line.startswith('_space_group')){
                 symops_active = true
-            } else if (current.startswith('_')){
-                atprop_seq.push(current);
+            } else if (cur_line.startswith('_')){
+                atprop_seq.push(cur_line);
             } else {
-
                 if (symops_active){
-                    symops.push(current.replace(/"/g, '').replace(/'/g, ''));
+                    symops.push(cur_line.replace(/"/g, '').replace(/'/g, ''));
                     continue;
                 }
-
-                var atom = {};
-                s = current.replace(/\t/g, " ").split(" ").filter(function(o){ return o ? true : false });
-                var j, len2 = atprop_seq.length;
+                var atom = {'overlays':{}};
+                line_data = cur_line.replace(/\t/g, " ").split(" ").filter(function(o){ return o ? true : false });
+                var j, len2 = atprop_seq.length; // TODO handle in-loop mismatch
                 for (j = 0; j < len2; j++){
-                    var atom_index = atom_vals.indexOf(atprop_seq[j]);
-                    if (atom_index !== -1 && s[j]){
-                        if (['x', 'y', 'z'].indexOf(atom_props[atom_index]) !== -1) s[j] = parseFloat(s[j]);
-                        else s[j] = s[j].charAt(0).toUpperCase() + s[j].slice(1).toLowerCase();
-                        atom[ atom_props[atom_index] ] = s[j];
-                    }
+                    var atom_index = loop_vals.indexOf(atprop_seq[j]);
+                    if (atom_index == -1) continue;
+
+                    if (chem_element_idxs.indexOf(atom_index) > -1) line_data[j] = line_data[j].charAt(0).toUpperCase() + line_data[j].slice(1).toLowerCase();
+                    else line_data[j] = parseFloat(line_data[j]);
+
+                    if (overlayed_idxs.indexOf(atom_index) > -1) atom.overlays[ loop_vals[atom_index] ] = line_data[j];
+                    else                                                     atom[ atom_props[atom_index] ] = line_data[j];
                 }
-                if (atom.x !== undefined && atom.y !== undefined && atom.z !== undefined){ // NB zero coord
+                if (atom.x !== undefined && atom.y !== undefined && atom.z !== undefined){ // NB zero coord // TODO multiple relative loops with props
                     if (!atom.symbol && !!atom.label) atom.symbol = atom.label.replace(/[0-9]/g, '');
                     if (!chemical_elements.JmolColors[atom.symbol] && atom.symbol.length > 2) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
                     if (!chemical_elements.JmolColors[atom.symbol] && atom.symbol.length > 1) atom.symbol = atom.symbol.substr(0, atom.symbol.length-1);
@@ -249,9 +283,9 @@ function cif2jsobj(str){
 }
 
 function poscar2jsobj(str){
-    var lines = str.toString().split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], types = [];
+    var lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], types = [];
     var atom_props = ['x', 'y', 'z', 'symbol'];
-    var i, j, len = lines.length, s = [], atidx = 0;
+    var i, j, len = lines.length, line_data = [], atidx = 0;
     for (i = 1; i < len; i++){
         if (i == 1) factor = parseFloat(lines[i]);
         else if ([2, 3, 4].indexOf(i) !== -1){
@@ -265,17 +299,17 @@ function poscar2jsobj(str){
         }
         else if (i > 6){
             var atom = {};
-            s = lines[i].replace('#', '').replace('!', '').split(" ").filter(function(o){ return o ? true : false });
-            //console.log(s);
-            if (!s.length) break;
-            else if (s.length == 3) s.push('Xx' + types[atidx]);
-            else if (s.length < 3){
+            line_data = lines[i].replace('#', '').replace('!', '').split(" ").filter(function(o){ return o ? true : false });
+            //console.log(line_data);
+            if (!line_data.length) break;
+            else if (line_data.length == 3) line_data.push('Xx' + types[atidx]);
+            else if (line_data.length < 3){
                 root.error("Error: invalid atom definition!");
                 return false;
             }
             for (j = 0; j < 4; j++){
-                if (j < 3) atom[atom_props[j]] = parseFloat(s[j]);
-                else atom[atom_props[j]] = s[j];
+                if (j < 3) atom[atom_props[j]] = parseFloat(line_data[j]);
+                else atom[atom_props[j]] = line_data[j];
             }
             atom.symbol = atom.symbol.replace(/\W/g, '');
             atoms.push(atom);

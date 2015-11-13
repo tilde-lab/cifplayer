@@ -1,13 +1,13 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.13.0
+ * Version: 0.13.5
  */
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.13.0';
+player.version = '0.13.5';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -21,7 +21,7 @@ player.current_overlay = "S";
 player.obj3d = false;
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
 player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
-player.sample = "data_global\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\nO1 O 0.425 0.262 0.009\nO2 O -0.425 0.262 0.009\nH3 H 0.444 0.258 0.154\nH4 H -0.444 0.258 0.154\nH5 H 0.396 0.124 0.012\nH6 H -0.396 0.124 0.012\nO7 O 0.425 0.236 0.510\nO8 O -0.425 0.236 0.510\nH9 H 0.444 0.239 0.656\nH10 H -0.444 0.239 0.656\nH11 H 0.396 0.374 0.512\nH12 H -0.396 0.374 0.512\nSr13 Sr 0.342 0.964 0.467\nSr14 Sr -0.342 0.964 0.467\nSr15 Sr 0.342 0.535 0.967\nSr16 Sr -0.342 0.535 0.967\nO17 O 0.348 0.971 0.019\nO18 O -0.348 0.971 0.019\nO19 O 0.348 0.528 0.519\nO20 O -0.348 0.528 0.519\nO21 O 0.263 0.803 0.701\nO22 O -0.263 0.803 0.701\nO23 O 0.264 0.695 0.200\nO24 O -0.264 0.695 0.200\nZr25 Zr 0.261 0.000 0.998\nZr26 Zr -0.261 0.000 0.998\nZr27 Zr 0.261 0.499 0.498\nZr28 Zr -0.261 0.499 0.498\nO29 O 0.257 0.304 0.806\nO30 O -0.257 0.304 0.806\nO31 O 0.257 0.195 0.306\nO32 O -0.257 0.195 0.306\nSr33 Sr 0.173 0.993 0.524\nSr34 Sr -0.173 0.993 0.524\nSr35 Sr 0.173 0.506 0.024\nSr36 Sr -0.173 0.506 0.024\nO37 O 0.173 0.947 0.986\nO38 O -0.173 0.947 0.986\nO39 O 0.173 0.551 0.486\nO40 O -0.173 0.551 0.486\nO41 O 0.098 0.204 0.295\nO42 O -0.098 0.204 0.295\nO43 O 0.098 0.295 0.795\nO44 O -0.098 0.295 0.795\nZr45 Zr 0.086 0.004 0.998\nZr46 Zr -0.086 0.004 0.998\nZr47 Zr 0.086 0.495 0.498\nZr48 Zr -0.086 0.495 0.498\nO49 O 0.074 0.709 0.211\nO50 O -0.074 0.709 0.211\nO51 O 0.074 0.790 0.711\nO52 O -0.074 0.790 0.711\nSr53 Sr 0 0.991 0.467\nSr54 Sr 0 0.508 0.967\nO55 O 0 0.076 0.020\nO56 O 0 0.423 0.520";
+player.sample = "data_global\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_charge\nO1 O 0.425 0.262 0.009 -2.0\nO2 O -0.425 0.262 0.009 -2.0\nH3 H 0.444 0.258 0.154 1.0\nH4 H -0.444 0.258 0.154 1.0\nH5 H 0.396 0.124 0.012 1.0\nH6 H -0.396 0.124 0.012 1.0\nO7 O 0.425 0.236 0.510 -2.0\nO8 O -0.425 0.236 0.510 -2.0\nH9 H 0.444 0.239 0.656 1.0\nH10 H -0.444 0.239 0.656 1.0\nH11 H 0.396 0.374 0.512 1.0\nH12 H -0.396 0.374 0.512 1.0\nSr13 Sr 0.342 0.964 0.467 2.0\nSr14 Sr -0.342 0.964 0.467 2.0\nSr15 Sr 0.342 0.535 0.967 2.0\nSr16 Sr -0.342 0.535 0.967 2.0\nO17 O 0.348 0.971 0.019 -2.0\nO18 O -0.348 0.971 0.019 -2.0\nO19 O 0.348 0.528 0.519 -2.0\nO20 O -0.348 0.528 0.519 -2.0\nO21 O 0.263 0.803 0.701 -2.0\nO22 O -0.263 0.803 0.701 -2.0\nO23 O 0.264 0.695 0.200 -2.0\nO24 O -0.264 0.695 0.200 -2.0\nZr25 Zr 0.261 0.000 0.998 4.0\nZr26 Zr -0.261 0.000 0.998 4.0\nZr27 Zr 0.261 0.499 0.498 4.0\nZr28 Zr -0.261 0.499 0.498 4.0\nO29 O 0.257 0.304 0.806 -2.0\nO30 O -0.257 0.304 0.806 -2.0\nO31 O 0.257 0.195 0.306 -2.0\nO32 O -0.257 0.195 0.306 -2.0\nSr33 Sr 0.173 0.993 0.524 2.0\nSr34 Sr -0.173 0.993 0.524 2.0\nSr35 Sr 0.173 0.506 0.024 2.0\nSr36 Sr -0.173 0.506 0.024 2.0\nO37 O 0.173 0.947 0.986 -2.0\nO38 O -0.173 0.947 0.986 -2.0\nO39 O 0.173 0.551 0.486 -2.0\nO40 O -0.173 0.551 0.486 -2.0\nO41 O 0.098 0.204 0.295 -2.0\nO42 O -0.098 0.204 0.295 -2.0\nO43 O 0.098 0.295 0.795 -2.0\nO44 O -0.098 0.295 0.795 -2.0\nZr45 Zr 0.086 0.004 0.998 4.0\nZr46 Zr -0.086 0.004 0.998 4.0\nZr47 Zr 0.086 0.495 0.498 4.0\nZr48 Zr -0.086 0.495 0.498 4.0\nO49 O 0.074 0.709 0.211 -2.0\nO50 O -0.074 0.709 0.211 -2.0\nO51 O 0.074 0.790 0.711 -2.0\nO52 O -0.074 0.790 0.711 -2.0\nSr53 Sr 0 0.991 0.467 2.0\nSr54 Sr 0 0.508 0.967 2.0\nO55 O 0 0.076 0.020 -2.0\nO56 O 0 0.423 0.520 -2.0";
 
 var THREE = th.THREE || th;
 
@@ -56,8 +56,8 @@ function create_sprite(text){
     var w = metrics.width * 3.5; // to be adjusted
 
     canvas.width = w;
-    canvas.height = 26; // to be adjusted
-    context.font = "normal 26px Arial"; // to be adjusted
+    canvas.height = 30; // to be adjusted
+    context.font = "normal 30px Arial"; // to be adjusted
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = "#000000";
@@ -69,7 +69,7 @@ function create_sprite(text){
     var sprite = new THREE.Sprite(material);
     sprite.renderOrder = 1; // TODO?
     var txt = new THREE.Object3D();
-    sprite.scale.set(w, 26, 1); // to be adjusted
+    sprite.scale.set(w, 30, 1); // to be adjusted
     txt.add(sprite);
     txt.name = "label";
     return txt;
@@ -139,9 +139,10 @@ function render_3D(){
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
     var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel id=optionpanel_none /><label for=optionpanel_none>none</label> <input type=radio name=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>chemical elements</label> <input type=radio name=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
-    if (player.obj3d.overlayed){
+    if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
             optionpanel.innerHTML += ' <input type=radio name=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
+            player.available_overlays.push(prop); // TODO redesign?
         }
     }
     optionpanel.onclick = function(evt){
@@ -361,7 +362,7 @@ domReady(function(){
     var demo = document.getElementById('play_demo');
     demo.onclick = play_demo;
 
-    var logger = {warning: window.alert.bind(window), error: notify};
+    var logger = {warning: notify, error: notify};
     MatinfIO = MatinfIO(mathjs, logger);
 
     window.addEventListener('resize', resize, false );

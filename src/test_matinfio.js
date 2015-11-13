@@ -20,7 +20,7 @@ var walk = function(dir, done){
         (function next(){
             var file = list[i++];
             if (!file) return done(null, results);
-            file = dir + file;
+            file = dir + '/' + file;
             fs.stat(file, function(err, stat){
                 if (stat && stat.isDirectory()){
                     walk(file, function(err, res){
@@ -44,7 +44,7 @@ var examine = function(file){
         console.log("======================");
         console.log(file);
         console.log("======================");
-        console.log(MatinfIO.to_flatten(data));
+        console.log(MatinfIO.to_player(data));
     });
 };
 
