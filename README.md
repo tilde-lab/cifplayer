@@ -1,4 +1,4 @@
-Materials Informatics HTML5 Player
+HTML5 Player for Materials Informatics
 ======
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File) and VASP POSCAR structures, written in a pure JavaScript.
@@ -9,4 +9,4 @@ Development layout is inside ```src``` folder. The modular approach based on [re
 
 Additionally, CIF and POSCAR files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after sharp symbol). However if the file is served from another domain, PHP or Python proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve CIF files from the same domain.
 
-_Let's cooperate on the further development! Your contribution will be very much appreciated._
+_Let's cooperate on the further development!_

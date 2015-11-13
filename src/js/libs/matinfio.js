@@ -53,7 +53,7 @@ var custom_CIF_loop_props = {'_atom_site_occupancy': 'site occupancies', '_atom_
 
 function detect_format(str){
     if (str.indexOf("_cell_angle_gamma ") > 0 && str.indexOf("loop_") > 0) return 'CIF';
-    var lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n");
+    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n");
     if (lines.length > 6){
         if (lines[6].toLowerCase().substr(0, 6) == 'direct') return 'POSCAR';
     }
@@ -179,7 +179,7 @@ function jsobj2flatten(crystal){
 }
 
 function cif2jsobj(str){
-    var structures = [], symops = [], atprop_seq = [], lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n"), cur_structure = {'cell': {}, 'atoms': []};
+    var structures = [], symops = [], atprop_seq = [], lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cur_structure = {'cell': {}, 'atoms': []};
     var loop_active = false, new_structure = false, symops_active = false;
     var cur_line = "", line_data = [], symmetry_seq = [];
     var cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'];
@@ -283,7 +283,7 @@ function cif2jsobj(str){
 }
 
 function poscar2jsobj(str){
-    var lines = str.toString().replace(/(\r\n|\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], types = [];
+    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], types = [];
     var atom_props = ['x', 'y', 'z', 'symbol'];
     var i, j, len = lines.length, line_data = [], atidx = 0;
     for (i = 1; i < len; i++){
