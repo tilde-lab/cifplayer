@@ -1,5 +1,6 @@
 HTML5 Player for Materials Informatics
 ======
+[![DOI](https://zenodo.org/badge/18811/tilde-lab/player.html.svg)](https://zenodo.org/badge/latestdoi/18811/tilde-lab/player.html)
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File) and VASP POSCAR structures, written in a pure JavaScript.
 
