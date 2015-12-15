@@ -383,8 +383,8 @@ domReady(function(){
         }
     }
 
-    if (window.parent && window.parent.cifdata){ // iframe integration
-        accept_data(window.parent.cifdata, false);
+    if (window.parent && window.parent.playerdata){ // iframe integration
+        accept_data(window.parent.playerdata, false);
     } else {
         if (document.location.hash.length) url_redraw_react();
         else display_landing();

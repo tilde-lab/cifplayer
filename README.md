@@ -14,6 +14,6 @@ Development layout is inside ```src``` folder. The modular approach based on [re
 Integration in other software
 ------
 
-The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked, if it contains the supported file in the global variable **playerdata** as a string. If found, it is loaded and rendered. Additionally, supported files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after sharp symbol). However if the file is served from another domain, PHP or Python proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve CIF files from the same domain.
+The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked, if it contains the supported file in the global variable **playerdata** as a string. If found, it is loaded and rendered. Additionally, supported files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after sharp symbol). However if the file is served from another domain, PHP or Python proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve supported files from the same domain.
 
 _Let's cooperate on the further development!_
