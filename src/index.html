@@ -12,12 +12,11 @@ License: MIT
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
 <title>Materials Informatics HTML5 Player</title>
 <style>
-body{margin:0;padding:0;overflow:hidden;background:#fff;}
+body{margin:0;padding:0;overflow:hidden;}
 html, body{height:100%;}
-#infopanel{position:fixed;top:20px;left:20px;width:150px;height:150px;text-align:left;z-index:2;line-height:22px;font-family:Arial;font-size:0.75em;}
-#zoompanel{position:fixed;top:28px;right:20px;width:50px;height:102px;z-index:2;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
-#dpanel{position:fixed;top:134px;right:20px;width:50px;height:50px;z-index:2;background:no-repeat url(data:image/gif;base64,R0lGODlhMgAyAIABAMzMzAAAACH5BAEKAAEALAAAAAAyADIAAAKtjI+py+0Po5y02nuB3rz731HgSIJTiaKnhjXbCrTMK9FyYkP5bey85fuJWLUSJjgzZogR1TJWJB2ZOiWQ+nBeoU1rBbnQfrEO8ZBblT5hoykakUp134e4OUnv2dVZcn3/EVUGyAHTR3iWZjeWp7C3FeVlGGmyxuZxyEcJpieZ1ckJWrkCOjc66RfWBsmIaXkW4rZV2BKqSlubOmirSMjb6yvki/sz3CiEnKxsUAAAOw==);}
-#optionpanel{position:fixed;bottom:4px;left:0;width:100%;z-index:2;text-align:center;font-family:Arial;font-size:1.33em;color:#222;line-height:0.9em;}
+#infopanel{position:fixed;top:10px;left:6px;width:150px;height:150px;text-align:left;z-index:2;line-height:18px;font-family:Verdana;font-size:0.75em;color:#fff;}
+#zoompanel{position:fixed;top:18px;right:6px;width:50px;height:102px;z-index:2;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
+#optionpanel{position:fixed;bottom:4px;left:0;width:100%;z-index:2;text-align:center;font-family:Arial;font-size:0.9em;color:#fff;line-height:1.4em;}
 #landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:4;background:#fff;margin:0;text-align:center;font-family:Arial;font-size:1.25em;padding:10px;line-height:2em;}
 #landing a{color:#999;}
 #legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f2f2f2;color:#999;padding:5px;}
@@ -25,8 +24,8 @@ html, body{height:100%;}
 #notifybox{display:none;z-index:6;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;font-family:Arial;}
 #cross{float:right;width:24px;height:24px;font-size:10px;text-align:center;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #message{margin:20px;}
-#versionbox{display:none;z-index:5;position:fixed;bottom:2px;right:2px;color:#222;font-size:0.95em;}
-#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-family:Arial;text-decoration:underline;font-size:1.5em;color:#222;background:#fff;}
+#versionbox{display:none;z-index:5;position:fixed;bottom:2px;right:2px;color:#fff;font-size:0.95em;}
+#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-family:Arial;text-decoration:underline;font-size:1.5em;color:#fff;}
 @media screen and (min-width:920px){
 #cmdbox{display:block;}
 #versionbox{display:block;}
