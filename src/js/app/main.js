@@ -82,7 +82,7 @@ function init_3D(){
 
     player.scene = new THREE.Scene();
     player.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 20000);
-    player.camera.position.set(0, 0, 3000);
+    player.camera.position.set(0, 0, 2600);
 
     var AmbientLight = new THREE.AmbientLight(0x999999);
     player.scene.add(AmbientLight);
@@ -110,7 +110,7 @@ function init_3D(){
             evt.preventDefault();
         }
         var y = (evt.pageY) ? evt.pageY : evt.clientY;
-        var fov = ((y > 79) ? -1 : 1) * 7.5;
+        var fov = ((y > 69) ? -1 : 1) * 7.5;
         player.camera.fov -= fov;
         player.camera.updateProjectionMatrix();
     }
@@ -133,7 +133,7 @@ function render_3D(){
     var test = document.getElementById('infopanel');
     if (test) test.parentNode.removeChild(test);
     if (player.obj3d.descr){
-        create_box('infopanel', '<span style=color:#900>a = '+player.obj3d.descr['a']+' &#8491;</span><br /><span style=color:#090>b = '+player.obj3d.descr['b']+' &#8491;</span><br /><span style=color:#009>c = '+player.obj3d.descr['c']+' &#8491;</span><br />&#945; = '+player.obj3d.descr['alpha']+'&deg;<br />&#946; = '+player.obj3d.descr['beta']+'&deg;<br />&#947; = '+player.obj3d.descr['gamma']+'&deg;<br />');
+        create_box('infopanel', '<span style=color:#900>a = '+(Math.round(parseFloat(player.obj3d.descr['a']) * 1000)/1000).toFixed(3)+' &#8491;</span><br /><span style=color:#090>b = '+(Math.round(parseFloat(player.obj3d.descr['b']) * 1000)/1000).toFixed(3)+' &#8491;</span><br /><span style=color:#09f>c = '+(Math.round(parseFloat(player.obj3d.descr['c']) * 1000)/1000).toFixed(3)+' &#8491;</span><br />&#945; = '+(Math.round(parseFloat(player.obj3d.descr['alpha']) * 1000)/1000).toFixed(3)+'&deg;<br />&#946; = '+(Math.round(parseFloat(player.obj3d.descr['beta']) * 1000)/1000).toFixed(3)+'&deg;<br />&#947; = '+(Math.round(parseFloat(player.obj3d.descr['gamma']) * 1000)/1000).toFixed(3)+'&deg;<br />');
     }
 
     var test = document.getElementById('optionpanel');
@@ -199,7 +199,7 @@ function render_3D(){
             ortes.push([a, b, c]);
             if (i==0) axcolor = 0x990000;
             else if (i==1) axcolor = 0x009900;
-            else if (i==2) axcolor = 0x000099;
+            else if (i==2) axcolor = 0x0099FF;
             player.atombox.add(new THREE.ArrowHelper(new THREE.Vector3(a, b, c).normalize(), new THREE.Vector3(0, 0, 0), Math.sqrt(a*a+b*b+c*c), axcolor, 75, 10));
         }
 
@@ -306,20 +306,20 @@ function ajax_download(url){
 
 function accept_data(str, allow_download){
     //console.log("Data:", str);
-    var dpanel_ready = document.getElementById('dpanel');
-    if (dpanel_ready) dpanel_ready.style.display = 'none';
+    //var dpanel_ready = document.getElementById('dpanel');
+    //if (dpanel_ready) dpanel_ready.style.display = 'none';
 
     player.obj3d = MatinfIO.to_player(str);
     if (player.obj3d){
         var landing = document.getElementById('landing');
         landing.style.display = 'none';
 
-        if (allow_download){
+        /*if (allow_download){
             if (!dpanel_ready){
                 var dpanel = create_box('dpanel');
                 dpanel.onclick = direct_download;
             } else dpanel_ready.style.display = 'block';
-        }
+        }*/
         player.loaded ? render_3D() : init_3D();
     } else if (!player.loaded) display_landing();
 }
