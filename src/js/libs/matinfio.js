@@ -2,7 +2,7 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.0.2.3
+ * Version: 0.0.2.4
  *
  * Usage: initialized with math.js and logger objects, e.g.:
  *
@@ -36,9 +36,13 @@ String.prototype.trim = function(){
     return this.replace(/^\s+|\s+$/g, '');
 }
 
+String.prototype.isnumeric = function(){
+    return !isNaN(parseFloat(this)) && isFinite(this);
+}
+
 var MatinfIO = function(Mimpl, root){
 
-var version = '0.0.2.3';
+var version = '0.0.2.4';
 
 var chemical_elements = {
 JmolColors: { "D": "#FFFFC0", "H": "#FFFFFF", "He": "#D9FFFF", "Li": "#CC80FF", "Be": "#C2FF00", "B": "#FFB5B5", "C": "#909090", "N": "#3050F8", "O": "#FF0D0D", "F": "#90E050", "Ne": "#B3E3F5", "Na": "#AB5CF2", "Mg": "#8AFF00", "Al": "#BFA6A6", "Si": "#F0C8A0", "P": "#FF8000", "S": "#FFFF30", "Cl": "#1FF01F", "Ar": "#80D1E3", "K": "#8F40D4", "Ca": "#3DFF00", "Sc": "#E6E6E6", "Ti": "#BFC2C7", "V": "#A6A6AB", "Cr": "#8A99C7", "Mn": "#9C7AC7", "Fe": "#E06633", "Co": "#F090A0", "Ni": "#50D050", "Cu": "#C88033", "Zn": "#7D80B0", "Ga": "#C28F8F", "Ge": "#668F8F", "As": "#BD80E3", "Se": "#FFA100", "Br": "#A62929", "Kr": "#5CB8D1", "Rb": "#702EB0", "Sr": "#00FF00", "Y": "#94FFFF", "Zr": "#94E0E0", "Nb": "#73C2C9", "Mo": "#54B5B5", "Tc": "#3B9E9E", "Ru": "#248F8F", "Rh": "#0A7D8C", "Pd": "#006985", "Ag": "#C0C0C0", "Cd": "#FFD98F", "In": "#A67573", "Sn": "#668080", "Sb": "#9E63B5", "Te": "#D47A00", "I": "#940094", "Xe": "#429EB0", "Cs": "#57178F", "Ba": "#00C900", "La": "#70D4FF", "Ce": "#FFFFC7", "Pr": "#D9FFC7", "Nd": "#C7FFC7", "Pm": "#A3FFC7", "Sm": "#8FFFC7", "Eu": "#61FFC7", "Gd": "#45FFC7", "Tb": "#30FFC7", "Dy": "#1FFFC7", "Ho": "#00FF9C", "Er": "#00E675", "Tm": "#00D452", "Yb": "#00BF38", "Lu": "#00AB24", "Hf": "#4DC2FF", "Ta": "#4DA6FF", "W": "#2194D6", "Re": "#267DAB", "Os": "#266696", "Ir": "#175487", "Pt": "#D0D0E0", "Au": "#FFD123", "Hg": "#B8B8D0", "Tl": "#A6544D", "Pb": "#575961", "Bi": "#9E4FB5", "Po": "#AB5C00", "At": "#754F45", "Rn": "#428296", "Fr": "#420066", "Ra": "#007D00", "Ac": "#70ABFA", "Th": "#00BAFF", "Pa": "#00A1FF", "U": "#008FFF", "Np": "#0080FF", "Pu": "#006BFF", "Am": "#545CF2", "Cm": "#785CE3", "Bk": "#8A4FE3", "Cf": "#A136D4", "Es": "#B31FD4", "Fm": "#B31FBA", "Md": "#B30DA6", "No": "#BD0D87", "Lr": "#C70066", "Rf": "#CC0059", "Db": "#D1004F", "Sg": "#D90045", "Bh": "#E00038", "Hs": "#E6002E", "Mt": "#EB0026" },
@@ -55,7 +59,7 @@ function detect_format(str){
     if (str.indexOf("_cell_angle_gamma ") > 0 && str.indexOf("loop_") > 0) return 'CIF';
     var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n");
     if (lines.length > 6){
-        if (lines[6].toLowerCase().substr(0, 6) == 'direct') return 'POSCAR';
+        if (lines[6].toLowerCase().substr(0, 6) == 'direct' || lines[7].toLowerCase().substr(0, 6) == 'direct') return 'POSCAR';
     }
     return 'unknown';
 }
@@ -122,7 +126,7 @@ function jsobj2player(crystal){
         radius = (chemical_elements.AseRadii[ crystal.atoms[i].symbol ]) ? chemical_elements.AseRadii[ crystal.atoms[i].symbol ] : 0.66;
         overlays = {"S": crystal.atoms[i].symbol, "N": i+1};
 
-        if (crystal.atoms[i].overlays['_atom_site_occupancy'] && crystal.atoms[i].overlays['_atom_site_occupancy'] < 1) occ_flag = true; // TODO: issue #4 _atom_site_occupancy
+        if (crystal.atoms[i].overlays && crystal.atoms[i].overlays['_atom_site_occupancy'] && crystal.atoms[i].overlays['_atom_site_occupancy'] < 1) occ_flag = true; // TODO: issue #4 _atom_site_occupancy
 
         for (oprop in crystal.atoms[i].overlays) { overlays[oprop] = crystal.atoms[i].overlays[oprop] }
         player_output.atoms.push( {"x": positions[i][0], "y": positions[i][1], "z": positions[i][2], "c": color, "r": radius, "overlays": overlays} )
@@ -283,26 +287,58 @@ function cif2jsobj(str){
 }
 
 function poscar2jsobj(str){
-    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], types = [];
+    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], atvals = [], elems = [], types = [];
     var atom_props = ['x', 'y', 'z', 'symbol'];
-    var i, j, len = lines.length, line_data = [], atidx = 0;
-    for (i = 1; i < len; i++){
-        if (i == 1) factor = parseFloat(lines[i]);
+    var i, j, len = lines.length, line_data = [], atidx = 0, tryarr = [], periodic_table = [];
+    loop_poscar_parse:
+    for (i = 0; i < len; i++){
+        if (i == 0){
+            tryarr = lines[i].split(" ").filter(function(o){ return o ? true : false });
+            periodic_table = Object.keys(chemical_elements.AseRadii);
+            for (var k = 0; k < tryarr.length; k++){
+                if (periodic_table.indexOf(tryarr[k]) == -1) continue loop_poscar_parse;
+            }
+            atvals = tryarr;
+        }
+        else if (i == 1) factor = parseFloat(lines[i]);
         else if ([2, 3, 4].indexOf(i) !== -1){
             cell.push( lines[i].split(" ").filter(function(o){ return o ? true : false }).map(Number) );
         }
         else if (i == 5){
-            atindices = lines[i].split(" ").filter(function(o){ return o ? true : false }).map(Number);
-            for (var k = 0; k < atindices.length; k++){
-                for (var m = 0; m < atindices[k]; m++){ types.push((k+1)) }
-            }
+            tryarr = lines[i].split(" ").filter(function(o){ return o ? true : false });
+            if (tryarr[0].isnumeric()){
+                atindices = tryarr.map(Number);
+                for (var k = 0; k < atindices.length; k++){
+                    for (var m = 0; m < atindices[k]; m++){ types.push((k+1)) }
+                }
+            } else atvals = tryarr;
+        }
+        else if (i == 6){
+            if (lines[i].toLowerCase().substr(0, 6) == 'direct') continue loop_poscar_parse;
+
+            tryarr = lines[i].split(" ").filter(function(o){ return o ? true : false });
+            if (tryarr[0].isnumeric()){
+                atindices = tryarr.map(Number);
+                for (var k = 0; k < atindices.length; k++){
+                    for (var m = 0; m < atindices[k]; m++){ types.push((k+1)) }
+                }
+            } else atvals = tryarr;
         }
         else if (i > 6){
+            if (i == 7){
+                if (atvals.length){
+                    for (var k = 0; k < atvals.length; k++){
+                        for (var m = 0; m < atindices[k]; m++){ elems.push(atvals[k]) }
+                    }
+                }
+                if (lines[i].toLowerCase().substr(0, 6) == 'direct') continue loop_poscar_parse;
+            }
+
             var atom = {};
             line_data = lines[i].replace('#', '').replace('!', '').split(" ").filter(function(o){ return o ? true : false });
             //console.log(line_data);
             if (!line_data.length) break;
-            else if (line_data.length == 3) line_data.push('Xx' + types[atidx]);
+            else if (line_data.length == 3) elems.length ? line_data.push(elems[atidx]) : line_data.push('Xx');
             else if (line_data.length < 3){
                 root.error("Error: invalid atom definition!");
                 return false;
@@ -311,7 +347,8 @@ function poscar2jsobj(str){
                 if (j < 3) atom[atom_props[j]] = parseFloat(line_data[j]);
                 else atom[atom_props[j]] = line_data[j];
             }
-            atom.symbol = atom.symbol.replace(/\W/g, '');
+            atom.symbol = atom.symbol.replace(/\W+/, '').replace(/\d+/, '');
+            if (!atom.symbol.length) atom.symbol = 'Xx';
             atoms.push(atom);
             atidx++;
         }

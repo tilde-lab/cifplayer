@@ -1,13 +1,13 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.13.5
+ * Version: 0.14
  */
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.13.5';
+player.version = '0.14';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -383,8 +383,14 @@ domReady(function(){
         }
     }
 
-    if (window.parent && window.parent.playerdata){ // iframe integration
-        accept_data(window.parent.playerdata, false);
+    // iframe integration:
+    // (1) either via parent.playerdata object / location.search key
+    // (2) or via parent.playerdata string
+    if (window.parent && window.parent.playerdata){
+        var target_data;
+        if (typeof window.parent.playerdata === 'object' && document.location.search) target_data = window.parent.playerdata[document.location.search.substr(1)];
+        else target_data = window.parent.playerdata;
+        accept_data(target_data, false);
     } else {
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
