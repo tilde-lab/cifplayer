@@ -14,7 +14,7 @@ The modular JavaScript approach based on [require.js](http://requirejs.org) is e
 Integration in the other software
 ------
 
-The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked, if it contains the supported file in the global variable **playerdata** as a string. If found, it is loaded and rendered. Additionally, supported files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after sharp symbol). However if the file is served from another domain, PHP or Python proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve supported files from the same domain.
+The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked, if it contains CIF or POSCAR file in the global variable **playerdata** as a string. If found, it is loaded and rendered. Additionally, supported files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after **#** symbol). However, if the file is served from another domain, the proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve supported files from the same domain.
 
 Comparison with the other open-source plugin-free engines
 ------

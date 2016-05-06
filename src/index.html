@@ -16,7 +16,9 @@ body{margin:0;padding:0;overflow:hidden;}
 html, body{height:100%;}
 #infopanel{position:fixed;top:10px;left:6px;width:150px;height:150px;text-align:left;z-index:2;line-height:18px;font-family:Verdana;font-size:0.75em;color:#222;}
 #zoompanel{position:fixed;top:18px;right:6px;width:50px;height:102px;z-index:2;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
-#optionpanel{position:fixed;bottom:4px;left:0;width:100%;z-index:2;text-align:center;font-family:Arial;font-size:0.9em;color:#222;line-height:1.4em;}
+#optionpanel{position:fixed;bottom:4px;left:0;width:100%;height:20px;z-index:2;text-align:center;font-family:Arial;font-size:0.9em;color:#222;}
+#optionpanel input{margin:4px 4px 0 4px;}
+#optionpanel label{line-height:22px;vertical-align:top;}
 #landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:4;background:#fff;margin:0;text-align:center;font-family:Arial;font-size:1.25em;padding:10px;line-height:2em;}
 #landing a{color:#999;}
 #legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f2f2f2;color:#999;padding:5px;}
@@ -25,11 +27,10 @@ html, body{height:100%;}
 #cross{float:right;width:24px;height:24px;font-size:10px;text-align:center;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #message{margin:20px;}
 #versionbox{display:none;z-index:5;position:fixed;bottom:2px;right:2px;color:#222;font-size:0.95em;}
-#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-family:Arial;text-decoration:underline;font-size:1.5em;color:#222;background:#fff;}
-@media screen and (min-width:920px){
+#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-family:Arial;text-decoration:underline;font-size:1.5em;color:#222;background:#fff;font-weight:bold;}
+@media screen and (min-width:1200px){
 #cmdbox{display:block;}
 #versionbox{display:block;}
-#optionpanel{}
 }
 </style>
 </head>

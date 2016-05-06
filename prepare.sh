@@ -5,12 +5,12 @@ command -v npm > /dev/null 2>&1 || { echo >&2 "Error: npm package manager should
 npm install webpack
 npm install mathjs
 
-THREEJSFOLDER="three.js-r72"
+THREEJSFOLDER="three.js-r76"
 
 if [[ ! -d $THREEJSFOLDER ]]; then
-    wget --output-document r72.zip https://github.com/mrdoob/three.js/archive/r72.zip
-    unzip r72.zip
-    rm r72.zip
+    wget --output-document r76.zip https://github.com/mrdoob/three.js/archive/r76.zip
+    unzip r76.zip
+    rm r76.zip
 fi
 
 cp deps/player.html.threejs.json $THREEJSFOLDER/utils/build/includes > /dev/null 2>&1 || { echo >&2 "Failed to download archive"; exit 1; }

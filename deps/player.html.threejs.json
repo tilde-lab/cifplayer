@@ -20,7 +20,7 @@
 	"src/core/Raycaster.js",
 	"src/core/Object3D.js",
 	"src/core/Face3.js",
-	"src/core/Face4.js",
+	"src/core/Layers.js",
 	"src/core/BufferAttribute.js",
 	"src/core/Geometry.js",
 	"src/core/BufferGeometry.js",
@@ -30,6 +30,7 @@
 	"src/lights/AmbientLight.js",
 	"src/lights/PointLight.js",
 	"src/lights/DirectionalLight.js",
+	"src/lights/LightShadow.js",
 	"src/materials/Material.js",
 	"src/materials/LineBasicMaterial.js",
 	"src/materials/MeshBasicMaterial.js",
@@ -53,5 +54,6 @@
 	"src/extras/geometries/SphereGeometry.js",
 	"src/extras/geometries/SphereBufferGeometry.js",
 	"src/extras/geometries/CylinderGeometry.js",
+	"src/extras/geometries/CylinderBufferGeometry.js",
 	"src/extras/helpers/ArrowHelper.js"
 ]

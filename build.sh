@@ -4,7 +4,7 @@ if [[ ! -d "node_modules" ]]; then
     sh prepare.sh
 fi
 
-THREEJSFOLDER="three.js-r72"
+THREEJSFOLDER="three.js-r76"
 
 ./node_modules/webpack/bin/webpack.js --display-error-details --display-reasons --config src/js/app/build.config.js --optimize-max-chunks 1 src/js/app/main.js player.dist.js
 

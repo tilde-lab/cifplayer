@@ -40,6 +40,17 @@ String.prototype.isnumeric = function(){
     return !isNaN(parseFloat(this)) && isFinite(this);
 }
 
+Object.defineProperties(Object.prototype, {
+    forOwn: {
+        writable: true, configurable: true,
+        value: function(iterator, thisValue){
+            Object.keys(this).forEach(function(key){
+                iterator.call(thisValue, this[key], key, this);
+            }, this);
+        }
+    }
+});
+
 var MatinfIO = function(Mimpl, root){
 
 var version = '0.0.2.4';
@@ -256,7 +267,7 @@ function cif2jsobj(str){
                     else line_data[j] = parseFloat(line_data[j]);
 
                     if (overlayed_idxs.indexOf(atom_index) > -1) atom.overlays[ loop_vals[atom_index] ] = line_data[j];
-                    else                                                     atom[ atom_props[atom_index] ] = line_data[j];
+                    else                                         atom[ atom_props[atom_index] ] = line_data[j];
                 }
                 if (atom.x !== undefined && atom.y !== undefined && atom.z !== undefined){ // NB zero coord // TODO multiple relative loops with props
                     if (!atom.symbol && !!atom.label) atom.symbol = atom.label.replace(/[0-9]/g, '');
