@@ -1,8 +1,7 @@
 <!--
 Materials Informatics HTML5 Player --- in-browser ultra-fast and
-lightweight renderer of the crystallographic data.
+lightweight renderer of the crystallographic data
 Author: Evgeny Blokhin
-License: MIT
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,24 +9,27 @@ License: MIT
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
-<title>Materials Informatics HTML5 Player</title>
+<title>Materials Informatics Web-viewer</title>
 <style>
 body{margin:0;padding:0;overflow:hidden;}
 html, body{height:100%;}
-#infopanel{position:fixed;top:10px;left:6px;width:150px;height:150px;text-align:left;z-index:2;line-height:18px;font-family:Verdana;font-size:0.75em;color:#222;}
-#zoompanel{position:fixed;top:18px;right:6px;width:50px;height:102px;z-index:2;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
-#optionpanel{position:fixed;bottom:4px;left:0;width:100%;height:20px;z-index:2;text-align:center;font-family:Arial;font-size:0.9em;color:#222;}
-#optionpanel input{margin:4px 4px 0 4px;}
-#optionpanel label{line-height:22px;vertical-align:top;}
-#landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:4;background:#fff;margin:0;text-align:center;font-family:Arial;font-size:1.25em;padding:10px;line-height:2em;}
-#landing a{color:#999;}
-#legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f2f2f2;color:#999;padding:5px;}
-#triangle{width:0;height:0;margin:-2px auto 20px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f2f2f2;}
-#notifybox{display:none;z-index:6;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;font-family:Arial;}
+#infopanel{position:fixed;top:10px;left:6px;width:150px;height:150px;text-align:left;z-index:2;line-height:18px;font-family:Verdana;font-size:0.75em;color:#888;}
+#zoompanel{position:fixed;top:18px;right:6px;width:50px;height:102px;z-index:2;cursor:pointer;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
+#optionpanel{position:fixed;bottom:4px;left:0;width:100%;height:20px;z-index:2;text-align:center;font-family:Georgia;font-size:1.1em;color:#999;}
+#optionpanel input{margin:4px 4px 0 4px;cursor:pointer;}
+#optionpanel label{line-height:22px;vertical-align:top;cursor:pointer;}
+#landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:4;background:#fff;margin:0;text-align:center;font-family:Georgia;font-size:1.25em;padding:10px;line-height:1.8em;}
+#landing a{color:#666;text-decoration:none;border-bottom:1px solid #999;}
+h1{margin:10px auto 35px;font-size:1.4em;color:#999;font-family:Georgia;font-weight:normal;}
+#legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f0f0f0;color:#666;padding:5px;}
+#triangle{width:0;height:0;margin:-2px auto 20px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f0f0f0;}
+#notifybox{display:none;z-index:6;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;font-family:Georgia;}
 #cross{float:right;width:24px;height:24px;font-size:10px;text-align:center;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #message{margin:20px;}
-#versionbox{display:none;z-index:5;position:fixed;bottom:2px;right:2px;color:#222;font-size:0.95em;}
-#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-family:Arial;text-decoration:underline;font-size:1.5em;color:#222;background:#fff;font-weight:bold;}
+#fileapi{color:#999;}
+#tunebox{position:fixed;top:50%;right:6px;width:50px;height:100px;margin-top:-50px;z-index:2;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7) no-repeat;}
+#versionbox{display:none;z-index:5;position:fixed;bottom:2px;right:2px;font-size:0.9em;color:#999;font-family:Georgia;}
+#cmdbox{display:none;z-index:3;position:fixed;bottom:2px;left:4px;cursor:pointer;font-size:1.1em;color:#999;font-family:Georgia;border-bottom:1px solid #999;}
 @media screen and (min-width:1200px){
 #cmdbox{display:block;}
 #versionbox{display:block;}

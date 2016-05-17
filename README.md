@@ -20,5 +20,3 @@ Comparison with the other open-source plugin-free engines
 ------
 
 See the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660).
-
-_Let's cooperate on the further development!_
