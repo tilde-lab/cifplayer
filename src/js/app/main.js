@@ -179,7 +179,7 @@ function render_3D(){
         player.renderer.render(player.scene, player.camera);
     }
     player.current_overlay = "empty";
-    var resolution = player.webgl ? {w: 9, h: 7} : {w: 7, h: 5};
+    var resolution = player.webgl ? {w: 10, h: 8} : {w: 7, h: 5};
     var i, len = player.obj3d.atoms.length;
     for (i = 0; i < len; i++){
         var x = parseInt( player.obj3d.atoms[i].x*100 ), y = parseInt( player.obj3d.atoms[i].y*100 ), z = parseInt( player.obj3d.atoms[i].z*100 ), r = player.obj3d.atoms[i].r*65;
@@ -283,7 +283,7 @@ function do_tune(evt){
     var y = (evt.pageY) ? evt.pageY : evt.clientY;
     var ey = document.getElementById('tunebox').offsetTop;
 
-    if (y-ey < 50){
+    if (y-ey < 40){
         var colorset = load_setup('colorset');
         if (!colorset || colorset == 'W') save_setup('colorset', 'B');
         else save_setup('colorset', 'W');
