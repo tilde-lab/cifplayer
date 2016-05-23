@@ -58,14 +58,11 @@ function draw_3d_line(start_arr, finish_arr, color){
 }
 
 function create_sprite(text){
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-    var metrics = context.measureText(text);
-    var w = metrics.width * 3.5; // to be adjusted
+    var canvas = document.createElement('canvas'), context = canvas.getContext('2d');
 
-    canvas.width = w;
-    canvas.height = 30; // to be adjusted
-    context.font = "normal 30px Arial"; // to be adjusted
+    canvas.width = 32;
+    canvas.height = 32;
+    context.font = "normal 30px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = (player.colorset == "W") ? "#000000" : "#FFFFFF";
@@ -73,17 +70,17 @@ function create_sprite(text){
 
     var texture = new THREE.Texture(canvas);
     texture.needsUpdate = true;
-    var material = new THREE.SpriteMaterial({map: texture});
+    var material = new THREE.SpriteMaterial({map: texture, depthTest: false});
     var sprite = new THREE.Sprite(material);
-    sprite.renderOrder = 1; // TODO?
+    sprite.renderOrder = 1;
     var txt = new THREE.Object3D();
-    sprite.scale.set(w, 30, 1); // to be adjusted
+    sprite.scale.set(32, 32, 1);
     txt.add(sprite);
     txt.name = "label";
     return txt;
 }
 
-function init_3D(){
+function init(){
     player.loaded = true;
     player.container = create_box('player');
 
@@ -99,6 +96,7 @@ function init_3D(){
 
     player.renderer = player.webgl ? new THREE.WebGLRenderer({antialias:true, alpha: true}): new THREE.CanvasRenderer();
     (player.colorset == "W") ? player.renderer.setClearColor(0xffffff, 1) : player.renderer.setClearColor(0x000000, 1);
+    player.renderer.setPixelRatio( window.devicePixelRatio );
     player.renderer.setSize(window.innerWidth, window.innerHeight);
     player.container.appendChild(player.renderer.domElement);
 
@@ -127,13 +125,20 @@ function init_3D(){
     player.controls.rotateSpeed = 7.5;
     player.controls.staticMoving = true;
 
-    render_3D();
+    render();
 }
 
-function render_3D(){
+function render(){
     var old = player.scene.getObjectByName("atombox");
     if (old){
         player.scene.remove(old);
+        var u=old.children.length-1;
+        for (u; u>=0; u--){
+            var child = old.children[u];
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) child.material.dispose();
+            if (child.dispose) child.dispose();
+        }
         player.controls.reset();
     }
     player.atombox = new THREE.Object3D();
@@ -146,37 +151,39 @@ function render_3D(){
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
-    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel id=optionpanel_empty checked=checked /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel id=optionpanel_S /><label for=optionpanel_S>chemical elements</label> <input type=radio name=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty checked=checked /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S /><label for=optionpanel_S>chemical elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
-            optionpanel.innerHTML += ' <input type=radio name=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
+            optionpanel.innerHTML += ' <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
             player.available_overlays.push(prop); // TODO redesign?
         }
     }
-    optionpanel.onclick = function(evt){
-        evt = evt || window.event;
-        var clicked = (evt.target || evt.srcElement).id.replace('optionpanel_', '');
-        if (player.available_overlays.indexOf(clicked) !== -1){
-            var obj = player.scene.getObjectByName("atombox");
-            obj = obj.children;
-            var labels = obj.filter(function(item){ return item.name == 'label' });
-            var i, len = labels.length;
-            for (i = 0; i < len; i++){
-                player.atombox.remove(labels[i]);
-                player.scene.remove(labels[i]);
-            }
-            if (clicked !== 'empty'){
-                var balls = obj.filter(function(item){ return item.name == 'atom' });
-                var len = balls.length;
+    var ob = document.getElementsByClassName("optionpanel");
+    for (var i = ob.length-1; i>=0; i--){
+        ob[i].onclick = function(){
+            var clicked = this.id.replace('optionpanel_', '');
+            if (player.available_overlays.indexOf(clicked) !== -1){
+                var obj = player.scene.getObjectByName("atombox");
+                obj = obj.children;
+                var labels = obj.filter(function(item){ return item.name == 'label' });
+                var i, len = labels.length;
                 for (i = 0; i < len; i++){
-                    var label = create_sprite(balls[i].overlays[clicked]);
-                    label.position.set(balls[i].position.x, balls[i].position.y, balls[i].position.z);
-                    player.atombox.add(label);
+                    player.atombox.remove(labels[i]);
+                    player.scene.remove(labels[i]);
                 }
-                player.current_overlay = clicked;
+                if (clicked !== 'empty'){
+                    var balls = obj.filter(function(item){ return item.name == 'atom' });
+                    var len = balls.length;
+                    for (i = 0; i < len; i++){
+                        var label = create_sprite(balls[i].overlays[clicked]);
+                        label.position.set(balls[i].position.x, balls[i].position.y, balls[i].position.z);
+                        player.atombox.add(label);
+                    }
+                    player.current_overlay = clicked;
+                }
             }
+            player.renderer.render(player.scene, player.camera);
         }
-        player.renderer.render(player.scene, player.camera);
     }
     player.current_overlay = "empty";
     var resolution = player.webgl ? {w: 10, h: 8} : {w: 7, h: 5};
@@ -365,7 +372,7 @@ function accept_data(str, allow_download){
                 dpanel.onclick = direct_download;
             } else dpanel_ready.style.display = 'block';
         }*/
-        player.loaded ? render_3D() : init_3D();
+        player.loaded ? render() : init();
     } else if (!player.loaded) display_landing();
 }
 
