@@ -58,10 +58,10 @@ function draw_3d_line(start_arr, finish_arr, color){
 }
 
 function create_sprite(text){
-    var canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+    var canvas = document.createElement('canvas'), context = canvas.getContext('2d'), metrics = context.measureText(text), w = metrics.width * 3.5;
 
-    canvas.width = 32;
-    canvas.height = 32;
+    canvas.width = w;
+    canvas.height = 30;
     context.font = "normal 30px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
@@ -74,7 +74,7 @@ function create_sprite(text){
     var sprite = new THREE.Sprite(material);
     sprite.renderOrder = 1;
     var txt = new THREE.Object3D();
-    sprite.scale.set(32, 32, 1);
+    sprite.scale.set(w, 30, 1);
     txt.add(sprite);
     txt.name = "label";
     return txt;
@@ -151,7 +151,7 @@ function render(){
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
-    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty checked=checked /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S /><label for=optionpanel_S>chemical elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty checked=checked /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S /><label for=optionpanel_S>elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
             optionpanel.innerHTML += ' <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
