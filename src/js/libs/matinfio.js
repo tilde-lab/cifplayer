@@ -112,7 +112,7 @@ function jsobj2player(crystal){
         descr = crystal.cell;
     } else cell = crystal.cell; // for POSCAR
 
-    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": {}};
+    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": {}, "info": crystal.info};
     var color, radius, oprop, optionpanel = {};
     var i = 0, len = crystal.atoms.length, hashes = {};
     for (i; i < len; i++){
@@ -194,7 +194,7 @@ function jsobj2flatten(crystal){
 function cif2jsobj(str){
     var structures = [], symops = [], atprop_seq = [], lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cur_structure = {'cell': {}, 'atoms': []};
     var loop_active = false, new_structure = false, symops_active = false;
-    var cur_line = "", line_data = [], symmetry_seq = [];
+    var data_info, cur_line = "", line_data = [], symmetry_seq = [];
     var cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'];
 
     var loop_vals = ['_atom_site_label', '_atom_site_type_symbol', '_atom_site_fract_x', '_atom_site_fract_y', '_atom_site_fract_z'];
@@ -216,9 +216,10 @@ function cif2jsobj(str){
         }
         new_structure = false;
 
-        if (cur_line.startswith('data_'))
+        if (cur_line.startswith('data_')){
             new_structure = true, loop_active = false, atprop_seq = [], symops_active = false;
-        else if (cur_line.startswith('_cell_')){
+            data_info = cur_line.substr(5);
+        } else if (cur_line.startswith('_cell_')){
             loop_active = false;
             line_data = cur_line.split(" ");
             var cell_data = line_data[0].split("_");
@@ -283,12 +284,14 @@ function cif2jsobj(str){
         }
 
         if (new_structure && cur_structure.atoms.length){
+            cur_structure.info = data_info;
             if (symops.length > 1) cur_structure.symops = symops;
             structures.push(cur_structure);
             cur_structure = {'cell': {}, 'atoms': []}, symops = [];
         }
     }
     if (cur_structure.atoms.length){
+        cur_structure.info = data_info;
         if (symops.length > 1) cur_structure.symops = symops;
         structures.push(cur_structure);
     }
