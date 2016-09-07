@@ -2,7 +2,7 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.0.3
+ * Version: 0.0.3.2
  *
  * Usage: initialize with math.js and logger objects, e.g.:
  *
@@ -21,7 +21,7 @@
  * var symobj = MatinfIO.to_flatten(file_as_str);
  * get_spacegroup(symobj);
  */
-// Polyfills
+"use strict";
 String.prototype.startswith = function(prefix){
     return this.indexOf(prefix) === 0;
 }
@@ -42,7 +42,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.0.3';
+var version = '0.0.3.1';
 
 var chemical_elements = {
 JmolColors: { "D": "#FFFFC0", "H": "#FFFFFF", "He": "#D9FFFF", "Li": "#CC80FF", "Be": "#C2FF00", "B": "#FFB5B5", "C": "#909090", "N": "#3050F8", "O": "#FF0D0D", "F": "#90E050", "Ne": "#B3E3F5", "Na": "#AB5CF2", "Mg": "#8AFF00", "Al": "#BFA6A6", "Si": "#F0C8A0", "P": "#FF8000", "S": "#FFFF30", "Cl": "#1FF01F", "Ar": "#80D1E3", "K": "#8F40D4", "Ca": "#3DFF00", "Sc": "#E6E6E6", "Ti": "#BFC2C7", "V": "#A6A6AB", "Cr": "#8A99C7", "Mn": "#9C7AC7", "Fe": "#E06633", "Co": "#F090A0", "Ni": "#50D050", "Cu": "#C88033", "Zn": "#7D80B0", "Ga": "#C28F8F", "Ge": "#668F8F", "As": "#BD80E3", "Se": "#FFA100", "Br": "#A62929", "Kr": "#5CB8D1", "Rb": "#702EB0", "Sr": "#00FF00", "Y": "#94FFFF", "Zr": "#94E0E0", "Nb": "#73C2C9", "Mo": "#54B5B5", "Tc": "#3B9E9E", "Ru": "#248F8F", "Rh": "#0A7D8C", "Pd": "#006985", "Ag": "#C0C0C0", "Cd": "#FFD98F", "In": "#A67573", "Sn": "#668080", "Sb": "#9E63B5", "Te": "#D47A00", "I": "#940094", "Xe": "#429EB0", "Cs": "#57178F", "Ba": "#00C900", "La": "#70D4FF", "Ce": "#FFFFC7", "Pr": "#D9FFC7", "Nd": "#C7FFC7", "Pm": "#A3FFC7", "Sm": "#8FFFC7", "Eu": "#61FFC7", "Gd": "#45FFC7", "Tb": "#30FFC7", "Dy": "#1FFFC7", "Ho": "#00FF9C", "Er": "#00E675", "Tm": "#00D452", "Yb": "#00BF38", "Lu": "#00AB24", "Hf": "#4DC2FF", "Ta": "#4DA6FF", "W": "#2194D6", "Re": "#267DAB", "Os": "#266696", "Ir": "#175487", "Pt": "#D0D0E0", "Au": "#FFD123", "Hg": "#B8B8D0", "Tl": "#A6544D", "Pb": "#575961", "Bi": "#9E4FB5", "Po": "#AB5C00", "At": "#754F45", "Rn": "#428296", "Fr": "#420066", "Ra": "#007D00", "Ac": "#70ABFA", "Th": "#00BAFF", "Pa": "#00A1FF", "U": "#008FFF", "Np": "#0080FF", "Pu": "#006BFF", "Am": "#545CF2", "Cm": "#785CE3", "Bk": "#8A4FE3", "Cf": "#A136D4", "Es": "#B31FD4", "Fm": "#B31FBA", "Md": "#B30DA6", "No": "#BD0D87", "Lr": "#C70066", "Rf": "#CC0059", "Db": "#D1004F", "Sg": "#D90045", "Bh": "#E00038", "Hs": "#E6002E", "Mt": "#EB0026" },
@@ -77,11 +77,11 @@ function cell2vec(a, b, c, alpha, beta, gamma){
         return false;
     }
     alpha = alpha * Math.PI/180, beta = beta * Math.PI/180, gamma = gamma * Math.PI/180;
-    var ab_norm = [0, 0, 1]; // TODO
-    var a_dir = [1, 0, 0]; // TODO
-    var Z = unit(ab_norm);
-    var X = unit( Mimpl.subtract( a_dir, Mimpl.multiply( Mimpl.dot(a_dir, Z), Z ) ) );
-    var Y = Mimpl.cross(Z, X);
+    var ab_norm = [0, 0, 1], // TODO
+        a_dir = [1, 0, 0], // TODO
+        Z = unit(ab_norm),
+        X = unit( Mimpl.subtract( a_dir, Mimpl.multiply( Mimpl.dot(a_dir, Z), Z ) ) ),
+        Y = Mimpl.cross(Z, X);
     //console.log("X", X);
     //console.log("Y", Y);
     //console.log("Z", Z);
@@ -97,27 +97,34 @@ function cell2vec(a, b, c, alpha, beta, gamma){
     //console.log("cx", cx);
     //console.log("cy", cy);
     //console.log("cz", cz);
-    var abc = [va, vb, vc];
-    var t = [X, Y, Z];
+    var abc = [va, vb, vc],
+        t = [X, Y, Z];
     //console.log("abc", abc);
     //console.log("t", t);
     return Mimpl.multiply(abc, t);
 }
 
 function jsobj2player(crystal){
-    var cell, descr = false;
+    var cell,
+        descr = false;
     if (Object.keys(crystal.cell).length == 6){ // for CIF
         cell = cell2vec(crystal.cell.a, crystal.cell.b, crystal.cell.c, crystal.cell.alpha, crystal.cell.beta, crystal.cell.gamma);
         //console.log("cell", cell);
         descr = crystal.cell;
     } else cell = crystal.cell; // for POSCAR
+    if (!crystal.atoms.length) logger.warning("Note: atomic positions are not given");
 
-    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": {}, "info": crystal.info};
-    var color, radius, oprop, optionpanel = {};
-    var i = 0, len = crystal.atoms.length, hashes = {};
+    var player_output = {"atoms": [], "cell": cell, "descr": descr, "overlayed": {}, "info": crystal.info},
+        color,
+        radius,
+        oprop,
+        optionpanel = {},
+        i = 0,
+        len = crystal.atoms.length,
+        hashes = {};
     for (i; i < len; i++){
-        var pos = [ crystal.atoms[i].x, crystal.atoms[i].y, crystal.atoms[i].z ];
-        var k = pos.join(',');
+        var pos = [ crystal.atoms[i].x, crystal.atoms[i].y, crystal.atoms[i].z ],
+            k = pos.join(',');
         // uniquify atoms, i.e. remove collisions;
         // makes special sense for partial occupancies in CIF
         if (hashes.hasOwnProperty(k)){
@@ -156,19 +163,24 @@ function jsobj2flatten(crystal){
         cell = cell2vec(crystal.cell.a, crystal.cell.b, crystal.cell.c, crystal.cell.alpha, crystal.cell.beta, crystal.cell.gamma);
     } else cell = crystal.cell; // for POSCAR
 
-    var tcell = [], fcell = [], fatoms = [], xyzatoms = [];
+    var tcell = [],
+        fcell = [],
+        fatoms = [],
+        xyzatoms = [];
     tcell = cell[0].map(function(col, i){
         return cell.map(function(row){ return row[i] });
     });
     fcell = fcell.concat.apply(fcell, tcell);
 
-    var i = 0, len = crystal.atoms.length;
+    var i = 0,
+        len = crystal.atoms.length;
     if (crystal.types){
         for (i; i < len; i++){
             xyzatoms.push([crystal.atoms[i].x, crystal.atoms[i].y, crystal.atoms[i].z]);
         }
     } else {
-        var types = [], atoms_types = {};
+        var types = [],
+            atoms_types = {};
         for (i; i < len; i++){
             if (Object.keys(atoms_types).indexOf(crystal.atoms[i].symbol) == -1)
                 atoms_types[crystal.atoms[i].symbol] = [ [crystal.atoms[i].x, crystal.atoms[i].y, crystal.atoms[i].z] ];
@@ -192,21 +204,30 @@ function jsobj2flatten(crystal){
 }
 
 function cif2jsobj(str){
-    var structures = [], symops = [], atprop_seq = [], lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cur_structure = {'cell': {}, 'atoms': []};
-    var loop_active = false, new_structure = false, symops_active = false;
-    var data_info, cur_line = "", line_data = [], symmetry_seq = [];
-    var cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'];
-
-    var loop_vals = ['_atom_site_label', '_atom_site_type_symbol', '_atom_site_fract_x', '_atom_site_fract_y', '_atom_site_fract_z'];
-    var atom_props = ['label', 'symbol', 'x', 'y', 'z'];
-    var chem_element_idxs = [0, 1], overlayed_idxs = [];
+    var structures = [],
+        symops = [],
+        atprop_seq = [],
+        lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"),
+        cur_structure = {'cell': {}, 'atoms': []},
+        loop_active = false,
+        new_structure = false,
+        symops_active = false,
+        data_info = "",
+        cur_line = "",
+        line_data = [],
+        symmetry_seq = [],
+        cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'],
+        loop_vals = ['_atom_site_label', '_atom_site_type_symbol', '_atom_site_fract_x', '_atom_site_fract_y', '_atom_site_fract_z'],
+        atom_props = ['label', 'symbol', 'x', 'y', 'z'],
+        chem_element_idxs = [0, 1],
+        overlayed_idxs = [];
 
     for (var oprop in custom_atom_loop_props){
         overlayed_idxs.push(loop_vals.length);
         loop_vals.push(oprop);
     }
-
-    var i = 0, len = lines.length;
+    var i = 0,
+        len = lines.length;
     for (i; i < len; i++){
         if (lines[i].startswith('#')) continue;
         cur_line = lines[i].toLowerCase().trim();
@@ -217,13 +238,17 @@ function cif2jsobj(str){
         new_structure = false;
 
         if (cur_line.startswith('data_')){
-            new_structure = true, loop_active = false, atprop_seq = [], symops_active = false;
+            new_structure = true,
+            loop_active = false,
+            atprop_seq = [],
+            symops_active = false,
             data_info = cur_line.substr(5);
+
         } else if (cur_line.startswith('_cell_')){
             loop_active = false;
             line_data = cur_line.split(" ");
-            var cell_data = line_data[0].split("_");
-            var cell_value = cell_data[ cell_data.length-1 ];
+            var cell_data = line_data[0].split("_"),
+                cell_value = cell_data[ cell_data.length-1 ];
             if (cell_props.indexOf(cell_value) !== -1 && line_data[ line_data.length-1 ]){
                 cur_structure.cell[cell_value] = parseFloat(line_data[ line_data.length-1 ]);
             }
@@ -240,8 +265,13 @@ function cif2jsobj(str){
             cur_structure.ng_name = line_data[line_data.length-1].trim();
             continue;
 
+        } else if (cur_line.startswith('_cif_error')){ // custom "invented" tag
+            logger.error(cur_line.substr(12, cur_line.length-13));
+            return false;
         } else if (cur_line.startswith('loop_')){
-            loop_active = true, atprop_seq = [], symops_active = false;
+            loop_active = true,
+            atprop_seq = [],
+            symops_active = false;
             continue;
         }
 
@@ -257,7 +287,8 @@ function cif2jsobj(str){
                 }
                 var atom = {'overlays': {}};
                 line_data = cur_line.replace(/\t/g, " ").split(" ").filter(function(o){ return o ? true : false });
-                var j = 0, len2 = atprop_seq.length; // TODO handle in-loop mismatch
+                var j = 0,
+                    len2 = atprop_seq.length; // TODO handle in-loop mismatch
                 for (j; j < len2; j++){
                     var atom_index = loop_vals.indexOf(atprop_seq[j]);
                     if (atom_index == -1) continue;
@@ -290,13 +321,13 @@ function cif2jsobj(str){
             cur_structure = {'cell': {}, 'atoms': []}, symops = [];
         }
     }
-    if (cur_structure.atoms.length){
+    if (cur_structure.cell.gamma){
         cur_structure.info = data_info;
         if (symops.length > 1) cur_structure.symops = symops;
         structures.push(cur_structure);
     }
     //console.log(structures);
-    if (structures.length) return structures[ structures.length-1 ]; // TODO
+    if (structures.length) return structures[ structures.length-1 ]; // TODO switch between frames
     else {
         logger.error("Error: unexpected CIF format!");
         return false;
@@ -304,9 +335,22 @@ function cif2jsobj(str){
 }
 
 function poscar2jsobj(str){
-    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"), cell = [], atoms = [], factor = 1.0, atindices = [], atvals = [], elems = [], types = [];
-    var atom_props = ['x', 'y', 'z', 'symbol'];
-    var i = 0, j = 0, len = lines.length, line_data = [], atidx = 0, tryarr = [], periodic_table = [];
+    var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"),
+        cell = [],
+        atoms = [],
+        factor = 1.0,
+        atindices = [],
+        atvals = [],
+        elems = [],
+        types = [],
+        atom_props = ['x', 'y', 'z', 'symbol'],
+        i = 0,
+        j = 0,
+        len = lines.length,
+        line_data = [],
+        atidx = 0,
+        tryarr = [],
+        periodic_table = [];
     loop_poscar_parse:
     for (i; i < len; i++){
         if (i == 0){
@@ -382,7 +426,8 @@ function poscar2jsobj(str){
 // API
 return {
     to_player: function(str){
-        var structure, format = detect_format(str);
+        var structure,
+            format = detect_format(str);
         switch (format){
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;
@@ -392,7 +437,8 @@ return {
         return jsobj2player(structure);
     },
     to_flatten: function(str){
-        var structure, format = detect_format(str);
+        var structure,
+            format = detect_format(str);
         switch (format){
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;

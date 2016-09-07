@@ -1,13 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16
+ * Version: 0.16.2
  */
+"use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16';
+player.version = '0.16.2';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -17,7 +18,8 @@ player.renderer = null;
 player.controls = null;
 player.atombox = null;
 player.available_overlays = ["empty", "S", "N"];
-player.current_overlay = "empty";
+player.default_overlay = "S"; // TODO radio checked=checked
+player.current_overlay = player.default_overlay;
 player.obj3d = false;
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
 //player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
@@ -34,10 +36,15 @@ player.sample = "data_example\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_len
 var THREE = th.THREE || th;
 
 function notify(msg){
-    var notifybox = document.getElementById('notifybox'), message = document.getElementById('message');
-    notifybox.style.display = 'block';
-    message.innerHTML = '';
-    setTimeout(function(){ message.innerHTML = msg }, 250);
+    if (window.parent && window.parent.wmgui && window.parent.wmgui.notify){
+        window.parent.wmgui.notify(msg);
+    } else {
+        var notifybox = document.getElementById('notifybox'),
+            message = document.getElementById('message');
+        notifybox.style.display = 'block';
+        message.innerHTML = '';
+        setTimeout(function(){ message.innerHTML = msg }, 250);
+    }
 }
 
 function create_box(id, html){
@@ -58,7 +65,9 @@ function draw_3d_line(start_arr, finish_arr, color){
 }
 
 function create_sprite(text){
-    var canvas = document.createElement('canvas'), context = canvas.getContext('2d'), metrics = context.measureText(text), w = metrics.width * 3.5;
+    var canvas = document.createElement('canvas'),
+        context = canvas.getContext('2d'),
+        metrics = context.measureText(text), w = metrics.width * 3.5;
 
     canvas.width = w;
     canvas.height = 30;
@@ -86,7 +95,7 @@ function init(){
 
     player.scene = new THREE.Scene();
     player.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 20000);
-    player.camera.position.set(0, 0, 2600);
+    player.camera.position.set(0, 0, 1800);
 
     var AmbientLight = new THREE.AmbientLight(0x999999);
     player.scene.add(AmbientLight);
@@ -113,10 +122,9 @@ function init(){
             evt.stopPropagation();
             evt.preventDefault();
         }
-        var y = (evt.pageY) ? evt.pageY : evt.clientY;
-        var ey = document.getElementById('zoompanel').offsetTop;
-
-        var fov = ((y-ey < 50) ? 1 : -1) * 7.5;
+        var y = (evt.pageY) ? evt.pageY : evt.clientY,
+            ey = document.getElementById('zoompanel').offsetTop,
+            fov = ((y-ey < 50) ? 1 : -1) * 7.5;
         player.camera.fov -= fov;
         player.camera.updateProjectionMatrix();
     }
@@ -151,7 +159,7 @@ function render(){
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
-    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty checked=checked /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S /><label for=optionpanel_S>elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
             optionpanel.innerHTML += ' <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
@@ -165,15 +173,16 @@ function render(){
             if (player.available_overlays.indexOf(clicked) !== -1){
                 var obj = player.scene.getObjectByName("atombox");
                 obj = obj.children;
-                var labels = obj.filter(function(item){ return item.name == 'label' });
-                var i, len = labels.length;
-                for (i = 0; i < len; i++){
+                var labels = obj.filter(function(item){ return item.name == 'label' }),
+                    i = 0,
+                    len = labels.length;
+                for (i; i < len; i++){
                     player.atombox.remove(labels[i]);
                     player.scene.remove(labels[i]);
                 }
                 if (clicked !== 'empty'){
-                    var balls = obj.filter(function(item){ return item.name == 'atom' });
-                    var len = balls.length;
+                    var balls = obj.filter(function(item){ return item.name == 'atom' }),
+                        len = balls.length;
                     for (i = 0; i < len; i++){
                         var label = create_sprite(balls[i].overlays[clicked]);
                         label.position.set(balls[i].position.x, balls[i].position.y, balls[i].position.z);
@@ -185,12 +194,16 @@ function render(){
             player.renderer.render(player.scene, player.camera);
         }
     }
-    player.current_overlay = "empty";
-    var resolution = player.webgl ? {w: 10, h: 8} : {w: 7, h: 5};
-    var i, len = player.obj3d.atoms.length;
-    for (i = 0; i < len; i++){
-        var x = parseInt( player.obj3d.atoms[i].x*100 ), y = parseInt( player.obj3d.atoms[i].y*100 ), z = parseInt( player.obj3d.atoms[i].z*100 ), r = player.obj3d.atoms[i].r*65;
-        var atom = new THREE.Mesh( new THREE.SphereBufferGeometry( r, resolution.w, resolution.h ), new THREE.MeshLambertMaterial( { color: player.obj3d.atoms[i].c, overdraw: 0.75 } ) );
+    player.current_overlay = player.default_overlay;
+    var resolution = player.webgl ? {w: 10, h: 8} : {w: 8, h: 6},
+        i = 0,
+        len = player.obj3d.atoms.length;
+    for (i; i < len; i++){
+        var x = parseInt( player.obj3d.atoms[i].x*100 ),
+            y = parseInt( player.obj3d.atoms[i].y*100 ),
+            z = parseInt( player.obj3d.atoms[i].z*100 ),
+            r = player.obj3d.atoms[i].r*65,
+            atom = new THREE.Mesh( new THREE.SphereBufferGeometry( r, resolution.w, resolution.h ), new THREE.MeshLambertMaterial( { color: player.obj3d.atoms[i].c, overdraw: 0.75 } ) );
         atom.position.set(x, y, z);
         atom.name = "atom";
         atom.overlays = player.obj3d.atoms[i].overlays;
@@ -204,11 +217,12 @@ function render(){
     }
 
     if (player.obj3d.cell.length){
-        var axcolor, ortes = [];
+        var axcolor,
+            ortes = [];
         for (var i = 0; i < 3; i++){
-            var a = Math.round(parseFloat(player.obj3d.cell[i][0])*1000)/10;
-            var b = Math.round(parseFloat(player.obj3d.cell[i][1])*1000)/10;
-            var c = Math.round(parseFloat(player.obj3d.cell[i][2])*1000)/10;
+            var a = Math.round(parseFloat(player.obj3d.cell[i][0])*1000)/10,
+                b = Math.round(parseFloat(player.obj3d.cell[i][1])*1000)/10,
+                c = Math.round(parseFloat(player.obj3d.cell[i][2])*1000)/10;
             ortes.push([a, b, c]);
             if (i==0) axcolor = 0x990000;
             else if (i==1) axcolor = 0x009900;
@@ -216,11 +230,11 @@ function render(){
             player.atombox.add(new THREE.ArrowHelper(new THREE.Vector3(a, b, c).normalize(), new THREE.Vector3(0, 0, 0), Math.sqrt(a*a+b*b+c*c), axcolor, 75, 10));
         }
 
-        var plane_point1 = [ortes[0][0]+ortes[1][0], ortes[0][1]+ortes[1][1], ortes[0][2]+ortes[1][2]]
-        var plane_point2 = [ortes[0][0]+ortes[2][0], ortes[0][1]+ortes[2][1], ortes[0][2]+ortes[2][2]]
-        var plane_point3 = [plane_point1[0]+ortes[2][0], plane_point1[1]+ortes[2][1], plane_point1[2]+ortes[2][2]]
-        var dpoint = [ortes[1][0]+ortes[2][0], ortes[1][1]+ortes[2][1], ortes[1][2]+ortes[2][2]]
-        var drawing_cell = [];
+        var plane_point1 = [ortes[0][0]+ortes[1][0], ortes[0][1]+ortes[1][1], ortes[0][2]+ortes[1][2]],
+            plane_point2 = [ortes[0][0]+ortes[2][0], ortes[0][1]+ortes[2][1], ortes[0][2]+ortes[2][2]],
+            plane_point3 = [plane_point1[0]+ortes[2][0], plane_point1[1]+ortes[2][1], plane_point1[2]+ortes[2][2]],
+            dpoint = [ortes[1][0]+ortes[2][0], ortes[1][1]+ortes[2][1], ortes[1][2]+ortes[2][2]],
+            drawing_cell = [];
 
         drawing_cell.push([ortes[0], plane_point1]);
         drawing_cell.push([ortes[0], plane_point2]);
@@ -232,8 +246,9 @@ function render(){
         drawing_cell.push([plane_point2, plane_point3]);
         drawing_cell.push([plane_point3, dpoint]);
 
-        var i, len = drawing_cell.length;
-        for (i = 0; i < len; i++){
+        var i = 0,
+            len = drawing_cell.length;
+        for (i; i < len; i++){
             draw_3d_line(drawing_cell[i][0], drawing_cell[i][1]);
         }
     }
@@ -287,8 +302,8 @@ function do_tune(evt){
         evt.stopPropagation();
         evt.preventDefault();
     }
-    var y = (evt.pageY) ? evt.pageY : evt.clientY;
-    var ey = document.getElementById('tunebox').offsetTop;
+    var y = (evt.pageY) ? evt.pageY : evt.clientY,
+        ey = document.getElementById('tunebox').offsetTop;
 
     if (y-ey < 40){
         var colorset = load_setup('colorset');
@@ -410,8 +425,8 @@ domReady(function(){
     var colorset = load_setup('colorset');
     if (colorset) player.colorset = colorset;
 
-    var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>');
-    var crossbox = document.getElementById('cross');
+    var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>'),
+        crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
     create_box('versionbox', 'v' + player.version);
@@ -434,8 +449,8 @@ domReady(function(){
     if (player.local_supported){
         window.addEventListener('dragover', handleDragOver, false);
         window.addEventListener('drop', handleFileSelect, false);
-        var fileapi = document.getElementById('fileapi');
-        var reader = new FileReader();
+        var fileapi = document.getElementById('fileapi'),
+            reader = new FileReader();
         fileapi.onchange = function(){
             if (!this.files[0] || !this.files[0].size) return notify("Error: file cannot be read (unaccessible?)");
             reader.currentFilename = this.files[0].name;
