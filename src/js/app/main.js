@@ -35,6 +35,17 @@ player.sample = "data_example\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_len
 
 var THREE = th.THREE || th;
 
+/* Polyfills */
+function cancel_event(evt){
+    evt = evt || window.event;
+    if (evt.cancelBubble) evt.cancelBubble = true;
+    else {
+        if (evt.stopPropagation) evt.stopPropagation();
+        if (evt.preventDefault) evt.preventDefault();
+    }
+}
+var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(cb){ return setTimeout(cb, 1000/60) }
+
 function notify(msg){
     if (window.parent && window.parent.wmgui && window.parent.wmgui.notify){
         window.parent.wmgui.notify(msg);
@@ -116,12 +127,7 @@ function init(){
 
     var zoompanel = create_box('zoompanel');
     zoompanel.onclick = function(evt){
-        evt = evt || window.event;
-        if (evt.cancelBubble) evt.cancelBubble = true;
-        else {
-            evt.stopPropagation();
-            evt.preventDefault();
-        }
+        cancel_event(evt);
         var y = (evt.pageY) ? evt.pageY : evt.clientY,
             ey = document.getElementById('zoompanel').offsetTop,
             fov = ((y-ey < 50) ? 1 : -1) * 7.5;
@@ -296,12 +302,7 @@ function display_landing(){
 }
 
 function do_tune(evt){
-    evt = evt || window.event;
-    if (evt.cancelBubble) evt.cancelBubble = true;
-    else {
-        evt.stopPropagation();
-        evt.preventDefault();
-    }
+    cancel_event(evt);
     var y = (evt.pageY) ? evt.pageY : evt.clientY,
         ey = document.getElementById('tunebox').offsetTop;
 
@@ -334,12 +335,7 @@ function load_setup(name){
 }
 
 function play_demo(evt){
-    evt = evt || window.event;
-    if (evt.cancelBubble) evt.cancelBubble = true;
-    else {
-        evt.stopPropagation();
-        evt.preventDefault();
-    }
+    cancel_event(evt);
     accept_data(player.sample, false);
 }
 
@@ -393,8 +389,7 @@ function accept_data(str, allow_download){
 }
 
 function handleFileSelect(evt){
-    evt.stopPropagation();
-    evt.preventDefault();
+    cancel_event(evt);
 
     if (evt.dataTransfer.files.length > 1) return notify("Error: only one file at the time may be rendered!");
     var file = evt.dataTransfer.files[0];
@@ -412,8 +407,7 @@ function handleFileSelect(evt){
 }
 
 function handleDragOver(evt){
-    evt.stopPropagation();
-    evt.preventDefault();
+    cancel_event(evt);
     evt.dataTransfer.dropEffect = 'copy';
 }
 
