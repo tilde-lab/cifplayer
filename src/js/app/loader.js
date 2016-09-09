@@ -3,7 +3,7 @@
 var to_load = [
     'js/libs/gl-matrix.js',
     'js/libs/matinfio.js',
-    'js/libs/ready.js',
+    'js/libs/docready.js',
     'js/libs/phoria.js',
     'js/app/main.js'
 ];

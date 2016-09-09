@@ -1,12 +1,26 @@
 #!/bin/sh
 
-if [[ ! -d "node_modules" ]]; then
-    sh prepare.sh
-fi
-
 THREEJSFOLDER="three.js-r76"
 
-./node_modules/webpack/bin/webpack.js --display-error-details --display-reasons --config src/js/app/build.config.js --optimize-max-chunks 1 src/js/app/main.js player.dist.js
+COMPONENTS=( \
+    'js/libs/gl-matrix.js' \
+    'js/libs/matinfio.js' \
+    'js/libs/docready.js' \
+    'js/libs/phoria.js' \
+    'js/app/main.js' \
+)
+
+cd src
+
+rm ../player.dist.js
+touch ../player.dist.js
+
+for i in "${COMPONENTS[@]}"
+do
+    cat $i >> ../player.dist.js
+done
+
+cd ..
 
 java -jar $THREEJSFOLDER/utils/build/compiler/compiler.jar --jscomp_off checkTypes --language_in ECMASCRIPT5_STRICT --js player.dist.js > player.js || { echo >&2 "Failed to make distribution"; exit 1; }
 

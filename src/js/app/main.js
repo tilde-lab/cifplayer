@@ -120,16 +120,11 @@ var Mimpl = {
             ];
         }
         if (isVector(v1) && isMatrix(v2)){
-            var out = mat3.multiply(
-                [0,0,0,0,0,0,0,0,0],
-                [v1[0], 0, 0,  0, v1[1], 0,  0, 0, v1[2]],
-                [v2[0][0], v2[0][1], v2[0][2],  v2[1][0], v2[1][1], v2[1][2],  v2[2][0], v2[2][1], v2[2][2]]
-            );
-            if (out[1]+out[2]+out[3]+out[5]+out[6]+out[7] > 0.00001){
-                console.log(out[1]+" and "+out[2]+" and "+out[3]+" and "+out[5]+" and "+out[6]+" and "+out[7]);
-                throw new Error("Non-diagonal elements detected while vector to matrix multiplication!");
-            }
-            return [out[0], out[4], out[8]];
+            return [
+                v1[0]*v2[0][0] + v1[1]*v2[1][0] + v1[2]*v2[2][0],
+                v1[0]*v2[0][1] + v1[1]*v2[1][1] + v1[2]*v2[2][1],
+                v1[0]*v2[0][2] + v1[1]*v2[1][2] + v1[2]*v2[2][2]
+            ];
         }
         return null; /// NOT SUPPORTED!
     },
@@ -706,7 +701,7 @@ function handleDragOver(evt){
     evt.dataTransfer.dropEffect = 'copy';
 }
 
-domready(function(){
+docReady(function(){
     //var forcewebgl = load_setup('forcewebgl');
     //if (forcewebgl == 'N') player.webgl = false;
     //else if (forcewebgl == 'Y') player.webgl = true;
