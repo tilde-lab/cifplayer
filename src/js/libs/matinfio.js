@@ -130,7 +130,7 @@ function jsobj2player(crystal){
         if (hashes.hasOwnProperty(k)){
             var update;
             for (oprop in player_output.atoms[ hashes[k] ].overlays){
-                if (oprop=='S') update = "+" + crystal.atoms[i].symbol;
+                if (oprop=='S') update = " " + crystal.atoms[i].symbol;
                 else if (oprop=='N') update = ", " + (i+1);
                 else if (oprop=='_atom_site_occupancy') update = "+" + crystal.atoms[i].overlays[oprop];
                 else update = " " + crystal.atoms[i].overlays[oprop];
@@ -214,6 +214,7 @@ function cif2jsobj(str){
         symops_active = false,
         data_info = "",
         cur_line = "",
+        fingerprt = "",
         line_data = [],
         symmetry_seq = [],
         cell_props = ['a', 'b', 'c', 'alpha', 'beta', 'gamma'],
@@ -230,21 +231,22 @@ function cif2jsobj(str){
         len = lines.length;
     for (i; i < len; i++){
         if (lines[i].startswith('#')) continue;
-        cur_line = lines[i].toLowerCase().trim();
+        cur_line = lines[i].trim();
         if (!cur_line){
             loop_active = false, atprop_seq = [], symops_active = false;
             continue;
         }
+        fingerprt = cur_line.toLowerCase();
         new_structure = false;
 
-        if (cur_line.startswith('data_')){
+        if (fingerprt.startswith('data_')){
             new_structure = true,
             loop_active = false,
             atprop_seq = [],
             symops_active = false,
             data_info = cur_line.substr(5);
 
-        } else if (cur_line.startswith('_cell_')){
+        } else if (fingerprt.startswith('_cell_')){
             loop_active = false;
             line_data = cur_line.split(" ");
             var cell_data = line_data[0].split("_"),
@@ -254,21 +256,21 @@ function cif2jsobj(str){
             }
             continue;
 
-        } else if (cur_line.startswith('_symmetry_space_group_name_h-m') || cur_line.startswith('_space_group.patterson_name_h-m')){
+        } else if (fingerprt.startswith('_symmetry_space_group_name_h-m') || fingerprt.startswith('_space_group.patterson_name_h-m')){
             loop_active = false;
             cur_structure.sg_name = lines[i].substr(31).replace(/"/g, '').replace(/'/g, '').trim();
             continue;
 
-        } else if (cur_line.startswith('_space_group.it_number') || cur_line.startswith('_space_group_it_number') || cur_line.startswith('_symmetry_int_tables_number')){
+        } else if (fingerprt.startswith('_space_group.it_number') || fingerprt.startswith('_space_group_it_number') || fingerprt.startswith('_symmetry_int_tables_number')){
             loop_active = false;
             line_data = cur_line.split(" ");
             cur_structure.ng_name = line_data[line_data.length-1].trim();
             continue;
 
-        } else if (cur_line.startswith('_cif_error')){ // custom "invented" tag
+        } else if (fingerprt.startswith('_cif_error')){ // custom "invented" tag
             logger.error(cur_line.substr(12, cur_line.length-13));
             return false;
-        } else if (cur_line.startswith('loop_')){
+        } else if (fingerprt.startswith('loop_')){
             loop_active = true,
             atprop_seq = [],
             symops_active = false;
@@ -292,9 +294,11 @@ function cif2jsobj(str){
                 for (j; j < len2; j++){
                     var atom_index = loop_vals.indexOf(atprop_seq[j]);
                     if (atom_index == -1) continue;
+                    var pos = chem_element_idxs.indexOf(atom_index);
 
-                    if (chem_element_idxs.indexOf(atom_index) > -1) line_data[j] = line_data[j].charAt(0).toUpperCase() + line_data[j].slice(1).toLowerCase();
-                    else line_data[j] = parseFloat(line_data[j]); // TODO: custom non-float props in loop
+                    // NB label != symbol
+                    if (pos == 1) line_data[j] = line_data[j].charAt(0).toUpperCase() + line_data[j].slice(1).toLowerCase();
+                    else if (pos < 0) line_data[j] = parseFloat(line_data[j]); // TODO: custom non-float props in loop
 
                     // TODO: simplify this!
                     if (overlayed_idxs.indexOf(atom_index) > -1) atom.overlays[ loop_vals[atom_index] ] = line_data[j];

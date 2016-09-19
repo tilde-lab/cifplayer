@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.2
+ * Version: 0.16.3
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16.2';
+player.version = '0.16.3';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -17,7 +17,7 @@ player.scene = null;
 player.renderer = null;
 player.controls = null;
 player.atombox = null;
-player.available_overlays = ["empty", "S", "N"];
+player.available_overlays = ["empty", "S"];
 player.default_overlay = "S"; // TODO radio checked=checked
 player.current_overlay = player.default_overlay;
 player.obj3d = false;
@@ -135,6 +135,14 @@ function init(){
         player.camera.updateProjectionMatrix();
     }
 
+    // MPDS integration
+    var exitpanel = create_box('exitpanel');
+    exitpanel.onclick = function(){
+        if (window.parent && window.parent.wmgui){
+            window.parent.close_vibox();
+        }
+    }
+
     player.controls = new THREE.TrackballControls(player.camera);
     player.controls.rotateSpeed = 7.5;
     player.controls.staticMoving = true;
@@ -165,10 +173,10 @@ function render(){
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
-    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label>  <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
-            optionpanel.innerHTML += ' <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
+            optionpanel.innerHTML += '  <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
             player.available_overlays.push(prop); // TODO redesign?
         }
     }
