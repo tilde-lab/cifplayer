@@ -47,14 +47,21 @@ function cancel_event(evt){
 var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(cb){ return setTimeout(cb, 1000/60) }
 
 function notify(msg){
-    if (window.parent && window.parent.wmgui && window.parent.wmgui.notify){
+    if (window.parent && window.parent.wmgui){
         window.parent.wmgui.notify(msg);
+        window.parent.close_vibox();
     } else {
         var notifybox = document.getElementById('notifybox'),
             message = document.getElementById('message');
         notifybox.style.display = 'block';
         message.innerHTML = '';
         setTimeout(function(){ message.innerHTML = msg }, 250);
+    }
+}
+
+function advise(msg){
+    if (window.parent && window.parent.wmgui){
+        window.parent.wmgui.notify(msg);
     }
 }
 
@@ -442,7 +449,7 @@ domReady(function(){
     var demo = document.getElementById('play_demo');
     demo.onclick = play_demo;
 
-    var logger = {warning: notify, error: notify};
+    var logger = {warning: advise, error: notify};
     MatinfIO = MatinfIO(mathjs, logger);
 
     window.addEventListener('resize', resize, false );
