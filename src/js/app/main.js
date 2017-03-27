@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.3
+ * Version: 0.16.4
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16.3';
+player.version = '0.16.4';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -316,39 +316,6 @@ function display_landing(){
     } else play_demo();
 }
 
-function do_tune(evt){
-    cancel_event(evt);
-    var y = (evt.pageY) ? evt.pageY : evt.clientY,
-        ey = document.getElementById('tunebox').offsetTop;
-
-    if (y-ey < 40){
-        var colorset = load_setup('colorset');
-        if (!colorset || colorset == 'W') save_setup('colorset', 'B');
-        else save_setup('colorset', 'W');
-    } else {
-        var forcewebgl = load_setup('forcewebgl');
-        if (!forcewebgl || forcewebgl == 'Y') save_setup('forcewebgl', 'N');
-        else save_setup('forcewebgl', 'Y');
-    }
-    document.location.reload();
-}
-
-function save_setup(name, value){
-    if (value)
-        document.cookie = name + "=" + value.toString() + "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-    else
-        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-}
-
-function load_setup(name){
-    if (name == "forcewebgl")
-        return document.cookie.replace(/(?:(?:^|.*;\s*)forcewebgl\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    else if (name == "colorset")
-        return document.cookie.replace(/(?:(?:^|.*;\s*)colorset\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    else
-        return false;
-}
-
 function play_demo(evt){
     cancel_event(evt);
     accept_data(player.sample, false);
@@ -427,12 +394,7 @@ function handleDragOver(evt){
 }
 
 domReady(function(){
-    var forcewebgl = load_setup('forcewebgl');
-    if (forcewebgl == 'N') player.webgl = false;
-    else if (forcewebgl == 'Y') player.webgl = true;
-
-    var colorset = load_setup('colorset');
-    if (colorset) player.colorset = colorset;
+    player.webgl = true;
 
     var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>'),
         crossbox = document.getElementById('cross');
@@ -441,9 +403,6 @@ domReady(function(){
     create_box('versionbox', 'v' + player.version);
     var cmdbox = create_box('cmdbox', 'Load new');
     cmdbox.onclick = display_landing;
-
-    var tunebox = create_box('tunebox');
-    tunebox.onclick = do_tune;
 
     create_box('landing', '<h1>Materials Informatics Web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     var demo = document.getElementById('play_demo');
