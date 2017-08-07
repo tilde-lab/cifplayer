@@ -15,23 +15,24 @@ Author: Evgeny Blokhin
 body{margin:0;padding:0;overflow:hidden;font-family:Arial;}
 html, body{height:100%;}
 #player{z-index:2;position:fixed;cursor:move;}
-#infopanel{position:fixed;top:8px;left:8px;width:150px;height:150px;text-align:left;z-index:3;line-height:22px;font-size:0.9em;color:#888;}
+#infopanel{position:fixed;top:20px;left:8px;width:150px;height:150px;text-align:left;z-index:3;line-height:22px;font-size:0.9em;color:#888;}
 #exitpanel{position:fixed;top:6px;right:6px;width:24px;height:24px;z-index:3;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #zoompanel{position:fixed;top:90px;right:6px;width:50px;height:102px;z-index:3;cursor:pointer;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
 #optionpanel{position:fixed;bottom:4px;left:0;width:100%;height:20px;z-index:3;text-align:center;font-size:1.1em;}
 #optionpanel input{margin:4px 2px 0 2px;cursor:pointer;}
 #optionpanel label{line-height:22px;vertical-align:top;cursor:pointer;color:#666;}
-#landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:5;background:#fff;margin:0;text-align:center;font-size:1.25em;padding:10px;line-height:1.8em;}
+#landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:8;background:#fff;margin:0;text-align:center;font-size:1.25em;padding:10px;line-height:1.8em;}
 #landing a{color:#666;text-decoration:none;border-bottom:1px solid #999;}
-h1{margin:10px auto 35px;font-size:1.4em;color:#999;font-weight:normal;}
+h1{margin:20px auto 35px;font-size:1.4em;color:#999;font-weight:normal;}
 #legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f0f0f0;color:#666;padding:5px;}
 #triangle{width:0;height:0;margin:-2px auto 20px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f0f0f0;}
-#notifybox{display:none;z-index:7;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;}
+#notifybox{display:none;z-index:9;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;}
 #cross{float:right;width:24px;height:24px;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #message{margin:20px;}
 #fileapi{color:#999;}
-#versionbox{display:none;z-index:6;position:fixed;bottom:2px;right:2px;font-size:0.9em;color:#999;}
+#versionbox{display:none;z-index:9;position:fixed;bottom:2px;right:2px;font-size:0.9em;color:#999;}
 #cmdbox{display:none;z-index:4;position:fixed;bottom:2px;left:4px;cursor:pointer;font-size:1.1em;color:#999;border-bottom:1px solid #999;}
+#demobox{display:none;position:fixed;z-index:7;top:2px;left:50%;width:500px;height:20px;margin-left:-250px;font-size:0.7em;text-align:center;line-height:20px;}
 @media screen and (min-width:1200px){
 #cmdbox{display:block;}
 #versionbox{display:block;}
@@ -41,7 +42,7 @@ h1{margin:10px auto 35px;font-size:1.4em;color:#999;font-weight:normal;}
 #preloader > div.rect1 {background:#6d55ae;}
 #preloader > div.rect2 {background:#ffb302;-webkit-animation-delay:-1.1s;animation-delay:-1.1s;}
 #preloader > div.rect3 {background:#f44c4d;-webkit-animation-delay:-1.0s;animation-delay:-1.0s;}
-#preloader > div.rect4 {background:#00b1ae;-webkit-animation-delay:-0.9s;animation-delay:-0.9s;}
+#preloader > div.rect4 {background:#acc2b3;-webkit-animation-delay:-0.9s;animation-delay:-0.9s;}
 #preloader > div.rect5 {background:#6d55ae;-webkit-animation-delay:-0.8s;animation-delay:-0.8s;}
 @-webkit-keyframes stretchdelay {
 0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
@@ -58,6 +59,7 @@ transform: scaleY(1.0);
 </head>
 <body>
 <div id="preloader"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>
+<div id="demobox">You are using demo version. Space group is not shown.</div>
 <script type="text/javascript">if(typeof window.Int16Array!=='function'||typeof window.Float32Array!=='function')document.write("<scri"+"pt src='https://tilde.pro/typedarray.min.js'></scr"+"ipt>")</script>
 <script type="text/javascript" data-main="js/app/main" src="js/libs/require.js"></script><!-- REPLACED_IN_PRODUCTION -->
 </body>

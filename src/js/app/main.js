@@ -367,6 +367,10 @@ function accept_data(str, allow_download){
         }*/
         player.loaded ? render() : init();
         if (player.obj3d.info) document.title = player.obj3d.info;
+        var demobox = document.getElementById('demobox');
+        if (player.obj3d.demobox) demobox.style.display = 'block';
+        else                      demobox.style.display = 'none';
+
     } else if (!player.loaded) display_landing();
 }
 
