@@ -1,7 +1,10 @@
 <!--
-Materials Informatics HTML5 Player --- in-browser ultra-fast and
-lightweight renderer of the crystallographic data
-Author: Evgeny Blokhin
+Materials Informatics HTML5 Player:
+in-browser ultra-fast and lightweight
+renderer of crystallographic data
+Author: Evgeny Blokhin /
+Tilde Materials Informatics
+eb@tilde.pro
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,17 +15,17 @@ Author: Evgeny Blokhin
 <title>Materials Informatics Web-viewer</title>
 <style>
 body{margin:0;padding:0;overflow:hidden;font-family:Georgia,serif;}
-html, body{height:100%;}
+html, body{height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 #player{z-index:2;position:fixed;cursor:move;}
-#infopanel{position:fixed;top:8px;left:8px;width:150px;height:150px;text-align:left;z-index:3;line-height:20px;font-size:0.8em;color:#888;}
-#zoompanel{position:fixed;top:18px;right:6px;width:50px;height:102px;z-index:3;cursor:pointer;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
+#infopanel{position:fixed;top:20px;left:8px;width:150px;height:150px;text-align:left;z-index:3;line-height:22px;font-size:0.9em;color:#888;}
+#zoompanel{position:fixed;top:90px;right:8px;width:50px;height:102px;z-index:3;cursor:pointer;background:no-repeat url(data:image/gif;base64,R0lGODlhMgBmAKEBAAAAAP///8zMzP///yH5BAEKAAMALAAAAAAyAGYAAAL+nI+py+0uopzi2UtzvhxNLHXWJ4YiY55Gqg6sRzVvNx+bHKk5FPNV+cOReMBR77EzgoY+0LK2SOI4N2MQdfVBo9mEFHlUTqlhcNd2xjLFXLTmDWd+Ye64vepK5+v3/nWOxudnR4clOAhX2Ea2Bjb2BPioEMnVSGTIuDVJqQljiSmpRblpBqnnNZp3Kki2ZNW5khq7qgoL62bW+akmunqLqocHLFvZctiyq1VLu/m7zKcj7DlTljmoRoyd2Gs8zczaHb78La6dXd6cjC6kvl7p7D4LH19LH21cbT+8rT/+fk7jVruA5DyVm2ewG8BQAd0t3BMPIMJSrexle9iQjcWCVBiLXOoHkSG9LR1PcCqoMFgQRH4UkZLHkl/Il+Ni4jl5yKYclTl1SsEJ0+dOkRuJjlSJMtqpkow+9uPIlKLTo7QmWmkaUWJSqU/QDRwmLt+rlGJzoYxRlh2xKmnVvniTbmvNOGrDETIr12tbkP749sobVprfY4P/Aba7F+RXxT8KAAA7);}
 #tunebox{position:fixed;top:50%;right:6px;width:40px;height:80px;margin-top:-40px;z-index:3;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhKABQAMIEAMvLy8zMzM3Nzc7Ozv///////////////yH5BAEKAAQALAAAAAAoAFAAAAP+SLrc/jDKSau9OOgtdsCT94GXSGbbiWpqmbaVB1cdO1PyLeV6xPeOmg3oMBGLr2Pjp1Qwm09l9DglGpvOau+KJXgE3WwSKxp1uSrzY4AGqSHltKX8xoHn8dgQT/eNL2x0gnsng306gYJhi4yNjo+QkU5eHyOVlV6TmW6Um5iZlpp8hqR/S6WobUipqCF1bq8Lqih6M1MshCS5DLMum362pmK7tDhmHgCUKcu4saeiNpafnbcyu8e/zTvWrybHl8Syl8rS2FnkcDnfoufUzu7i0WPqwrzves69eNudMFr9LcKRu2fMlUB89w4ae/ev4DaFBhOyKrVwoqJa0TyF6gcMURZHjZrkSRpJ0lECADs=) no-repeat;}
 #optionpanel{position:fixed;bottom:4px;left:0;width:100%;height:20px;z-index:3;text-align:center;font-size:1.1em;}
 #optionpanel input{margin:4px 2px 0 2px;cursor:pointer;}
 #optionpanel label{line-height:22px;vertical-align:top;cursor:pointer;color:#666;}
 #landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:5;background:#fff;margin:0;text-align:center;font-size:1.25em;padding:10px;line-height:1.8em;}
 #landing a{color:#666;text-decoration:none;border-bottom:1px solid #999;}
-h1{margin:10px auto 35px;font-size:1.4em;color:#999;font-weight:normal;}
+h1{margin:10px auto 35px;font-size:1.5em;color:#999;font-weight:normal;}
 #legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f0f0f0;color:#666;padding:5px;}
 #triangle{width:0;height:0;margin:-2px auto 20px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f0f0f0;}
 #notifybox{display:none;z-index:7;position:fixed;top:4px;left:4px;width:500px;background:#333;color:#fff;font-weight:bold;border-radius:5px;}
@@ -31,6 +34,7 @@ h1{margin:10px auto 35px;font-size:1.4em;color:#999;font-weight:normal;}
 #fileapi{color:#999;}
 #versionbox{display:none;z-index:6;position:fixed;bottom:2px;right:2px;font-size:0.9em;color:#999;}
 #cmdbox{display:none;z-index:4;position:fixed;bottom:2px;left:4px;cursor:pointer;font-size:1.1em;color:#999;border-bottom:1px solid #999;}
+#ribbon{display:none;}
 @media screen and (min-width:1200px){
 #cmdbox{display:block;}
 #versionbox{display:block;}
@@ -53,9 +57,17 @@ transform: scaleY(0.4);
 transform: scaleY(1.0);
 -webkit-transform: scaleY(1.0);
 }}
+
+.github-fork-ribbon {position:absolute;padding:2px 0;background-color:#f00;background-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.15)));background-image:-webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));background-image:-moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));background-image:-ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));background-image:-o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));-webkit-box-shadow:0 2px 3px 0 rgba(0, 0, 0, 0.5);-moz-box-shadow:0 2px 3px 0 rgba(0, 0, 0, 0.5);box-shadow:0 2px 3px 0 rgba(0, 0, 0, 0.5);font:500 9px "Helvetica Neue", Helvetica, Arial, sans-serif;z-index:9999;pointer-events:auto;}
+.github-fork-ribbon a, .github-fork-ribbon a:hover {color:#fff;text-decoration:none;text-shadow:0 -1px rgba(0, 0, 0, 0.5);text-align:center;width:100px;line-height:12px;display:inline-block;padding:2px 0;border-width:1px 0;border-style:dotted;border-color:#fff;border-color:rgba(255, 255, 255, 1);}
+.github-fork-ribbon-wrapper {width:100px;height:100px;position:absolute;overflow:hidden;top:0;z-index:9999;pointer-events:none;}
+.github-fork-ribbon-wrapper.right {right:0;}
+.github-fork-ribbon-wrapper.right .github-fork-ribbon {top:16px;right:-22px;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg);}
 </style>
 </head>
 <body>
+<div id="ribbon" class="github-fork-ribbon-wrapper right"><div class="github-fork-ribbon"><a href="https://github.com/tilde-lab/player.html" target="_blank" rel="noopener noreferrer">See on GitHub</a></div>
+</div>
 <div id="preloader"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>
 <script type="text/javascript">if(typeof window.Int16Array!=='function'||typeof window.Float32Array!=='function')document.write("<scri"+"pt src='https://tilde.pro/typedarray.min.js'></scr"+"ipt>")</script>
 <script type="text/javascript" data-main="js/app/main" src="js/libs/require.js"></script><!-- REPLACED_IN_PRODUCTION -->

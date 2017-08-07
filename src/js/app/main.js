@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.2
+ * Version: 0.16.3
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16.2';
+player.version = '0.16.3';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -298,6 +298,8 @@ function display_landing(){
         var landing = document.getElementById('landing');
         if (player.colorset == 'B') landing.style.background = '#222';
         landing.style.display = 'block';
+        var ribbon = document.getElementById('ribbon');
+        ribbon.style.display = 'block';
     } else play_demo();
 }
 
@@ -320,7 +322,7 @@ function do_tune(evt){
 
 function save_setup(name, value){
     if (value)
-        document.cookie = name + "=" + value.toString() + "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        document.cookie = name + "=" + value.toString() + "; expires=Fri, 31 Dec 2100 23:59:59 GMT";
     else
         document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 }
@@ -376,6 +378,8 @@ function accept_data(str, allow_download){
     if (player.obj3d){
         var landing = document.getElementById('landing');
         landing.style.display = 'none';
+        var ribbon = document.getElementById('ribbon');
+        ribbon.style.display = 'none';
 
         /*if (allow_download){
             if (!dpanel_ready){
@@ -430,7 +434,7 @@ domReady(function(){
     var tunebox = create_box('tunebox');
     tunebox.onclick = do_tune;
 
-    create_box('landing', '<h1>Materials Informatics Web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    create_box('landing', '<h1>CIF & POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     var demo = document.getElementById('play_demo');
     demo.onclick = play_demo;
 
