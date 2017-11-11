@@ -1,7 +1,7 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.4
+ * Version: 0.16.5
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
@@ -404,10 +404,7 @@ domReady(function(){
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    var cmdbox = create_box('cmdbox', 'Load new');
-    cmdbox.onclick = display_landing;
-
-    create_box('landing', '<h1>CIF &amp; POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    create_box('landing', '<h1>CIF and POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     var demo = document.getElementById('play_demo');
     demo.onclick = play_demo;
 
