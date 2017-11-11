@@ -8,7 +8,7 @@ require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16.4';
+player.version = '0.16.5';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -22,6 +22,7 @@ player.default_overlay = "S"; // TODO radio checked=checked
 player.current_overlay = player.default_overlay;
 player.obj3d = false;
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
+player.mpds_integration = window.parent && window.parent.wmgui;
 //player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
 player.webgl = (function(){
 try {
@@ -47,7 +48,7 @@ function cancel_event(evt){
 var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(cb){ return setTimeout(cb, 1000/60) }
 
 function notify(msg){
-    if (window.parent && window.parent.wmgui){
+    if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
         window.parent.close_vibox();
     } else {
@@ -60,9 +61,9 @@ function notify(msg){
 }
 
 function advise(msg){
-    if (window.parent && window.parent.wmgui){
+    if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
-    }
+    } else alert(msg);
 }
 
 function create_box(id, html){
@@ -89,7 +90,7 @@ function create_sprite(text){
 
     canvas.width = w;
     canvas.height = 30;
-    context.font = "normal 30px Arial";
+    context.font = "normal 30px Exo2";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = (player.colorset == "W") ? "#000000" : "#FFFFFF";
@@ -142,10 +143,9 @@ function init(){
         player.camera.updateProjectionMatrix();
     }
 
-    // MPDS integration
-    var exitpanel = create_box('exitpanel');
-    exitpanel.onclick = function(){
-        if (window.parent && window.parent.wmgui){
+    if (player.mpds_integration){
+        var exitpanel = create_box('exitpanel');
+        exitpanel.onclick = function(){
             window.parent.close_vibox();
         }
     }
@@ -404,11 +404,10 @@ domReady(function(){
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('versionbox', 'v' + player.version);
     var cmdbox = create_box('cmdbox', 'Load new');
     cmdbox.onclick = display_landing;
 
-    create_box('landing', '<h1>Materials Informatics Web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    create_box('landing', '<h1>CIF &amp; POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     var demo = document.getElementById('play_demo');
     demo.onclick = play_demo;
 
