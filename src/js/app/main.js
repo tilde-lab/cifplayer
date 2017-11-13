@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.5
+ * Version: 0.16.6
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
 
 var player = {};
-player.version = '0.16.5';
+player.version = '0.16.6';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -174,8 +174,11 @@ function render(){
 
     var test = document.getElementById('infopanel');
     if (test) test.parentNode.removeChild(test);
+
     if (player.obj3d.descr){
-        create_box('infopanel', '<span style=color:#900><i>a</i>='+(Math.round(parseFloat(player.obj3d.descr['a']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#090><i>b</i>='+(Math.round(parseFloat(player.obj3d.descr['b']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#09f><i>c</i>='+(Math.round(parseFloat(player.obj3d.descr['c']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><i>&#945;</i>='+(Math.round(parseFloat(player.obj3d.descr['alpha']) * 100)/100).toFixed(2)+'&deg;<br /><i>&#946;</i>='+(Math.round(parseFloat(player.obj3d.descr['beta']) * 100)/100).toFixed(2)+'&deg;<br /><i>&#947;</i>='+(Math.round(parseFloat(player.obj3d.descr['gamma']) * 100)/100).toFixed(2)+'&deg;<br />');
+        var symlabel = player.obj3d.mpds_data ? '' : ((player.obj3d.descr.symlabel) ? '<i>SG</i> ' + player.obj3d.descr.symlabel : '');
+
+        create_box('infopanel', '<span style=color:#900><i>a</i>='+(Math.round(parseFloat(player.obj3d.descr.a) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#090><i>b</i>='+(Math.round(parseFloat(player.obj3d.descr.b) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#09f><i>c</i>='+(Math.round(parseFloat(player.obj3d.descr.c) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><i>&#945;</i>='+(Math.round(parseFloat(player.obj3d.descr.alpha) * 100)/100).toFixed(2)+'&deg;<br /><i>&#946;</i>='+(Math.round(parseFloat(player.obj3d.descr.beta) * 100)/100).toFixed(2)+'&deg;<br /><i>&#947;</i>='+(Math.round(parseFloat(player.obj3d.descr.gamma) * 100)/100).toFixed(2)+'&deg;<br />' + symlabel);
     }
 
     var test = document.getElementById('optionpanel');
@@ -367,9 +370,9 @@ function accept_data(str, allow_download){
         }*/
         player.loaded ? render() : init();
         if (player.obj3d.info) document.title = player.obj3d.info;
+
         var demobox = document.getElementById('demobox');
-        if (player.obj3d.demobox) demobox.style.display = 'block';
-        else                      demobox.style.display = 'none';
+        demobox.style.display = (player.obj3d.mpds_data && player.obj3d.mpds_demo) ? 'block' : 'none';
 
     } else if (!player.loaded) display_landing();
 }

@@ -39,12 +39,19 @@ var walk = function(dir, done){
 var examine = function(file){
     fs.readFile(file, function(err, data){
         if (err) {
-        return console.log(err);
+            return console.log(err);
         }
+
+        try {
+            var repr = MatinfIO.to_player(data);
+        } catch (ex) {
+            return console.log(ex.message);
+        }
+
         console.log("======================");
         console.log(file);
         console.log("======================");
-        console.log(MatinfIO.to_player(data));
+        console.log(JSON.stringify(repr));
     });
 };
 
