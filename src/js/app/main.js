@@ -359,8 +359,7 @@ function accept_data(str, allow_download){
 
     player.obj3d = MatinfIO.to_player(str);
     if (player.obj3d){
-        var landing = document.getElementById('landing');
-        landing.style.display = 'none';
+        document.getElementById('landing').style.display = 'none';
 
         /*if (allow_download){
             if (!dpanel_ready){
@@ -371,8 +370,7 @@ function accept_data(str, allow_download){
         player.loaded ? render() : init();
         if (player.obj3d.info) document.title = player.obj3d.info;
 
-        var demobox = document.getElementById('demobox');
-        demobox.style.display = (player.obj3d.mpds_data && player.obj3d.mpds_demo) ? 'block' : 'none';
+        document.getElementById('demobox').style.display = (player.obj3d.mpds_data && player.obj3d.mpds_demo) ? 'block' : 'none';
 
     } else if (!player.loaded) display_landing();
 }
@@ -408,8 +406,7 @@ domReady(function(){
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
     create_box('landing', '<h1>CIF and POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
-    var demo = document.getElementById('play_demo');
-    demo.onclick = play_demo;
+    document.getElementById('play_demo').onclick = play_demo;
 
     var logger = {warning: advise, error: notify};
     MatinfIO = MatinfIO(mathjs, logger);
