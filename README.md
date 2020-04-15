@@ -4,7 +4,7 @@ HTML5 Player for Materials Informatics
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File) and VASP POSCAR structures, written in a pure JavaScript.
 
-In a compiled form it is only one file ```player.html``` about 450 Kb (100 Kb gzipped). See it [online](http://tilde-lab.github.io/player.html). Only browser is required. After the code is loaded, no internet connection is needed.
+In a compiled form it is only one **standalone** file ```player.html``` of 500 Kb (100 Kb gzipped). See it [online](http://tilde-lab.github.io/player.html). Only a web-browser is required. After the code is loaded, no internet connection is needed.
 
 Technical details
 ------
@@ -14,9 +14,9 @@ The modular JavaScript approach based on [require.js](http://requirejs.org) is e
 Integration with the other software
 ------
 
-The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked, if it contains CIF or POSCAR file in the global variable **playerdata** as a string. If found, it is loaded and rendered. Additionally, supported files from anywhere on the web can be displayed. A file URL must be then passed via **_document.location.hash_** property (browser's address bar, after **#** symbol). However, if the file is served from another domain, the proxy for remote requests should be used. There are examples of PHP and Python proxies (not for production use) in ```src``` folder. Obviously, it is safer to serve supported files from the same domain.
+The file ```player.html``` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked for the CIF or POSCAR (as a string) in the global variable **playerdata**. If found, CIF or POSCAR is loaded and rendered. Additionally, CIF or POSCAR from anywhere on the web can be rendered, if the CORS policy applies. A file URL must be given via the **_document.location.hash_** property (browser's address bar, after **#** symbol). To bypass CORS, the proxy for the remote requests could be used. There are examples of PHP and Python proxies (**not for production use**) in ```src``` folder. Obviously, it is safer to serve supported files from the same domain.
 
 Comparison with the other open-source plugin-free engines
 ------
 
-See the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660).
+See a detailed [comparison](https://github.com/blokhin/cif-js-engines) as well as the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660).
