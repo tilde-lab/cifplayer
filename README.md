@@ -4,7 +4,7 @@ HTML5 Player for Materials Informatics
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File) and VASP POSCAR structures, written in a pure JavaScript.
 
-In a compiled form it is only one **standalone** file ```player.html``` of 500 Kb (100 Kb gzipped). See it [online](http://tilde-lab.github.io/player.html). Only a web-browser is required. After the code is loaded, no internet connection is needed.
+In a compiled form it is only one **standalone** file ```player.html``` of 500 Kb (100 Kb gzipped). See it [online](http://tilde-lab.github.io/cifplayer). Only a web-browser is required. After the code is loaded, no internet connection is needed.
 
 Technical details
 ------
