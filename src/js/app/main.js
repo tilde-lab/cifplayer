@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.6
+ * Version: 0.17.0
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
-require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom'], function(MatinfIO, mathjs, th){
 
 var player = {};
-player.version = '0.16.6';
+player.version = '0.17.0';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -161,8 +161,8 @@ function render(){
     var old = player.scene.getObjectByName("atombox");
     if (old){
         player.scene.remove(old);
-        var u=old.children.length-1;
-        for (u; u>=0; u--){
+        var u = old.children.length - 1;
+        for (; u >= 0; u--){
             var child = old.children[u];
             if (child.geometry) child.geometry.dispose();
             if (child.material) child.material.dispose();
@@ -183,6 +183,7 @@ function render(){
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
+
     var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label>  <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
@@ -191,7 +192,7 @@ function render(){
         }
     }
     var ob = document.getElementsByClassName("optionpanel");
-    for (var i = ob.length-1; i>=0; i--){
+    for (var i = ob.length - 1; i >= 0; i--){
         ob[i].onclick = function(){
             var clicked = this.id.replace('optionpanel_', '');
             if (player.available_overlays.indexOf(clicked) !== -1){
@@ -200,7 +201,8 @@ function render(){
                 var labels = obj.filter(function(item){ return item.name == 'label' }),
                     i = 0,
                     len = labels.length;
-                for (i; i < len; i++){
+
+                for (; i < len; i++){
                     player.atombox.remove(labels[i]);
                     player.scene.remove(labels[i]);
                 }
@@ -222,7 +224,7 @@ function render(){
     var resolution = player.webgl ? {w: 10, h: 8} : {w: 8, h: 6},
         i = 0,
         len = player.obj3d.atoms.length;
-    for (i; i < len; i++){
+    for (; i < len; i++){
         var x = parseInt( player.obj3d.atoms[i].x*100 ),
             y = parseInt( player.obj3d.atoms[i].y*100 ),
             z = parseInt( player.obj3d.atoms[i].z*100 ),
@@ -242,8 +244,9 @@ function render(){
 
     if (player.obj3d.cell.length){
         var axcolor,
-            ortes = [];
-        for (var i = 0; i < 3; i++){
+            ortes = [],
+            i = 0;
+        for (; i < 3; i++){
             var a = Math.round(parseFloat(player.obj3d.cell[i][0])*1000)/10,
                 b = Math.round(parseFloat(player.obj3d.cell[i][1])*1000)/10,
                 c = Math.round(parseFloat(player.obj3d.cell[i][2])*1000)/10;
@@ -272,7 +275,7 @@ function render(){
 
         var i = 0,
             len = drawing_cell.length;
-        for (i; i < len; i++){
+        for (; i < len; i++){
             draw_3d_line(drawing_cell[i][0], drawing_cell[i][1]);
         }
     }
@@ -398,14 +401,14 @@ function handleDragOver(evt){
     evt.dataTransfer.dropEffect = 'copy';
 }
 
-domReady(function(){
+(function(){
     player.webgl = true;
 
     var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>'),
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('landing', '<h1>CIF and POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>, or <b>OPTIMADE</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     document.getElementById('play_demo').onclick = play_demo;
 
     var logger = {warning: advise, error: notify};
@@ -441,6 +444,6 @@ domReady(function(){
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
-});
+})();
 
 });
