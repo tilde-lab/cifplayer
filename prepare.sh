@@ -2,8 +2,8 @@
 
 command -v npm > /dev/null 2>&1 || { echo >&2 "Error: npm package manager should be installed"; exit 1; }
 
-npm install webpack
-npm install mathjs
+npm install webpack@1.15.0
+npm install mathjs@5.9.0
 
 THREEJSFOLDER="three.js-r76"
 

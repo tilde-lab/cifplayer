@@ -1,14 +1,14 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.16.3
+ * Version: 0.17.0
  */
 "use strict";
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
-require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/domReady'], function(MatinfIO, mathjs, th, domReady){
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom'], function(MatinfIO, mathjs, th){
 
 var player = {};
-player.version = '0.16.3';
+player.version = '0.17.0';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -22,6 +22,7 @@ player.default_overlay = "S"; // TODO radio checked=checked
 player.current_overlay = player.default_overlay;
 player.obj3d = false;
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
+player.mpds_integration = window.parent && window.parent.wmgui;
 //player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
 player.webgl = (function(){
 try {
@@ -47,8 +48,9 @@ function cancel_event(evt){
 var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(cb){ return setTimeout(cb, 1000/60) }
 
 function notify(msg){
-    if (window.parent && window.parent.wmgui && window.parent.wmgui.notify){
+    if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
+        window.parent.close_vibox();
     } else {
         var notifybox = document.getElementById('notifybox'),
             message = document.getElementById('message');
@@ -56,6 +58,12 @@ function notify(msg){
         message.innerHTML = '';
         setTimeout(function(){ message.innerHTML = msg }, 250);
     }
+}
+
+function advise(msg){
+    if (player.mpds_integration){
+        window.parent.wmgui.notify(msg);
+    } else alert(msg);
 }
 
 function create_box(id, html){
@@ -82,10 +90,10 @@ function create_sprite(text){
 
     canvas.width = w;
     canvas.height = 30;
-    context.font = "normal 30px Arial";
+    context.font = "normal 30px Palatino";
     context.textAlign = "center";
     context.textBaseline = "middle";
-    context.fillStyle = (player.colorset == "W") ? "#000000" : "#FFFFFF";
+    context.fillStyle = (player.colorset == "W") ? "#000" : "#fff";
     context.fillText(text, canvas.width / 2, canvas.height / 2);
 
     var texture = new THREE.Texture(canvas);
@@ -135,6 +143,13 @@ function init(){
         player.camera.updateProjectionMatrix();
     }
 
+    if (player.mpds_integration){
+        var exitpanel = create_box('exitpanel');
+        exitpanel.onclick = function(){
+            window.parent.close_vibox();
+        }
+    }
+
     player.controls = new THREE.TrackballControls(player.camera);
     player.controls.rotateSpeed = 7.5;
     player.controls.staticMoving = true;
@@ -146,8 +161,8 @@ function render(){
     var old = player.scene.getObjectByName("atombox");
     if (old){
         player.scene.remove(old);
-        var u=old.children.length-1;
-        for (u; u>=0; u--){
+        var u = old.children.length - 1;
+        for (; u >= 0; u--){
             var child = old.children[u];
             if (child.geometry) child.geometry.dispose();
             if (child.material) child.material.dispose();
@@ -159,21 +174,25 @@ function render(){
 
     var test = document.getElementById('infopanel');
     if (test) test.parentNode.removeChild(test);
+
     if (player.obj3d.descr){
-        create_box('infopanel', '<span style=color:#900><i>a</i>='+(Math.round(parseFloat(player.obj3d.descr['a']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#090><i>b</i>='+(Math.round(parseFloat(player.obj3d.descr['b']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#09f><i>c</i>='+(Math.round(parseFloat(player.obj3d.descr['c']) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><i>&#945;</i>='+(Math.round(parseFloat(player.obj3d.descr['alpha']) * 100)/100).toFixed(2)+'&deg;<br /><i>&#946;</i>='+(Math.round(parseFloat(player.obj3d.descr['beta']) * 100)/100).toFixed(2)+'&deg;<br /><i>&#947;</i>='+(Math.round(parseFloat(player.obj3d.descr['gamma']) * 100)/100).toFixed(2)+'&deg;<br />');
+        var symlabel = player.obj3d.mpds_data ? '' : ((player.obj3d.descr.symlabel) ? '<i>SG</i> ' + player.obj3d.descr.symlabel : '');
+
+        create_box('infopanel', '<span style=color:#900><i>a</i>='+(Math.round(parseFloat(player.obj3d.descr.a) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#090><i>b</i>='+(Math.round(parseFloat(player.obj3d.descr.b) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#09f><i>c</i>='+(Math.round(parseFloat(player.obj3d.descr.c) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><i>&#945;</i>='+(Math.round(parseFloat(player.obj3d.descr.alpha) * 100)/100).toFixed(2)+'&deg;<br /><i>&#946;</i>='+(Math.round(parseFloat(player.obj3d.descr.beta) * 100)/100).toFixed(2)+'&deg;<br /><i>&#947;</i>='+(Math.round(parseFloat(player.obj3d.descr.gamma) * 100)/100).toFixed(2)+'&deg;<br />' + symlabel);
     }
 
     var test = document.getElementById('optionpanel');
     if (test) test.parentNode.removeChild(test);
-    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label> <input type=radio name=optionpanel class=optionpanel id=optionpanel_N /><label for=optionpanel_N>id\'s</label>');
+
+    var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label>  <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
-            optionpanel.innerHTML += ' <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
+            optionpanel.innerHTML += '  <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
             player.available_overlays.push(prop); // TODO redesign?
         }
     }
     var ob = document.getElementsByClassName("optionpanel");
-    for (var i = ob.length-1; i>=0; i--){
+    for (var i = ob.length - 1; i >= 0; i--){
         ob[i].onclick = function(){
             var clicked = this.id.replace('optionpanel_', '');
             if (player.available_overlays.indexOf(clicked) !== -1){
@@ -182,7 +201,8 @@ function render(){
                 var labels = obj.filter(function(item){ return item.name == 'label' }),
                     i = 0,
                     len = labels.length;
-                for (i; i < len; i++){
+
+                for (; i < len; i++){
                     player.atombox.remove(labels[i]);
                     player.scene.remove(labels[i]);
                 }
@@ -204,7 +224,7 @@ function render(){
     var resolution = player.webgl ? {w: 10, h: 8} : {w: 8, h: 6},
         i = 0,
         len = player.obj3d.atoms.length;
-    for (i; i < len; i++){
+    for (; i < len; i++){
         var x = parseInt( player.obj3d.atoms[i].x*100 ),
             y = parseInt( player.obj3d.atoms[i].y*100 ),
             z = parseInt( player.obj3d.atoms[i].z*100 ),
@@ -224,8 +244,9 @@ function render(){
 
     if (player.obj3d.cell.length){
         var axcolor,
-            ortes = [];
-        for (var i = 0; i < 3; i++){
+            ortes = [],
+            i = 0;
+        for (; i < 3; i++){
             var a = Math.round(parseFloat(player.obj3d.cell[i][0])*1000)/10,
                 b = Math.round(parseFloat(player.obj3d.cell[i][1])*1000)/10,
                 c = Math.round(parseFloat(player.obj3d.cell[i][2])*1000)/10;
@@ -254,7 +275,7 @@ function render(){
 
         var i = 0,
             len = drawing_cell.length;
-        for (i; i < len; i++){
+        for (; i < len; i++){
             draw_3d_line(drawing_cell[i][0], drawing_cell[i][1]);
         }
     }
@@ -298,42 +319,7 @@ function display_landing(){
         var landing = document.getElementById('landing');
         if (player.colorset == 'B') landing.style.background = '#222';
         landing.style.display = 'block';
-        var ribbon = document.getElementById('ribbon');
-        ribbon.style.display = 'block';
     } else play_demo();
-}
-
-function do_tune(evt){
-    cancel_event(evt);
-    var y = (evt.pageY) ? evt.pageY : evt.clientY,
-        ey = document.getElementById('tunebox').offsetTop;
-
-    if (y-ey < 40){
-        var colorset = load_setup('colorset');
-        if (!colorset || colorset == 'W') save_setup('colorset', 'B');
-        else save_setup('colorset', 'W');
-    } else {
-        var forcewebgl = load_setup('forcewebgl');
-        if (!forcewebgl || forcewebgl == 'Y') save_setup('forcewebgl', 'N');
-        else save_setup('forcewebgl', 'Y');
-    }
-    document.location.reload();
-}
-
-function save_setup(name, value){
-    if (value)
-        document.cookie = name + "=" + value.toString() + "; expires=Fri, 31 Dec 2100 23:59:59 GMT";
-    else
-        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-}
-
-function load_setup(name){
-    if (name == "forcewebgl")
-        return document.cookie.replace(/(?:(?:^|.*;\s*)forcewebgl\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    else if (name == "colorset")
-        return document.cookie.replace(/(?:(?:^|.*;\s*)colorset\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    else
-        return false;
 }
 
 function play_demo(evt){
@@ -376,10 +362,7 @@ function accept_data(str, allow_download){
 
     player.obj3d = MatinfIO.to_player(str);
     if (player.obj3d){
-        var landing = document.getElementById('landing');
-        landing.style.display = 'none';
-        var ribbon = document.getElementById('ribbon');
-        ribbon.style.display = 'none';
+        document.getElementById('landing').style.display = 'none';
 
         /*if (allow_download){
             if (!dpanel_ready){
@@ -389,6 +372,9 @@ function accept_data(str, allow_download){
         }*/
         player.loaded ? render() : init();
         if (player.obj3d.info) document.title = player.obj3d.info;
+
+        document.getElementById('demobox').style.display = (player.obj3d.mpds_data && player.obj3d.mpds_demo) ? 'block' : 'none';
+
     } else if (!player.loaded) display_landing();
 }
 
@@ -415,30 +401,17 @@ function handleDragOver(evt){
     evt.dataTransfer.dropEffect = 'copy';
 }
 
-domReady(function(){
-    var forcewebgl = load_setup('forcewebgl');
-    if (forcewebgl == 'N') player.webgl = false;
-    else if (forcewebgl == 'Y') player.webgl = true;
-
-    var colorset = load_setup('colorset');
-    if (colorset) player.colorset = colorset;
+(function(){
+    player.webgl = true;
 
     var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>'),
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('versionbox', 'v' + player.version);
-    var cmdbox = create_box('cmdbox', 'Load new');
-    cmdbox.onclick = display_landing;
+    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>, or <b>OPTIMADE JSON</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    document.getElementById('play_demo').onclick = play_demo;
 
-    var tunebox = create_box('tunebox');
-    tunebox.onclick = do_tune;
-
-    create_box('landing', '<h1>CIF & POSCAR web-viewer</h1><div id="legend">Choose a <b>CIF</b> or <b>POSCAR</b> file (drag <b><i>&</i></b> drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
-    var demo = document.getElementById('play_demo');
-    demo.onclick = play_demo;
-
-    var logger = {warning: notify, error: notify};
+    var logger = {warning: advise, error: notify};
     MatinfIO = MatinfIO(mathjs, logger);
 
     window.addEventListener('resize', resize, false );
@@ -471,6 +444,6 @@ domReady(function(){
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
-});
+})();
 
 });
