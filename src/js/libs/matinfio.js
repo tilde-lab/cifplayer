@@ -2,7 +2,7 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.4.0
+ * Version: 0.4.1
  *
  * Usage: initialize with the math.js and logger objects, e.g.:
  *
@@ -44,7 +44,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.4.0';
+var version = '0.4.1';
 
 var chemical_elements = {
 
@@ -187,7 +187,7 @@ function jsobj2player(crystal){
                 render.atoms[ hashes[hash] ].overlays[oprop] += update;
             }
         } else {
-            color = (chemical_elements.JmolColors[ crystal.atoms[i].symbol ]) ? chemical_elements.JmolColors[ crystal.atoms[i].symbol ] : '0xffff00';
+            color = (chemical_elements.JmolColors[ crystal.atoms[i].symbol ]) ? chemical_elements.JmolColors[ crystal.atoms[i].symbol ] : '#FFFF00';
             radius = (chemical_elements.AseRadii[ crystal.atoms[i].symbol ]) ? chemical_elements.AseRadii[ crystal.atoms[i].symbol ] : 0.66;
             optionpanel = {"S": crystal.atoms[i].symbol, "N": i + 1};
             for (oprop in crystal.atoms[i].overlays){
@@ -532,8 +532,8 @@ function optimade2jsobj(str){
             'x': item[0],
             'y': item[1],
             'z': item[2],
-            'symbol': payload.data[0].attributes.species[idx].chemical_symbols[0],
-            'overlays': payload.data[0].attributes.species[idx].name ? {'label': payload.data[0].attributes.species[idx].name} : {}
+            'symbol': payload.data[0].attributes.species_at_sites[idx].replace(/\W+/, '').replace(/\d+/, ''),
+            'overlays': {'label': payload.data[0].attributes.species_at_sites[idx]}
         }); // NB chemical_symbols.length > 1 ?
     });
 
