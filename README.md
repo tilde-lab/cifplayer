@@ -1,6 +1,7 @@
 HTML5 CIF player
 ======
 [![DOI](https://zenodo.org/badge/18811/tilde-lab/player.html.svg)](https://zenodo.org/badge/latestdoi/18811/tilde-lab/player.html)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Fcifplayer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Fcifplayer?ref=badge_shield)
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File), OPTIMADE JSON, and VASP POSCAR structures, written in a pure JavaScript.
 
@@ -20,3 +21,7 @@ Comparison with the other open-source plugin-free engines
 ------
 
 See a detailed [comparison](https://github.com/blokhin/cif-js-engines) as well as the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660).
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Fcifplayer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Fcifplayer?ref=badge_large)
