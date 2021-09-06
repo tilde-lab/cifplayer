@@ -1,14 +1,15 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.17.0
+ * Version: 0.18.0
  */
 "use strict";
+
 require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
-require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom'], function(MatinfIO, mathjs, th){
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(MatinfIO, mathjs, th, tween){
 
 var player = {};
-player.version = '0.17.0';
+player.version = '0.18.0';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -19,10 +20,11 @@ player.controls = null;
 player.atombox = null;
 player.available_overlays = ["empty", "S", "N"];
 player.default_overlay = "S"; // TODO radio checked=checked
-player.current_overlay = player.default_overlay;
-player.obj3d = false;
+player.current_overlay = player.default_overlay; // labels
+player.obj3d = false;                            // structure to visualize
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
 player.mpds_integration = window.parent && window.parent.wmgui;
+player.tweened = false;
 //player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
 player.webgl = (function(){
 try {
@@ -31,6 +33,7 @@ var canvas = document.createElement( 'canvas' ); return !! ( window.WebGLRenderi
 return false;
 }
 })();
+
 player.colorset = 'W';
 player.sample = "data_example\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_charge\nO1 O 0.425 0.262 0.009 -2.0\nO2 O -0.425 0.262 0.009 -2.0\nH3 H 0.444 0.258 0.154 1.0\nH4 H -0.444 0.258 0.154 1.0\nH5 H 0.396 0.124 0.012 1.0\nH6 H -0.396 0.124 0.012 1.0\nO7 O 0.425 0.236 0.510 -2.0\nO8 O -0.425 0.236 0.510 -2.0\nH9 H 0.444 0.239 0.656 1.0\nH10 H -0.444 0.239 0.656 1.0\nH11 H 0.396 0.374 0.512 1.0\nH12 H -0.396 0.374 0.512 1.0\nSr13 Sr 0.342 0.964 0.467 2.0\nSr14 Sr -0.342 0.964 0.467 2.0\nSr15 Sr 0.342 0.535 0.967 2.0\nSr16 Sr -0.342 0.535 0.967 2.0\nO17 O 0.348 0.971 0.019 -2.0\nO18 O -0.348 0.971 0.019 -2.0\nO19 O 0.348 0.528 0.519 -2.0\nO20 O -0.348 0.528 0.519 -2.0\nO21 O 0.263 0.803 0.701 -2.0\nO22 O -0.263 0.803 0.701 -2.0\nO23 O 0.264 0.695 0.200 -2.0\nO24 O -0.264 0.695 0.200 -2.0\nZr25 Zr 0.261 0.000 0.998 4.0\nZr26 Zr -0.261 0.000 0.998 4.0\nZr27 Zr 0.261 0.499 0.498 4.0\nZr28 Zr -0.261 0.499 0.498 4.0\nO29 O 0.257 0.304 0.806 -2.0\nO30 O -0.257 0.304 0.806 -2.0\nO31 O 0.257 0.195 0.306 -2.0\nO32 O -0.257 0.195 0.306 -2.0\nSr33 Sr 0.173 0.993 0.524 2.0\nSr34 Sr -0.173 0.993 0.524 2.0\nSr35 Sr 0.173 0.506 0.024 2.0\nSr36 Sr -0.173 0.506 0.024 2.0\nO37 O 0.173 0.947 0.986 -2.0\nO38 O -0.173 0.947 0.986 -2.0\nO39 O 0.173 0.551 0.486 -2.0\nO40 O -0.173 0.551 0.486 -2.0\nO41 O 0.098 0.204 0.295 -2.0\nO42 O -0.098 0.204 0.295 -2.0\nO43 O 0.098 0.295 0.795 -2.0\nO44 O -0.098 0.295 0.795 -2.0\nZr45 Zr 0.086 0.004 0.998 4.0\nZr46 Zr -0.086 0.004 0.998 4.0\nZr47 Zr 0.086 0.495 0.498 4.0\nZr48 Zr -0.086 0.495 0.498 4.0\nO49 O 0.074 0.709 0.211 -2.0\nO50 O -0.074 0.709 0.211 -2.0\nO51 O 0.074 0.790 0.711 -2.0\nO52 O -0.074 0.790 0.711 -2.0\nSr53 Sr 0 0.991 0.467 2.0\nSr54 Sr 0 0.508 0.967 2.0\nO55 O 0 0.076 0.020 -2.0\nO56 O 0 0.423 0.520 -2.0";
 
@@ -83,10 +86,68 @@ function draw_3d_line(start_arr, finish_arr, color){
     player.atombox.add(new THREE.Line(vector, material));
 }
 
+function vibrate(phonon){
+    /*var test_phonon = '';
+    for (var i = 0; i < player.obj3d.atoms.length; i++){
+        test_phonon += '1,1,1, '; // debug phonon animation
+    }
+    test_phonon = '[' + test_phonon.substr(0, test_phonon.length - 2) + ']';
+    phonon = test_phonon;*/
+
+    if (player.tweened) return repose(vibrate, phonon);
+
+    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
+        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
+
+    tween.removeAll();
+
+    phonon = JSON.parse(phonon);
+    if (phonon.length / 3 !== player.obj3d.atoms.length) return notify('Internal error: length of the phonon data != number of atoms * 3');
+
+    for (var i = 0; i < balls.length; i++){
+        var x = parseInt(balls[i].position.x),
+            y = parseInt(balls[i].position.y),
+            z = parseInt(balls[i].position.z),
+            distb_pos = {
+                x: x + phonon[i * 3]     * 600,
+                y: y + phonon[i * 3 + 1] * 600,
+                z: z + phonon[i * 3 + 2] * 600
+            },
+            tween_balls = new tween.Tween(balls[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
+            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
+    }
+    player.tweened = true;
+}
+
+function repose(cb, cb_arg){
+
+    tween.removeAll();
+
+    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
+        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
+
+    for (var i = 0; i < balls.length; i++){
+        var x = parseInt(player.obj3d.atoms[i].x * 100),
+            y = parseInt(player.obj3d.atoms[i].y * 100),
+            z = parseInt(player.obj3d.atoms[i].z * 100),
+            equil_pos = {x: x, y: y, z: z},
+            tween_balls = new tween.Tween(balls[i].position).to(equil_pos, 250).start();
+            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(equil_pos, 250).start();
+    }
+    player.tweened = false;
+
+    if (cb){
+        setTimeout(function(){
+            cb(cb_arg);
+        }, 250);
+    }
+}
+
 function create_sprite(text){
     var canvas = document.createElement('canvas'),
         context = canvas.getContext('2d'),
-        metrics = context.measureText(text), w = metrics.width * 3.5;
+        metrics = context.measureText(text),
+        w = metrics.width * 3.5;
 
     canvas.width = w;
     canvas.height = 30;
@@ -113,7 +174,7 @@ function init(){
     player.container = create_box('player');
 
     player.scene = new THREE.Scene();
-    player.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 20000);
+    player.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000);
     player.camera.position.set(0, 0, 1800);
 
     var AmbientLight = new THREE.AmbientLight(0x999999);
@@ -122,7 +183,7 @@ function init(){
     PointLight.position.set(1500, 1500, 1500);
     player.scene.add(PointLight);
 
-    player.renderer = player.webgl ? new THREE.WebGLRenderer({antialias:true, alpha: true}): new THREE.CanvasRenderer();
+    player.renderer = player.webgl ? new THREE.WebGLRenderer({antialias: true, alpha: true}): new THREE.CanvasRenderer();
     (player.colorset == "W") ? player.renderer.setClearColor(0xffffff, 1) : player.renderer.setClearColor(0x000000, 1);
     player.renderer.setPixelRatio( window.devicePixelRatio );
     player.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -138,7 +199,7 @@ function init(){
         cancel_event(evt);
         var y = (evt.pageY) ? evt.pageY : evt.clientY,
             ey = document.getElementById('zoompanel').offsetTop,
-            fov = ((y-ey < 50) ? 1 : -1) * 7.5;
+            fov = ((y - ey < 50) ? 1 : -1) * 7.5;
         player.camera.fov -= fov;
         player.camera.updateProjectionMatrix();
     }
@@ -161,8 +222,7 @@ function render(){
     var old = player.scene.getObjectByName("atombox");
     if (old){
         player.scene.remove(old);
-        var u = old.children.length - 1;
-        for (; u >= 0; u--){
+        for (var u = old.children.length - 1; u >= 0; u--){
             var child = old.children[u];
             if (child.geometry) child.geometry.dispose();
             if (child.material) child.material.dispose();
@@ -187,15 +247,20 @@ function render(){
     var optionpanel = create_box('optionpanel', '<input type=radio name=optionpanel class=optionpanel id=optionpanel_empty /><label for=optionpanel_empty>none</label>  <input type=radio name=optionpanel class=optionpanel id=optionpanel_S checked=checked /><label for=optionpanel_S>elements</label>');
     if (Object.keys(player.obj3d.overlayed).length){
         for (var prop in player.obj3d.overlayed){
-            optionpanel.innerHTML += '  <input type=radio name=optionpanel class=optionpanel id=optionpanel_'+prop+' /><label for=optionpanel_'+prop+'>'+player.obj3d.overlayed[prop]+'</label>';
+            optionpanel.innerHTML += '  <input type=radio name=optionpanel class=optionpanel id=optionpanel_' + prop + ' /><label for=optionpanel_' + prop + '>' + player.obj3d.overlayed[prop] + '</label>';
             player.available_overlays.push(prop); // TODO redesign?
         }
     }
-    var ob = document.getElementsByClassName("optionpanel");
-    for (var i = ob.length - 1; i >= 0; i--){
-        ob[i].onclick = function(){
+
+    var buttons = document.getElementsByClassName("optionpanel");
+    for (var i = buttons.length - 1; i >= 0; i--){
+        buttons[i].onclick = function(evt){
+            if (player.tweened) return cancel_event(evt);
+
             var clicked = this.id.replace('optionpanel_', '');
+
             if (player.available_overlays.indexOf(clicked) !== -1){
+
                 var obj = player.scene.getObjectByName("atombox");
                 obj = obj.children;
                 var labels = obj.filter(function(item){ return item.name == 'label' }),
@@ -206,6 +271,7 @@ function render(){
                     player.atombox.remove(labels[i]);
                     player.scene.remove(labels[i]);
                 }
+
                 if (clicked !== 'empty'){
                     var balls = obj.filter(function(item){ return item.name == 'atom' }),
                         len = balls.length;
@@ -221,15 +287,18 @@ function render(){
         }
     }
     player.current_overlay = player.default_overlay;
+
     var resolution = player.webgl ? {w: 10, h: 8} : {w: 8, h: 6},
         i = 0,
         len = player.obj3d.atoms.length;
+
     for (; i < len; i++){
-        var x = parseInt( player.obj3d.atoms[i].x*100 ),
-            y = parseInt( player.obj3d.atoms[i].y*100 ),
-            z = parseInt( player.obj3d.atoms[i].z*100 ),
-            r = player.obj3d.atoms[i].r*65,
+        var x = parseInt(player.obj3d.atoms[i].x * 100),
+            y = parseInt(player.obj3d.atoms[i].y * 100),
+            z = parseInt(player.obj3d.atoms[i].z * 100),
+            r = player.obj3d.atoms[i].r * 65,
             atom = new THREE.Mesh( new THREE.SphereBufferGeometry( r, resolution.w, resolution.h ), new THREE.MeshLambertMaterial( { color: player.obj3d.atoms[i].c, overdraw: 0.75 } ) );
+
         atom.position.set(x, y, z);
         atom.name = "atom";
         atom.overlays = player.obj3d.atoms[i].overlays;
@@ -247,20 +316,20 @@ function render(){
             ortes = [],
             i = 0;
         for (; i < 3; i++){
-            var a = Math.round(parseFloat(player.obj3d.cell[i][0])*1000)/10,
-                b = Math.round(parseFloat(player.obj3d.cell[i][1])*1000)/10,
-                c = Math.round(parseFloat(player.obj3d.cell[i][2])*1000)/10;
+            var a = Math.round(parseFloat(player.obj3d.cell[i][0]) * 1000) / 10,
+                b = Math.round(parseFloat(player.obj3d.cell[i][1]) * 1000) / 10,
+                c = Math.round(parseFloat(player.obj3d.cell[i][2]) * 1000) / 10;
             ortes.push([a, b, c]);
-            if (i==0) axcolor = 0x990000;
-            else if (i==1) axcolor = 0x009900;
-            else if (i==2) axcolor = 0x0099FF;
-            player.atombox.add(new THREE.ArrowHelper(new THREE.Vector3(a, b, c).normalize(), new THREE.Vector3(0, 0, 0), Math.sqrt(a*a+b*b+c*c), axcolor, 75, 10));
+            if (i == 0) axcolor = 0x990000;
+            else if (i == 1) axcolor = 0x009900;
+            else if (i == 2) axcolor = 0x0099FF;
+            player.atombox.add(new THREE.ArrowHelper(new THREE.Vector3(a, b, c).normalize(), new THREE.Vector3(0, 0, 0), Math.sqrt(a*a + b*b + c*c), axcolor, 75, 10));
         }
 
-        var plane_point1 = [ortes[0][0]+ortes[1][0], ortes[0][1]+ortes[1][1], ortes[0][2]+ortes[1][2]],
-            plane_point2 = [ortes[0][0]+ortes[2][0], ortes[0][1]+ortes[2][1], ortes[0][2]+ortes[2][2]],
-            plane_point3 = [plane_point1[0]+ortes[2][0], plane_point1[1]+ortes[2][1], plane_point1[2]+ortes[2][2]],
-            dpoint = [ortes[1][0]+ortes[2][0], ortes[1][1]+ortes[2][1], ortes[1][2]+ortes[2][2]],
+        var plane_point1 = [ortes[0][0] + ortes[1][0], ortes[0][1] + ortes[1][1], ortes[0][2] + ortes[1][2]],
+            plane_point2 = [ortes[0][0] + ortes[2][0], ortes[0][1] + ortes[2][1], ortes[0][2] + ortes[2][2]],
+            plane_point3 = [plane_point1[0] + ortes[2][0], plane_point1[1] + ortes[2][1], plane_point1[2] + ortes[2][2]],
+            dpoint = [ortes[1][0] + ortes[2][0], ortes[1][1] + ortes[2][1], ortes[1][2] + ortes[2][2]],
             drawing_cell = [];
 
         drawing_cell.push([ortes[0], plane_point1]);
@@ -281,10 +350,8 @@ function render(){
     }
     player.atombox.name = "atombox";
     player.scene.add(player.atombox);
-    //TWEEN.removeAll();
+    tween.removeAll();
     play();
-    //var fake_phonon = ''; for (var i=0; i<player.obj3d.atoms.length; i++){ fake_phonon += '1,1,1, ' } // debug phonon animation
-    //vibrate_3D( '[' + fake_phonon.substr(0, fake_phonon.length-2) + ']' );
 }
 
 function resize(){
@@ -301,7 +368,7 @@ function play(){
     requestAnimationFrame(play);
     player.renderer.render(player.scene, player.camera);
     player.controls.update();
-    //TWEEN.update();
+    tween.update();
     //player.stats.update();
 }
 
@@ -408,7 +475,7 @@ function handleDragOver(evt){
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>, or <b>OPTIMADE JSON</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
+    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>, or <b>Optimade</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
     document.getElementById('play_demo').onclick = play_demo;
 
     var logger = {warning: advise, error: notify};
@@ -444,6 +511,9 @@ function handleDragOver(evt){
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
+
+    window.vibrate = vibrate;
+    window.repose = repose;
 })();
 
 });

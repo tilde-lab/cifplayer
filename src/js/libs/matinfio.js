@@ -540,7 +540,7 @@ function optimade2jsobj(str){
     return {
         'cell': payload.data[0].attributes.lattice_vectors,
         'atoms': atoms,
-        'info': 'id = ' + payload.data[0].id,
+        'info': 'id=' + payload.data[0].id,
         'cartesian': true
     };
 }

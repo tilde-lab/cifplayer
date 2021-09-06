@@ -8,7 +8,7 @@ module.exports = {
         'libs/matinfio': '../libs/matinfio',
         'libs/math.custom': '../libs/math.custom',
         'libs/three.custom': '../libs/three.custom',
-        'libs/domReady': '../libs/domReady'
+        'libs/tween.umd': '../libs/tween.umd'
         }
     },
     output: {
