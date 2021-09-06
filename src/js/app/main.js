@@ -1,7 +1,7 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.18.0
+ * Version: 0.19.0
  */
 "use strict";
 
@@ -9,7 +9,7 @@ require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(MatinfIO, mathjs, th, tween){
 
 var player = {};
-player.version = '0.18.0';
+player.version = '0.19.0';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -394,11 +394,11 @@ function play_demo(evt){
     accept_data(player.sample, false);
 }
 
-function direct_download(){
+/* function direct_download(){
     var url = document.location.hash.substr(1);
     if (url.indexOf('://') == -1) return;
     window.open(url, 'd_' + Math.random());
-}
+} */
 
 function ajax_download(url){
     /*var parser = document.createElement('a');
@@ -500,13 +500,25 @@ function handleDragOver(evt){
     }
 
     // iframe integration:
-    // (1) via parent.playerdata object / location.search key
-    // (2) via parent.playerdata string
+    // - via postMessage interface
+    // - via parent.playerdata object / location.search key
+    // - via parent.playerdata string
+
+    window.addEventListener('message', function(event){
+        accept_data(event.data, false);
+    });
+
     if (window.parent && window.parent.playerdata){
+
         var target_data;
-        if (typeof window.parent.playerdata === 'object' && document.location.search) target_data = window.parent.playerdata[document.location.search.substr(1)];
-        else target_data = window.parent.playerdata;
+
+        if (typeof window.parent.playerdata === 'object' && document.location.search)
+            target_data = window.parent.playerdata[document.location.search.substr(1)];
+        else
+            target_data = window.parent.playerdata;
+
         accept_data(target_data, false);
+
     } else {
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
