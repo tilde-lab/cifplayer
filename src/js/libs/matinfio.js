@@ -2,7 +2,7 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.4.1
+ * Version: 0.4.2
  *
  * Usage: initialize with the math.js and logger objects, e.g.:
  *
@@ -44,7 +44,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.4.1';
+var version = '0.4.2';
 
 var chemical_elements = {
 
@@ -74,7 +74,7 @@ var custom_atom_loop_props = {
 function detect_format(str){
     if (str.indexOf("_cell_angle_gamma ") > 0 && str.indexOf("loop_") > 0)
         return 'CIF';
-    else if (str.indexOf('"links"') > 0 && str.indexOf('"immutable_id"') > 0 && str.indexOf('"cartesian_site_positions"') > 0)
+    else if (str.indexOf('"type":"structures"') > 0 && str.indexOf('"immutable_id"') > 0 && str.indexOf('"cartesian_site_positions"') > 0)
         return 'OPTIMADE';
 
     var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n");
@@ -520,27 +520,34 @@ function poscar2jsobj(str){
 */
 function optimade2jsobj(str){
     var payload = JSON.parse(str),
-        atoms = [];
+        atoms = [],
+        src;
 
-    if (!payload.data || !payload.data.length || !payload.data[0].attributes){
+    try {
+        src = payload.data[0];
+    } catch (e){
+        src = payload;
+    }
+
+    if (!src){
         logger.error("Error: unexpected OPTIMADE format!");
         return false;
     }
 
-    payload.data[0].attributes.cartesian_site_positions.forEach(function(item, idx){
+    src.attributes.cartesian_site_positions.forEach(function(item, idx){
         atoms.push({
             'x': item[0],
             'y': item[1],
             'z': item[2],
-            'symbol': payload.data[0].attributes.species_at_sites[idx].replace(/\W+/, '').replace(/\d+/, ''),
-            'overlays': {'label': payload.data[0].attributes.species_at_sites[idx]}
+            'symbol': src.attributes.species_at_sites[idx].replace(/\W+/, '').replace(/\d+/, ''),
+            'overlays': {'label': src.attributes.species_at_sites[idx]}
         }); // NB chemical_symbols.length > 1 ?
     });
 
     return {
-        'cell': payload.data[0].attributes.lattice_vectors,
+        'cell': src.attributes.lattice_vectors,
         'atoms': atoms,
-        'info': 'id=' + payload.data[0].id,
+        'info': 'id=' + src.id,
         'cartesian': true
     };
 }

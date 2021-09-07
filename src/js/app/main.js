@@ -1,7 +1,7 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.19.0
+ * Version: 0.19.1
  */
 "use strict";
 
@@ -9,7 +9,7 @@ require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(MatinfIO, mathjs, th, tween){
 
 var player = {};
-player.version = '0.19.0';
+player.version = '0.19.1';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -23,13 +23,17 @@ player.default_overlay = "S"; // TODO radio checked=checked
 player.current_overlay = player.default_overlay; // labels
 player.obj3d = false;                            // structure to visualize
 player.local_supported = window.File && window.FileReader && window.FileList && window.Blob;
-player.mpds_integration = window.parent && window.parent.wmgui;
 player.tweened = false;
 //player.webproxy = 'proxy.php'; // to display and download remote files; must support url get param
+
+try {
+    player.mpds_integration = window.parent && window.parent.wmgui;
+} catch (e){}
+
 player.webgl = (function(){
 try {
 var canvas = document.createElement( 'canvas' ); return !! ( window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ) );
-} catch ( e ) {
+} catch (e) {
 return false;
 }
 })();
@@ -505,11 +509,20 @@ function handleDragOver(evt){
     // - via parent.playerdata string
 
     window.addEventListener('message', function(event){
-        accept_data(event.data, false);
+        var target_data = event.data;
+        try {
+            target_data = JSON.parse(event.data);
+        } catch (e){}
+
+        accept_data(JSON.stringify(target_data), false);
     });
 
-    if (window.parent && window.parent.playerdata){
+    var playerdata = false;
+    try {
+        playerdata = window.parent && window.parent.playerdata;
+    } catch (e){}
 
+    if (playerdata){
         var target_data;
 
         if (typeof window.parent.playerdata === 'object' && document.location.search)
