@@ -2,7 +2,7 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.4.2
+ * Version: 0.4.3
  *
  * Usage: initialize with the math.js and logger objects, e.g.:
  *
@@ -44,7 +44,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.4.2';
+var version = '0.4.3';
 
 var chemical_elements = {
 
@@ -74,7 +74,7 @@ var custom_atom_loop_props = {
 function detect_format(str){
     if (str.indexOf("_cell_angle_gamma ") > 0 && str.indexOf("loop_") > 0)
         return 'CIF';
-    else if (str.indexOf('"type":"structures"') > 0 && str.indexOf('"immutable_id"') > 0 && str.indexOf('"cartesian_site_positions"') > 0)
+    else if (str.indexOf('"immutable_id"') > 0 && str.indexOf('"cartesian_site_positions"') > 0 && str.indexOf('"lattice_vectors"') > 0)
         return 'OPTIMADE';
 
     var lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n");
@@ -97,7 +97,7 @@ function unit(vec){
 
 /**
 *
-* Params to 3x3 matrix
+* Crystalline cell parameters to 3x3 matrix
 *
 */
 function cell2vec(a, b, c, alpha, beta, gamma){

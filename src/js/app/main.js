@@ -1,7 +1,7 @@
 /**
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.19.1
+ * Version: 0.19.2
  */
 "use strict";
 
@@ -9,7 +9,7 @@ require.config({ baseUrl: 'js/app', paths: { libs: '../libs' }});
 require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(MatinfIO, mathjs, th, tween){
 
 var player = {};
-player.version = '0.19.1';
+player.version = '0.19.2';
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -90,6 +90,11 @@ function draw_3d_line(start_arr, finish_arr, color){
     player.atombox.add(new THREE.Line(vector, material));
 }
 
+/**
+*
+* Animation engine
+*
+*/
 function vibrate(phonon){
     /*var test_phonon = '';
     for (var i = 0; i < player.obj3d.atoms.length; i++){
@@ -98,7 +103,7 @@ function vibrate(phonon){
     test_phonon = '[' + test_phonon.substr(0, test_phonon.length - 2) + ']';
     phonon = test_phonon;*/
 
-    if (player.tweened) return repose(vibrate, phonon);
+    if (player.tweened) return unvibrate(vibrate, phonon);
 
     var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
         labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
@@ -123,7 +128,12 @@ function vibrate(phonon){
     player.tweened = true;
 }
 
-function repose(cb, cb_arg){
+/**
+*
+* Animation engine
+*
+*/
+function unvibrate(cb, cb_arg){
 
     tween.removeAll();
 
@@ -505,13 +515,13 @@ function handleDragOver(evt){
 
     // iframe integration:
     // - via postMessage interface
-    // - via parent.playerdata object / location.search key
+    // - via parent.playerdata object and the respective location.search key
     // - via parent.playerdata string
 
     window.addEventListener('message', function(event){
         var target_data = event.data;
         try {
-            target_data = JSON.parse(event.data);
+            target_data = JSON.parse(event.data); // do we receive a JSON-object or a JSON-string?
         } catch (e){}
 
         accept_data(JSON.stringify(target_data), false);
@@ -538,7 +548,7 @@ function handleDragOver(evt){
     }
 
     window.vibrate = vibrate;
-    window.repose = repose;
+    window.unvibrate = unvibrate;
 })();
 
 });
