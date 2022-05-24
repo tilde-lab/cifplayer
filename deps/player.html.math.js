@@ -17,5 +17,7 @@ math.import(require('mathjs/lib/function/arithmetic/multiply'));
 math.import(require('mathjs/lib/function/arithmetic/subtract'));
 math.import(require('mathjs/lib/function/matrix/cross'));
 math.import(require('mathjs/lib/function/matrix/dot'));
+math.import(require('mathjs/lib/function/matrix/transpose'));
+math.import(require('mathjs/lib/function/algebra/solver/lusolve'));
 
 module.exports = math;

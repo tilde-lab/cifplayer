@@ -2,16 +2,15 @@
  * IO for materials informatics
  * Author: Evgeny Blokhin
  * License: MIT
- * Version: 0.4.3
  *
  * Usage: initialize with the math.js and logger objects, e.g.:
  *
  * var logger = {warning: alert.bind(window), error: alert.bind(window)};
  * (global) MatinfIO = MatinfIO(math, logger);
  *
- * Using this library CIF and POSCAR formats can be detected and parsed.
- * "to_player" and "to_flatten" are public methods,
- * they return objects to be used in either
+ * Using this library the common materials formats can be detected and parsed.
+ * "to_player" and "to_flatten" are the public methods,
+ * returning the objects to be used in either
  * player.html (to visualize) or spglibjs (to detect symmetry),
  * respectively:
  *
@@ -44,7 +43,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.4.3';
+var version = '0.5.0';
 
 var chemical_elements = {
 
@@ -135,6 +134,36 @@ function cell2vec(a, b, c, alpha, beta, gamma){
 
 /**
 *
+* 3x3 matrix to crystalline cell parameters
+*
+*/
+function vec2cell(matrix){
+    var norms = [],
+        angles = [],
+        i = 0,
+        j,
+        k,
+        lenmult,
+        tau;
+    matrix.forEach(function(vec){
+        norms.push(Mimpl.norm(vec));
+    });
+    for (; i < 3; i++){
+        j = i - 1;
+        k = i - 2;
+        lenmult = norms[j] * norms[k];
+        if (lenmult > 1e-16){
+            tau = 180/Math.PI * Math.acos( Mimpl.dot(matrix[j], matrix[k]) / lenmult );
+        } else {
+            tau = 90.0;
+        }
+        angles.push(tau);
+    }
+    return norms.concat(angles);
+}
+
+/**
+*
 * Prepare internal repr for visualization in three.js
 *
 */
@@ -210,6 +239,67 @@ function jsobj2player(crystal){
 
 /**
 *
+* Convert internal repr into CIF
+*
+*/
+function jsobj2cif(crystal){
+
+    var cif_str = "data_matinfio\n",
+        cell_abc,
+        cell_mat;
+
+    if (Object.keys(crystal.cell).length == 6){
+        cell_abc = crystal.cell;
+        cell_mat = cell2vec(crystal.cell);
+    } else {
+        cell_abc = vec2cell(crystal.cell);
+        cell_mat = crystal.cell;
+    }
+
+    cif_str += "_cell_length_a    " + cell_abc[0].toFixed(6) + "\n";
+    cif_str += "_cell_length_b    " + cell_abc[1].toFixed(6) + "\n";
+    cif_str += "_cell_length_c    " + cell_abc[2].toFixed(6) + "\n";
+    cif_str += "_cell_angle_alpha " + cell_abc[3].toFixed(6) + "\n";
+    cif_str += "_cell_angle_beta  " + cell_abc[4].toFixed(6) + "\n";
+    cif_str += "_cell_angle_gamma " + cell_abc[5].toFixed(6) + "\n";
+
+    cif_str += "_symmetry_space_group_name_H-M 'P1'\n_symmetry_Int_Tables_number 1\n";
+    cif_str += "\nloop_" + "\n";
+    cif_str += " _symmetry_equiv_pos_as_xyz" + "\n";
+    cif_str += " +x,+y,+z" + "\n";
+
+    cif_str += "\nloop_" + "\n";
+    cif_str += " _atom_site_type_symbol" + "\n";
+    cif_str += " _atom_site_fract_x" + "\n";
+    cif_str += " _atom_site_fract_y" + "\n";
+    cif_str += " _atom_site_fract_z" + "\n";
+
+    if (crystal.cartesian){
+
+        //var t_cell_mat = Mimpl.transpose(cell_mat);
+        var t_cell_mat = cell_mat;
+        //console.log(t_cell_mat);
+
+        crystal.atoms.forEach(function(atom){
+            //console.log([atom.x, atom.y, atom.z]);
+            // TODO better test lusolve against usolve, lsolve etc.
+            var solved = Mimpl.lusolve( t_cell_mat, [atom.x, atom.y, atom.z] ),
+                fracs = Mimpl.transpose( solved )[0];
+
+            //console.log(fracs);
+            cif_str += " " + atom.symbol + "  " + fracs[0].toFixed(3) + "  " + fracs[1].toFixed(3) + "  " + fracs[2].toFixed(3) + "\n";
+        });
+
+    } else {
+        crystal.atoms.forEach(function(atom){
+            cif_str += " " + atom.symbol + "  " + atom.x.toFixed(3) + "  " + atom.y.toFixed(3) + "  " + atom.z.toFixed(3) + "\n";
+        });
+    }
+    return cif_str;
+}
+
+/**
+*
 * Convert internal repr into a flattened C-alike structure
 *
 */
@@ -266,7 +356,7 @@ function jsobj2flatten(crystal){
 
 /**
 *
-* Handle CIF fmt
+* Handle CIF
 *
 */
 function cif2jsobj(str){
@@ -274,7 +364,11 @@ function cif2jsobj(str){
         symops = [],
         atprop_seq = [],
         lines = str.toString().replace(/(\r\n|\r)/gm, "\n").split("\n"),
-        cur_structure = {'cell': {}, 'atoms': []},
+        cur_structure = {
+            'cell': {},
+            'atoms': [],
+            'cartesian': false
+        },
         loop_active = false,
         new_structure = false,
         symops_active = false,
@@ -401,7 +495,12 @@ function cif2jsobj(str){
             cur_structure.info = data_info;
             if (symops.length > 1) cur_structure.symops = symops;
             structures.push(cur_structure);
-            cur_structure = {'cell': {}, 'atoms': []}, symops = [];
+            cur_structure = {
+                'cell': {},
+                'atoms': [],
+                'cartesian': false
+            },
+            symops = [];
         }
     }
     if (cur_structure.cell.gamma){
@@ -420,7 +519,7 @@ function cif2jsobj(str){
 
 /**
 *
-* Handle POSCAR fmt
+* Handle POSCAR
 *
 */
 function poscar2jsobj(str){
@@ -506,7 +605,13 @@ function poscar2jsobj(str){
     }
     cell = Mimpl.multiply(cell, factor);
     //console.log(cell);
-    if (atoms.length) return {'cell': cell, 'atoms': atoms, 'types': types};
+    if (atoms.length)
+        return {
+            'cell': cell,
+            'atoms': atoms,
+            'types': types,
+            'cartesian': false
+        };
     else {
         logger.error("Error: unexpected POSCAR format!");
         return false;
@@ -515,7 +620,7 @@ function poscar2jsobj(str){
 
 /**
 *
-* Handle OPTIMADE fmt
+* Handle OPTIMADE
 *
 */
 function optimade2jsobj(str){
@@ -534,15 +639,35 @@ function optimade2jsobj(str){
         return false;
     }
 
-    src.attributes.cartesian_site_positions.forEach(function(item, idx){
-        atoms.push({
-            'x': item[0],
-            'y': item[1],
-            'z': item[2],
-            'symbol': src.attributes.species_at_sites[idx].replace(/\W+/, '').replace(/\d+/, ''),
-            'overlays': {'label': src.attributes.species_at_sites[idx]}
-        }); // NB chemical_symbols.length > 1 ?
-    });
+    var n_atoms = src.attributes.cartesian_site_positions.length;
+    if (!n_atoms){
+        logger.error("Error: no atomic positions found!");
+        return false;
+    }
+
+    if (src.attributes.species && src.attributes.species[n_atoms - 1] && src.attributes.species[n_atoms - 1].chemical_symbols){
+        src.attributes.species.forEach(function(item, idx){
+            atoms.push({
+                'x': src.attributes.cartesian_site_positions[idx][0],
+                'y': src.attributes.cartesian_site_positions[idx][1],
+                'z': src.attributes.cartesian_site_positions[idx][2],
+                'symbol': item.chemical_symbols[0] // NB chemical_symbols.length > 1 ?
+            });
+        });
+    } else if (src.attributes.species_at_sites){ // TODO support *elements*
+        src.attributes.species_at_sites.forEach(function(item, idx){
+            atoms.push({
+                'x': src.attributes.cartesian_site_positions[idx][0],
+                'y': src.attributes.cartesian_site_positions[idx][1],
+                'z': src.attributes.cartesian_site_positions[idx][2],
+                'symbol': item.replace(/\W+/, '').replace(/\d+/, ''),
+                'overlays': {'label': item}
+            });
+        });
+    } else {
+        logger.error("Error: no atomic data found!");
+        return false;
+    }
 
     return {
         'cell': src.attributes.lattice_vectors,
@@ -567,7 +692,7 @@ return {
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;
             case 'OPTIMADE': structure = optimade2jsobj(str); break;
-            default: logger.error("Error: file format cannot be recognized!");
+            default: logger.error("Error: file format not recognized!");
         }
         if (!structure) return false;
         return jsobj2player(structure);
@@ -581,10 +706,24 @@ return {
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;
             case 'OPTIMADE': logger.error("OPTIMADE not supported!"); break;
-            default: logger.error("Error: file format cannot be recognized!");
+            default: logger.error("Error: file format not recognized!");
         }
         if (!structure) return false;
         return jsobj2flatten(structure);
+    },
+
+    to_cif: function(str){
+        var structure,
+            format = detect_format(str);
+
+        switch (format){
+            case 'CIF': return str;
+            case 'POSCAR': structure = poscar2jsobj(str); break;
+            case 'OPTIMADE': structure = optimade2jsobj(str); break;
+            default: logger.error("Error: file format not recognized!");
+        }
+        if (!structure) return false;
+        return jsobj2cif(structure);
     },
 
     version: version

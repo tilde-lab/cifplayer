@@ -38,13 +38,13 @@ var walk = function(dir, done){
 
 var examine = function(file){
     fs.readFile(file, function(err, data){
-        if (err) {
+        if (err){
             return console.log(err);
         }
 
         try {
-            var repr = MatinfIO.to_player(data);
-        } catch (ex) {
+            var repr = MatinfIO.to_cif(data);
+        } catch (ex){
             return console.log(ex.message);
         }
 
@@ -55,7 +55,7 @@ var examine = function(file){
     });
 };
 
-var target = process.argv[process.argv.length-1];
+var target = process.argv[process.argv.length - 1];
 
 if (fs.lstatSync(target).isDirectory()){
     walk(target, function(err, results){
