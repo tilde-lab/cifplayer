@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Phonons visualization</title>
+<link rel="stylesheet" type="text/css" href="/labs/mpds-ml-labs/common.css" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<style type="text/css">
+#left, #right{width:50%;}
+#left{float:left;}
+#right{float:right;}
+
+li{display:inline-block;margin:1em;border-bottom:1px solid #000;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div id="left" class="content">
+    <ul>
+        <li class="trigger" data-phonon="1,1,1,1,1,1">Phonon #1</li>
+        <li class="trigger" data-phonon="-1,-1,-1,-1,-1,-1">Phonon #2</li>
+        <li class="trigger" data-phonon="0,0,0,0,0,0">Phonon #3</li>
+        <li id="stop">Stop</li>
+    </ul>
+</div>
+
+<div id="right" class="content">
+    <iframe id="player" frameborder=0 scrolling="no" width="100%" height="700" src="/index.html#http://localhost:7878/1405.optimade"></iframe>
+</div>
+
+<script type="text/javascript">
+"use strict";
+
+var items = document.getElementsByClassName('trigger');
+for (var i = 0; i < items.length; i++){
+    items[i].onclick = function(){
+        var phonon = this.getAttribute('data-phonon');
+        document.getElementById('player').contentWindow.vibrate('[' + phonon + ']');
+    }
+}
+
+document.getElementById('stop').onclick = function(){
+    document.getElementById('player').contentWindow.repose();
+}
+
+</script>
+</body>
+</html>
