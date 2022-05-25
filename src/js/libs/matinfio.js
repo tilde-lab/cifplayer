@@ -3,22 +3,14 @@
  * Author: Evgeny Blokhin
  * License: MIT
  *
- * Usage: initialize with the math.js and logger objects, e.g.:
+ * Usage: initialize with the math.js and logger objects, then use against *input*,
+ * which can be either a POSCAR, Optimade, or CIF string, e.g.:
  *
- * var logger = {warning: alert.bind(window), error: alert.bind(window)};
- * (global) MatinfIO = MatinfIO(math, logger);
- *
- * Using this library the common materials formats can be detected and parsed.
- * "to_player" and "to_flatten" are the public methods,
- * returning the objects to be used in either
- * player.html (to visualize) or spglibjs (to detect symmetry),
- * respectively:
- *
- * player.obj3d = MatinfIO.to_player(file_as_str);
- * init();
- *
- * var symobj = MatinfIO.to_flatten(file_as_str);
- * get_spacegroup(symobj);
+ * const logger = {warning: alert.bind(window), error: alert.bind(window)};
+ * const converter = MatinfIO(math, logger);
+ * converter.to_cif(input);
+ * converter.to_player(input);
+ * converter.to_flatten(input);
  */
 
 "use strict";
@@ -43,7 +35,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.5.0';
+var version = '0.5.1';
 
 var chemical_elements = {
 
@@ -269,6 +261,7 @@ function jsobj2cif(crystal){
     cif_str += " +x,+y,+z" + "\n";
 
     cif_str += "\nloop_" + "\n";
+    cif_str += " _atom_site_label" + "\n";
     cif_str += " _atom_site_type_symbol" + "\n";
     cif_str += " _atom_site_fract_x" + "\n";
     cif_str += " _atom_site_fract_y" + "\n";
@@ -280,19 +273,19 @@ function jsobj2cif(crystal){
         var t_cell_mat = cell_mat;
         //console.log(t_cell_mat);
 
-        crystal.atoms.forEach(function(atom){
+        crystal.atoms.forEach(function(atom, i){
             //console.log([atom.x, atom.y, atom.z]);
             // TODO better test lusolve against usolve, lsolve etc.
             var solved = Mimpl.lusolve( t_cell_mat, [atom.x, atom.y, atom.z] ),
                 fracs = Mimpl.transpose( solved )[0];
 
             //console.log(fracs);
-            cif_str += " " + atom.symbol + "  " + fracs[0].toFixed(3) + "  " + fracs[1].toFixed(3) + "  " + fracs[2].toFixed(3) + "\n";
+            cif_str += " " + atom.symbol + (i + 1) + "  " + atom.symbol + "  " + fracs[0].toFixed(3) + "  " + fracs[1].toFixed(3) + "  " + fracs[2].toFixed(3) + "\n";
         });
 
     } else {
-        crystal.atoms.forEach(function(atom){
-            cif_str += " " + atom.symbol + "  " + atom.x.toFixed(3) + "  " + atom.y.toFixed(3) + "  " + atom.z.toFixed(3) + "\n";
+        crystal.atoms.forEach(function(atom, i){
+            cif_str += " " + atom.symbol + (i + 1) + "  " + atom.symbol + "  " + atom.x.toFixed(3) + "  " + atom.y.toFixed(3) + "  " + atom.z.toFixed(3) + "\n";
         });
     }
     return cif_str;

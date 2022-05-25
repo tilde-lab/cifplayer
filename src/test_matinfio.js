@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var matinf = require('./js/libs/MatinfIO');
+var matinf = require('./js/libs/matinfio');
 var math = require('./js/libs/math.custom');
 
 var logger = {warning: console.error, error: console.error};
