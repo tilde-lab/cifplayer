@@ -35,7 +35,7 @@ String.prototype.isnumeric = function(){
 
 var MatinfIO = function(Mimpl, logger){
 
-var version = '0.5.1';
+var version = '0.6.0';
 
 var chemical_elements = {
 
@@ -72,7 +72,7 @@ function detect_format(str){
 
     for (var i = 6; i < 9; i++){
         if (!lines[i]) break;
-        if (lines[i].trim().toLowerCase().substr(0, 6) == 'direct') return 'POSCAR';
+        if (['direct', 'cartes'].indexOf( lines[i].trim().toLowerCase().substr(0, 6) ) !== -1) return 'POSCAR';
     }
     return 'unknown';
 }
@@ -214,7 +214,9 @@ function jsobj2player(crystal){
             for (oprop in crystal.atoms[i].overlays){
                 optionpanel[oprop] = crystal.atoms[i].overlays[oprop];
             }
-            // CIF and POSCAR have fractional positions, OPTIMADE has cartesian positions
+            // CIF has fractional positions
+            // OPTIMADE has cartesian positions
+            // POSCAR may have either of two
             var cpos = crystal.cartesian ? pos : Mimpl.multiply(pos, cell);
             render.atoms.push( {"x": cpos[0], "y": cpos[1], "z": cpos[2], "c": color, "r": radius, "overlays": optionpanel} );
             hashes[hash] = render.atoms.length - 1;
@@ -531,7 +533,9 @@ function poscar2jsobj(str){
         line_data = [],
         atidx = 0,
         tryarr = [],
-        periodic_table = [];
+        periodic_table = [],
+        marker = '',
+        cartesian = false;
 
     loop_poscar_parse:
     for (; i < len; i++){
@@ -557,7 +561,12 @@ function poscar2jsobj(str){
             } else atvals = tryarr;
         }
         else if (i == 6){
-            if (lines[i].trim().toLowerCase().substr(0, 6) == 'direct') continue loop_poscar_parse;
+            marker = lines[i].trim().toLowerCase().substr(0, 6);
+            if (marker == 'direct') continue loop_poscar_parse;
+            else if (marker == 'cartes'){
+                cartesian = true;
+                continue loop_poscar_parse;
+            }
 
             tryarr = lines[i].split(" ").filter(function(o){ return o ? true : false });
             if (tryarr[0].isnumeric()){
@@ -568,27 +577,40 @@ function poscar2jsobj(str){
             } else atvals = tryarr;
         }
         else if (i > 6){
+            marker = lines[i].trim().toLowerCase().substr(0, 6);
             if (i < 9){
                 if (atvals.length && !elems.length){
                     for (var k = 0; k < atvals.length; k++){
                         for (var m = 0; m < atindices[k]; m++){ elems.push(atvals[k]) }
                     }
                 }
-                if (['direct', 'select'].indexOf(lines[i].trim().toLowerCase().substr(0, 6)) !== -1) continue loop_poscar_parse;
+                if (['direct', 'select'].indexOf(marker) !== -1) continue loop_poscar_parse;
+                else if (marker == 'cartes'){
+                    cartesian = true;
+                    continue loop_poscar_parse;
+                }
             }
+            //console.log(elems);
 
             var atom = {};
             line_data = lines[i].replace('#', '').replace('!', '').split(" ").filter(function(o){ return o ? true : false });
             //console.log(line_data);
-            if (!line_data.length) break;
+            if (!line_data.length)
+                break;
             else if (line_data.length == 3) elems.length ? line_data.push(elems[atidx]) : line_data.push('Xx');
             else if (line_data.length < 3){
-                logger.error("Error: invalid atom definition!");
+                logger.error("Error: unknown atom definition!");
                 return false;
             }
+
             for (j = 0; j < 4; j++){
                 if (j < 3) atom[atom_props[j]] = parseFloat(line_data[j]);
                 else atom[atom_props[j]] = line_data[j];
+            }
+            //console.log(atom);
+            if (!atom.symbol){
+                logger.error("Error: unknown data lines order!");
+                return false;
             }
             atom.symbol = atom.symbol.replace(/\W+/, '').replace(/\d+/, '');
             if (!atom.symbol.length) atom.symbol = 'Xx';
@@ -603,8 +625,8 @@ function poscar2jsobj(str){
             'cell': cell,
             'atoms': atoms,
             'types': types,
-            'cartesian': false
-        };
+            'cartesian': cartesian
+        }
     else {
         logger.error("Error: unexpected POSCAR format!");
         return false;
