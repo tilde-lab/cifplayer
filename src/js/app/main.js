@@ -1,6 +1,8 @@
 /**
+ *
  * Author: Evgeny Blokhin
  * License: MIT
+ *
  */
 "use strict";
 
@@ -13,7 +15,8 @@ require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.u
 
 var player = {};
 
-player.version = '0.19.3';
+player.version = '0.19.9';
+player.maxfilesize = 1 * 1024 * 1024;
 player.loaded = false;
 player.container = null;
 player.stats = null;
@@ -42,12 +45,13 @@ return false;
 }
 })();
 
+player.converter = matinfio(mathjs, {warning: advise, error: notify});
 player.colorset = 'W';
 player.sample = "data_example\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_charge\nO1 O 0.425 0.262 0.009 -2.0\nO2 O -0.425 0.262 0.009 -2.0\nH3 H 0.444 0.258 0.154 1.0\nH4 H -0.444 0.258 0.154 1.0\nH5 H 0.396 0.124 0.012 1.0\nH6 H -0.396 0.124 0.012 1.0\nO7 O 0.425 0.236 0.510 -2.0\nO8 O -0.425 0.236 0.510 -2.0\nH9 H 0.444 0.239 0.656 1.0\nH10 H -0.444 0.239 0.656 1.0\nH11 H 0.396 0.374 0.512 1.0\nH12 H -0.396 0.374 0.512 1.0\nSr13 Sr 0.342 0.964 0.467 2.0\nSr14 Sr -0.342 0.964 0.467 2.0\nSr15 Sr 0.342 0.535 0.967 2.0\nSr16 Sr -0.342 0.535 0.967 2.0\nO17 O 0.348 0.971 0.019 -2.0\nO18 O -0.348 0.971 0.019 -2.0\nO19 O 0.348 0.528 0.519 -2.0\nO20 O -0.348 0.528 0.519 -2.0\nO21 O 0.263 0.803 0.701 -2.0\nO22 O -0.263 0.803 0.701 -2.0\nO23 O 0.264 0.695 0.200 -2.0\nO24 O -0.264 0.695 0.200 -2.0\nZr25 Zr 0.261 0.000 0.998 4.0\nZr26 Zr -0.261 0.000 0.998 4.0\nZr27 Zr 0.261 0.499 0.498 4.0\nZr28 Zr -0.261 0.499 0.498 4.0\nO29 O 0.257 0.304 0.806 -2.0\nO30 O -0.257 0.304 0.806 -2.0\nO31 O 0.257 0.195 0.306 -2.0\nO32 O -0.257 0.195 0.306 -2.0\nSr33 Sr 0.173 0.993 0.524 2.0\nSr34 Sr -0.173 0.993 0.524 2.0\nSr35 Sr 0.173 0.506 0.024 2.0\nSr36 Sr -0.173 0.506 0.024 2.0\nO37 O 0.173 0.947 0.986 -2.0\nO38 O -0.173 0.947 0.986 -2.0\nO39 O 0.173 0.551 0.486 -2.0\nO40 O -0.173 0.551 0.486 -2.0\nO41 O 0.098 0.204 0.295 -2.0\nO42 O -0.098 0.204 0.295 -2.0\nO43 O 0.098 0.295 0.795 -2.0\nO44 O -0.098 0.295 0.795 -2.0\nZr45 Zr 0.086 0.004 0.998 4.0\nZr46 Zr -0.086 0.004 0.998 4.0\nZr47 Zr 0.086 0.495 0.498 4.0\nZr48 Zr -0.086 0.495 0.498 4.0\nO49 O 0.074 0.709 0.211 -2.0\nO50 O -0.074 0.709 0.211 -2.0\nO51 O 0.074 0.790 0.711 -2.0\nO52 O -0.074 0.790 0.711 -2.0\nSr53 Sr 0 0.991 0.467 2.0\nSr54 Sr 0 0.508 0.967 2.0\nO55 O 0 0.076 0.020 -2.0\nO56 O 0 0.423 0.520 -2.0";
 
 var THREE = three.THREE || three;
 
-/* Polyfills */
+// polyfill
 function cancel_event(evt){
     evt = evt || window.event;
     if (evt.cancelBubble) evt.cancelBubble = true;
@@ -56,8 +60,77 @@ function cancel_event(evt){
         if (evt.preventDefault) evt.preventDefault();
     }
 }
+
+// polyfill
 var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(cb){ return setTimeout(cb, 1000/60) }
 
+/**
+ *
+ * Animation functions
+ *
+ */
+function vibrate(phonon){
+    /*var test_phonon = '';
+    for (var i = 0; i < player.obj3d.atoms.length; i++){
+        test_phonon += '1,1,1, '; // debug phonon animation
+    }
+    test_phonon = '[' + test_phonon.substr(0, test_phonon.length - 2) + ']';
+    phonon = test_phonon;*/
+
+    if (player.tweened) return unvibrate(vibrate, phonon);
+
+    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
+        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
+
+    tween.removeAll();
+
+    phonon = JSON.parse(phonon);
+    if (phonon.length / 3 !== player.obj3d.atoms.length) return notify('Internal error: length of the phonon data != number of atoms * 3');
+
+    for (var i = 0; i < balls.length; i++){
+        var x = parseInt(balls[i].position.x),
+            y = parseInt(balls[i].position.y),
+            z = parseInt(balls[i].position.z),
+            distb_pos = {
+                x: x + phonon[i * 3]     * 600,
+                y: y + phonon[i * 3 + 1] * 600,
+                z: z + phonon[i * 3 + 2] * 600
+            },
+            tween_balls = new tween.Tween(balls[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
+            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
+    }
+    player.tweened = true;
+}
+
+function unvibrate(cb, cb_arg){
+
+    tween.removeAll();
+
+    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
+        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
+
+    for (var i = 0; i < balls.length; i++){
+        var x = parseInt(player.obj3d.atoms[i].x * 100),
+            y = parseInt(player.obj3d.atoms[i].y * 100),
+            z = parseInt(player.obj3d.atoms[i].z * 100),
+            equil_pos = {x: x, y: y, z: z},
+            tween_balls = new tween.Tween(balls[i].position).to(equil_pos, 250).start();
+            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(equil_pos, 250).start();
+    }
+    player.tweened = false;
+
+    if (cb){
+        setTimeout(function(){
+            cb(cb_arg);
+        }, 250);
+    }
+}
+
+/**
+ *
+ * Utilities
+ *
+ */
 function notify(msg){
     if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
@@ -94,73 +167,8 @@ function draw_3d_line(start_arr, finish_arr, color){
     player.atombox.add(new THREE.Line(vector, material));
 }
 
-player.converter = matinfio(mathjs, {warning: advise, error: notify});
-
-/**
-*
-* Animation engine
-*
-*/
-function vibrate(phonon){
-    /*var test_phonon = '';
-    for (var i = 0; i < player.obj3d.atoms.length; i++){
-        test_phonon += '1,1,1, '; // debug phonon animation
-    }
-    test_phonon = '[' + test_phonon.substr(0, test_phonon.length - 2) + ']';
-    phonon = test_phonon;*/
-
-    if (player.tweened) return unvibrate(vibrate, phonon);
-
-    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
-        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
-
-    tween.removeAll();
-
-    phonon = JSON.parse(phonon);
-    if (phonon.length / 3 !== player.obj3d.atoms.length) return notify('Internal error: length of the phonon data != number of atoms * 3');
-
-    for (var i = 0; i < balls.length; i++){
-        var x = parseInt(balls[i].position.x),
-            y = parseInt(balls[i].position.y),
-            z = parseInt(balls[i].position.z),
-            distb_pos = {
-                x: x + phonon[i * 3]     * 600,
-                y: y + phonon[i * 3 + 1] * 600,
-                z: z + phonon[i * 3 + 2] * 600
-            },
-            tween_balls = new tween.Tween(balls[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
-            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(distb_pos, 750).easing(tween.Easing.Cubic.InOut).repeat(Infinity).delay(250).yoyo(true).start();
-    }
-    player.tweened = true;
-}
-
-/**
-*
-* Animation engine
-*
-*/
-function unvibrate(cb, cb_arg){
-
-    tween.removeAll();
-
-    var balls = player.atombox.children.filter(function(item){ return item.name == 'atom' }),
-        labels = player.atombox.children.filter(function(item){ return item.name == 'label' });
-
-    for (var i = 0; i < balls.length; i++){
-        var x = parseInt(player.obj3d.atoms[i].x * 100),
-            y = parseInt(player.obj3d.atoms[i].y * 100),
-            z = parseInt(player.obj3d.atoms[i].z * 100),
-            equil_pos = {x: x, y: y, z: z},
-            tween_balls = new tween.Tween(balls[i].position).to(equil_pos, 250).start();
-            if (labels[i]) var tween_labels = new tween.Tween(labels[i].position).to(equil_pos, 250).start();
-    }
-    player.tweened = false;
-
-    if (cb){
-        setTimeout(function(){
-            cb(cb_arg);
-        }, 250);
-    }
+function is_ascii(str){
+    return /^[\x00-\x7F]*$/.test(str);
 }
 
 function create_sprite(text){
@@ -258,7 +266,7 @@ function render(){
     if (player.obj3d.descr){
         var symlabel = player.obj3d.mpds_data ? '' : ((player.obj3d.descr.symlabel) ? '<i>SG</i> ' + player.obj3d.descr.symlabel : '');
 
-        create_box('infopanel', '<span style=color:#900><i>a</i>='+(Math.round(parseFloat(player.obj3d.descr.a) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#090><i>b</i>='+(Math.round(parseFloat(player.obj3d.descr.b) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><span style=color:#09f><i>c</i>='+(Math.round(parseFloat(player.obj3d.descr.c) * 1000)/1000).toFixed(3)+'&#8491;</span><br /><i>&#945;</i>='+(Math.round(parseFloat(player.obj3d.descr.alpha) * 100)/100).toFixed(2)+'&deg;<br /><i>&#946;</i>='+(Math.round(parseFloat(player.obj3d.descr.beta) * 100)/100).toFixed(2)+'&deg;<br /><i>&#947;</i>='+(Math.round(parseFloat(player.obj3d.descr.gamma) * 100)/100).toFixed(2)+'&deg;<br />' + symlabel);
+        create_box('infopanel', '<span style=color:#900><i>a</i>=' + (Math.round(parseFloat(player.obj3d.descr.a) * 1000) / 1000).toFixed(3) + '&#8491;</span><br /><span style=color:#090><i>b</i>=' + (Math.round(parseFloat(player.obj3d.descr.b) * 1000) / 1000).toFixed(3) + '&#8491;</span><br /><span style=color:#09f><i>c</i>=' + (Math.round(parseFloat(player.obj3d.descr.c) * 1000) / 1000).toFixed(3) + '&#8491;</span><br /><i>&#945;</i>=' + (Math.round(parseFloat(player.obj3d.descr.alpha) * 100) / 100).toFixed(2) + '&deg;<br /><i>&#946;</i>=' + (Math.round(parseFloat(player.obj3d.descr.beta) * 100) / 100).toFixed(2) + '&deg;<br /><i>&#947;</i>=' + (Math.round(parseFloat(player.obj3d.descr.gamma) * 100) / 100).toFixed(2) + '&deg;<br />' + symlabel);
     }
 
     var test = document.getElementById('optionpanel');
@@ -406,12 +414,22 @@ function display_landing(){
         var landing = document.getElementById('landing');
         if (player.colorset == 'B') landing.style.background = '#222';
         landing.style.display = 'block';
-    } else play_demo();
+    } else paste_demo();
 }
 
 function play_demo(evt){
     cancel_event(evt);
     accept_data(player.sample, false);
+}
+
+function paste_demo(evt){
+    cancel_event(evt);
+    document.getElementById('pasted_content').value = player.sample;
+    allow_playing(true);
+}
+
+function allow_playing(content){
+    document.getElementById('play_trigger').style.display = !!content ? 'block' : 'none';
 }
 
 /* function direct_download(){
@@ -447,7 +465,9 @@ function accept_data(str, allow_download){
     //var dpanel_ready = document.getElementById('dpanel');
     //if (dpanel_ready) dpanel_ready.style.display = 'none';
 
-    if (!str) return notify('Cannot read data');
+    if (!str) return notify('Error: cannot read data');
+    if (str.length > player.maxfilesize) return notify("Error: file is too big");
+    //if (!is_ascii(str)) return notify("Error: unreadable symbols found");
 
     player.obj3d = player.converter.to_player(str);
     if (player.obj3d){
@@ -477,12 +497,14 @@ function handleFileSelect(evt){
     var reader = new FileReader();
 
     reader.onloadend = function(evt){
-        accept_data(evt.target.result, false);
+        //accept_data(evt.target.result, false);
+        document.getElementById('pasted_content').value = evt.target.result.replace(/(\r\n|\r)/gm, "\n");
+        allow_playing(true);
     }
     reader.abort = function(){ notify("Error: file reading has been cancelled") }
     reader.onerror = function(evt){ notify("Error: file reading has been cancelled: " + evt.target.error.name) }
 
-    reader.readAsText(file);
+    reader.readAsText(file.slice(0, player.maxfilesize));
 }
 
 function handleDragOver(evt){
@@ -490,6 +512,11 @@ function handleDragOver(evt){
     evt.dataTransfer.dropEffect = 'copy';
 }
 
+/**
+ *
+ * Body onload actions (some, but not all)
+ *
+ */
 (function(){
     player.webgl = true;
 
@@ -497,8 +524,8 @@ function handleDragOver(evt){
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>, or <b>Optimade</b> file (drag and drop is supported). Files are processed offline in the browser, no remote server is used. <a href=/ id="play_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" />');
-    document.getElementById('play_demo').onclick = play_demo;
+    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>,<br />or <b>Optimade</b> file. No remote<br />server is used. <a href=/ id="paste_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" /><br /><textarea id="pasted_content" placeholder="Or paste here..."></textarea><div id="play_trigger">&check;</div>');
+    document.getElementById('paste_demo').onclick = paste_demo;
 
     window.addEventListener('resize', resize, false );
     window.addEventListener('hashchange', url_redraw_react, false);
@@ -511,10 +538,12 @@ function handleDragOver(evt){
         fileapi.onchange = function(){
             if (!this.files[0] || !this.files[0].size) return notify("Error: file cannot be read (unaccessible?)");
             reader.currentFilename = this.files[0].name;
-            reader.readAsText(this.files[0]);
+            reader.readAsText(this.files[0].slice(0, player.maxfilesize));
         }
         reader.onloadend = function(evt){
-            accept_data(evt.target.result, false);
+            //accept_data(evt.target.result, false);
+            document.getElementById('pasted_content').value = evt.target.result.replace(/(\r\n|\r)/gm, "\n");
+            allow_playing(true);
         }
     }
 
@@ -531,6 +560,15 @@ function handleDragOver(evt){
 
         accept_data(JSON.stringify(target_data), false);
     });
+
+    document.getElementById('pasted_content').addEventListener('keyup', function(){
+        allow_playing(this.value);
+    });
+
+    document.getElementById('play_trigger').onclick = function(){
+        var pasted_content = document.getElementById('pasted_content').value;
+        accept_data(pasted_content, false);
+    }
 
     var playerdata = false;
     try {

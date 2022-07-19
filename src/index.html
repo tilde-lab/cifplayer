@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+<meta name="description" content="Web-viewer for CIF, POSCAR, or OPTIMADE data" />
+<meta name="author" content="Evgeny Blokhin" />
 <title>3d-crystals web-viewer</title>
 <style>
 body{margin:0;padding:0;overflow:hidden;font-family:Palatino;}
@@ -17,13 +19,15 @@ html, body{height:100%;text-size-adjust:100%;}
 #optionpanel label{line-height:22px;vertical-align:top;cursor:pointer;color:#666;}
 #landing{display:none;position:fixed;left:0;top:0;right:0;bottom:0;height:auto;z-index:8;background:#fff;margin:0;text-align:center;font-size:1.25em;padding:20px;line-height:1.6em;}
 #landing a{color:#666;text-decoration:none;border-bottom:1px solid #999;}
-h1{margin:20px auto 35px;font-size:1.5em;color:#999;}
+h1{margin:5px auto 25px;font-size:1.4em;color:#999;}
 #legend{width:290px;margin:20px auto 0;border-radius:15px;background:#f0f0f0;color:#666;padding:5px;}
-#triangle{width:0;height:0;margin:-2px auto 20px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f0f0f0;}
+#triangle{width:0;height:0;margin:-2px auto 15px;border-left:20px solid transparent;border-right:20px solid transparent;border-top:20px solid #f0f0f0;}
+#fileapi{color:#999;}
+#pasted_content{width:50%;height:42vmin;padding:1.75vmin;margin-top:4vmin;font-size:1.6vmin;color:#000;font-family:"Courier New",Courier;resize:none;border:1px solid #999;}
+#play_trigger{display:none;position:absolute;bottom:20%;left:50%;margin-left:-30px;cursor:pointer;width:60px;height:60px;background:#999;border-radius:30px;font-size:100px;line-height:50px;color:#fff;}
 #notifybox{display:none;z-index:9;position:fixed;top:20px;left:20px;width:500px;background:#333;color:#fff;border-radius:5px;font-size:1.25em;}
 #cross{float:right;width:24px;height:24px;cursor:pointer;background:url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP///1VVVf///yH5BAEAAAMALAAAAAAQABAAAAIjnI+py6L+BDRy0gqxHVqvLjGcJ3Yl+IEhQpLX+m7wMYv2PRQAOw==) center center no-repeat;}
 #message{margin:20px;}
-#fileapi{color:#999;}
 #demobox{display:none;position:fixed;z-index:7;top:2px;left:50%;width:500px;height:20px;margin-left:-250px;font-size:0.7em;text-align:center;line-height:20px;}
 #preloader{z-index:1;position:fixed;top:50%;left:50%;margin-left:-63px;width:125px;height:60px;font-size:10px;}
 #preloader > div {height:100%;width:15px;display:inline-block;margin:0 5px;background:#666;-webkit-animation:stretchdelay 1.2s infinite ease-in-out;animation:stretchdelay 1.2s infinite ease-in-out;}
