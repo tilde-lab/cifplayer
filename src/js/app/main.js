@@ -524,7 +524,7 @@ function handleDragOver(evt){
         crossbox = document.getElementById('cross');
     crossbox.onclick = function(){ notifybox.style.display = 'none' }
 
-    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose a <b>CIF</b>, <b>POSCAR</b>,<br />or <b>Optimade</b> file. No remote<br />server is used. <a href=/ id="paste_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" /><br /><textarea id="pasted_content" placeholder="Or paste here..."></textarea><div id="play_trigger">&check;</div>');
+    create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose or paste a <b>CIF</b>, <b>POSCAR</b>, or <b>Optimade</b> file. No remote server is used. <a href=/ id="paste_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" /><br /><textarea id="pasted_content" placeholder="Paste here..."></textarea><div id="play_trigger">&check;</div>');
     document.getElementById('paste_demo').onclick = paste_demo;
 
     window.addEventListener('resize', resize, false );
@@ -558,6 +558,8 @@ function handleDragOver(evt){
             target_data = JSON.parse(event.data); // do we receive a JSON-object or a JSON-string?
         } catch (e){}
 
+        if (target_data.length < 16) return console.log('Spurious message omitted: ' + target_data);
+
         accept_data(JSON.stringify(target_data), false);
     });
 
@@ -586,7 +588,7 @@ function handleDragOver(evt){
         accept_data(target_data, false);
 
     } else {
-        if (document.location.hash && document.location.hash.length > 5) url_redraw_react();
+        if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
 
