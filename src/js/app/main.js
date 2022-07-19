@@ -586,7 +586,7 @@ function handleDragOver(evt){
         accept_data(target_data, false);
 
     } else {
-        if (document.location.hash.length) url_redraw_react();
+        if (document.location.hash && document.location.hash.length > 5) url_redraw_react();
         else display_landing();
     }
 
