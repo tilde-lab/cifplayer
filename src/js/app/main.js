@@ -1,9 +1,3 @@
-/**
- *
- * Author: Evgeny Blokhin
- * License: MIT
- *
- */
 "use strict";
 
 require.config({
@@ -11,11 +5,16 @@ require.config({
     paths: { libs: '../libs' }
 });
 
-require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(matinfio, mathjs, three, tween){
+require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.umd'], function(
+    matinfio,
+    mathjs,
+    three,
+    tween
+){
 
 var player = {};
 
-player.version = '0.19.9';
+player.version = '0.19.10';
 player.maxfilesize = 1 * 1024 * 1024;
 player.loaded = false;
 player.container = null;
@@ -46,7 +45,7 @@ return false;
 })();
 
 player.converter = matinfio(mathjs, {warning: advise, error: notify});
-player.colorset = 'W';
+player.colorset = 'W'; // W or B
 player.sample = "data_example\n_cell_length_a 24\n_cell_length_b 5.91\n_cell_length_c 5.85\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 90\n_symmetry_space_group_name_H-M 'P1'\nloop_\n_symmetry_equiv_pos_as_xyz\nx,y,z\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_charge\nO1 O 0.425 0.262 0.009 -2.0\nO2 O -0.425 0.262 0.009 -2.0\nH3 H 0.444 0.258 0.154 1.0\nH4 H -0.444 0.258 0.154 1.0\nH5 H 0.396 0.124 0.012 1.0\nH6 H -0.396 0.124 0.012 1.0\nO7 O 0.425 0.236 0.510 -2.0\nO8 O -0.425 0.236 0.510 -2.0\nH9 H 0.444 0.239 0.656 1.0\nH10 H -0.444 0.239 0.656 1.0\nH11 H 0.396 0.374 0.512 1.0\nH12 H -0.396 0.374 0.512 1.0\nSr13 Sr 0.342 0.964 0.467 2.0\nSr14 Sr -0.342 0.964 0.467 2.0\nSr15 Sr 0.342 0.535 0.967 2.0\nSr16 Sr -0.342 0.535 0.967 2.0\nO17 O 0.348 0.971 0.019 -2.0\nO18 O -0.348 0.971 0.019 -2.0\nO19 O 0.348 0.528 0.519 -2.0\nO20 O -0.348 0.528 0.519 -2.0\nO21 O 0.263 0.803 0.701 -2.0\nO22 O -0.263 0.803 0.701 -2.0\nO23 O 0.264 0.695 0.200 -2.0\nO24 O -0.264 0.695 0.200 -2.0\nZr25 Zr 0.261 0.000 0.998 4.0\nZr26 Zr -0.261 0.000 0.998 4.0\nZr27 Zr 0.261 0.499 0.498 4.0\nZr28 Zr -0.261 0.499 0.498 4.0\nO29 O 0.257 0.304 0.806 -2.0\nO30 O -0.257 0.304 0.806 -2.0\nO31 O 0.257 0.195 0.306 -2.0\nO32 O -0.257 0.195 0.306 -2.0\nSr33 Sr 0.173 0.993 0.524 2.0\nSr34 Sr -0.173 0.993 0.524 2.0\nSr35 Sr 0.173 0.506 0.024 2.0\nSr36 Sr -0.173 0.506 0.024 2.0\nO37 O 0.173 0.947 0.986 -2.0\nO38 O -0.173 0.947 0.986 -2.0\nO39 O 0.173 0.551 0.486 -2.0\nO40 O -0.173 0.551 0.486 -2.0\nO41 O 0.098 0.204 0.295 -2.0\nO42 O -0.098 0.204 0.295 -2.0\nO43 O 0.098 0.295 0.795 -2.0\nO44 O -0.098 0.295 0.795 -2.0\nZr45 Zr 0.086 0.004 0.998 4.0\nZr46 Zr -0.086 0.004 0.998 4.0\nZr47 Zr 0.086 0.495 0.498 4.0\nZr48 Zr -0.086 0.495 0.498 4.0\nO49 O 0.074 0.709 0.211 -2.0\nO50 O -0.074 0.709 0.211 -2.0\nO51 O 0.074 0.790 0.711 -2.0\nO52 O -0.074 0.790 0.711 -2.0\nSr53 Sr 0 0.991 0.467 2.0\nSr54 Sr 0 0.508 0.967 2.0\nO55 O 0 0.076 0.020 -2.0\nO56 O 0 0.423 0.520 -2.0";
 
 var THREE = three.THREE || three;
@@ -135,6 +134,7 @@ function notify(msg){
     if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
         window.parent.close_vibox();
+
     } else {
         var notifybox = document.getElementById('notifybox'),
             message = document.getElementById('message');
@@ -147,6 +147,7 @@ function notify(msg){
 function advise(msg){
     if (player.mpds_integration){
         window.parent.wmgui.notify(msg);
+
     } else alert(msg);
 }
 
@@ -179,7 +180,7 @@ function create_sprite(text){
 
     canvas.width = w;
     canvas.height = 30;
-    context.font = "normal 30px Palatino";
+    context.font = "italic 28px sans-serif";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = (player.colorset == "W") ? "#000" : "#fff";
@@ -212,7 +213,7 @@ function init(){
     player.scene.add(PointLight);
 
     player.renderer = player.webgl ? new THREE.WebGLRenderer({antialias: true, alpha: true}): new THREE.CanvasRenderer();
-    (player.colorset == "W") ? player.renderer.setClearColor(0xffffff, 1) : player.renderer.setClearColor(0x000000, 1);
+    player.colorset == "W" ? player.renderer.setClearColor(0xffffff, 1) : player.renderer.setClearColor(0x000000, 1);
     player.renderer.setPixelRatio( window.devicePixelRatio );
     player.renderer.setSize(window.innerWidth, window.innerHeight);
     player.container.appendChild(player.renderer.domElement);
@@ -383,7 +384,9 @@ function render(){
 }
 
 function resize(){
-    if (!player.loaded) return;
+    if (!player.loaded)
+        return;
+
     player.camera.aspect = window.innerWidth / window.innerHeight;
     player.camera.updateProjectionMatrix();
     player.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -402,18 +405,25 @@ function play(){
 
 function url_redraw_react(){
     var url = document.location.hash.substr(1);
+
     if (url.indexOf('://') == -1){
-        if (!player.loaded) display_landing();
+        display_landing();
         return notify('Error: not a valid url');
     }
+
     ajax_download(url);
 }
 
 function display_landing(){
     if (player.local_supported){
         var landing = document.getElementById('landing');
+
         if (player.colorset == 'B') landing.style.background = '#222';
-        landing.style.display = 'block';
+
+        setTimeout(function(){
+            if (!player.loaded) landing.style.display = 'block';
+        }, 1500);
+
     } else paste_demo();
 }
 
@@ -450,8 +460,8 @@ function ajax_download(url){
         if (xmlhttp.readyState == 4){
             if (xmlhttp.status == 200) accept_data(xmlhttp.responseText, true);
             else {
-                notify("Error: HTTP " + xmlhttp.status + " status received during retrieving data from the server");
-                if (!player.loaded) display_landing();
+                display_landing();
+                notify("Error: HTTP " + xmlhttp.status + " status received while retrieving data from server");
             }
         }
     }
@@ -484,7 +494,7 @@ function accept_data(str, allow_download){
 
         document.getElementById('demobox').style.display = (player.obj3d.mpds_data && player.obj3d.mpds_demo) ? 'block' : 'none';
 
-    } else if (!player.loaded) display_landing();
+    } else display_landing();
 }
 
 function handleFileSelect(evt){
@@ -514,7 +524,7 @@ function handleDragOver(evt){
 
 /**
  *
- * Body onload actions (some, but not all)
+ * Body onload actions (not all)
  *
  */
 (function(){
@@ -560,7 +570,7 @@ function handleDragOver(evt){
 
         if (target_data.length < 16) return console.log('Spurious message omitted: ' + target_data);
 
-        accept_data(JSON.stringify(target_data), false);
+        accept_data(typeof target_data === 'object' ? JSON.stringify(target_data) : target_data, false);
     });
 
     document.getElementById('pasted_content').addEventListener('keyup', function(){
@@ -573,6 +583,7 @@ function handleDragOver(evt){
     }
 
     var playerdata = false;
+
     try {
         playerdata = window.parent && window.parent.playerdata;
     } catch (e){}
@@ -591,9 +602,6 @@ function handleDragOver(evt){
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
-
-    window.vibrate = vibrate;
-    window.unvibrate = unvibrate;
 })();
 
 });
