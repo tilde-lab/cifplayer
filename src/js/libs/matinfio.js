@@ -93,7 +93,7 @@ function unit(vec){
 */
 function cell2vec(a, b, c, alpha, beta, gamma){
     if (!a || !b || !c || !alpha || !beta || !gamma){
-        logger.error("Error: invalid cell definition!");
+        logger.error("Error: invalid cell definition");
         return false;
     }
     alpha = alpha * Math.PI/180, beta = beta * Math.PI/180, gamma = gamma * Math.PI/180;
@@ -299,7 +299,7 @@ function jsobj2cif(crystal){
 *
 */
 function jsobj2flatten(crystal){
-    if (crystal.symops) logger.warning("Warning! Reading of symmetry operations is not yet implemented, expect error now.");
+    if (crystal.symops) logger.warning("Reading of symmetry operations is not implemented, expect errors");
 
     var cell;
     if (Object.keys(crystal.cell).length == 6){ // for CIF
@@ -507,7 +507,7 @@ function cif2jsobj(str){
 
     if (structures.length) return structures[ structures.length-1 ]; // TODO switch between frames
     else {
-        logger.error("Error: unexpected CIF format!");
+        logger.error("Error: unexpected CIF format");
         return false;
     }
 }
@@ -599,7 +599,7 @@ function poscar2jsobj(str){
                 break;
             else if (line_data.length == 3) elems.length ? line_data.push(elems[atidx]) : line_data.push('Xx');
             else if (line_data.length < 3){
-                logger.error("Error: unknown atom definition!");
+                logger.error("Error: unknown atom definition");
                 return false;
             }
 
@@ -609,7 +609,7 @@ function poscar2jsobj(str){
             }
             //console.log(atom);
             if (!atom.symbol){
-                logger.error("Error: unknown data lines order!");
+                logger.error("Error: unknown data lines order");
                 return false;
             }
             atom.symbol = atom.symbol.replace(/\W+/, '').replace(/\d+/, '');
@@ -628,7 +628,7 @@ function poscar2jsobj(str){
             'cartesian': cartesian
         }
     else {
-        logger.error("Error: unexpected POSCAR format!");
+        logger.error("Error: unexpected POSCAR format");
         return false;
     }
 }
@@ -650,13 +650,13 @@ function optimade2jsobj(str){
     }
 
     if (!src){
-        logger.error("Error: unexpected OPTIMADE format!");
+        logger.error("Error: unexpected OPTIMADE format");
         return false;
     }
 
     var n_atoms = src.attributes.cartesian_site_positions.length;
     if (!n_atoms){
-        logger.error("Error: no atomic positions found!");
+        logger.error("Error: no atomic positions found");
         return false;
     }
 
@@ -680,7 +680,7 @@ function optimade2jsobj(str){
             });
         });
     } else {
-        logger.error("Error: no atomic data found!");
+        logger.error("Error: no atomic data found");
         return false;
     }
 
@@ -707,7 +707,7 @@ return {
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;
             case 'OPTIMADE': structure = optimade2jsobj(str); break;
-            default: logger.error("Error: file format not recognized!");
+            default: logger.error("Error: file format not recognized");
         }
         if (!structure) return false;
         return jsobj2player(structure);
@@ -720,8 +720,8 @@ return {
         switch (format){
             case 'CIF': structure = cif2jsobj(str); break;
             case 'POSCAR': structure = poscar2jsobj(str); break;
-            case 'OPTIMADE': logger.error("OPTIMADE not supported!"); break;
-            default: logger.error("Error: file format not recognized!");
+            case 'OPTIMADE': logger.error("OPTIMADE not supported"); break;
+            default: logger.error("Error: file format not recognized");
         }
         if (!structure) return false;
         return jsobj2flatten(structure);
@@ -735,7 +735,7 @@ return {
             case 'CIF': return str;
             case 'POSCAR': structure = poscar2jsobj(str); break;
             case 'OPTIMADE': structure = optimade2jsobj(str); break;
-            default: logger.error("Error: file format not recognized!");
+            default: logger.error("Error: file format not recognized");
         }
         if (!structure) return false;
         return jsobj2cif(structure);

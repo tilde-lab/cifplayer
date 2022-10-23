@@ -14,7 +14,7 @@ require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.u
 
 var player = {};
 
-player.version = '0.19.10';
+player.version = '0.19.11';
 player.maxfilesize = 1 * 1024 * 1024;
 player.loaded = false;
 player.container = null;
@@ -131,24 +131,32 @@ function unvibrate(cb, cb_arg){
  *
  */
 function notify(msg){
-    if (player.mpds_integration){
+    if (player.mpds_integration && window.parent.wmgui.view_mode === 2){
         window.parent.wmgui.notify(msg);
         window.parent.close_vibox();
 
-    } else {
-        var notifybox = document.getElementById('notifybox'),
-            message = document.getElementById('message');
-        notifybox.style.display = 'block';
-        message.innerHTML = '';
-        setTimeout(function(){ message.innerHTML = msg }, 250);
-    }
+    } else show_message(msg);
 }
 
 function advise(msg){
     if (player.mpds_integration){
-        window.parent.wmgui.notify(msg);
+        if (window.parent.wmgui.view_mode === 2)
+            window.parent.wmgui.notify(msg);
+        else
+            show_message(msg);
 
     } else alert(msg);
+}
+
+function show_message(msg){
+    var notifybox = document.getElementById('notifybox'),
+        message = document.getElementById('message');
+
+    notifybox.style.display = 'block';
+    message.innerHTML = '';
+    setTimeout(function(){
+        message.innerHTML = msg;
+    }, 250);
 }
 
 function create_box(id, html){
@@ -233,7 +241,7 @@ function init(){
         player.camera.updateProjectionMatrix();
     }
 
-    if (player.mpds_integration){
+    if (player.mpds_integration && window.parent.wmgui.view_mode === 2){
         var exitpanel = create_box('exitpanel');
         exitpanel.onclick = function(){
             window.parent.close_vibox();
@@ -415,6 +423,10 @@ function url_redraw_react(){
 }
 
 function display_landing(){
+    if (player.mpds_integration){
+        document.getElementById('preloader').style.display = 'none';
+        return;
+    }
     if (player.local_supported){
         var landing = document.getElementById('landing');
 
@@ -479,6 +491,8 @@ function accept_data(str, allow_download){
     if (str.length > player.maxfilesize) return notify("Error: file is too big");
     //if (!is_ascii(str)) return notify("Error: unreadable symbols found");
 
+    document.getElementById('notifybox').style.display = 'none';
+
     player.obj3d = player.converter.to_player(str);
     if (player.obj3d){
         document.getElementById('landing').style.display = 'none';
@@ -532,7 +546,9 @@ function handleDragOver(evt){
 
     var notifybox = create_box('notifybox', '<div id="cross"></div><div id="message"></div>'),
         crossbox = document.getElementById('cross');
-    crossbox.onclick = function(){ notifybox.style.display = 'none' }
+    crossbox.onclick = function(){
+        notifybox.style.display = 'none';
+    }
 
     create_box('landing', '<h1>3d-crystals web-viewer</h1><div id="legend">Choose or paste a <b>CIF</b>, <b>POSCAR</b>, or <b>Optimade</b> file. No remote server is used. <a href=/ id="paste_demo">Example</a>.</div><div id="triangle"></div><input type="file" id="fileapi" /><br /><textarea id="pasted_content" placeholder="Paste here..."></textarea><div id="play_trigger">&check;</div>');
     document.getElementById('paste_demo').onclick = paste_demo;
