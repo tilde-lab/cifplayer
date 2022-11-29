@@ -18,18 +18,19 @@ li{display:inline-block;margin:1em;border-bottom:1px solid #000;cursor:pointer;}
 <div id="left" class="content">
     <ul>
         <li class="trigger" data-phonon="1,1,1,1,1,1">Phonon #1</li>
-        <li class="trigger" data-phonon="-1,-1,-1,-1,-1,-1">Phonon #2</li>
-        <li class="trigger" data-phonon="0,0,0,0,0,0">Phonon #3</li>
+        <li class="trigger" data-phonon="1,-1,0,-1,1,0">Phonon #2</li>
+        <li class="trigger" data-phonon="0,0,1,0,0,-1">Phonon #3</li>
         <li id="stop">Stop</li>
     </ul>
 </div>
 
 <div id="right" class="content">
-    <iframe id="player" frameborder=0 scrolling="no" width="100%" height="700" src="/index.html#http://localhost:7878/1405.optimade"></iframe>
 </div>
 
 <script type="text/javascript">
 "use strict";
+
+var player_src = (window.location.host.indexOf('localhost') == -1) ? '/cifplayer/player.html' : '/player.html';
 
 var items = document.getElementsByClassName('trigger');
 for (var i = 0; i < items.length; i++){
@@ -40,8 +41,10 @@ for (var i = 0; i < items.length; i++){
 }
 
 document.getElementById('stop').onclick = function(){
-    document.getElementById('player').contentWindow.repose();
+    document.getElementById('player').contentWindow.unvibrate();
 }
+
+document.getElementById('right').innerHTML = '<iframe id="player" frameborder=0 scrolling="no" width="100%" height="700" src="' + player_src + '#https://api.mpds.io/v0/download/s?export=1&q=S1822639"></iframe>';
 
 </script>
 </body>
