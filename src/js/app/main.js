@@ -14,7 +14,7 @@ require(['libs/matinfio', 'libs/math.custom', 'libs/three.custom', 'libs/tween.u
 
 var player = {};
 
-player.version = '0.19.11';
+player.version = '0.19.12';
 player.maxfilesize = 1 * 1024 * 1024;
 player.loaded = false;
 player.container = null;
@@ -618,6 +618,10 @@ function handleDragOver(evt){
         if (document.location.hash.length) url_redraw_react();
         else display_landing();
     }
+
+    // FIXME better integration required
+    window.vibrate = vibrate;
+    window.unvibrate = unvibrate;
 })();
 
 });
