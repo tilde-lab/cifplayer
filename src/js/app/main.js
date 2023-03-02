@@ -423,7 +423,7 @@ function url_redraw_react(){
 }
 
 function display_landing(){
-    if (player.mpds_integration){
+    if (player.mpds_integration || (window.location.search && window.location.search.indexOf('nobanner') !== -1)){
         document.getElementById('preloader').style.display = 'none';
         return;
     }
