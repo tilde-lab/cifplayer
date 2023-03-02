@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: cifplayer
+type: software
+license: MIT
+authors:
+  - given-names: Evgeny
+    family-names: Blokhin
+    orcid: 'https://orcid.org/0000-0002-5333-3947'
+doi: 10.5281/zenodo.7692709
+url: 'https://tilde-lab.github.io/cifplayer'
+keywords:
+  - cif
+  - optimade
+  - poscar
+  - threejs
+  - Crystallographic Information File
