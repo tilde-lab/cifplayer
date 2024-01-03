@@ -1,0 +1,8 @@
+$mpds_cifplayer_phonons $mpds_cifplayer_app
+	auto /
+		<= set_example null
+	menu_body /
+		<= Body $mol_list sub /
+			<= Switch $mol_switch
+				value? <=> phonon? \
+				options <= phonon_options *

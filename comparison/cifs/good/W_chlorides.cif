@@ -1,0 +1,778 @@
+###############################################################################
+# Kolesnichenko, V.;Swenson, D.C.;Messerle, L. (1998)
+# Inorganic Chemistry 37, 3257-3262
+# Facile reduction of tungsten halides with nonconventional, mild reductants. \
+# I. Tungsten tetrachloride: Several convenient solid-state syntheses of \
+# highly reactive (W Cl4)x, and the molecular structure of polymeric tungsten tetrachloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_165263-ICSD
+_database_code_ICSD                165263
+_audit_creation_date               2010-02-01
+_chemical_name_systematic
+'Tungsten tetrachloride'
+_chemical_formula_structural       
+'W Cl4'
+_chemical_formula_sum              
+'Cl4 W1'
+_publ_section_title                
+'Cl4 W1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Inorganic Chemistry' 1998 37 3257 3262 INOCAJ
+loop_
+_publ_author_name
+Kolesnichenko, V.;Swenson, D.C.;Messerle, L.
+_cell_length_a                     11.782(3)
+_cell_length_b                     6.475(1)
+_cell_length_c                     8.062(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   131.14(1)
+_cell_angle_gamma                  90.
+_cell_volume                       463.1907
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'C 1 2/m 1'
+_symmetry_Int_Tables_number        12
+_refine_ls_R_factor_all            0.0523
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x, y, -z'
+   2   '-x, -y, -z'
+   3   'x, -y, z'
+   4   'x, y, z'
+   5   '-x+1/2, y+1/2, -z'
+   6   '-x+1/2, -y+1/2, -z'
+   7   'x+1/2, -y+1/2, z'
+   8   'x+1/2, y+1/2, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W4+     4.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W4+ 4 g 0 0.2076(2) 0 0.011(1) 1.
+Cl1 Cl1- 8 j 0.0227(5) 0.2382(7) 0.3025(8) 0.015(1) 1.
+Cl2 Cl1- 4 i 0.2179(6) 0 0.1906(10) 0.014(1) 1.
+Cl3 Cl1- 4 i 0.1832(6) 0.5 0.1581(10) 0.013(1) 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+W1 W4+ 0.006(1) 0.007(1) 0.020(1) 0. 0.008(1) 0.
+Cl1 Cl1- 0.017(2) 0.005(3) 0.033(2) -0.004(2) 0.020(2) -0.005(2)
+Cl2 Cl1- 0.005(2) 0.011(3) 0.024(3) 0. 0.009(2) 0.
+Cl3 Cl1- 0.005(2) 0.009(2) 0.025(3) 0. 0.010(2) 0.
+#End of data_165263-ICSD
+
+###############################################################################
+# Dill, S.;Glaser, J.;Stroebele, M.;Tragl, S.;Meyer, H.J. (2004)
+# Zeitschrift fuer Anorg. und Allgemeine Chemie 630, 987-992
+# Ueberschreitungen der konventionellen Zahl von Clusterelektronen in \
+# Metallhalogeniden des M6 X12-Typs: W6 Cl18, (Me4 N) (W6 Cl18) und Cs2 (W6 Cl18)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_109512-ICSD
+_database_code_ICSD                109512
+_audit_creation_date               2008-02-01
+_chemical_name_systematic
+'Hexatungsten(III) chloride'
+_chemical_formula_structural       
+'W6 Cl18'
+_chemical_formula_sum              
+'Cl18 W6'
+_publ_section_title                
+'Cl18 W6'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Zeitschrift fuer Anorg. und Allgemeine C' 2004 630 987 992 ZAACAB
+loop_
+_publ_author_name
+Dill, S.;Glaser, J.;Stroebele, M.;Tragl, S.;Meyer, H.J.
+_cell_length_a                     14.9350(5)
+_cell_length_b                     14.9350(5)
+_cell_length_c                     8.4552(3)
+_cell_angle_alpha                  90.00
+_cell_angle_beta                   90.00
+_cell_angle_gamma                  120.00
+_cell_volume                       1633.3004
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+_refine_ls_R_factor_all            0.0686
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W3+ 18 f 0.10275(7) 0.11819(7) 0.1383(1) 0.015(3) 1.
+Cl1 Cl1- 18 f 0.1371(4) 0.0166(4) 0.3217(4) 0.020(2) 1.
+Cl2 Cl1- 18 f 0.1032(4) 0.2586(4) 0.0024(7) 0.030(2) 1.
+Cl3 Cl1- 18 f 0.2270(4) 0.2556(3) 0.3052(5) 0.0290(6) 1.
+#End of data_109512-ICSD
+
+###############################################################################
+# Dill, S.;Glaser, J.;Stroebele, M.;Tragl, S.;Meyer, H.J. (2004)
+# Zeitschrift fuer Anorg. und Allgemeine Chemie 630, 987-992
+# Ueberschreitungen der konventionellen Zahl von Clusterelektronen in \
+# Metallhalogeniden des M6 X12-Typs: W6 Cl18, (Me4 N) (W6 cl18) und Cs2 (W6 Cl18)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_413256-ICSD
+_database_code_ICSD                413256
+_audit_creation_date               2005-04-01
+_chemical_name_systematic
+'Tungsten chloride (6/17.74)'
+_chemical_formula_structural       
+'W6 Cl17.742'
+_chemical_formula_sum              
+'Cl17.742 W6'
+_publ_section_title                
+'Cl17.742 W6'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Zeitschrift fuer Anorg. und Allgemeine C' 2004 630 987 992 ZAACAB
+loop_
+_publ_author_name
+Dill, S.;Glaser, J.;Stroebele, M.;Tragl, S.;Meyer, H.J.
+_cell_length_a                     14.9893(11)
+_cell_length_b                     14.9893(11)
+_cell_length_c                     8.4547(5)
+_cell_angle_alpha                  90.00
+_cell_angle_beta                   90.00
+_cell_angle_gamma                  120.00
+_cell_volume                       1645.0905
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+_refine_ls_R_factor_all            0.0334
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W2+6     2.96
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W2+6 18 f 0.10369(2) 0.11842(2) 0.13936(3) 0.01915(11) 1
+Cl1 Cl1- 18 f 0.13730(15) 0.01694(14) 0.3219(2) 0.0250(6) 0.976(11)
+Cl2 Cl1- 18 f 0.09952(15) 0.25580(14) 0.0038(2) 0.0253(6) 0.981(11)
+Cl3 Cl1- 18 f 0.22597(15) 0.25609(15) 0.3040(2) 0.0290(6) 1.000(10)
+#End of data_413256-ICSD
+
+###############################################################################
+# Naegele, A.;Glaser, J.;Meyer, H.J. (2001)
+# Zeitschrift fuer Anorg. und Allgemeine Chemie 627, 244-249
+# W8 Cl18: Neue Synthesen, neue Strukturverfeinerung, elektronische Struktur \
+# und Magnetismus
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_51513-ICSD
+_database_code_ICSD                51513
+_audit_creation_date               2003-04-01
+_chemical_name_systematic
+'Tungsten chloride (6/18)'
+_chemical_formula_structural       
+'W6 Cl18'
+_chemical_formula_sum              
+'Cl18 W6'
+_publ_section_title                
+'Cl18 W6'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Zeitschrift fuer Anorg. und Allgemeine C' 2001 627 244 249 ZAACAB
+loop_
+_publ_author_name
+Naegele, A.;Glaser, J.;Meyer, H.J.
+_cell_length_a                     14.9352(4)
+_cell_length_b                     14.9352(4)
+_cell_length_c                     8.4553(2)
+_cell_angle_alpha                  90
+_cell_angle_beta                   90
+_cell_angle_gamma                  120
+_cell_volume                       1633.3608
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+_refine_ls_R_factor_all            0.0686
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W3+ 18 f 0.1027(1) -.0154(1) 0.1381(1) 0.0154(3) 1.
+Cl1 Cl1- 18 f 0.1203(4) -.0170(4) -.3218(5) 0.020(2) 1.
+Cl2 Cl1- 18 f 0.2589(4) 0.1035(4) -.0025(7) 0.030(2) 1.
+Cl3 Cl1- 18 f 0.2269(4) -.0285(4) 0.3035(6) 0.025(5) 1.
+#End of data_51513-ICSD
+
+###############################################################################
+# Ketelaar, J.A.A.;van Oosterhout, G.W. (1943)
+# Recueil des Travaux Chimiques des Pays-Bas et de la Belgique 62, 197-200
+# Die Krystallstruktur des Wolframhexachlorids
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_26081-ICSD
+_database_code_ICSD                26081
+_audit_creation_date               1986-10-10
+_chemical_name_systematic
+'Tungsten chloride'
+_chemical_formula_structural       
+'W Cl6'
+_chemical_formula_sum              
+'Cl6 W1'
+_publ_section_title                
+'Cl6 W1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Recueil des Travaux Chimiques des Pays-B' 1943 62 197 200 RTCPA3
+loop_
+_publ_author_name
+Ketelaar, J.A.A.;van Oosterhout, G.W.
+_cell_length_a                     6.088(8)
+_cell_length_b                     6.088(8)
+_cell_length_c                     16.68(5)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       535.4003
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W6+     6.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W6+ 3 a 0 0 0 0. 1.
+Cl1 Cl1- 18 f 0.295(5) 0.295(5) 0.080(5) 0. 1.
+#End of data_26081-ICSD
+
+###############################################################################
+# Siepmann, R.;von Schnering, H.G.;Schaefer, H. (1967)
+# Angewandte Chemie (German Edition) 79, 650-650
+# Das Wolframtrichlorid (W6 Cl12) Cl6
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_23129-ICSD
+_database_code_ICSD                23129
+_audit_creation_date               1986-10-10
+_chemical_name_systematic
+'Dodeca-mue-chloro-octahedro-hexakischlorotungstate(III)'
+_chemical_formula_structural       
+'(W6 Cl6) Cl12'
+_chemical_formula_sum              
+'Cl18 W6'
+_publ_section_title                
+'Cl18 W6'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Angewandte Chemie (German Edition)' 1967 79 650 650 ANCEAD
+loop_
+_publ_author_name
+Siepmann, R.;von Schnering, H.G.;Schaefer, H.
+_cell_length_a                     14.91
+_cell_length_b                     14.91
+_cell_length_c                     8.45
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       1626.8304
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W3+ 18 f 0.12 0.016 0.14 0. 1.
+Cl1 Cl1- 18 f 0.134 0.018 -.31 0. 1.
+Cl2 Cl1- 18 f 0.249 0.151 0 0. 1.
+Cl3 Cl1- 18 f 0.268 0.035 0.31 0. 1.
+#End of data_23129-ICSD
+
+###############################################################################
+# Cotton, F.A.;Rice, C.E. (1978)
+# Acta Crystallographica B (24,1968-38,1982) 34, 2833-2834
+# Tungsten pentachloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_2398-ICSD
+_database_code_ICSD                2398
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Di-mue-chloro-bis(tetrachlorotungsten(V))'
+_chemical_formula_structural       
+'((Cl4 W) Cl2 (W Cl4))'
+_chemical_formula_sum              
+'Cl10 W2'
+_publ_section_title                
+'Cl10 W2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica B (24,1968-38,198' 1978 34 2833 2834 ACBCAR
+loop_
+_publ_author_name
+Cotton, F.A.;Rice, C.E.
+_cell_length_a                     17.438(4)
+_cell_length_b                     17.706(4)
+_cell_length_c                     6.063(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   95.51(2)
+_cell_angle_gamma                  90.
+_cell_volume                       1863.3504
+_cell_formula_units_Z              6.000
+_symmetry_space_group_name_H-M     'C 1 2/m 1'
+_symmetry_Int_Tables_number        12
+_refine_ls_R_factor_all            0.0604
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x, y, -z'
+   2   '-x, -y, -z'
+   3   'x, -y, z'
+   4   'x, y, z'
+   5   '-x+1/2, y+1/2, -z'
+   6   '-x+1/2, -y+1/2, -z'
+   7   'x+1/2, -y+1/2, z'
+   8   'x+1/2, y+1/2, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W5+     5.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W5+ 4 g 0 0.10775(4) 0 0. 1.
+W2 W5+ 8 j 0.33313(4) 0.10769(4) 0.4332(1) 0. 1.
+Cl1 Cl1- 4 i 0.0764(3) 0 0.8607(9) 0. 1.
+Cl2 Cl1- 8 j 0.0774(3) 0.1923(3) 0.8576(8) 0. 1.
+Cl3 Cl1- 8 j 0.0769(3) 0.0944(3) 0.3182(7) 0. 1.
+Cl4 Cl1- 4 i 0.2601(3) 0 0.2395(9) 0. 1.
+Cl5 Cl1- 8 j 0.2582(3) 0.1919(3) 0.2363(8) 0. 1.
+Cl6 Cl1- 8 j 0.2509(3) 0.0948(3) 0.6967(7) 0. 1.
+Cl7 Cl1- 4 i 0.4060(3) 0 0.6251(10) 0. 1.
+Cl8 Cl1- 8 j 0.4070(3) 0.1929(3) 0.6300(8) 0. 1.
+Cl9 Cl1- 8 j 0.4156(3) 0.0945(3) 0.1713(8) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_Beta_11
+_atom_site_aniso_Beta_22
+_atom_site_aniso_Beta_33
+_atom_site_aniso_Beta_12
+_atom_site_aniso_Beta_13
+_atom_site_aniso_Beta_23
+W1 W5+ 0.00158(3) 0.00133(3) 0.0099(2) 0 0 0.00057(12)
+W2 W5+ 0.00162(2) 0.00134(2) 0.0099(2) -.00001(4) -.0001(1) 0.00013(9)
+Cl1 Cl1- 0.0018(2) 0.0017(2) 0.010(1) 0 0 0.0018(8)
+Cl2 Cl1- 0.0031 0.0020(1) 0.023(1) -.0015(3) 0.0026(8) 0.0028(7)
+Cl3 Cl1- 0.0024(1) 0.0024(1) 0.013(1) 0.0001(3) -.0010(7) -.0027(6)
+Cl4 Cl1- 0.0018(2) 0.0016(2) 0.012(1) 0 0 -.0017(8)
+Cl5 Cl1- 0.0029(2) 0.0020(1) 0.020(1) 0.0011(3) 0.0036(8) -.0016(7)
+Cl6 Cl1- 0.0024 0.0024(2) 0.015(1) 0.0004(3) -.0006(7) 0.0040(6)
+Cl7 Cl1- 0.0019(2) 0.0016(2) 0.0140(15) 0 0 -.0018(9)
+Cl8 Cl1- 0.0029(2) 0.0023(2) 0.021(1) -.0014(3) -.0034(8) -.0017(7)
+Cl9 Cl1- 0.0024(1) 0.0027(2) 0.017(1) -.0001(3) 0.0017(7) 0.0040(6)
+#End of data_2398-ICSD
+
+###############################################################################
+# Taylor, J.C.;Wilson, P.W. (1974)
+# Acta Crystallographica B (24,1968-38,1982) 30, 1216-1220
+# The structure of beta-tungsten hexachloride by powder neutron and X-ray \
+# diffraction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_2365-ICSD
+_database_code_ICSD                2365
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Tungsten chloride - beta'
+_chemical_formula_structural       
+'W Cl6'
+_chemical_formula_sum              
+'Cl6 W1'
+_publ_section_title                
+'Cl6 W1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica B (24,1968-38,198' 1974 30 1216 1220 ACBCAR
+loop_
+_publ_author_name
+Taylor, J.C.;Wilson, P.W.
+_cell_length_a                     10.493(7)
+_cell_length_b                     10.493(7)
+_cell_length_c                     5.725(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       545.8909
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'P -3 m 1'
+_symmetry_Int_Tables_number        164
+_refine_ls_R_factor_all            0.1306
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, -y, -z'
+   2   '-x, -x+y, -z'
+   3   'y, x, -z'
+   4   'x-y, x, -z'
+   5   'y, -x+y, -z'
+   6   '-x, -y, -z'
+   7   '-x+y, y, z'
+   8   'x, x-y, z'
+   9   '-y, -x, z'
+  10   '-x+y, -x, z'
+  11   '-y, x-y, z'
+  12   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W6+     6.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W6+ 1 a 0 0 0 0. 1.
+W2 W6+ 2 d 0.3333 0.6667 0.473(6) 0. 1.
+Cl1 Cl1- 6 i 0.106(12) -.106(12) 0.228(13) 0. 1.
+Cl2 Cl1- 6 i 0.435(13) -.435(13) 0.248(14) 0. 1.
+Cl3 Cl1- 6 i 0.775(6) -.775(6) 0.329(16) 0. 1.
+#End of data_2365-ICSD
+
+###############################################################################
+# Taylor, J.C.;Wilson, P.W. (1974)
+# Acta Crystallographica B (24,1968-38,1982) 30, 1216-1220
+# The structure of beta tungsten hexachloride by powder neutron and x-ray \
+# diffraction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_2364-ICSD
+_database_code_ICSD                2364
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Tungsten chloride - beta'
+_chemical_formula_structural       
+'W Cl6'
+_chemical_formula_sum              
+'Cl6 W1'
+_publ_section_title                
+'Cl6 W1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica B (24,1968-38,198' 1974 30 1216 1220 ACBCAR
+loop_
+_publ_author_name
+Taylor, J.C.;Wilson, P.W.
+_cell_length_a                     10.490(15)
+_cell_length_b                     10.490(15)
+_cell_length_c                     5.733(8)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       546.3408
+_cell_formula_units_Z              3.000
+_symmetry_space_group_name_H-M     'P -3 m 1'
+_symmetry_Int_Tables_number        164
+_refine_ls_R_factor_all            0.1153
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, -y, -z'
+   2   '-x, -x+y, -z'
+   3   'y, x, -z'
+   4   'x-y, x, -z'
+   5   'y, -x+y, -z'
+   6   '-x, -y, -z'
+   7   '-x+y, y, z'
+   8   'x, x-y, z'
+   9   '-y, -x, z'
+  10   '-x+y, -x, z'
+  11   '-y, x-y, z'
+  12   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W6+     6.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W6+ 1 a 0 0 0 2.5 1.
+W2 W6+ 2 d 0.3333 0.6667 0.524(8) 2.5 1.
+Cl1 Cl1- 6 i 0.100(1) -.100(1) 0.233(2) 2.5 1.
+Cl2 Cl1- 6 i 0.440(1) -.440(1) 0.244(3) 2.5 1.
+Cl3 Cl1- 6 i 0.767(1) -.767(1) 0.304(2) 2.5 1.
+#End of data_2364-ICSD
+

@@ -1,0 +1,23 @@
+name: $mpds_cifplayer
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: hyoo-ru/mam_build@master2
+      with:
+        package: 'mpds/cifplayer'
+        modules: 'demo'
+
+    - uses: JamesIves/github-pages-deploy-action@4.1.7
+      with:
+        branch: gh-pages
+        folder: 'mpds/cifplayer/demo/-'

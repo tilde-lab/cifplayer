@@ -1,0 +1,29 @@
+# Sr2Ti2O6 extracted from /home/blokhin/perfect/pw_opt/pbe/140/ibrion2/vasprun.xml (structure no.-1)
+
+data_tilde_project
+_cell_length_a    5.579210
+_cell_length_b    5.579210
+_cell_length_c    5.579210
+_cell_angle_alpha 120.151390
+_cell_angle_beta  120.151390
+_cell_angle_gamma 89.737984
+_symmetry_space_group_name_H-M ' '
+loop_
+_symmetry_equiv_pos_as_xyz
++x,+y,+z
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Sr1   Sr    0.24886458    0.75000653    0.50229177
+Sr2   Sr    0.75000132    0.25114588    0.50229177
+Ti3   Ti    0.00000000    0.00000000    0.00000000
+Ti4   Ti    0.50229177    0.50229177    1.00458353
+O5   O    0.25114588    0.25114588    0.50229177
+O6   O    0.75343765    0.75343765    1.50687530
+O7   O    0.22459768    0.72678431    0.00000000
+O8   O    0.77426822    0.27436810    1.00458353
+O9   O    0.72897404    0.77322875    1.00458353
+O10   O    0.26989185    0.22792366    0.00000000

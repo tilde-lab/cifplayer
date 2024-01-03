@@ -1,0 +1,1013 @@
+###############################################################################
+# Howard, C.J.;Kennedy, B.J.;Curfs, C. (2005)
+# Physical Review, Serie 3. B - Condensed Matter (18,1978-) 72, \
+# 214114-1-214114-6
+# Temperature-induced structural changes in CaCl2, CaBr2, and CrCl2: A \
+# synchrotron X-ray powder diffraction study
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_246419-ICSD
+_database_code_ICSD                246419
+_audit_creation_date               2009-08-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review, Serie 3. B - Condensed ' 2005 72 214114-1 214114-6 PRBMDO
+loop_
+_publ_author_name
+Howard, C.J.;Kennedy, B.J.;Curfs, C.
+_cell_length_a                     6.8257(2)
+_cell_length_b                     6.2139(1)
+_cell_length_c                     3.4947(6)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       148.2302
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.038
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.3586(2) 0.2893(2) 0 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Cr1 Cr2+ 0.0314(5) 0.0393(6) 0.047(1) 0.0104(4) 0 0
+Cl1 Cl1- 0.0411(6) 0.0433(8) 0.058(8) 0.0169(5) 0 0
+#End of data_246419-ICSD
+
+###############################################################################
+# Howard, C.J.;Kennedy, B.J.;Curfs, C. (2005)
+# Physical Review, Serie 3. B - Condensed Matter (18,1978-) 72, \
+# 214114-1-214114-6
+# Temperature-induced structural changes in CaCl2, CaBr2, and CrCl2: A \
+# synchrotron X-ray powder diffraction study
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_246418-ICSD
+_database_code_ICSD                246418
+_audit_creation_date               2009-08-01
+_chemical_name_systematic
+'Chromium(II) dichloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review, Serie 3. B - Condensed ' 2005 72 214114-1 214114-6 PRBMDO
+loop_
+_publ_author_name
+Howard, C.J.;Kennedy, B.J.;Curfs, C.
+_cell_length_a                     6.64392(8)
+_cell_length_b                     5.98484(7)
+_cell_length_c                     3.48845(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       138.7001
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.038
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.3601(1) 0.2747(1) 0 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Cr1 Cr2+ 0.0166(4) 0.0160(4) 0.0066(3) 0.0075(4) 0 0
+Cl1 Cl1- 0.0223(4) 0.0185(5) 0.0079(9) 0.0126(8) 0 0
+#End of data_246418-ICSD
+
+###############################################################################
+# Hermann, A.;Vest, B.;Schwerdtfeger, P. (2006)
+# Physical Review, Serie 3. B - Condensed Matter (18,1978-) 74, \
+# 224402-1-224402-7
+# Density functional study of alpha-(Cr Cl2): structural, electronic and \
+# magnetic properties
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_156480-ICSD
+_database_code_ICSD                156480
+_audit_creation_date               2007-08-01
+_chemical_name_systematic
+'Chromium(II) chloride - alpha'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review, Serie 3. B - Condensed ' 2006 74 224402-1 224402-7 PRBMDO
+loop_
+_publ_author_name
+Hermann, A.;Vest, B.;Schwerdtfeger, P.
+_cell_length_a                     7.038
+_cell_length_b                     6.321
+_cell_length_c                     3.400
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       151.2605
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.364 0.287 0 0. 1.
+#End of data_156480-ICSD
+
+###############################################################################
+# Winkelmann, M.;Baehr, M.;Reehuis, M.;Steiner, M.;Hagiwara, M.;Katsumata, K. (1997)
+# Journal of Physics and Chemistry of Solids 58, 481-489
+# Structural and magnetic characterization of a new phase of Cr Cl2
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_84516-ICSD
+_database_code_ICSD                84516
+_audit_creation_date               1999-01-19
+_chemical_name_systematic
+'Chromium chloride (0.93/1.77) - beta'
+_chemical_formula_structural       
+'Cr0.93 Cl1.77'
+_chemical_formula_sum              
+'Cl1.77 Cr0.93'
+_publ_section_title                
+'Cl1.77 Cr0.93'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Physics and Chemistry of Soli' 1997 58 481 489 JPCSAW
+loop_
+_publ_author_name
+Winkelmann, M.;Baehr, M.;Reehuis, M.;Steiner, M.;Hagiwara, M.;Katsumata, K.
+_cell_length_a                     6.514(2)
+_cell_length_b                     11.794(3)
+_cell_length_c                     3.429(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       263.4401
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0541
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr1+03     1.903
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr1+03 4 c 0.3894(12) 0.3710(5) 0.25 0. 0.93(4)
+Cl1 Cl1- 4 c 0.7587(5) 0.0133(2) 0.25 0. 1.
+Cl2 Cl1- 4 c 0.0188(5) 0.2451(2) 0.25 0. 0.77(2)
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Cr1 Cr1+03 0.0215(24) 0.0109(19) 0.0209(28) 0 -.0026(17) 0
+Cl1 Cl1- 0.0179(6) 0.0134(7) 0.0253(11) 0 -.0018(10) 0
+Cl2 Cl1- 0.0201(12) 0.0116(9) 0.0315(17) 0 -.0124(10) 0
+#End of data_84516-ICSD
+
+###############################################################################
+# Wooster, N. (1930)
+# Zeitschrift fuer Krist., Kristallgeometrie, Kristallphysik, Kristallchemie \
+# (-144,1977) 74, 363-374
+# The structure of chromium trichloride Cr Cl3
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_33578-ICSD
+_database_code_ICSD                33578
+_audit_creation_date               1984-10-16
+_chemical_name_systematic
+'Chromium chloride'
+_chemical_formula_structural       
+'Cr Cl3'
+_chemical_formula_sum              
+'Cl3 Cr1'
+_publ_section_title                
+'Cl3 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Zeitschrift fuer Krist., Kristallgeometr' 1930 74 363 374 ZEKGAX
+loop_
+_publ_author_name
+Wooster, N.
+_cell_length_a                     6.02(5)
+_cell_length_b                     6.02(5)
+_cell_length_c                     17.30(10)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       542.9604
+_cell_formula_units_Z              6.000
+_symmetry_space_group_name_H-M     'P 32 1 2'
+_symmetry_Int_Tables_number        153
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, x-y, -z'
+   2   '-x+y, y, -z+2/3'
+   3   '-y, -x, -z+1/3'
+   4   '-x+y, -x, z+1/3'
+   5   '-y, x-y, z+2/3'
+   6   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr3+ 3 a 0.2222 0.1111 0 0. 1.
+Cr2 Cr3+ 3 a 0.8888 0.4444 0 0. 1.
+Cl1 Cl1- 6 c 0.8889 0.1111 0.0731 0. 1.
+Cl2 Cl1- 6 c 0.5556 0.4444 0.0731 0. 1.
+Cl3 Cl1- 6 c 0.2222 0.7778 0.0731 0. 1.
+#End of data_33578-ICSD
+
+###############################################################################
+# Cable, J.W.;Wilkinson, M.K.;Wollan, E.O. (1960)
+# Physical Review (1,1893-132,1963/141,1966-188,1969) 118, 950-955
+# Neutron diffraction studies of antiferromagnetism in Cr F2 and Cr Cl2
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_31159-ICSD
+_database_code_ICSD                31159
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review (1,1893-132,1963/141,196' 1960 118 950 955 PHRVAO
+loop_
+_publ_author_name
+Cable, J.W.;Wilkinson, M.K.;Wollan, E.O.
+_cell_length_a                     6.638
+_cell_length_b                     5.984
+_cell_length_c                     3.476
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       138.0701
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.36 0.27 0 0. 1.
+#End of data_31159-ICSD
+
+###############################################################################
+# Oswald, H.R. (1961)
+# Helvetica Chimica Acta 44, 1049-1054
+# Die Kristallstruktur des wasserfreien Chrom(II)-chlorides
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_27490-ICSD
+_database_code_ICSD                27490
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Helvetica Chimica Acta' 1961 44 1049 1054 HCACAV
+loop_
+_publ_author_name
+Oswald, H.R.
+_cell_length_a                     6.624(6)
+_cell_length_b                     5.974(6)
+_cell_length_c                     3.488(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       138.0305
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.1234
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 b 0 0 0.5 0. 1.
+Cl1 Cl1- 4 g 0.138(2) 0.222(2) 0 0. 1.
+#End of data_27490-ICSD
+
+###############################################################################
+# Morosin, B.;Narath, A. (1964)
+# Journal of Chemical Physics 40, 1958-1967
+# X-ray diffraction and nuclear quadrupole resonance studies of chromium \
+# trichloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_22081-ICSD
+_database_code_ICSD                22081
+_audit_creation_date               1986-10-10
+_chemical_name_systematic
+'Chromium chloride - LT'
+_chemical_formula_structural       
+'Cr Cl3'
+_chemical_formula_sum              
+'Cl3 Cr1'
+_publ_section_title                
+'Cl3 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Chemical Physics' 1964 40 1958 1967 JCPSA6
+loop_
+_publ_author_name
+Morosin, B.;Narath, A.
+_cell_length_a                     5.942(3)
+_cell_length_b                     5.942(3)
+_cell_length_c                     17.333(10)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  120.
+_cell_volume                       529.9906
+_cell_formula_units_Z              6.000
+_symmetry_space_group_name_H-M     'R -3'
+_symmetry_Int_Tables_number        148
+_refine_ls_R_factor_all            0.1405
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x-y, x, -z'
+   2   'y, -x+y, -z'
+   3   '-x, -y, -z'
+   4   '-x+y, -x, z'
+   5   '-y, x-y, z'
+   6   'x, y, z'
+   7   'x-y+2/3, x+1/3, -z+1/3'
+   8   'y+2/3, -x+y+1/3, -z+1/3'
+   9   '-x+2/3, -y+1/3, -z+1/3'
+  10   '-x+y+2/3, -x+1/3, z+1/3'
+  11   '-y+2/3, x-y+1/3, z+1/3'
+  12   'x+2/3, y+1/3, z+1/3'
+  13   'x-y+1/3, x+2/3, -z+2/3'
+  14   'y+1/3, -x+y+2/3, -z+2/3'
+  15   '-x+1/3, -y+2/3, -z+2/3'
+  16   '-x+y+1/3, -x+2/3, z+2/3'
+  17   '-y+1/3, x-y+2/3, z+2/3'
+  18   'x+1/3, y+2/3, z+2/3'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr3+ 6 c 0 0 0.3323(2) 0.71 1.
+Cl1 Cl1- 18 f 0.6507(9) -.0075(9) 0.0757(3) 1.32 1.
+#End of data_22081-ICSD
+
+###############################################################################
+# Morosin, B.;Narath, A. (1964)
+# Journal of Chemical Physics 40, 1958-1967
+# X-ray diffraction and nuclear quadrupole resonance studies of chromium \
+# trichloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_22080-ICSD
+_database_code_ICSD                22080
+_audit_creation_date               1986-10-10
+_chemical_name_systematic
+'Chromium chloride'
+_chemical_formula_structural       
+'Cr Cl3'
+_chemical_formula_sum              
+'Cl3 Cr1'
+_publ_section_title                
+'Cl3 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Chemical Physics' 1964 40 1958 1967 JCPSA6
+loop_
+_publ_author_name
+Morosin, B.;Narath, A.
+_cell_length_a                     5.9588(16)
+_cell_length_b                     10.3206(13)
+_cell_length_c                     6.1138(21)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   108.495(8)
+_cell_angle_gamma                  90.
+_cell_volume                       356.5704
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'C 1 2/m 1'
+_symmetry_Int_Tables_number        12
+_refine_ls_R_factor_all            0.0631
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x, y, -z'
+   2   '-x, -y, -z'
+   3   'x, -y, z'
+   4   'x, y, z'
+   5   '-x+1/2, y+1/2, -z'
+   6   '-x+1/2, -y+1/2, -z'
+   7   'x+1/2, -y+1/2, z'
+   8   'x+1/2, y+1/2, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr3+     3.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr3+ 4 g 0 0.16670(5) 0 0. 1.
+Cl1 Cl1- 4 i 0.22048(9) 0 0.23158(12) 0. 1.
+Cl2 Cl1- 8 j 0.25115(9) 0.32311(7) 0.22891(11) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_B_11
+_atom_site_aniso_B_22
+_atom_site_aniso_B_33
+_atom_site_aniso_B_12
+_atom_site_aniso_B_13
+_atom_site_aniso_B_23
+Cr1 Cr3+ 5.24 5.06 5.952 0 1.792 0
+Cl1 Cl1- 6.64 5.776 7.212 0 0.828 0
+Cl2 Cl1- 6.728 7.372 6.8 -1.056 2.816 -1.284
+#End of data_22080-ICSD
+
+###############################################################################
+# Yakel, H.L.jr.;Wilkinson, M.K. (1961)
+# Acta Crystallographica (1,1948-23,1967) 14, 927-929
+# The crystal structure of chromium(II) chloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15470-ICSD
+_database_code_ICSD                15470
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica (1,1948-23,1967)' 1961 14 927 929 ACCRA9
+loop_
+_publ_author_name
+Yakel, H.L.jr.;Wilkinson, M.K.
+_cell_length_a                     6.638
+_cell_length_b                     5.984
+_cell_length_c                     3.476
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       138.0701
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.36 0.28 0 0. 1.
+#End of data_15470-ICSD
+
+###############################################################################
+# Rundle, R.E.;Scheringer, C. (1961)
+# Acta Crystallographica (1,1948-23,1967) 14, 927-929
+# The crystal structure of chromium(II) chloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15469-ICSD
+_database_code_ICSD                15469
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica (1,1948-23,1967)' 1961 14 927 929 ACCRA9
+loop_
+_publ_author_name
+Rundle, R.E.;Scheringer, C.
+_cell_length_a                     6.621
+_cell_length_b                     5.957
+_cell_length_c                     3.48
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       137.2601
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.1487
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.359 0.27 0 0. 1.
+#End of data_15469-ICSD
+
+###############################################################################
+# Dunitz, J.D.;Mez, H.C. (1961)
+# Acta Crystallographica (1,1948-23,1967) 14, 927-929
+# The crystal structure of chromium(II) chloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15468-ICSD
+_database_code_ICSD                15468
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica (1,1948-23,1967)' 1961 14 927 929 ACCRA9
+loop_
+_publ_author_name
+Dunitz, J.D.;Mez, H.C.
+_cell_length_a                     6.631
+_cell_length_b                     5.98
+_cell_length_c                     3.487
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       138.2709
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.0848
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.36 0.275 0 0. 1.
+#End of data_15468-ICSD
+
+###############################################################################
+# Tracy, J.W.;Gregory, N.W.;Lingafelter, E.C. (1961)
+# Acta Crystallographica (1,1948-23,1967) 14, 927-929
+# The crystal structure of chromium(II) chloride
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15467-ICSD
+_database_code_ICSD                15467
+_audit_creation_date               1986-10-10
+_chemical_name_systematic
+'Chromium(II) chloride'
+_chemical_formula_structural       
+'Cr Cl2'
+_chemical_formula_sum              
+'Cl2 Cr1'
+_publ_section_title                
+'Cl2 Cr1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica (1,1948-23,1967)' 1961 14 927 929 ACCRA9
+loop_
+_publ_author_name
+Tracy, J.W.;Gregory, N.W.;Lingafelter, E.C.
+_cell_length_a                     6.653
+_cell_length_b                     5.992
+_cell_length_c                     3.494
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       139.2906
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P n n m'
+_symmetry_Int_Tables_number        58
+_refine_ls_R_factor_all            0.1063
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   'x, y, -z'
+   4   '-x, -y, -z'
+   5   '-x+1/2, y+1/2, -z+1/2'
+   6   'x+1/2, -y+1/2, -z+1/2'
+   7   '-x, -y, z'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Cr2+     2.
+Cl1-     -1.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Cr1 Cr2+ 2 a 0 0 0 0. 1.
+Cl1 Cl1- 4 g 0.362 0.274 0 0. 1.
+#End of data_15467-ICSD
+
