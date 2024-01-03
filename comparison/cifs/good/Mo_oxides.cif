@@ -1,0 +1,4040 @@
+###############################################################################
+# Atuchin, V.V.;Gavrilova, T.A.;Grigorieva, T.I.;Kuratieva, N.V.;\
+# Okotrub, K.A.;Pervukhina, N.V.;Surovtsev, N.V. (2011)
+# Journal of Crystal Growth 318, 987-990
+# Sublimation growth and vibrational microspectrometry of alpha - (Mo O3) \
+# single crystals
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_180590-ICSD
+_database_code_ICSD                180590
+_audit_creation_date               2011-08-01
+_chemical_name_systematic
+'Molybdenum trioxide - alpha'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Crystal Growth' 2011 318 987 990 JCRGAE
+loop_
+_publ_author_name
+Atuchin, V.V.;Gavrilova, T.A.;Grigorieva, T.I.;Kuratieva, N.V.;\
+Okotrub, K.A.;Pervukhina, N.V.;Surovtsev, N.V.
+_cell_length_a                     13.8674(7)
+_cell_length_b                     3.6976(2)
+_cell_length_c                     3.9644(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.2805
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n m a'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0154
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   'x, -y+1/2, z'
+   3   '-x+1/2, y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   '-x+1/2, -y, z+1/2'
+   6   '-x, y+1/2, -z'
+   7   'x+1/2, -y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.3984(1) 0.250 0.5862(1) 0.005(1) 1.
+O1 O2- 4 c 0.4117(1) 0.250 0.0222(5) 0.010(1) 1.
+O2 O2- 4 c 0.4357(1) 0.750 0.5018(5) 0.008(1) 1.
+O3 O2- 4 c 0.2783(1) 0.250 0.5346(5) 0.013(1) 1.
+#End of data_180590-ICSD
+
+###############################################################################
+# Sitepu, H. (2009)
+# Powder Diffraction 24, 315-326
+# Texture and structural refinement using neutron diffraction data from \
+# molybdite (Mo O3) and calcite (Ca C O3) powders and a Ni-rich Ni50.7 Ti49.30 alloy
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_166363-ICSD
+_database_code_ICSD                166363
+_audit_creation_date               2010-08-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Powder Diffraction' 2009 24 315 326 PODIE2
+loop_
+_publ_author_name
+Sitepu, H.
+_cell_length_a                     3.9624(1)
+_cell_length_b                     13.860(2)
+_cell_length_c                     3.6971(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.0401
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0389
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.08490(7) 0.10126(8) 0.250 0.007(2) 1.
+O1 O2- 4 c 0.0350(3) 0.22139(9) 0.250 0.013(3) 1.
+O2 O2- 4 c 0.5209(2) 0.08828(9) 0.250 0.010(2) 1.
+O3 O2- 4 c 0.5016(2) 0.4363(1) 0.250 0.007(2) 1.
+#End of data_166363-ICSD
+
+###############################################################################
+# Sitepu, H. (2009)
+# Powder Diffraction 24, 315-326
+# Texture and structural refinement using neutron diffraction data from \
+# molybdite (Mo O3) and calcite (Ca C O3) powders and a Ni-rich Ni50.7 Ti49.30 alloy
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_166362-ICSD
+_database_code_ICSD                166362
+_audit_creation_date               2010-08-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Powder Diffraction' 2009 24 315 326 PODIE2
+loop_
+_publ_author_name
+Sitepu, H.
+_cell_length_a                     3.9624(1)
+_cell_length_b                     13.860(2)
+_cell_length_c                     3.6971(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.0401
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0505
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.08503(8) 0.10133(9) 0.250 0.006(2) 1.
+O1 O2- 4 c 0.0348(3) 0.22120(10) 0.250 0.013(2) 1.
+O2 O2- 4 c 0.5211(2) 0.08807(10) 0.250 0.009(2) 1.
+O3 O2- 4 c 0.5019(2) 0.4361(1) 0.250 0.007(2) 1.
+#End of data_166362-ICSD
+
+###############################################################################
+# Sitepu, H.;O'Connor, B.H.;Li Deyu (2005)
+# Journal of Applied Crystallography 38, 158-167
+# Comparative evaluation of the March and generalized spherical harmonic \
+# preferred orientation models using X-ray diffraction data for molybdite and calcite powders
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_158256-ICSD
+_database_code_ICSD                158256
+_audit_creation_date               2008-02-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Applied Crystallography' 2005 38 158 167 JACGAR
+loop_
+_publ_author_name
+Sitepu, H.;O'Connor, B.H.;Li Deyu
+_cell_length_a                     3.9616(4)
+_cell_length_b                     13.856(1)
+_cell_length_c                     3.6978(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       202.9809
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.1009
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.073(1) 0.1010(1) 0.250 0.0279(7) 1.
+O1 O2- 4 c 0.544(7) 0.426(1) 0.250 0.02513(1) 1.
+O2 O2- 4 c 0.615(7) 0.0910(9) 0.250 0.02613(6) 1.
+O3 O2- 4 c 0.053(6) 0.223(1) 0.250 0.01121(5) 1.
+#End of data_158256-ICSD
+
+###############################################################################
+# Sitepu, H.;O'Connor, B.H.;Li Deyu (2005)
+# Journal of Applied Crystallography 38, 158-167
+# Comparative evaluation of the March and generalized spherical harmonic \
+# preferred orientation models using X-ray diffraction data for molybdite and calcite powders
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_158255-ICSD
+_database_code_ICSD                158255
+_audit_creation_date               2008-02-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Applied Crystallography' 2005 38 158 167 JACGAR
+loop_
+_publ_author_name
+Sitepu, H.;O'Connor, B.H.;Li Deyu
+_cell_length_a                     3.9621(7)
+_cell_length_b                     13.855(1)
+_cell_length_c                     3.6986(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.0302
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.11
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.075(1) 0.1020(1) 0.250 0.01563(7) 1.
+O1 O2- 4 c 0.526(10) 0.426(1) 0.250 0.01012(6) 1.
+O2 O2- 4 c 0.5660(2) 0.086(1) 0.250 0.01112(6) 1.
+O3 O2- 4 c 0.010(1) 0.224(1) 0.250 0.01495(4) 1.
+#End of data_158255-ICSD
+
+###############################################################################
+# Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C. (2005)
+# Crystal Research and Technology 40, 95-105
+# In situ X-ray analysis of Mo O3 reduction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_152316-ICSD
+_database_code_ICSD                152316
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum(IV) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Crystal Research and Technology' 2005 40 95 105 CRTEDF
+loop_
+_publ_author_name
+Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C.
+_cell_length_a                     5.6060(3)
+_cell_length_b                     4.8566(2)
+_cell_length_c                     5.6238(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   120.93(3)
+_cell_angle_gamma                  90.
+_cell_volume                       131.3408
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.029
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 4 e 0.2281(6) 0.9935(20) 0.0133(6) 0.23(7) 1.
+O1 O2- 4 e 0.1200(47) 0.2299(61) 0.2748(52) 0.4(4) 1.
+O2 O2- 4 e 0.3975(49) 0.6852(75) 0.2918(46) 0.4(4) 1.
+#End of data_152316-ICSD
+
+###############################################################################
+# Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C. (2005)
+# Crystal Research and Technology 40, 95-105
+# In situ X-ray analysis of Mo O3 reduction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_152315-ICSD
+_database_code_ICSD                152315
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide - B'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Crystal Research and Technology' 2005 40 95 105 CRTEDF
+loop_
+_publ_author_name
+Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C.
+_cell_length_a                     3.9629(8)
+_cell_length_b                     13.8749(21)
+_cell_length_c                     3.7070(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.8304
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0172
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.076(2) 0.1034(4) 0.250 1.10(15) 1.
+O1 O2- 4 c 0.480(9) 0.4205(21) 0.250 1.5(7) 1.
+O2 O2- 4 c 0.560(10) 0.1023(25) 0.250 1.5(7) 1.
+O3 O2- 4 c 0.014(11) 0.2306(22) 0.250 1.5(7) 1.
+#End of data_152315-ICSD
+
+###############################################################################
+# Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C. (2005)
+# Crystal Research and Technology 40, 95-105
+# In situ X-ray analysis of Mo O3 reduction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_152314-ICSD
+_database_code_ICSD                152314
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide - A'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Crystal Research and Technology' 2005 40 95 105 CRTEDF
+loop_
+_publ_author_name
+Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C.
+_cell_length_a                     3.9609(3)
+_cell_length_b                     13.8570(10)
+_cell_length_c                     3.6953(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       202.8206
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0244
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.075(2) 0.1003(5) 0.250 1.39(10) 1.
+O1 O2- 4 c 0.443(12) 0.4328(24) 0.250 1.0(4) 1.
+O2 O2- 4 c 0.501(11) 0.0770(25) 0.250 1.0(4) 1.
+O3 O2- 4 c 0.068(12) 0.2242(26) 0.250 1.0(4) 1.
+#End of data_152314-ICSD
+
+###############################################################################
+# Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C. (2005)
+# Crystal Research and Technology 40, 95-105
+# In situ X-ray analysis of Mo O3 reduction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_152313-ICSD
+_database_code_ICSD                152313
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide - B'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Crystal Research and Technology' 2005 40 95 105 CRTEDF
+loop_
+_publ_author_name
+Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C.
+_cell_length_a                     3.9616(7)
+_cell_length_b                     13.8704(21)
+_cell_length_c                     3.7050(14)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.5901
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0325
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.071(2) 0.1039(3) 0.250 1.27(6) 1.
+O1 O2- 4 c 0.480(9) 0.4202(18) 0.250 1.0(5) 1.
+O2 O2- 4 c 0.560(8) 0.1029(22) 0.250 1.0(5) 1.
+O3 O2- 4 c 0.028(9) 0.2310(19) 0.250 1.0(5) 1.
+#End of data_152313-ICSD
+
+###############################################################################
+# Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C. (2005)
+# Crystal Research and Technology 40, 95-105
+# In situ X-ray analysis of Mo O3 reduction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_152312-ICSD
+_database_code_ICSD                152312
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide - A'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Crystal Research and Technology' 2005 40 95 105 CRTEDF
+loop_
+_publ_author_name
+Leisegang, T.;Levin, A.A.;Walter, J.;Meyer, D.C.
+_cell_length_a                     3.9614(4)
+_cell_length_b                     13.8621(9)
+_cell_length_c                     3.6970(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.0104
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0271
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.077(2) 0.1001(4) 0.250 1.66(8) 1.
+O1 O2- 4 c 0.490(11) 0.4302(21) 0.250 1.0(4) 1.
+O2 O2- 4 c 0.473(11) 0.0911(23) 0.250 1.0(4) 1.
+O3 O2- 4 c 0.044(13) 0.2263(23) 0.250 1.0(4) 1.
+#End of data_152312-ICSD
+
+###############################################################################
+# Negishi, H.;Negishi, S.;Kuroiwa, Y.;Sato, N.;Aoyagi, S. (2004)
+# Physical Review, Serie 3. B - Condensed Matter (18,1978-) 69, \
+# 064111-1-064111-8
+# Anisotropic thermal expansion of layered Mo O3 crystals
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_151751-ICSD
+_database_code_ICSD                151751
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review, Serie 3. B - Condensed ' 2004 69 064111-1 064111-8 PRBMDO
+loop_
+_publ_author_name
+Negishi, H.;Negishi, S.;Kuroiwa, Y.;Sato, N.;Aoyagi, S.
+_cell_length_a                     13.8649(1)
+_cell_length_b                     3.69756(2)
+_cell_length_c                     3.96290(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       203.1707
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n m a'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0154
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   'x, -y+1/2, z'
+   3   '-x+1/2, y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   '-x+1/2, -y, z+1/2'
+   6   '-x, y+1/2, -z'
+   7   'x+1/2, -y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.10163(3) 0.250 0.08461(8) 0.329(3) 1.
+O1 O2- 4 c 0.4370(1) 0.250 0.4963(5) 0.09(4) 1.
+O2 O2- 4 c 0.0869(1) 0.250 0.5216(4) 0.31(4) 1.
+O3 O2- 4 c 0.2188(1) 0.250 0.0376(5) 0.55(5) 1.
+#End of data_151751-ICSD
+
+###############################################################################
+# Negishi, H.;Negishi, S.;Kuroiwa, Y.;Sato, N.;Aoyagi, S. (2004)
+# Physical Review, Serie 3. B - Condensed Matter (18,1978-) 69, \
+# 064111-1-064111-8
+# Anisotropic thermal expansion of layered Mo O3 crystals
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_151750-ICSD
+_database_code_ICSD                151750
+_audit_creation_date               2006-10-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Physical Review, Serie 3. B - Condensed ' 2004 69 064111-1 064111-8 PRBMDO
+loop_
+_publ_author_name
+Negishi, H.;Negishi, S.;Kuroiwa, Y.;Sato, N.;Aoyagi, S.
+_cell_length_a                     13.7644(1)
+_cell_length_b                     3.69894(3)
+_cell_length_c                     3.95640(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       201.431
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n m a'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0181
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   'x, -y+1/2, z'
+   3   '-x+1/2, y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   '-x+1/2, -y, z+1/2'
+   6   '-x, y+1/2, -z'
+   7   'x+1/2, -y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.10163(3) 0.250 0.08461(8) 0.2943(3) 1.
+O1 O2- 4 c 0.4368(1) 0.250 0.4957(4) 0.02(4) 1.
+O2 O2- 4 c 0.0867(1) 0.250 0.5209(4) 0.16(4) 1.
+O3 O2- 4 c 0.2230(1) 0.250 0.0352(5) 0.41(5) 1.
+#End of data_151750-ICSD
+
+###############################################################################
+# Cox, D.E.;Cava, R.J.;McWhan, D.B.;Murphy, D.W. (1982)
+# Journal of Physics and Chemistry of Solids 43, 657-666
+# A neutron powder diffraction study of the lithium insertion compound \
+# lithium molybdenum dioxide from 4-440 K
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_108875-ICSD
+_database_code_ICSD                108875
+_audit_creation_date               2007-04-01
+_chemical_name_systematic
+'Molybdenum(IV) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Physics and Chemistry of Soli' 1982 43 657 666 JPCSAW
+loop_
+_publ_author_name
+Cox, D.E.;Cava, R.J.;McWhan, D.B.;Murphy, D.W.
+_cell_length_a                     5.611
+_cell_length_b                     4.856
+_cell_length_c                     5.629
+_cell_angle_alpha                  90.
+_cell_angle_beta                   120.95(1)
+_cell_angle_gamma                  90.
+_cell_volume                       131.5406
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0532
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 4 e 0.2329 -.0080 0.0169 0. 1.
+O1 O2- 4 e 0.1127 0.2164 0.2339 0. 1.
+O2 O2- 4 e 0.3903 0.6966 0.2990 0. 1.
+#End of data_108875-ICSD
+
+###############################################################################
+# Yamazoe, N.;Ekstroem, T.;Kihlborg, L. (1975)
+# Acta Chemica Scandinavica, Series A: (28,1974-) 29, 404-408
+# Structural effects of vanadium substitution in Mo17 O47
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_654155-ICSD
+_database_code_ICSD                654155
+_audit_creation_date               2008-07-07
+_chemical_name_systematic
+'Molydenum oxide (15.39/47)'
+_chemical_formula_structural       
+'Mo15.39 O47'
+_chemical_formula_sum              
+'Mo15.39 O47'
+_publ_section_title                
+'Mo15.39 O47'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica, Series A: (28' 1975 29 404 408 ACAPCT
+loop_
+_publ_author_name
+Yamazoe, N.;Ekstroem, T.;Kihlborg, L.
+_cell_length_a                     21.615(4)
+_cell_length_b                     19.632(4)
+_cell_length_c                     3.9515(10)
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   90.0
+_cell_angle_gamma                  90.0
+_cell_volume                       1676.8002
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P b a 2'
+_symmetry_Int_Tables_number        32
+_refine_ls_R_factor_all            0.065
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z'
+   3   '-x, -y, z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo0+     0.
+O0+     0.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo0+ 2 a 0 0 0.579 0. 0.91
+Mo2 Mo0+ 4 c 0.0243 0.2612 0.5789 0. 0.92
+Mo3 Mo0+ 4 c 0.1295 0.1175 0.4006 0. 0.90
+Mo4 Mo0+ 4 c 0.1356 0.4004 0.4117 0. 0.82
+Mo5 Mo0+ 4 c 0.2422 0.2575 0.5626 0. 0.95
+Mo6 Mo0+ 4 c 0.2882 0.0650 0.5773 0. 0.93
+Mo7 Mo0+ 4 c 0.3826 0.1934 0.4062 0. 0.92
+Mo8 Mo0+ 4 c 0.3857 0.3664 0.4096 0. 0.95
+Mo9 Mo0+ 4 c 0.4652 0.0559 0.5619 0. 0.85
+O1 O0+ 2 a 0 0 0.020 0. 1
+O2 O0+ 4 c 0.0746 0.0447 0.491 0. 1
+O3 O0+ 4 c 0.0588 0.1782 0.503 0. 1
+O4 O0+ 4 c 0.0875 0.3215 0.543 0. 1
+O5 O0+ 4 c 0.0575 0.4577 0.494 0. 1
+O6 O0+ 4 c 0.2037 0.0672 0.496 0. 1
+O7 O0+ 4 c 0.1773 0.1986 0.486 0. 1
+O8 O0+ 4 c 0.2062 0.3396 0.479 0. 1
+O9 O0+ 4 c 0.1869 0.4758 0.550 0. 1
+O10 O0+ 4 c 0.2950 0.1692 0.501 0. 1
+O11 O0+ 4 c 0.3322 0.2808 0.481 0. 1
+O12 O0+ 4 c 0.0227 0.2640 0.026 0. 1
+O13 O0+ 4 c 0.3291 0.4241 0.465 0. 1
+O14 O0+ 4 c 0.3798 0.0940 0.518 0. 1
+O15 O0+ 4 c 0.4683 0.1558 0.499 0. 1
+O16 O0+ 4 c 0.4381 0.2719 0.480 0. 1
+O17 O0+ 4 c 0.4577 0.4116 0.496 0. 1
+O18 O0+ 4 c 0.1286 0.1219 0.994 0. 1
+O19 O0+ 4 c 0.1331 0.4025 0.998 0. 1
+O20 O0+ 4 c 0.2459 0.2571 0.990 0. 1
+O21 O0+ 4 c 0.2867 0.0685 0.998 0. 1
+O22 O0+ 4 c 0.3829 0.1957 0.993 0. 1
+O23 O0+ 4 c 0.3879 0.3584 0.992 0. 1
+O24 O0+ 4 c 0.4635 0.0565 0.992 0. 1
+#End of data_654155-ICSD
+
+###############################################################################
+# Asbrink, S.;Kihlborg, L. (1964)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 18, 1571-1573
+# A study of the crystal symmetry and structure of orthorhombic Mo4 O11 by \
+# least-squares techniques
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_654112-ICSD
+_database_code_ICSD                654112
+_audit_creation_date               2008-07-07
+_chemical_name_systematic
+'Molydenum oxide (4/11)'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1964 18 1571 1573 ACSAA4
+loop_
+_publ_author_name
+Asbrink, S.;Kihlborg, L.
+_cell_length_a                     24.49
+_cell_length_b                     6.752
+_cell_length_c                     5.457
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   90.0
+_cell_angle_gamma                  90.0
+_cell_volume                       902.3501
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n a 21'
+_symmetry_Int_Tables_number        33
+_refine_ls_R_factor_all            0.0848
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, -y, z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo0+     0.
+O0+     0.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo0+ 4 a 0.2054 0.8721 0.7362 0. 1
+Mo2 Mo0+ 4 a 0.1469 0.1972 0.2581 0. 1
+Mo3 Mo0+ 4 a 0.0871 0.5214 0.7523 0. 1
+Mo4 Mo0+ 4 a 0.0285 0.8412 0.2534 0. 1
+O1 O0+ 4 a 0.9979 0.0112 0.0234 0. 1
+O2 O0+ 4 a 0.1645 0.6593 0.7621 0. 1
+O3 O0+ 4 a 0.2240 0.3203 0.2682 0. 1
+O4 O0+ 4 a 0.0608 0.6849 0.9797 0. 1
+O5 O0+ 4 a 0.9326 0.3365 0.9859 0. 1
+O6 O0+ 4 a 0.1247 0.3603 0.0298 0. 1
+O7 O0+ 4 a 0.8712 0.6815 0.0315 0. 1
+O8 O0+ 4 a 0.1872 0.0387 0.9644 0. 1
+O9 O0+ 4 a 0.8064 0.0138 0.9501 0. 1
+O10 O0+ 4 a 0.0309 0.3425 0.7433 0. 1
+O11 O0+ 4 a 0.0943 0.0179 0.2352 0. 1
+#End of data_654112-ICSD
+
+###############################################################################
+# Parise, J.B.;McCarron, E.M.;Sleight, A.W.;Prince, E. (1988)
+# Materials Science Forum 27, 85-88
+# Refinement of the Structure of Beta'-Mo O3
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_644068-ICSD
+_database_code_ICSD                644068
+_audit_creation_date               2008-08-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Materials Science Forum' 1988 27 85 88 MSFOEP
+loop_
+_publ_author_name
+Parise, J.B.;McCarron, E.M.;Sleight, A.W.;Prince, E.
+_cell_length_a                     7.654(1)
+_cell_length_b                     7.433(1)
+_cell_length_c                     10.648(3)
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   135.89(5)
+_cell_angle_gamma                  90.0
+_cell_volume                       421.6502
+_cell_formula_units_Z              8.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.065
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo0+     0.
+O0+     0.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo0+ 4 e 0.022 0.021 0.726 2.7 1
+Mo2 Mo0+ 4 e 0.525 0.034 0.744 2.7 1
+O1 O0+ 4 e 0.195 0.039 0.997 1.0 1
+O2 O0+ 4 e 0.205 0.470 0.007 1.0 1
+O3 O0+ 4 e 0.989 0.260 0.713 1.0 1
+O4 O0+ 4 e 0.533 0.256 0.788 1.0 1
+O5 O0+ 4 e 0.697 0.043 0.692 1.0 1
+O6 O0+ 4 e 0.705 0.487 0.707 1.0 1
+#End of data_644068-ICSD
+
+###############################################################################
+# Parise, J.B.;McCarron, E.M.;Sleight, A.W. (1987)
+# Materials Research Bulletin 22, 803-811
+# A new modification of Re O3 -type Mo O3 and the deuterated intercalation \
+# compound from which it is derived: D0.99 Mo O3
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_644067-ICSD
+_database_code_ICSD                644067
+_audit_creation_date               2008-08-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Materials Research Bulletin' 1987 22 803 811 MRBUAC
+loop_
+_publ_author_name
+Parise, J.B.;McCarron, E.M.;Sleight, A.W.
+_cell_length_a                     7.6898(1)
+_cell_length_b                     7.4780(1)
+_cell_length_c                     10.6816(1)
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   135.96(2)
+_cell_angle_gamma                  90.0
+_cell_volume                       426.991
+_cell_formula_units_Z              8.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0361
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo0+     0.
+O0+     0.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo0+ 4 e 0.029 0.030 0.735 2.7 1
+Mo2 Mo0+ 4 e 0.533 0.020 0.754 2.7 1
+O1 O0+ 4 e 0.183 0.036 0.997 1.0 1
+O2 O0+ 4 e 0.227 0.490 0.002 1.0 1
+O3 O0+ 4 e 0.003 0.271 0.709 1.0 1
+O4 O0+ 4 e 0.522 0.255 0.782 1.0 1
+O5 O0+ 4 e 0.711 0.067 0.699 1.0 1
+O6 O0+ 4 e 0.707 0.482 0.702 1.0 1
+#End of data_644067-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 357-364
+# Least squares refinement of the crystal structure of molybdenum trioxide
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_644063-ICSD
+_database_code_ICSD                644063
+_audit_creation_date               2008-07-07
+_chemical_name_systematic
+'Molydenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 357 364 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     13.855(3)
+_cell_length_b                     3.6964(6)
+_cell_length_c                     3.9628(7)
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   90.0
+_cell_angle_gamma                  90.0
+_cell_volume                       202.9502
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n m a'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0442
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   'x, -y+1/2, z'
+   3   '-x+1/2, y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   '-x+1/2, -y, z+1/2'
+   6   '-x, y+1/2, -z'
+   7   'x+1/2, -y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.10164 0.25 0.08669 .230 1
+O1 O2- 4 c 0.43513 0.25 0.4994 .561 1
+O2 O2- 4 c 0.08657 0.25 0.5212 .628 1
+O3 O2- 4 c 0.22140 0.25 0.0373 .951 1
+#End of data_644063-ICSD
+
+###############################################################################
+# Asbrink, S.;Kihlborg, L. (1964)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 18, 1571-1573
+# A study of the crystal symmetry and structure of orthorhombic Mo4 O11 by \
+# least-squares techniques
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_644061-ICSD
+_database_code_ICSD                644061
+_audit_creation_date               2008-07-07
+_chemical_name_systematic
+'Molydenum oxide (4/11)'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1964 18 1571 1573 ACSAA4
+loop_
+_publ_author_name
+Asbrink, S.;Kihlborg, L.
+_cell_length_a                     24.4000
+_cell_length_b                     5.4500
+_cell_length_c                     6.7000
+_cell_angle_alpha                  90.0
+_cell_angle_beta                   90.0
+_cell_angle_gamma                  90.0
+_cell_volume                       890.9707
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n 21 a'
+_symmetry_Int_Tables_number        33
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo0+     0.
+O0+     0.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo0+ 4 a 0.20535 0.26380 0.87214 0. 1.000
+Mo2 Mo0+ 4 a 0.14690 0.74190 0.19715 0. 1.000
+Mo3 Mo0+ 4 a 0.08714 0.24770 0.52144 0. 1.000
+Mo4 Mo0+ 4 a 0.02852 0.74660 0.84123 0. 1.000
+O1 O0+ 4 a 0.99790 0.97660 0.01120 0. 1.000
+O2 O0+ 4 a 0.16450 0.23790 0.65930 0. 1.000
+O3 O0+ 4 a 0.22400 0.73180 0.32030 0. 1.000
+O4 O0+ 4 a 0.06080 0.02030 0.68490 0. 1.000
+O5 O0+ 4 a 0.93260 0.01410 0.33650 0. 1.000
+O6 O0+ 4 a 0.12470 0.97020 0.36030 0. 1.000
+O7 O0+ 4 a 0.87120 0.96850 0.68150 0. 1.000
+O8 O0+ 4 a 0.18720 0.03560 0.03870 0. 1.000
+O9 O0+ 4 a 0.80640 0.04990 0.01380 0. 1.000
+O10 O0+ 4 a 0.03090 0.25670 0.34250 0. 1.000
+O11 O0+ 4 a 0.09430 0.76480 0.01790 0. 1.000
+#End of data_644061-ICSD
+
+###############################################################################
+# Seisenbaeva, G.A.;Sundberg, M.;Nygren, M.;Dubrovinsky, L.;Kessler, V.G. (2004)
+# Materials Chemistry and Physics 87, 142-148
+# Thermal decomposition of the methoxide complexes Mo O (O Me)4, Re4 O6 (O \
+# Me)12 and (Re1-x Mox) O6 (O Me)12 (0.24 < x < 0.55)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_99714-ICSD
+_database_code_ICSD                99714
+_audit_creation_date               2005-04-01
+_chemical_name_systematic
+'Molybdenum(V) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Materials Chemistry and Physics' 2004 87 142 148 MCHPDR
+loop_
+_publ_author_name
+Seisenbaeva, G.A.;Sundberg, M.;Nygren, M.;Dubrovinsky, L.;Kessler, V.G.
+_cell_length_a                     4.8473(3)
+_cell_length_b                     4.8473(3)
+_cell_length_c                     2.8136(3)
+_cell_angle_alpha                  90
+_cell_angle_beta                   90
+_cell_angle_gamma                  90
+_cell_volume                       66.1106
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 42/m n m'
+_symmetry_Int_Tables_number        136
+_refine_ls_R_factor_all            0.0451
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-y+1/2, x+1/2, -z+1/2'
+   2   'y+1/2, -x+1/2, -z+1/2'
+   3   'y, x, -z'
+   4   '-y, -x, -z'
+   5   'y+1/2, -x+1/2, z+1/2'
+   6   '-y+1/2, x+1/2, z+1/2'
+   7   '-y, -x, z'
+   8   'y, x, z'
+   9   'x+1/2, -y+1/2, -z+1/2'
+  10   '-x+1/2, y+1/2, -z+1/2'
+  11   'x, y, -z'
+  12   '-x, -y, -z'
+  13   '-x+1/2, y+1/2, z+1/2'
+  14   'x+1/2, -y+1/2, z+1/2'
+  15   '-x, -y, z'
+  16   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 2 a 0 0 0 0.025 1.
+O1 O2- 4 f 0.3018(7) 0.3018(7) 0 0.025 1.
+#End of data_99714-ICSD
+
+###############################################################################
+# Brandt, B.G.;Skapski, A.C. (1967)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 21, 661-672
+# A refinement of the crystal structure of molybdenum dioxide
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_24322-ICSD
+_database_code_ICSD                24322
+_audit_creation_date               1986-09-25
+_chemical_name_systematic
+'Molybdenum(IV) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1967 21 661 672 ACSAA4
+loop_
+_publ_author_name
+Brandt, B.G.;Skapski, A.C.
+_cell_length_a                     5.6109(8)
+_cell_length_b                     4.8562(6)
+_cell_length_c                     5.6285(7)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   120.95(1)
+_cell_angle_gamma                  90.
+_cell_volume                       131.5307
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0532
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 4 e 0.23164(5) 0.99159(6) 0.01644(5) 0.181 1.
+O1 O2- 4 e 0.1123(6) 0.2171(6) 0.2335(5) 0.37 1.
+O2 O2- 4 e 0.3908(6) 0.6969(6) 0.2987(6) 0.339 1.
+#End of data_24322-ICSD
+
+###############################################################################
+# Brandt, B.G. (1971)
+# Chemical Communications, University of Stockholm 1971, 1-41
+# On the crystal structures of Mo O2 and Mo O3 (H2 O)2. An account of \
+# computer programming and structure refinement
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_23722-ICSD
+_database_code_ICSD                23722
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum(IV) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Chemical Communications, University of S' 1971 1971 1 41 CCUSBN
+loop_
+_publ_author_name
+Brandt, B.G.
+_cell_length_a                     5.6109(8)
+_cell_length_b                     4.8562(6)
+_cell_length_c                     5.6285(7)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   120.95(1)
+_cell_angle_gamma                  90.
+_cell_volume                       131.5307
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0497
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 4 e 0.23167(5) 0.99156(7) 0.01646(5) 0.181 1.
+O1 O2- 4 e 0.1122(6) 0.2173(7) 0.2332(6) 0.38 1.
+O2 O2- 4 e 0.3907(6) 0.6964(6) 0.2988(6) 0.36 1.
+#End of data_23722-ICSD
+
+###############################################################################
+# Portemer, F.;Sundberg, M.;Kihlborg, L.;Figlarz, M. (1993)
+# Journal of Solid State Chemistry 103, 403-414
+# Homologues of Mo4 O11(mon) in the Mo-W-O system prepared by soft chemistry
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_72639-ICSD
+_database_code_ICSD                72639
+_audit_creation_date               1994-01-19
+_chemical_name_systematic
+'Molybdenum oxide (5/14)'
+_chemical_formula_structural       
+'Mo5 O14'
+_chemical_formula_sum              
+'Mo5 O14'
+_publ_section_title                
+'Mo5 O14'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1993 103 403 414 JSSCBI
+loop_
+_publ_author_name
+Portemer, F.;Sundberg, M.;Kihlborg, L.;Figlarz, M.
+_cell_length_a                     55.77
+_cell_length_b                     5.439
+_cell_length_c                     6.701
+_cell_angle_alpha                  90.
+_cell_angle_beta                   32.75
+_cell_angle_gamma                  90.
+_cell_volume                       1099.6005
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/a 1'
+_symmetry_Int_Tables_number        14
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x, -y, -z'
+   3   '-x+1/2, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.6
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 e 0.0353 0.21434 0.05447 0. 1.
+Mo2 Mo5+ 4 e 0.08281 0.73691 0.04871 0. 1.
+Mo3 Mo5+ 4 e 0.1322 0.22622 0.02615 0. 1.
+Mo4 Mo5+ 4 e 0.17924 0.72936 0.01939 0. 1.
+Mo5 Mo5+ 4 e 0.22632 0.23 0.00775 0. 1.
+O1 O2- 4 e 0.0205 0.7447 0.6305 0. 1.
+O2 O2- 4 e 0.0502 0.4412 0.1244 0. 1.
+O3 O2- 4 e 0.0423 0.9228 0.1156 0. 1.
+O4 O2- 4 e 0.0708 0.2324 0.6044 0. 1.
+O5 O2- 4 e 0.1038 0.5164 0.0656 0. 1.
+O6 O2- 4 e 0.0974 0.0121 0.0715 0. 1.
+O7 O2- 4 e 0.1236 0.729 0.5896 0. 1.
+O8 O2- 4 e 0.154 0.4501 0.0433 0. 1.
+O9 O2- 4 e 0.1477 0.959 0.0526 0. 1.
+O10 O2- 4 e 0.1773 0.2292 0.5312 0. 1.
+O11 O2- 4 e 0.2 0.995 0.022 0. 1.
+O12 O2- 4 e 0.2023 0.495 0.034 0. 1.
+O13 O2- 4 e 0.2258 0.73 0.51 0. 1.
+O14 O2- 4 e 0.252 0 0.9594 0. 1.
+#End of data_72639-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 427-437
+# Crystal structure on Mo5 O14, a compound exhibiting two-dimensional disorder
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_27202-ICSD
+_database_code_ICSD                27202
+_audit_creation_date               1986-09-25
+_chemical_name_systematic
+'Dimolybdenum(V) trimolybdenum oxide - subcell'
+_chemical_formula_structural       
+'Mo5 O14'
+_chemical_formula_sum              
+'Mo5 O14'
+_publ_section_title                
+'Mo5 O14'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 427 437 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     22.995
+_cell_length_b                     22.995
+_cell_length_c                     3.937
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       2081.7705
+_cell_formula_units_Z              8.000
+_symmetry_space_group_name_H-M     'P 4/m b m'
+_symmetry_Int_Tables_number        127
+_refine_ls_R_factor_all            0.1504
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'y+1/2, x+1/2, -z'
+   2   '-y+1/2, -x+1/2, -z'
+   3   '-y, x, -z'
+   4   'y, -x, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x+1/2, y+1/2, -z'
+   7   'x, y, -z'
+   8   '-x, -y, -z'
+   9   '-y+1/2, -x+1/2, z'
+  10   'y+1/2, x+1/2, z'
+  11   'y, -x, z'
+  12   '-y, x, z'
+  13   '-x+1/2, y+1/2, z'
+  14   'x+1/2, -y+1/2, z'
+  15   '-x, -y, z'
+  16   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.6
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 8 k 0.3005(2) 0.1995(2) 0.425 0. 0.5
+Mo2 Mo5+ 8 k 0.4033(2) 0.0967(2) 0.425 0. 0.5
+Mo3 Mo5+ 16 l 0.0500(2) 0.3388(2) 0.425 0. 0.5
+Mo4 Mo5+ 16 l 0.0821(2) 0.0770(2) 0.425 0. 0.5
+Mo5 Mo5+ 16 l 0.1590(2) 0.2190(2) 0.425 0. 0.5
+Mo6 Mo5+ 16 l 0.2408(2) 0.0713(2) 0.425 0. 0.5
+O1 O2- 4 g 0.297(2) 0.203(2) 0 0. 1.
+O2 O2- 4 g 0.399(2) 0.101(2) 0 0. 1.
+O3 O2- 8 i 0.048(2) 0.347(2) 0 0. 1.
+O4 O2- 8 i 0.095(2) 0.077(2) 0 0. 1.
+O5 O2- 8 i 0.156(2) 0.220(2) 0 0. 1.
+O6 O2- 8 i 0.248(2) 0.079(2) 0 0. 1.
+O7 O2- 4 h 0.097(2) 0.403(2) 0.5 0. 1.
+O8 O2- 4 h 0.233(2) 0.267(2) 0.5 0. 1.
+O9 O2- 8 j 0.271(2) 0.002(2) 0.5 0. 1.
+O10 O2- 8 j 0.003(2) 0.084(2) 0.5 0. 1.
+O11 O2- 8 j 0.105(2) 0.161(2) 0.5 0. 1.
+O12 O2- 8 j 0.111(2) 0.287(2) 0.5 0. 1.
+O13 O2- 8 j 0.169(2) 0.058(2) 0.5 0. 1.
+O14 O2- 8 j 0.220(2) 0.160(2) 0.5 0. 1.
+O15 O2- 8 j 0.317(2) 0.113(2) 0.5 0. 1.
+O16 O2- 8 j 0.389(2) 0.023(2) 0.5 0. 1.
+#End of data_27202-ICSD
+
+###############################################################################
+# Fun, H.-K.;Yang, P.;Sasaki, M.;Inoue, M.;Kadomatsu, H. (1999)
+# Powder Diffraction 14, 284-288
+# Rietveld refinement of the crystal structure of gamma-(Mo4 O11)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_89340-ICSD
+_database_code_ICSD                89340
+_audit_creation_date               2001-07-16
+_chemical_name_systematic
+'Molybdenum oxide (4/11) - gamma'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Powder Diffraction' 1999 14 284 288 PODIE2
+loop_
+_publ_author_name
+Fun, H.-K.;Yang, P.;Sasaki, M.;Inoue, M.;Kadomatsu, H.
+_cell_length_a                     24.47559(50)
+_cell_length_b                     6.7516(1)
+_cell_length_c                     5.4572(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       901.8002
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n a 21'
+_symmetry_Int_Tables_number        33
+_refine_ls_R_factor_all            0.0271
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, -y, z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 a 0.0287(2) 0.1581(8) 0.3826 0.6(1) 1.
+Mo2 Mo6+ 4 a -.0865(2) 0.5221(7) 0.406(3) 0.6(1) 1.
+Mo3 Mo6+ 4 a 0.6479(2) 0.6958(6) 0.401(3) 1.1(1) 1.
+Mo4 Mo4+ 4 a 0.7943(2) 0.8717(7) 0.396(4) 1.4(1) 1.
+O1 O2- 4 a 0.700(2) 0.497(6) 0.618(7) 1.0(1) 1.
+O2 O2- 4 a -.036(1) 0.351(4) 0.43(1) 0.7(1) 1.
+O3 O2- 4 a 0.001(2) 0.021(8) 0.083(7) 0.7(1) 1.
+O4 O2- 4 a 0.727(1) 0.813(4) 0.38(2) 2.0(9) 1.
+O5 O2- 4 a 0.055(2) 0.310(8) 0.091(7) 0.7(1) 1.
+O6 O2- 4 a 0.677(1) 0.495(5) 0.136(7) 0.5(1) 1.
+O7 O2- 4 a 0.836(1) 0.648(4) 0.435(9) 0.7(1) 1.
+O8 O2- 4 a 0.885(2) 0.398(6) 0.163(7) 0.7(1) 1.
+O9 O2- 4 a 0.061(2) 0.326(9) 0.641(9) 1.0(1) 1.
+O10 O2- 4 a 0.870(2) 0.320(5) 0.668(7) 1.1(1) 1.
+O11 O2- 4 a 0.088(1) -.011(4) 0.41(2) 1.0(1) 1.
+#End of data_89340-ICSD
+
+###############################################################################
+# Asbrink, S.;Kihlborg, L. (1964)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 18, 1571-1573
+# A study of the crystal symmetry and structure of orthorhombic Mo4 O11 by \
+# least-squares techniques
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_76366-ICSD
+_database_code_ICSD                76366
+_audit_creation_date               2000-12-16
+_chemical_name_systematic
+'Molydenum oxide (4/11) - gamma'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1964 18 1571 1573 ACSAA4
+loop_
+_publ_author_name
+Asbrink, S.;Kihlborg, L.
+_cell_length_a                     24.49
+_cell_length_b                     5.457
+_cell_length_c                     6.752
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       902.3501
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n 21 a'
+_symmetry_Int_Tables_number        33
+_refine_ls_R_factor_all            0.0848
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 a 0.20535(5) 0.2638(4) 0.87214(18) 0.340(13) 1.
+Mo2 Mo5+ 4 a 0.14690(5) 0.7419(4) 0.19715(18) 0.245(11) 1.
+Mo3 Mo5+ 4 a 0.08714(5) 0.2477(5) 0.52144(18) 0.316(12) 1.
+Mo4 Mo5+ 4 a 0.02852(6) 0.7466(5) 0.84123(20) 0.351(11) 1.
+O1 O2- 4 a 0.9979(7) -.0234(28) 0.0112(26) 0.45(15) 1.
+O2 O2- 4 a 0.0608(6) 0.0203(26) 0.6849(21) 0.69(18) 1.
+O3 O2- 4 a 0.9326(7) 0.0141(29) 0.3365(23) 1.05(22) 1.
+O4 O2- 4 a 0.1247(6) -.0298(28) 0.3602(21) 0.63(18) 1.
+O5 O2- 4 a 0.8712(6) -.0315(29) 0.6815(21) 0.66(19) 1.
+O6 O2- 4 a 0.1872(6) 0.0356(28) 0.0387(23) 0.83(20) 1.
+O7 O2- 4 a 0.1936(6) 0.5499(28) -.0138(22) 0.8(2) 1.
+O8 O2- 4 a 0.0309(5) 0.2567(45) 0.3425(17) 0.70(13) 1.
+O9 O2- 4 a 0.0943(5) 0.7648(40) 0.0179(17) 0.75(16) 1.
+O10 O2- 4 a 0.1645(5) 0.2379(35) 0.6593(18) 0.89(16) 1.
+O11 O2- 4 a 0.2240(5) 0.7318(35) 0.3203(18) 1.00(19) 1.
+#End of data_76366-ICSD
+
+###############################################################################
+# Fun, H.-K.;Yang, P.;Sasaki, M.;Inoue, M.;Kadomatsu, H. (1999)
+# Acta Crystallographica C (39,1983-) 55, 841-843
+# gamma - Mo4 O11
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_280173-ICSD
+_database_code_ICSD                280173
+_audit_creation_date               2000-07-15
+_chemical_name_systematic
+'Tetramolybdenum undecaoxide - gamma'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Crystallographica C (39,1983-)' 1999 55 841 843 ACSCEE
+loop_
+_publ_author_name
+Fun, H.-K.;Yang, P.;Sasaki, M.;Inoue, M.;Kadomatsu, H.
+_cell_length_a                     24.0723(5)
+_cell_length_b                     6.6483(1)
+_cell_length_c                     5.3569(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       857.3205
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n a 21'
+_symmetry_Int_Tables_number        33
+_refine_ls_R_factor_all            0.0398
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, -y, z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 a 0.028530(11) 0.15866(4) 0.38252(9) 0. 1.
+Mo2 Mo5+ 4 a -.087170(11) 0.52107(4) 0.38064(7) 0. 1.
+Mo3 Mo5+ 4 a -.353050(11) 0.69691(4) 0.38794(6) 0. 1.
+Mo4 Mo5+ 4 a -.205310(12) 0.87257(5) 0.36755(9) 0. 1.
+O1 O2- 4 a -.3067(2) 0.4837(6) -.4185(7) 0. 1.
+O2 O2- 4 a -.0312(1) 0.3427(4) 0.3843(11) 0. 1.
+O3 O2- 4 a -.0024(2) -.0114(8) 0.1479(7) 0. 1.
+O4 O2- 4 a -.27576(13) 0.8226(5) 0.3940(9) 0. 1.
+O5 O2- 4 a 0.0609(2) 0.3145(7) 0.1104(7) 0. 1.
+O6 O2- 4 a -.3136(2) 0.5371(6) 0.0957(7) 0. 1.
+O7 O2- 4 a -.16426(12) 0.6575(5) 0.3900(9) 0. 1.
+O8 O2- 4 a -.12916(13) 0.3220(5) 0.1597(7) 0. 1.
+O9 O2- 4 a 0.0668(2) 0.3376(6) 0.6157(7) 0. 1.
+O10 O2- 4 a -.1232(2) 0.3623(5) 0.6639(7) 0. 1.
+O11 O2- 4 a 0.09392(12) -.0173(4) 0.3785(9) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Mo1 Mo5+ 0.0057(2) 0.0053(2) 0.0044(2) 0.00028(12) -.00004(10) 0.00003(12)
+Mo2 Mo5+ 0.0051(2) 0.0049(2) 0.0040(2) -.00029(11) -.00024(12) -.00003(15)
+Mo3 Mo5+ 0.0038(2) 0.0048(2) 0.0037(2) -.00001(10) 0.00011(11) -.00015(14)
+Mo4 Mo5+ 0.0043(2) 0.0072(2) 0.0061(2) -.00087(10) -.00030(12) -.00021(15)
+O1 O2- 0.0167(15) 0.015(2) 0.0120(15) 0.0078(14) 0.0014(12) 0.0050(14)
+O2 O2- 0.0062(12) 0.0093(13) 0.012(2) 0.0043(10) 0.000(1) -.0007(12)
+O3 O2- 0.0125(13) 0.0073(13) 0.0086(14) -.0025(10) -.0015(12) -.0014(12)
+O4 O2- 0.0124(11) 0.0149(12) 0.017(2) -.0050(11) -.0004(15) -.001(2)
+O5 O2- 0.0116(14) 0.009(2) 0.008(2) -.0024(13) 0.0002(11) 0.0033(13)
+O6 O2- 0.014(2) 0.018(2) 0.015(2) 0.0038(13) 0.0041(12) -.0050(14)
+O7 O2- 0.0091(11) 0.0124(12) 0.021(2) 0.0053(11) 0.001(2) 0.003(2)
+O8 O2- 0.0073(13) 0.0092(15) 0.0102(14) -.0027(11) -.0030(11) -.0039(13)
+O9 O2- 0.0085(15) 0.013(2) 0.0070(15) -.0033(13) -.0007(11) -.0018(12)
+O10 O2- 0.0129(14) 0.011(2) 0.011(2) -.0027(11) 0.0018(12) 0.0015(14)
+O11 O2- 0.0098(10) 0.0102(13) 0.014(2) 0.0049(10) -.0019(13) 0.001(2)
+#End of data_280173-ICSD
+
+###############################################################################
+# Fujishita, H.;Sato, M.;Sato, S.;Hoshino, S. (1987)
+# Journal of Solid State Chemistry 66, 40-46
+# Structure determination of low-dimensional conductor Mo8 O23
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_202203-ICSD
+_database_code_ICSD                202203
+_audit_creation_date               1988-12-19
+_chemical_name_systematic
+'Molybdenum oxide (8/23)'
+_chemical_formula_structural       
+'Mo8 O23'
+_chemical_formula_sum              
+'Mo8 O23'
+_publ_section_title                
+'Mo8 O23'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1987 66 40 46 JSSCBI
+loop_
+_publ_author_name
+Fujishita, H.;Sato, M.;Sato, S.;Hoshino, S.
+_cell_length_a                     13.39(1)
+_cell_length_b                     8.062(3)
+_cell_length_c                     16.820(10)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   106.02(6)
+_cell_angle_gamma                  90.
+_cell_volume                       1745.211
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 c 1'
+_symmetry_Int_Tables_number        7
+_refine_ls_R_factor_all            0.0361
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y, z+1/2'
+   2   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+5     5.75
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+5 2 a 0.0612(20) 0.2916(3) 0.4188(12) 0.19(5) 1.
+Mo2 Mo5+5 2 a 0.9348(20) 0.2923(4) 0.0817(12) 0.24(5) 1.
+Mo3 Mo5+5 2 a 0.0649(20) 0.7928(3) 0.4170(12) 0.25(5) 1.
+Mo4 Mo5+5 2 a 0.9325(20) 0.7935(3) 0.0847(12) 0.24(5) 1.
+Mo5 Mo5+5 2 a 0.1842(20) 0.2087(3) 0.2479(12) 0.13(5) 1.
+Mo6 Mo5+5 2 a 0.8176(20) 0.2060(3) 0.2543(12) 0.33(5) 1.
+Mo7 Mo5+5 2 a 0.1862(20) 0.7070(3) 0.2448(12) 0.22(5) 1.
+Mo8 Mo5+5 2 a 0.8156(20) 0.7049(3) 0.2563(12) 0.29(5) 1.
+Mo9 Mo5+5 2 a 0.3154(20) 0.2899(3) 0.0796(12) 0.12(5) 1.
+Mo10 Mo5+5 2 a 0.6851(20) 0.2954(3) 0.4187(12) 0.37(5) 1.
+Mo11 Mo5+5 2 a 0.3156(20) 0.7936(3) 0.0774(12) 0.16(5) 1.
+Mo12 Mo5+5 2 a 0.6845(20) 0.7997(3) 0.4210(12) 0.31(5) 1.
+Mo13 Mo5+5 2 a 0.4472(20) 0.2043(3) 0.4015(12) 0.25(4) 1.
+Mo14 Mo5+5 2 a 0.5537(20) 0.2060(3) 0.0970(12) 0.23(4) 1.
+Mo15 Mo5+5 2 a 0.447(2) 0.7036(3) 0.4012(12) 0.27(4) 1.
+Mo16 Mo5+5 2 a 0.5546(20) 0.7049(3) 0.0981(12) 0.23(4) 1.
+O1 O2- 2 a 0.0779(24) -.0011(25) 0.4050(17) 0.5(4) 1.
+O2 O2- 2 a 0.9272(24) 0.0012(29) 0.0891(17) 0.5(4) 1.
+O3 O2- 2 a 0.0607(23) 0.4990(27) 0.4296(16) 0.5(4) 1.
+O4 O2- 2 a 0.9514(23) 0.5048(27) 0.0783(16) 0.5(4) 1.
+O5 O2- 2 a 0.1929(23) 0.4912(25) 0.2339(16) 0.5(4) 1.
+O6 O2- 2 a 0.7976(23) 0.5040(26) 0.2613(16) 0.5(4) 1.
+O7 O2- 2 a 0.1900(23) 0.9971(28) 0.2574(16) 0.5(4) 1.
+O8 O2- 2 a 0.8216(23) 0.9960(27) 0.2478(17) 0.5(4) 1.
+O9 O2- 2 a 0.3214(24) 0.0082(31) 0.0670(17) 0.4(4) 1.
+O10 O2- 2 a 0.6813(24) 0.0060(31) 0.4303(18) 0.4(4) 1.
+O11 O2- 2 a 0.3152(23) 0.500(3) 0.0882(16) 0.4(4) 1.
+O12 O2- 2 a 0.6775(23) 0.5067(29) 0.4152(16) 0.4(4) 1.
+O13 O2- 2 a 0.4436(23) 0.4978(24) 0.4074(16) 0.25(4) 1.
+O14 O2- 2 a 0.5460(23) 0.4885(22) 0.0995(15) 0.25(4) 1.
+O15 O2- 2 a 0.4521(23) 0.9891(22) 0.4152(15) 0.25(4) 1.
+O16 O2- 2 a 0.5580(24) 0.9974(24) 0.0935(15) 0.25(4) 1.
+O17 O2- 2 a -.0002 0.2505(15) -.0015 0.2(4) 1.
+O18 O2- 2 a 0.0024(20) 0.7900(15) -.0015(12) 0.2(4) 1.
+O19 O2- 2 a 0.0606(24) 0.2467(35) 0.1601(16) 0.3(4) 1.
+O20 O2- 2 a 0.9328(23) 0.2429(32) 0.3282(15) 0.3(4) 1.
+O21 O2- 2 a 0.0601(23) 0.7542(31) 0.1589(16) 0.3(4) 1.
+O22 O2- 2 a 0.9327(23) 0.7428(34) 0.3317(17) 0.3(4) 1.
+O23 O2- 2 a 0.1265(19) 0.2707(25) 0.3274(14) 0.25(4) 1.
+O24 O2- 2 a 0.8668(25) 0.2776(25) 0.1659(17) 0.25(4) 1.
+O25 O2- 2 a 0.1341(23) 0.7186(26) 0.3288(17) 0.25(4) 1.
+O26 O2- 2 a 0.8756(19) 0.7193(23) 0.1692(15) 0.25(4) 1.
+O27 O2- 2 a 0.2011(22) 0.2464(35) 0.4929(15) 0.3(4) 1.
+O28 O2- 2 a 0.8006(23) 0.2582(29) -.0010(16) 0.3(4) 1.
+O29 O2- 2 a 0.1943(24) 0.7351(25) 0.4921(16) 0.3(4) 1.
+O30 O2- 2 a 0.7994(23) 0.7476(34) 0.0018(17) 0.3(4) 1.
+O31 O2- 2 a 0.2593(21) 0.2437(27) 0.1578(14) 0.25(4) 1.
+O32 O2- 2 a 0.7417(22) 0.2290(23) 0.3336(15) 0.25(4) 1.
+O33 O2- 2 a 0.2579(24) 0.7718(24) 0.1605(17) 0.25(4) 1.
+O34 O2- 2 a 0.7351(22) 0.7823(23) 0.3300(15) 0.25(4) 1.
+O35 O2- 2 a 0.3226(27) 0.2545(29) 0.3243(16) 0.25(4) 1.
+O36 O2- 2 a 0.6708(25) 0.2316(22) 0.1706(16) 0.25(4) 1.
+O37 O2- 2 a 0.3225(24) 0.7445(30) 0.3215(15) 0.25(4) 1.
+O38 O2- 2 a 0.6702(23) 0.7512(32) 0.1657(15) 0.25(4) 1.
+O39 O2- 2 a 0.4085(26) 0.2580(32) 0.0033(16) 0.15(4) 1.
+O40 O2- 2 a 0.5842(24) 0.2620(29) 0.4930(16) 0.15(4) 1.
+O41 O2- 2 a 0.4024(23) 0.7451(29) -.0013(15) 0.15(4) 1.
+O42 O2- 2 a 0.5864(25) 0.7398(28) 0.4904(15) 0.15(4) 1.
+O43 O2- 2 a 0.4542(24) 0.2477(28) 0.1492(15) 0.15(4) 1.
+O44 O2- 2 a 0.5416(26) 0.2337(25) 0.3391(16) 0.15(4) 1.
+O45 O2- 2 a 0.4514(26) 0.7444(28) 0.1512(16) 0.15(4) 1.
+O46 O2- 2 a 0.5319(24) 0.7539(27) 0.3435(17) 0.15(4) 1.
+#End of data_202203-ICSD
+
+###############################################################################
+# Parise, J.B.;McCarron, E.M.;Sleight, A.W. (1987)
+# Materials Research Bulletin 22, 803-811
+# A new modification of Re O3 -type Mo O3 and the deuterated intercalation \
+# compound from which it is derived: D0.99 Mo O3
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_202324-ICSD
+_database_code_ICSD                202324
+_audit_creation_date               1988-12-19
+_chemical_name_systematic
+'Molybdenum trioxide - beta prime'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Materials Research Bulletin' 1987 22 803 811 MRBUAC
+loop_
+_publ_author_name
+Parise, J.B.;McCarron, E.M.;Sleight, A.W.
+_cell_length_a                     7.4245(1)
+_cell_length_b                     7.4780(1)
+_cell_length_c                     7.6898(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.080(2)
+_cell_angle_gamma                  90.
+_cell_volume                       426.9405
+_cell_formula_units_Z              8.000
+_symmetry_space_group_name_H-M     'P 1 21/n 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0361
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, -z+1/2'
+   2   '-x, -y, -z'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 e 0.265(3) 0.030(3) 0.294(2) 2.7(2) 1.
+Mo2 Mo6+ 4 e 0.246(3) 0.020(2) 0.779(2) 2.7(2) 1.
+O1 O2- 4 e 0.003(3) 0.036(2) 0.186(2) 1.0(1) 1.
+O2 O2- 4 e 0.998(3) 0.490(3) 0.225(2) 1.0(1) 1.
+O3 O2- 4 e 0.291(2) 0.271(2) 0.294(2) 1.0(1) 1.
+O4 O2- 4 e 0.218(2) 0.255(2) 0.740(2) 1.0(1) 1.
+O5 O2- 4 e 0.301(2) 0.067(2) 0.012(2) 1.0(1) 1.
+O6 O2- 4 e 0.298(2) 0.482(2) 0.005(2) 1.0(1) 1.
+#End of data_202324-ICSD
+
+###############################################################################
+# Fujishita, H.;Sato, M.;Sato, S.;Hoshino, S. (1987)
+# Journal of Solid State Chemistry 66, 40-46
+# Structure determination of low-dimensional conductor Mo8 O23
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_202202-ICSD
+_database_code_ICSD                202202
+_audit_creation_date               1988-12-19
+_chemical_name_systematic
+'Molybdenum oxide (8/23)'
+_chemical_formula_structural       
+'Mo8 O23'
+_chemical_formula_sum              
+'Mo8 O23'
+_publ_section_title                
+'Mo8 O23'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1987 66 40 46 JSSCBI
+loop_
+_publ_author_name
+Fujishita, H.;Sato, M.;Sato, S.;Hoshino, S.
+_cell_length_a                     13.384(3)
+_cell_length_b                     4.0616(5)
+_cell_length_c                     16.883(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   106.27(2)
+_cell_angle_gamma                  90.
+_cell_volume                       881.0102
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 1 2/c 1'
+_symmetry_Int_Tables_number        13
+_refine_ls_R_factor_all            0.0271
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+5     5.75
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+5 4 g 0.06397(4) 0.5850(2) 0.41655(3) 0. 1.
+Mo2 Mo5+5 4 g 0.18514(4) 0.4131(2) 0.24568(3) 0. 1.
+Mo3 Mo5+5 4 g 0.31501(4) 0.5900(2) 0.07903(3) 0. 1.
+Mo4 Mo5+5 4 g 0.44659(4) 0.4079(2) 0.40204(3) 0. 1.
+O1 O2- 4 g 0.0658(4) -.0012(10) 0.4164(3) 0. 1.
+O2 O2- 4 g 0.1911(4) 0.9971(9) 0.2458(3) 0. 1.
+O3 O2- 4 g 0.3191(4) 0.0069(10) 0.0770(3) 0. 1.
+O4 O2- 4 g 0.4469(4) 0.9918(9) 0.4074(3) 0. 1.
+O5 O2- 2 c 0 0.5 0 0. 1.
+O6 O2- 4 g 0.0645(4) 0.4943(10) 0.1643(3) 0. 1.
+O7 O2- 4 g 0.1293(3) 0.493(1) 0.3303(3) 0. 1.
+O8 O2- 4 g 0.1989(3) 0.4945(10) 0.4960(3) 0. 1.
+O9 O2- 4 g 0.2612(3) 0.5144(10) 0.1632(3) 0. 1.
+O10 O2- 4 g 0.3261(3) 0.4891(10) 0.3282(3) 0. 1.
+O11 O2- 4 g 0.4113(3) 0.5015(9) 0.0045(3) 0. 1.
+O12 O2- 4 g 0.4570(3) 0.4908(10) 0.1532(3) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Mo1 Mo5+5 0.0069(2) 0.0078(3) 0.0071(3) 0.0000(3) 0.0017(2) -.0001(3)
+Mo2 Mo5+5 0.0063(2) 0.0080(3) 0.0071(3) -.0006(3) 0.0013(2) 0.0001(3)
+Mo3 Mo5+5 0.0060(3) 0.0079(3) 0.0076(3) -.0002(3) 0.0015(2) -.0002(3)
+Mo4 Mo5+5 0.0056(2) 0.0079(3) 0.0070(3) 0.0000(3) 0.0004(2) -.0007(3)
+O1 O2- 0.025(3) 0.010(3) 0.029(3) 0.002(2) -.001(2) 0.000(2)
+O2 O2- 0.025(3) 0.009(3) 0.027(3) 0.000(2) 0.001(3) 0.000(2)
+O3 O2- 0.017(3) 0.013(3) 0.028(3) 0.000(2) 0.004(2) -.001(2)
+O4 O2- 0.014(3) 0.009(3) 0.023(3) -.001(2) 0.005(2) -.002(2)
+O5 O2- 0.013(3) 0.026(5) 0.010(3) 0.001(3) 0.009(3) -.001(3)
+O6 O2- 0.010(2) 0.022(3) 0.012(2) -.001(2) -.002(2) -.001(2)
+O7 O2- 0.013(2) 0.031(4) 0.010(2) -.002(2) 0.006(2) -.002(2)
+O8 O2- 0.011(3) 0.022(4) 0.012(3) 0.001(2) -.001(2) 0.001(2)
+O9 O2- 0.010(2) 0.030(4) 0.010(2) 0.003(2) 0.004(2) 0.003(2)
+O10 O2- 0.015(3) 0.020(3) 0.014(3) -.002(2) 0.002(2) -.001(2)
+O11 O2- 0.009(2) 0.012(3) 0.006(2) 0.000(2) 0.004(2) 0.000(2)
+O12 O2- 0.009(2) 0.019(3) 0.004(2) -.001(2) 0.000(2) 0.001(2)
+#End of data_202202-ICSD
+
+###############################################################################
+# Sato, M.;Onoda, M.;Matsuda, Y. (1987)
+# Journal of Physics C 20, 4763-4771
+# Structural transitions in Mon O3n-1 (n=9 and 10)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_202435-ICSD
+_database_code_ICSD                202435
+_audit_creation_date               1988-05-17
+_chemical_name_systematic
+'Molybdenum oxide (9/26)'
+_chemical_formula_structural       
+'Mo9 O26'
+_chemical_formula_sum              
+'Mo9 O26'
+_publ_section_title                
+'Mo9 O26'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Physics C' 1987 20 4763 4771 JPSOAW
+loop_
+_publ_author_name
+Sato, M.;Onoda, M.;Matsuda, Y.
+_cell_length_a                     29.194(3)
+_cell_length_b                     8.083(1)
+_cell_length_c                     16.816(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   95.47(1)
+_cell_angle_gamma                  90.
+_cell_volume                       3950.0904
+_cell_formula_units_Z              8.000
+_symmetry_space_group_name_H-M     'C 1 2/c 1'
+_symmetry_Int_Tables_number        15
+_refine_ls_R_factor_all            0.0415
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y, -z+1/2'
+   4   'x, y, z'
+   5   'x+1/2, -y+1/2, z+1/2'
+   6   '-x+1/2, -y+1/2, -z'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x+1/2, y+1/2, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+7     5.77
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+7 8 f 0.25033(5) 0.29156(9) 0.25091(9) 0.45(2) 1.
+Mo2 Mo5+7 8 f 0.30610(4) 0.20780(13) 0.45726(8) 0.53(3) 1.
+Mo3 Mo5+7 8 f 0.19500(4) 0.20747(12) 0.04625(7) 0.35(3) 1.
+Mo4 Mo5+7 8 f 0.35982(4) 0.20419(16) 0.16008(7) 0.50(3) 1.
+Mo5 Mo5+7 8 f 0.13890(4) 0.20574(15) 0.33703(7) 0.34(3) 1.
+Mo6 Mo5+7 8 f 0.41734(3) 0.29349(14) 0.36650(6) 0.35(3) 1.
+Mo7 Mo5+7 8 f 0.08243(3) 0.29429(15) 0.13150(6) 0.50(3) 1.
+Mo8 Mo5+7 8 f 0.47676(3) 0.20779(11) 0.08313(5) 0.47(2) 1.
+Mo9 Mo5+7 8 f 0.02368(3) 0.20127(10) 0.41681(5) 0.30(2) 1.
+O1 O2- 8 f 0.2478(2) 0.0040(11) 0.2355(4) 1.1(1) 1.
+O2 O2- 8 f 0.3123(3) -.0038(11) 0.4695(5) 1.1(1) 1.
+O3 O2- 8 f 0.1974(2) -.0055(11) 0.0565(5) 1.0(1) 1.
+O4 O2- 8 f 0.3584(2) -.0093(11) 0.1531(5) 1.3(1) 1.
+O5 O2- 8 f 0.1311(2) -.0063(11) 0.3275(4) 0.9(1) 1.
+O6 O2- 8 f 0.4197(2) 0.0015(11) 0.3796(5) 0.8(1) 1.
+O7 O2- 8 f 0.0799(2) 0.0108(11) 0.1387(5) 0.9(1) 1.
+O8 O2- 8 f 0.4773(2) -.0007(10) 0.0737(4) 0.4(1) 1.
+O9 O2- 8 f 0.0240(2) -.0124(12) 0.4154(5) 1.3(1) 1.
+O10 O2- 4 c 0.25 0.25 0 0.2(2) 1.
+O11 O2- 4 d 0.25 0.25 0.5 2.3(3) 1.
+O12 O2- 8 f 0.2794(2) 0.2199(11) 0.3533(4) 0.6(1) 1.
+O13 O2- 8 f 0.2187(2) 0.2741(11) 0.1457(4) 0.8(1) 1.
+O14 O2- 8 f 0.3083(3) 0.2437(12) 0.2040(5) 1.4(2) 1.
+O15 O2- 8 f 0.1937(3) 0.2459(11) 0.2922(5) 0.9(2) 1.
+O16 O2- 8 f 0.3361(3) 0.2727(11) 0.0626(4) 1.0(1) 1.
+O17 O2- 8 f 0.1629(3) 0.2202(11) 0.4419(4) 0.9(1) 1.
+O18 O2- 8 f 0.3678(3) 0.2536(14) 0.4138(5) 0.9(2) 1.
+O19 O2- 8 f 0.1332(3) 0.2517(14) 0.0785(5) 1.1(2) 1.
+O20 O2- 8 f 0.3938(3) 0.2308(11) 0.2651(5) 1.2(1) 1.
+O21 O2- 8 f 0.1061(3) 0.2726(10) 0.2307(4) 0.7(1) 1.
+O22 O2- 8 f 0.4226(3) 0.2415(14) 0.1200(5) 1.0(2) 1.
+O23 O2- 8 f 0.0754(3) 0.2481(15) 0.3769(5) 1.1(2) 1.
+O24 O2- 8 f 0.4617(3) 0.2607(12) 0.4671(5) 0.8(1) 1.
+O25 O2- 8 f 0.0404(3) 0.2442(11) 0.0275(4) 0.4(1) 1.
+O26 O2- 8 f 0.4813(3) 0.2458(11) 0.3327(5) 0.2(1) 1.
+O27 O2- 8 f 0.0198(4) 0.2452(15) 0.1666(6) 1.7(2) 1.
+#End of data_202435-ICSD
+
+###############################################################################
+# Ghedira, M.;Vincent, H.;Marezio, M.;Marcus, J.;Furcaudot, G. (1985)
+# Journal of Solid State Chemistry 56, 66-73
+# Structure cristalline du conducteur bidimensional Mo4 O11 -gamma
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_201573-ICSD
+_database_code_ICSD                201573
+_audit_creation_date               1985-07-17
+_chemical_name_systematic
+'Molydenum oxide (4/11) - gamma'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1985 56 66 73 JSSCBI
+loop_
+_publ_author_name
+Ghedira, M.;Vincent, H.;Marezio, M.;Marcus, J.;Furcaudot, G.
+_cell_length_a                     24.487(1)
+_cell_length_b                     5.457(1)
+_cell_length_c                     6.752(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       902.2403
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n 21 a'
+_symmetry_Int_Tables_number        33
+_refine_ls_R_factor_all            0.0244
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   '-x+1/2, y+1/2, z+1/2'
+   3   '-x, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 a 0.20529(1) 0.25 0.87252(3) 0.0069 1.
+Mo2 Mo5+ 4 a 0.14693(1) 0.72957(5) 0.19686(3) 0.0053 1.
+Mo3 Mo5+ 4 a 0.08716(1) 0.23699(6) 0.52096(3) 0.0059 1.
+Mo4 Mo5+ 4 a 0.02852(1) 0.73499(7) 0.84135(3) 0.0064 1.
+O1 O2- 4 a 0.9975(1) 0.9702(5) 0.0106(4) 0.0081 1.
+O2 O2- 4 a 0.0612(1) 0.0077(4) 0.6856(4) 0.0094 1.
+O3 O2- 4 a 0.0668(1) 0.5014(4) 0.6614(4) 0.0106 1.
+O4 O2- 4 a 0.1234(1) 0.9539(5) 0.3625(4) 0.0114 1.
+O5 O2- 4 a 0.1292(1) 0.4578(5) 0.3228(4) 0.0114 1.
+O6 O2- 4 a 0.1863(1) 0.0210(5) 0.0381(5) 0.0177 1.
+O7 O2- 4 a 0.1936(1) 0.5351(5) -.0154(4) 0.0161 1.
+O8 O2- 4 a 0.0314(1) 0.2325(7) 0.3425(3) 0.01 1.
+O9 O2- 4 a 0.0944(1) 0.7394(6) 0.0175(3) 0.0128 1.
+O10 O2- 4 a 0.1645(1) 0.2282(6) 0.6585(4) 0.0144 1.
+O11 O2- 4 a 0.2241(1) 0.7238(7) 0.3220(4) 0.0151 1.
+#End of data_201573-ICSD
+
+###############################################################################
+# Parise, J.B.;McCarron, E.M.;von Dreele, R.B.;Goldstone, J.A. (1991)
+# Journal of Solid State Chemistry 93, 193-201
+# beta-(Mo O3) produced from a novel freeze drying route
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_86426-ICSD
+_database_code_ICSD                86426
+_audit_creation_date               1999-11-30
+_chemical_name_systematic
+'Molybdenum oxide - beta'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1991 93 193 201 JSSCBI
+loop_
+_publ_author_name
+Parise, J.B.;McCarron, E.M.;von Dreele, R.B.;Goldstone, J.A.
+_cell_length_a                     7.1228(7)
+_cell_length_b                     5.3660(6)
+_cell_length_c                     5.5665(6)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   92.01(1)
+_cell_angle_gamma                  90.
+_cell_volume                       212.6306
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0578
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 2 a 0 0 0 0.069 1.
+Mo2 Mo6+ 4 e 0.4975(12) 0.9804(15) 0.1146(15) 0.017(2) 0.5
+O1 O2- 4 e 0.9611(8) 0.2837(10) 0.2124(9) 0.012(2) 1.
+O2 O2- 4 e 0.2447(17) 0.0794(8) 0.9982(12) 0.047(2) 1.
+O3 O2- 4 e 0.5339(25) 0.2996(27) 0.9288(30) 0.094(7) 0.5
+O4 O2- 4 e 0.5572(20) 0.2828(27) 0.7630(21) 0.043(4) 0.5
+#End of data_86426-ICSD
+
+###############################################################################
+# Bolzan, A.A.;Kennedy, B.J.;Howard, C.J. (1995)
+# Australian Journal of Chemistry 48, 1473-1477
+# Neutron powder diffraction study of molybdenum and tungsten dioxides
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_80830-ICSD
+_database_code_ICSD                80830
+_audit_creation_date               1997-05-13
+_chemical_name_systematic
+'Molybdenum(IV) oxide'
+_chemical_formula_structural       
+'Mo O2'
+_chemical_formula_sum              
+'Mo1 O2'
+_publ_section_title                
+'Mo1 O2'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Australian Journal of Chemistry' 1995 48 1473 1477 AJCHAS
+loop_
+_publ_author_name
+Bolzan, A.A.;Kennedy, B.J.;Howard, C.J.
+_cell_length_a                     5.6096(2)
+_cell_length_b                     4.8570(2)
+_cell_length_c                     5.6259(22)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   120.912(2)
+_cell_angle_gamma                  90.
+_cell_volume                       131.5109
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0163
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo4+     4.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo4+ 4 e 0.2321(5) -.0077(7) 0.0169(5) 0. 1.
+O1 O2- 4 e 0.1103(5) 0.2136(6) 0.2329(4) 0. 1.
+O2 O2- 4 e 0.3916(6) 0.6986(6) 0.2982(5) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Mo1 Mo4+ 0.0079(7) 0.0059(6) 0.0057(8) 0.0009(6) -.0019(8) 0.0030(11)
+O1 O2- 0.0041(12) 0.0075(12) 0.0037(13) -.0019(8) 0.0018(11) -.0025(8)
+O2 O2- 0.0088(13) 0.0076(12) 0.0055(12) 0.0030(11) 0.0056(12) 0.0028(8)
+#End of data_80830-ICSD
+
+###############################################################################
+# Knorr, R.;Mueller, U. (1995)
+# Zeitschrift fuer Anorg. und Allgemeine Chemie 621, 541-545
+# eta-Mo4 O11 und Mg2 Mo3 O8: eine neue Synthese und Verfeinerung ihrer \
+# Kristallstrukturen
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_82363-ICSD
+_database_code_ICSD                82363
+_audit_creation_date               1997-11-10
+_chemical_name_systematic
+'Tetramolybdenum undecaoxide - eta'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Zeitschrift fuer Anorg. und Allgemeine C' 1995 621 541 545 ZAACAB
+loop_
+_publ_author_name
+Knorr, R.;Mueller, U.
+_cell_length_a                     6.695(1)
+_cell_length_b                     5.440(1)
+_cell_length_c                     24.573(3)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   94.31(8)
+_cell_angle_gamma                  90.
+_cell_volume                       892.4403
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/c 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0596
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 e 0.31441(7) 0.2152(1) 0.04320(2) 0. 1.
+Mo2 Mo5+ 4 e 0.65694(7) 0.7364(1) 0.10182(2) 0. 1.
+Mo3 Mo5+ 4 e 0.99557(7) 0.2264(1) 0.16290(2) 0. 1.
+Mo4 Mo5+ 4 e 0.33399(6) 0.7295(1) 0.22094(2) 0. 1.
+O1 O2- 4 e 0.7821(7) 0.7426(9) 0.0255(2) 0. 1.
+O2 O2- 4 e 0.4893(7) 0.4423(9) 0.0617(2) 0. 1.
+O3 O2- 4 e 0.5688(6) 0.0757(8) -.0523(2) 0. 1.
+O4 O2- 4 e 0.1178(8) 0.2350(9) 0.0868(2) 0. 1.
+O5 O2- 4 e 0.8303(6) 0.5155(9) 0.1270(2) 0. 1.
+O6 O2- 4 e 0.7840(6) 0.0134(9) 0.1197(2) 0. 1.
+O7 O2- 4 e 0.4880(7) 0.7274(9) 0.1543(2) 0. 1.
+O8 O2- 4 e 0.1717(6) 0.4525(9) 0.1897(2) 0. 1.
+O9 O2- 4 e 0.1382(6) 0.9572(9) 0.1829(2) 0. 1.
+O10 O2- 4 e 0.8318(6) 0.2300(9) 0.2187(2) 0. 1.
+O11 O2- 4 e 0.5148(6) 0.4991(9) 0.2532(2) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Mo1 Mo5+ 0.0102(3) 0.0098(3) 0.0025(3) -.0003(1) 0.0011(2) 0.0001(1)
+Mo2 Mo5+ 0.0985(3) 0.0083(3) 0.0021(3) 0.0002(1) 0.0008(2) 0.0001(1)
+Mo3 Mo5+ 0.0080(3) 0.0086(3) 0.0024(3) -.0001(1) 0.0011(2) -.0001(1)
+Mo4 Mo5+ 0.0089(3) 0.0089(3) 0.0032(3) -.0002(1) 0.0011(2) -.0002(1)
+O1 O2- 0.015(2) 0.019(2) 0.001(2) 0.003(2) 0.002(1) 0.001(2)
+O2 O2- 0.017(2) 0.017(2) 0.011(2) -.007(2) -.001(2) -.004(2)
+O3 O2- 0.015(2) 0.011(2) 0.009(2) 0.004(1) -.001(1) 0.003(1)
+O4 O2- 0.017(2) 0.023(2) 0.006(2) 0.002(2) 0.006(2) 0.001(2)
+O5 O2- 0.015(2) 0.011(2) 0.009(2) 0.003(1) 0.000(1) 0.001(2)
+O6 O2- 0.013(2) 0.013(2) 0.009(2) -.003(1) 0.000(1) -.003(2)
+O7 O2- 0.016(2) 0.020(2) 0.004(2) 0.001(2) 0.006(2) 0.000(2)
+O8 O2- 0.011(2) 0.013(2) 0.008(2) -.003(1) 0.000(1) -.002(2)
+O9 O2- 0.012(2) 0.012(2) 0.009(2) 0.002(1) -.001(1) 0.001(2)
+O10 O2- 0.013(2) 0.018(3) 0.004(2) -.001(1) 0.004(2) 0.000(1)
+O11 O2- 0.011(2) 0.012(2) 0.005(2) 0.004(1) 0.001(1) 0.001(1)
+#End of data_82363-ICSD
+
+###############################################################################
+# McCarron, E.M.;Calabrese, J.C. (1991)
+# Journal of Solid State Chemistry 91, 121-125
+# The growth and single crystal structure of a high pressure phase of \
+# molybdenum trioxide: Mo O3 - II
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_80577-ICSD
+_database_code_ICSD                80577
+_audit_creation_date               1997-05-13
+_chemical_name_systematic
+'Molybdenum oxide - II, HT'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1991 91 121 125 JSSCBI
+loop_
+_publ_author_name
+McCarron, E.M.;Calabrese, J.C.
+_cell_length_a                     3.954(1)
+_cell_length_b                     3.687(2)
+_cell_length_c                     7.095(4)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   103.75(4)
+_cell_angle_gamma                  90.
+_cell_volume                       100.4708
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 1 21/m 1'
+_symmetry_Int_Tables_number        11
+_refine_ls_R_factor_all            0.0488
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y+1/2, z'
+   2   '-x, -y, -z'
+   3   '-x, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 2 e 0.3286(4) 0.25 0.2966(2) 0. 1.
+O1 O2- 2 e 0.4401(31) 0.75 0.3691(19) 0. 1.
+O2 O2- 2 e -.0924(29) 0.25 0.3240(18) 0. 1.
+O3 O2- 2 e 0.2709(35) 0.25 0.0547(20) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Mo1 Mo6+ 0.0067(8) 0.0063(9) 0.0052(9) 0 0.0009(6) 0
+O1 O2- 0.008(6) 0.002(7) 0.013(7) 0 0.007(5) 0
+O2 O2- 0.004(6) 0.001(6) 0.011(6) 0 -.002(5) 0
+O3 O2- 0.018(7) 0.017(8) 0.015(7) 0 0.010(6) 0
+#End of data_80577-ICSD
+
+###############################################################################
+# Chen, S.C.;Greenblatt, M. (1994)
+# Journal of Solid State Chemistry 108, 366-370
+# Reduced molybdenum-niobium oxides: II. Crystal structure of (Mo, Nb)13O33
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_78034-ICSD
+_database_code_ICSD                78034
+_audit_creation_date               1995-10-17
+_chemical_name_systematic
+'Molybdenum oxide (13/33)'
+_chemical_formula_structural       
+'Mo13 O33'
+_chemical_formula_sum              
+'Mo13 O33'
+_publ_section_title                
+'Mo13 O33'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1994 108 366 370 JSSCBI
+loop_
+_publ_author_name
+Chen, S.C.;Greenblatt, M.
+_cell_length_a                     3.8194(4)
+_cell_length_b                     11.2898(7)
+_cell_length_c                     14.9764(9)
+_cell_angle_alpha                  94.039(5)
+_cell_angle_beta                   97.326(6)
+_cell_angle_gamma                  99.748(7)
+_cell_volume                       628.4604
+_cell_formula_units_Z              1.000
+_symmetry_space_group_name_H-M     'P -1'
+_symmetry_Int_Tables_number        2
+_refine_ls_R_factor_all            0.0325
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x, -y, -z'
+   2   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+6     5.06
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+6 2 i 0.9654(4) 0.0470(1) 0.88120(8) 1.55(2) 1.
+Mo2 Mo5+6 2 i 0.1747(3) 0.37686(9) 0.97353(7) 0.68(2) 1.
+Mo3 Mo5+6 2 i 0.2493(3) 0.28381(9) 0.21403(7) 0.62(2) 1.
+Mo4 Mo5+6 2 i 0.1112(3) 0.85897(9) 0.36269(7) 0.52(2) 1.
+Mo5 Mo5+6 2 i 0.3223(2) 0.18857(9) 0.45620(6) 0.53(2) 1.
+Mo6 Mo5+6 2 i 0.1022(2) 0.47214(8) 0.73161(7) 0.49(2) 1.
+Mo7 Mo5+6 2 i 0.2504(5) 0.5000(2) 0.5000(1) 0.48(3) 0.523
+O1 O2- 2 i 0.459(2) 0.0491(8) 0.8707(6) 1.1(1) 1.
+O2 O2- 2 i 0.223(2) 0.0250(7) 0.4191(5) 0.7(1) 1.
+O3 O2- 2 i 0.145(2) 0.4373(7) 0.8485(5) 0.6(1) 1.
+O4 O2- 2 i 0.065(2) 0.5350(7) 0.5973(5) 0.7(1) 1.
+O5 O2- 2 i 0.003(2) 0.6807(7) 0.3234(5) 0.8(2) 1.
+O6 O2- 2 i 0.299(2) 0.2448(7) 0.3465(5) 0.6(1) 1.
+O7 O2- 2 i 0.076(2) 0.8996(8) 0.2505(5) 1.1(2) 1.
+O8 O2- 2 i 0.073(2) 0.2207(7) 0.9243(5) 1.0(2) 1.
+O9 O2- 2 i 0.223(2) 0.6730(7) 0.7693(5) 0.8(1) 1.
+O10 O2- 2 i 0.222(2) 0.3389(8) 0.0957(5) 0.9(1) 1.
+O11 O2- 2 i 0.148(2) 0.1271(6) 0.1756(5) 0.9(2) 1.
+O12 O2- 2 i 0.383(2) 0.1567(7) 0.6046(5) 0.5(1) 1.
+O13 O2- 1 a 0 0 0 1.0(2) 1.
+O14 O2- 2 i 0.444(2) 0.3712(7) 0.5173(5) 0.5(1) 1.
+O15 O2- 2 i 0.155(2) 0.8068(6) 0.5074(5) 0.4(1) 1.
+O16 O2- 2 i 0.376(2) 0.4777(7) 0.2690(5) 0.7(1) 1.
+O17 O2- 2 i 0.294(2) 0.5767(6) 0.0196(4) 0.1(1) 1.
+#End of data_78034-ICSD
+
+###############################################################################
+# Portemer, F.;Sundberg, M.R.;Kihlborg, L.;Figlarz, M. (1993)
+# Journal of Solid State Chemistry 103, 403-414
+# Homologues of Mo4O11(mon) in the Mo-W-O system prepared by soft chemistry
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_72638-ICSD
+_database_code_ICSD                72638
+_audit_creation_date               1994-01-19
+_chemical_name_systematic
+'Molybdenum oxide (9/25)'
+_chemical_formula_structural       
+'Mo9 O25'
+_chemical_formula_sum              
+'Mo9 O25'
+_publ_section_title                
+'Mo9 O25'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Solid State Chemistry' 1993 103 403 414 JSSCBI
+loop_
+_publ_author_name
+Portemer, F.;Sundberg, M.R.;Kihlborg, L.;Figlarz, M.
+_cell_length_a                     50.64
+_cell_length_b                     5.439
+_cell_length_c                     6.701
+_cell_angle_alpha                  90.
+_cell_angle_beta                   32.64
+_cell_angle_gamma                  90.
+_cell_volume                       995.4706
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 1 2/a 1'
+_symmetry_Int_Tables_number        13
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y, z'
+   2   '-x, -y, -z'
+   3   '-x+1/2, y, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+55     5.555
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+55 4 g 0.03887 0.21434 0.05447 0. 1.
+Mo2 Mo5+55 4 g 0.09139 0.73691 0.04705 0. 1.
+Mo3 Mo5+55 4 g 0.14659 0.22622 0.0173 0. 1.
+Mo4 Mo5+55 4 g 0.19854 0.72936 0.00888 0. 1.
+Mo5 Mo5+55 2 e 0.25 0.23 0 0. 1.
+O1 O2- 4 g 0.0226 0.7447 0.6305 0. 1.
+O2 O2- 4 g 0.0554 0.4412 0.1236 0. 1.
+O3 O2- 4 g 0.0466 0.9228 0.1148 0. 1.
+O4 O2- 4 g 0.0787 0.2324 0.5974 0. 1.
+O5 O2- 4 g 0.1149 0.5164 0.0603 0. 1.
+O6 O2- 4 g 0.1079 0.0121 0.0662 0. 1.
+O7 O2- 4 g 0.1383 0.729 0.5696 0. 1.
+O8 O2- 4 g 0.1707 0.4501 0.0336 0. 1.
+O9 O2- 4 g 0.1638 0.959 0.0429 0. 1.
+O10 O2- 4 g 0.1964 0.2292 0.5212 0. 1.
+O11 O2- 4 g 0.2236 0.9966 0.9924 0. 1.
+O12 O2- 4 g 0.2258 0.4966 0.0076 0. 1.
+O13 O2- 2 f 0.25 0.73 0.5 0. 1.
+#End of data_72638-ICSD
+
+###############################################################################
+# Komdeur, A.J.H.;de Boer, J.L.;van Smaalen, S. (1990)
+# Journal of Physics: Condensed Matter 2, 45-54
+# Determination of the incommensurately modulated structure of Mo8O23 by \
+# means of single-crystal X-ray diffraction
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_68809-ICSD
+_database_code_ICSD                68809
+_audit_creation_date               1992-01-20
+_chemical_name_systematic
+'Molybdenum oxide (8/23)'
+_chemical_formula_structural       
+'Mo8 O23'
+_chemical_formula_sum              
+'Mo8 O23'
+_publ_section_title                
+'Mo8 O23'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Physics: Condensed Matter' 1990 2 45 54 JCOMEL
+loop_
+_publ_author_name
+Komdeur, A.J.H.;de Boer, J.L.;van Smaalen, S.
+_cell_length_a                     13.382(1)
+_cell_length_b                     4.052(6)
+_cell_length_c                     16.877(2)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   106.197(3)
+_cell_angle_gamma                  90.
+_cell_volume                       878.8108
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 1 2/c 1'
+_symmetry_Int_Tables_number        13
+_refine_ls_R_factor_all            0.0299
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y, z+1/2'
+   2   '-x, -y, -z'
+   3   '-x, y, -z+1/2'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+5     5.75
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+5 4 g 0.06399(1) 0.58508(4) 0.41662(1) 0. 1.
+Mo2 Mo5+5 4 g 0.18509(1) 0.41336(4) 0.24575(1) 0. 1.
+Mo3 Mo5+5 4 g 0.31497(9) 0.58978(4) 0.07907(1) 0. 1.
+Mo4 Mo5+5 4 g 0.44659(1) 0.40834(4) 0.40203(1) 0. 1.
+O1 O2- 2 c 0 0.5 0 0. 1.
+O2 O2- 4 g 0.0657(1) 0.0018(4) 0.4163(1) 0. 1.
+O3 O2- 4 g 0.1918(1) 0.9954(4) 0.2458(1) 0. 1.
+O4 O2- 4 g 0.3195(1) 0.0086(4) 0.0771(1) 0. 1.
+O5 O2- 4 g 0.4476(1) 0.9892(4) 0.4071(1) 0. 1.
+O6 O2- 4 g 0.0644(1) 0.4946(4) 0.1646(1) 0. 1.
+O7 O2- 4 g 0.1293(1) 0.4936(4) 0.3306(1) 0. 1.
+O8 O2- 4 g 0.1992(1) 0.4946(4) 0.4958(1) 0. 1.
+O9 O2- 4 g 0.2609(1) 0.5140(4) 0.1635(1) 0. 1.
+O10 O2- 4 g 0.3263(1) 0.4906(4) 0.3277(1) 0. 1.
+O11 O2- 4 g 0.4104(1) 0.5012(4) 0.0045(1) 0. 1.
+O12 O2- 4 g 0.4572(1) 0.4906(4) 0.1538(1) 0. 1.
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_type_symbol
+_atom_site_aniso_Beta_11
+_atom_site_aniso_Beta_22
+_atom_site_aniso_Beta_33
+_atom_site_aniso_Beta_12
+_atom_site_aniso_Beta_13
+_atom_site_aniso_Beta_23
+Mo1 Mo5+5 0.000551(5) 0.00040(1) 0.000318(3) -.00001(1) 0.000138(3) 0.00000(1)
+Mo2 Mo5+5 0.000489(4) 0.00042(1) 0.000274(3) -.00001(1) 0.000119(3) 0.00000(1)
+Mo3 Mo5+5 0.000442(4) 0.00041(1) 0.000342(3) 0.00000(1) 0.000136(3) -.00001(1)
+Mo4 Mo5+5 0.000429(4) 0.00041(1) 0.000304(3) -.00003(1) 0.000030(2) -.00006(1)
+O1 O2- 0.00106(8) 0.0009(5) 0.00035(5) 0.0000(2) 0.00045(5) 0.00035(8)
+O2 O2- 0.0016(1) 0.0005(2) 0.00125(7) -.0001(1) 0.00058(6) 0.00011(8)
+O3 O2- 0.00151(8) 0.0005(2) 0.00076(7) 0.00002(1) 0.00043(6) -.00004(9)
+O4 O2- 0.00127(8) 0.0004(2) 0.00170(6) 0.00004(7) 0.000605 -.00006(8)
+O5 O2- 0.00147(6) 0.0005(1) 0.00095(5) -.00005(7) 0.00034(4) -.00009(6)
+O6 O2- 0.00059(6) 0.0013(2) 0.00017(5) 0.00015(9) -.00028(5) 0.00024(9)
+O7 O2- 0.00106(6) 0.0019(4) 0.00045(4) 0.00025(9) 0.00047(4) -.00015(9)
+O8 O2- 0.00076(6) 0.0013(2) 0.00027(5) 0.00009(7) -.00015(4) 0.00013(8)
+O9 O2- 0.00109(6) 0.0015(2) 0.00055(4) 0.00018(9) 0.00045(4) 0.00019(7)
+O10 O2- 0.00068(6) 0.0011(2) 0.00051(4) 0.00003(8) -.00006(4) -.00003(7)
+O11 O2- 0.00067(5) 0.0009(2) 0.00035(3) 0.00010(7) 0.00017(3) 0.00006(5)
+O12 O2- 0.00064(5) 0.0011(2) 0.00043(3) 0.00007(7) 0.00017(3) 0.00002(6)
+#End of data_68809-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 357-364
+# Least squares refinement of the crystal structure of molybdenum trioxide
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_35076-ICSD
+_database_code_ICSD                35076
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum oxide'
+_chemical_formula_structural       
+'Mo O3'
+_chemical_formula_sum              
+'Mo1 O3'
+_publ_section_title                
+'Mo1 O3'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 357 364 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     3.9628(7)
+_cell_length_b                     13.855(3)
+_cell_length_c                     3.6964(6)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       202.9502
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P b n m'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0442
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x+1/2, y+1/2, z'
+   2   'x, y, -z+1/2'
+   3   'x+1/2, -y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   'x+1/2, -y+1/2, -z'
+   6   '-x, -y, z+1/2'
+   7   '-x+1/2, y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 4 c 0.08669(19) 0.10164(5) 0.25 0.23 1.
+O1 O2- 4 c 0.4994(19) 0.43513(48) 0.25 0.561 1.
+O2 O2- 4 c 0.5212(18) 0.08657(47) 0.25 0.628 1.
+O3 O2- 4 c 0.0373(19) 0.22140(54) 0.25 0.951 1.
+#End of data_35076-ICSD
+
+###############################################################################
+# Kihlborg, L. (1960)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 14, 1612-1622
+# The crystal structure of Mo17 O47
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_36098-ICSD
+_database_code_ICSD                36098
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum oxide (17/47)'
+_chemical_formula_structural       
+'Mo17 O47'
+_chemical_formula_sum              
+'Mo17 O47'
+_publ_section_title                
+'Mo17 O47'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1960 14 1612 1622 ACSAA4
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     21.61
+_cell_length_b                     19.63
+_cell_length_c                     3.951
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       1676.0307
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P b a 2'
+_symmetry_Int_Tables_number        32
+_refine_ls_R_factor_all            0.074
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z'
+   3   '-x, -y, z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+29     5.529
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+29 2 a 0 0 0.579(30) 0.81 1.
+Mo2 Mo5+29 4 c 0.0244(2) 0.2606(2) 0.581(30) 0.81 1.
+Mo3 Mo5+29 4 c 0.1299(2) 0.1189(2) 0.425(30) 0.81 1.
+Mo4 Mo5+29 4 c 0.1355(2) 0.4005(2) 0.434(30) 0.81 1.
+Mo5 Mo5+29 4 c 0.2424(2) 0.2573(2) 0.575(30) 0.81 1.
+Mo6 Mo5+29 4 c 0.2881(2) 0.0653(2) 0.579(30) 0.81 1.
+Mo7 Mo5+29 4 c 0.3824(2) 0.1944(2) 0.428(30) 0.81 1.
+Mo8 Mo5+29 4 c 0.3851(2) 0.3661(2) 0.424(30) 0.81 1.
+Mo9 Mo5+29 4 c 0.4657(2) 0.0556(2) 0.565(30) 0.81 1.
+O1 O2- 2 a 0 0 0.01 0.81 1.
+O2 O2- 4 c 0.02 0.266 0.01 0.81 1.
+O3 O2- 4 c 0.126 0.115 0.98 0.81 1.
+O4 O2- 4 c 0.14 0.396 0.98 0.81 1.
+O5 O2- 4 c 0.246 0.251 0 0.81 1.
+O6 O2- 4 c 0.288 0.069 0.01 0.81 1.
+O7 O2- 4 c 0.383 0.191 0 0.81 1.
+O8 O2- 4 c 0.392 0.36 0 0.81 1.
+O9 O2- 4 c 0.465 0.052 0.05 0.81 1.
+O10 O2- 4 c 0.076(2) 0.045(2) 0.46 0.81 1.
+O11 O2- 4 c 0.060(2) 0.181(2) 0.52 0.81 1.
+O12 O2- 4 c 0.093(2) 0.324(3) 0.44 0.81 1.
+O13 O2- 4 c 0.059(2) 0.462(5) 0.57 0.81 1.
+O14 O2- 4 c 0.206(2) 0.067(2) 0.48 0.81 1.
+O15 O2- 4 c 0.180(2) 0.195(4) 0.46 0.81 1.
+O16 O2- 4 c 0.203(2) 0.335(2) 0.5 0.81 1.
+O17 O2- 4 c 0.191(2) 0.475(2) 0.54 0.81 1.
+O18 O2- 4 c 0.297(2) 0.165(3) 0.48 0.81 1.
+O19 O2- 4 c 0.330(2) 0.280(3) 0.48 0.81 1.
+O20 O2- 4 c 0.325(2) 0.427(4) 0.41 0.81 1.
+O21 O2- 4 c 0.380(2) 0.091(2) 0.56 0.81 1.
+O22 O2- 4 c 0.465(2) 0.160(3) 0.5 0.81 1.
+O23 O2- 4 c 0.434(2) 0.275(6) 0.52 0.81 1.
+O24 O2- 4 c 0.455(2) 0.411(2) 0.52 0.81 1.
+#End of data_36098-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Acta Chemica Scandinavica (1-27,1973-42,1988) 17, 1485-1487
+# Least Squares Refinement of the Structure of Mo17 O47
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_28333-ICSD
+_database_code_ICSD                28333
+_audit_creation_date               1986-09-25
+_chemical_name_systematic
+'Molybdenum oxide (17/47)'
+_chemical_formula_structural       
+'Mo17 O47'
+_chemical_formula_sum              
+'Mo17 O47'
+_publ_section_title                
+'Mo17 O47'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica (1-27,1973-42,' 1963 17 1485 1487 ACSAA4
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     21.615
+_cell_length_b                     19.632
+_cell_length_c                     3.951
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       1676.5906
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P b a 2'
+_symmetry_Int_Tables_number        32
+_refine_ls_R_factor_all            0.0578
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z'
+   3   '-x, -y, z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+3     5.53
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+3 2 a 0 0 0.579 0.64 1.
+Mo2 Mo5+3 4 c 0.02398(15) 0.26126(20) 0.586(2) 0.49 1.
+Mo3 Mo5+3 4 c 0.12899(16) 0.11845(18) 0.4177(18) 0.42 1.
+Mo4 Mo5+3 4 c 0.13648(16) 0.39897(19) 0.4329(17) 0.42 1.
+Mo5 Mo5+3 4 c 0.24260(15) 0.25684(19) 0.5790(21) 0.42 1.
+Mo6 Mo5+3 4 c 0.28825(15) 0.06556(19) 0.5848(20) 0.4 1.
+Mo7 Mo5+3 4 c 0.38285(17) 0.19333(21) 0.4334(18) 0.47 1.
+Mo8 Mo5+3 4 c 0.38519(18) 0.36637(20) 0.4205(19) 0.62 1.
+Mo9 Mo5+3 4 c 0.46561(15) 0.05514(19) 0.5551(18) 0.33 1.
+O1 O2- 4 c 0.0225(14) 0.2630(18) 0.027(12) 1. 1.
+O2 O2- 2 a 0 0 0.033(26) 3.4 1.
+O3 O2- 4 c 0.1310(16) 0.1206(18) 0.948(14) 1.3 1.
+O4 O2- 4 c 0.1349(11) 0.4038(14) 0.989(9) -.4 1.
+O5 O2- 4 c 0.2465(15) 0.2532(18) 0.007(12) 1.2 1.
+O6 O2- 4 c 0.2882(13) 0.0716(17) 0.003(11) 0.6 1.
+O7 O2- 4 c 0.3810(12) 0.1938(14) 0.992(9) -.3 1.
+O8 O2- 4 c 0.3919(16) 0.3568(19) 0.953(15) 1.4 1.
+O9 O2- 4 c 0.4649(15) 0.0579(18) 0.999(11) 1. 1.
+O10 O2- 4 c 0.0767(13) 0.0429(14) 0.505(11) 0.2 1.
+O11 O2- 4 c 0.0612(12) 0.1790(14) 0.514(10) -.1 1.
+O12 O2- 4 c 0.0930(13) 0.3224(16) 0.521(11) 0.3 1.
+O13 O2- 4 c 0.0585(14) 0.4581(16) 0.483(12) 0.5 1.
+O14 O2- 4 c 0.2048(11) 0.0683(13) 0.486(9) -.5 1.
+O15 O2- 4 c 0.1788(13) 0.1999(16) 0.503(10) 0.3 1.
+O16 O2- 4 c 0.2064(14) 0.3388(18) 0.503(12) 0.9 1.
+O17 O2- 4 c 0.1892(14) 0.4792(17) 0.538(15) 0.8 1.
+O18 O2- 4 c 0.2969(13) 0.1672(16) 0.49(1) 0.3 1.
+O19 O2- 4 c 0.3297(11) 0.2778(15) 0.481(10) -.2 1.
+O20 O2- 4 c 0.3266(18) 0.4217(22) 0.465(13) 2.1 1.
+O21 O2- 4 c 0.3764(12) 0.0925(14) 0.494(9) -.1 1.
+O22 O2- 4 c 0.4697(13) 0.1567(16) 0.477(10) 0.3 1.
+O23 O2- 4 c 0.4396(14) 0.2746(17) 0.483(12) 0.8 1.
+O24 O2- 4 c 0.4595(14) 0.4132(17) 0.481(10) 0.5 1.
+#End of data_28333-ICSD
+
+###############################################################################
+# Kihlborg, L. (1964)
+# Arkiv foer Kemi 21, 443-460
+# The crystal structure of Mo18 O52 and the existence of homologous series of \
+# structures based on Mo O3
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_27510-ICSD
+_database_code_ICSD                27510
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum oxide (18/52)'
+_chemical_formula_structural       
+'Mo18 O52'
+_chemical_formula_sum              
+'Mo18 O52'
+_publ_section_title                
+'Mo18 O52'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1964 21 443 460 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     8.145
+_cell_length_b                     11.89
+_cell_length_c                     21.23
+_cell_angle_alpha                  102.67
+_cell_angle_beta                   67.82
+_cell_angle_gamma                  109.97
+_cell_volume                       1779.7108
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P -1'
+_symmetry_Int_Tables_number        2
+_refine_ls_R_factor_all            0.0794
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   '-x, -y, -z'
+   2   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+78     5.778
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+78 2 i 0.80686(35) 0.88454(24) 0.03122(13) 0.41 1.
+Mo2 Mo5+78 2 i 0.21091(44) 0.84171(28) 0.02095(16) 0.99 1.
+Mo3 Mo5+78 2 i 0.82686(34) 0.61466(23) 0.08764(12) 0.31 1.
+Mo4 Mo5+78 2 i 0.23162(39) 0.56948(26) 0.07493(15) 0.61 1.
+Mo5 Mo5+78 2 i 0.83658(36) 0.34703(25) 0.14951(13) 0.49 1.
+Mo6 Mo5+78 2 i 0.24015(27) 0.30558(20) 0.14128(10) -.07 1.
+Mo7 Mo5+78 2 i 0.85801(32) 0.07292(22) 0.20168(12) 0.22 1.
+Mo8 Mo5+78 2 i 0.26294(37) 0.01659(26) 0.17721(14) 0.66 1.
+Mo9 Mo5+78 2 i 0.87356(32) 0.80450(22) 0.25965(12) 0.2 1.
+Mo10 Mo5+78 2 i 0.28144(38) 0.75896(26) 0.24491(14) 0.66 1.
+Mo11 Mo5+78 2 i 0.89370(32) 0.53705(22) 0.31847(12) 0.19 1.
+Mo12 Mo5+78 2 i 0.30166(34) 0.48970(24) 0.30139(13) 0.4 1.
+Mo13 Mo5+78 2 i 0.92181(35) 0.26769(24) 0.37473(13) 0.39 1.
+Mo14 Mo5+78 2 i 0.30246(34) 0.19852(24) 0.34834(13) 0.4 1.
+Mo15 Mo5+78 2 i 0.93974(34) 0.99169(23) 0.43316(12) 0.36 1.
+Mo16 Mo5+78 2 i 0.33485(40) 0.93545(27) 0.40651(15) 0.73 1.
+Mo17 Mo5+78 2 i 0.85024(39) 0.62308(26) 0.49301(14) 0.67 1.
+Mo18 Mo5+78 2 i 0.36221(37) 0.67344(25) 0.46460(14) 0.56 1.
+O1 O2- 2 i 0.8270(34) 0.5398(23) 0.0083(12) 0.7 1.
+O2 O2- 2 i 0.4530(26) 0.5967(19) 0.034(1) 0.2 1.
+O3 O2- 2 i 0.1392(34) 0.6825(23) 0.0562(12) 0.8 1.
+O4 O2- 2 i 0.8933(34) 0.7789(23) 0.0614(13) 0.8 1.
+O5 O2- 2 i 0.5767(27) 0.8465(19) 0.0761(10) 0.3 1.
+O6 O2- 2 i 0.2167(26) 0.9282(19) 0.1004(9) 0.2 1.
+O7 O2- 2 i 0.8631(31) 0.0432(22) 0.0061(12) 0.6 1.
+O8 O2- 2 i 0.5572(38) 0.1217(26) 0.0195(13) 1.3 1.
+O9 O2- 2 i 0.1768(33) 0.1976(22) 0.0525(12) 0.7 1.
+O10 O2- 2 i 0.8288(24) 0.2599(18) 0.0715(9) 0.1 1.
+O11 O2- 2 i 0.4742(45) 0.3522(30) 0.1001(17) 1.8 1.
+O12 O2- 2 i 0.1678(29) 0.4169(21) 0.1115(11) 0.4 1.
+O13 O2- 2 i 0.9016(32) 0.5002(22) 0.1182(12) 0.7 1.
+O14 O2- 2 i 0.5971(32) 0.5861(22) 0.1289(12) 0.7 1.
+O15 O2- 2 i 0.2097(32) 0.638(22) 0.1638(10) 0.7 1.
+O16 O2- 2 i 0.8640(33) 0.7201(23) 0.1814(12) 0.8 1.
+O17 O2- 2 i 0.5102(34) 0.8000(23) 0.2079(12) 0.8 1.
+O18 O2- 2 i 0.1988(29) 0.8774(20) 0.2226(11) 0.4 1.
+O19 O2- 2 i 0.9353(29) 0.9593(21) 0.2316(11) 0.4 1.
+O20 O2- 2 i 0.8777(29) 0.9979(20) 0.1200(11) 0.4 1.
+O21 O2- 2 i 0.4922(29) 0.0606(20) 0.1484(11) 0.4 1.
+O22 O2- 2 i 0.1667(34) 0.1428(23) 0.1704(12) 0.8 1.
+O23 O2- 2 i 0.9178(28) 0.2437(20) 0.1818(11) 0.4 1.
+O24 O2- 2 i 0.6153(38) 0.3110(25) 0.1955(14) 1.1 1.
+O25 O2- 2 i 0.2538(28) 0.3923(20) 0.2200(11) 0.4 1.
+O26 O2- 2 i 0.9046(26) 0.4630(19) 0.2369(10) 0.1 1.
+O27 O2- 2 i 0.5265(40) 0.5154(26) 0.2638(15) 1.4 1.
+O28 O2- 2 i 0.2134(25) 0.6074(19) 0.2840(9) 0.2 1.
+O29 O2- 2 i 0.9672(32) 0.7036(22) 0.2887(12) 0.7 1.
+O30 O2- 2 i 0.6462(39) 0.7741(26) 0.3048(14) 1.2 1.
+O31 O2- 2 i 0.2807(43) 0.8389(28) 0.3309(15) 1.6 1.
+O32 O2- 2 i 0.9198(35) 0.9166(24) 0.3530(13) 1. 1.
+O33 O2- 2 i 0.5466(48) 0.9857(31) 0.3873(17) 2. 1.
+O34 O2- 2 i 0.6293(24) 0.0434(18) 0.2447(9) 0 1.
+O35 O2- 2 i 0.2453(28) 0.1144(20) 0.2770(11) 0.4 1.
+O36 O2- 2 i 0.9800(32) 0.1804(22) 0.3020(12) 0.7 1.
+O37 O2- 2 i 0.5388(28) 0.2622(20) 0.3222(10) 0.3 1.
+O38 O2- 2 i 0.2105(32) 0.3268(22) 0.3429(12) 0.7 1.
+O39 O2- 2 i 0.9639(31) 0.4164(22) 0.3489(12) 0.6 1.
+O40 O2- 2 i 0.6680(34) 0.5014(23) 0.3635(13) 0.9 1.
+O41 O2- 2 i 0.3032(32) 0.5798(22) 0.3882(12) 0.6 1.
+O42 O2- 2 i 0.9357(52) 0.6472(32) 0.4127(19) 2.4 1.
+O43 O2- 2 i 0.6004(33) 0.7231(23) 0.4366(12) 0.8 1.
+O44 O2- 2 i 0.3187(30) 0.8023(21) 0.4438(11) 0.5 1.
+O45 O2- 2 i 0.9988(28) 0.8839(20) 0.4691(10) 0.3 1.
+O46 O2- 2 i 0.7032(27) 0.970(2) 0.4924(10) 0.2 1.
+O47 O2- 2 i 0.2414(31) 0.0638(21) 0.3940(11) 0.6 1.
+O48 O2- 2 i 0.0112(29) 0.1674(21) 0.4048(11) 0.4 1.
+O49 O2- 2 i 0.7112(34) 0.2592(23) 0.4303(12) 0.8 1.
+O50 O2- 2 i 0.2836(29) 0.2795(20) 0.4487(11) 0.4 1.
+O51 O2- 2 i 0.9642(33) 0.3692(22) 0.4753(12) 0.8 1.
+O52 O2- 2 i 0.6947(36) 0.4761(24) 0.4948(13) 1. 1.
+#End of data_27510-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 461-469
+# Least squares refinement of the structure of Mo8 O23
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_27503-ICSD
+_database_code_ICSD                27503
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Octamolybdenum 23-oxide'
+_chemical_formula_structural       
+'Mo8 O23'
+_chemical_formula_sum              
+'Mo8 O23'
+_publ_section_title                
+'Mo8 O23'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 461 469 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     16.88
+_cell_length_b                     4.052
+_cell_length_c                     13.39
+_cell_angle_alpha                  90.
+_cell_angle_beta                   106.19
+_cell_angle_gamma                  90.
+_cell_volume                       879.5308
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P 1 2/a 1'
+_symmetry_Int_Tables_number        13
+_refine_ls_R_factor_all            0.0226
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y, z'
+   2   '-x, -y, -z'
+   3   '-x+1/2, y, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+5     5.75
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+5 4 g 0.41668(3) 0.58487(18) 0.06401(4) 0.265 1.
+Mo2 Mo5+5 4 g 0.24574(3) 0.41374(19) 0.18505(4) 0.238 1.
+Mo3 Mo5+5 4 g 0.07908(3) 0.58930(19) 0.31501(4) 0.238 1.
+Mo4 Mo5+5 4 g 0.40199(3) 0.40891(18) 0.44666(5) 0.255 1.
+O1 O2- 2 c 0 0.5 0 0.78 1.
+O2 O2- 4 g 0.41603(36) 0.0002(15) 0.06547(48) 1.38 1.
+O3 O2- 4 g 0.24522(36) 0.9961(14) 0.19188(47) 1.42 1.
+O4 O2- 4 g 0.07659(33) 0.0071(13) 0.31900(43) 1.02 1.
+O5 O2- 4 g 0.40723(32) 0.9900(11) 0.44685(43) 0.63 1.
+O6 O2- 4 g 0.16405(34) 0.4949(12) 0.06431(44) 0.85 1.
+O7 O2- 4 g 0.33114(35) 0.4948(13) 0.12968(45) 1.07 1.
+O8 O2- 4 g 0.49545(32) 0.4945(13) 0.20008(41) 0.82 1.
+O9 O2- 4 g 0.16377(36) 0.5152(13) 0.26002(45) 1.09 1.
+O10 O2- 4 g 0.32816(32) 0.4909(12) 0.32670(41) 0.85 1.
+O11 O2- 4 g 0.00431(33) 0.4985(12) 0.41063(42) 0.63 1.
+O12 O2- 4 g 0.15352(33) 0.4920(12) 0.45720(43) 0.54 1.
+#End of data_27503-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 365-377
+# Crystal structure studies on monoclinic and orthorhombic Mo4 O11
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15815-ICSD
+_database_code_ICSD                15815
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum oxide (4/11)'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 365 377 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     24.49
+_cell_length_b                     5.457
+_cell_length_c                     6.752
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       902.3501
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P n m a'
+_symmetry_Int_Tables_number        62
+_refine_ls_R_factor_all            0.0848
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, y, -z+1/2'
+   2   'x, -y+1/2, z'
+   3   '-x+1/2, y+1/2, z+1/2'
+   4   '-x, -y, -z'
+   5   '-x+1/2, -y, z+1/2'
+   6   '-x, y+1/2, -z'
+   7   'x+1/2, -y+1/2, -z+1/2'
+   8   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 c 0.20538(7) 0.25 0.87210(25) 0.338 1.
+Mo2 Mo5+ 4 c 0.14706(7) 0.75 0.19718(25) 0.368 1.
+Mo3 Mo5+ 4 c 0.08705(7) 0.25 0.52162(25) 0.287 1.
+Mo4 Mo5+ 4 c 0.02858(7) 0.75 0.84125(27) 0.355 1.
+O1 O2- 4 a 0 0 0 1.47 1.
+O2 O2- 8 d 0.1268(7) 0.9906(35) 0.3414(26) 2.82 1.
+O3 O2- 8 d 0.0641(4) 0.0057(21) 0.6751(16) 0.82 1.
+O4 O2- 8 d 0.1902(7) 0.9935(34) 0.0108(26) 2.91 1.
+O5 O2- 4 c 0.0321(6) 0.25 0.3409(24) 0.75 1.
+O6 O2- 4 c 0.0940(6) 0.75 0.0214(24) 0.85 1.
+O7 O2- 4 c 0.1647(7) 0.25 0.6612(25) 0.94 1.
+O8 O2- 4 c 0.2244(7) 0.75 0.3181(26) 1.34 1.
+#End of data_15815-ICSD
+
+###############################################################################
+# Kihlborg, L. (1963)
+# Arkiv foer Kemi 21, 365-377
+# Crystal structure studies on monoclinic and orthorhombic Mo4 O11
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_15814-ICSD
+_database_code_ICSD                15814
+_audit_creation_date               1986-09-25
+_chemical_name_systematic
+'Molybdenum oxide (4/11) - gamma'
+_chemical_formula_structural       
+'Mo4 O11'
+_chemical_formula_sum              
+'Mo4 O11'
+_publ_section_title                
+'Mo4 O11'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Arkiv foer Kemi' 1963 21 365 377 ARKEAD
+loop_
+_publ_author_name
+Kihlborg, L.
+_cell_length_a                     24.54
+_cell_length_b                     5.439
+_cell_length_c                     6.701
+_cell_angle_alpha                  90.
+_cell_angle_beta                   94.28
+_cell_angle_gamma                  90.
+_cell_volume                       891.9102
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 21/a 1'
+_symmetry_Int_Tables_number        14
+_refine_ls_R_factor_all            0.0785
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x, -y, -z'
+   3   '-x+1/2, y+1/2, -z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo5+     5.5
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo5+ 4 e 0.04325(6) 0.21434(26) 0.31397(22) 0.338 1.
+Mo2 Mo5+ 4 e 0.10168(6) 0.73691(21) 0.65713(22) 0.229 1.
+Mo3 Mo5+ 4 e 0.16310(6) 0.22622(23) 0.99590(23) 0.291 1.
+Mo4 Mo5+ 4 e 0.22091(7) 0.72936(22) 0.33434(28) 0.322 1.
+O1 O2- 4 e 0.0251(6) 0.7447(25) 0.7811(22) 0.88 1.
+O2 O2- 4 e 0.0616(6) 0.4412(24) 0.4932(25) 0.88 1.
+O3 O2- 4 e 0.0519(5) 0.9228(21) 0.4262(21) 0.53 1.
+O4 O2- 4 e 0.0876(5) 0.2324(22) 0.123(2) 0.58 1.
+O5 O2- 4 e 0.1278(6) 0.5164(22) 0.827(22) 0.61 1.
+O6 O2- 4 e 0.1200(6) 0.0121(23) 0.7862(23) 0.69 1.
+O7 O2- 4 e 0.1539(6) 0.7290(26) 0.4930(22) 0.93 1.
+O8 O2- 4 e 0.1899(6) 0.4501(22) 0.1730(22) 0.63 1.
+O9 O2- 4 e 0.1822(5) 0.9590(22) 0.1361(21) 0.56 1.
+O10 O2- 4 e 0.2185(5) 0.2292(20) 0.8322(22) 0.47 1.
+O11 O2- 4 e 0.2488(6) 0.9966(22) 0.4852(24) 0.65 1.
+#End of data_15814-ICSD
+
+###############################################################################
+# Yamazoe, N.;Ekstroem, T.;Kihlborg, L. (1975)
+# Acta Chemica Scandinavica, Series A: (28,1974-) 29, 404-408
+# Structural effects of vanadium substitution in Mo17 O47
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_4111-ICSD
+_database_code_ICSD                4111
+_audit_creation_date               1980-01-01
+_chemical_name_systematic
+'Molybdenum oxide (17/47)'
+_chemical_formula_structural       
+'Mo17 O47'
+_chemical_formula_sum              
+'Mo17 O47'
+_publ_section_title                
+'Mo17 O47'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Acta Chemica Scandinavica, Series A: (28' 1975 29 404 408 ACAPCT
+loop_
+_publ_author_name
+Yamazoe, N.;Ekstroem, T.;Kihlborg, L.
+_cell_length_a                     21.5310(40)
+_cell_length_b                     19.534(4)
+_cell_length_c                     4.001(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   90.
+_cell_angle_gamma                  90.
+_cell_volume                       1682.7709
+_cell_formula_units_Z              2.000
+_symmetry_space_group_name_H-M     'P b a 2'
+_symmetry_Int_Tables_number        32
+_refine_ls_R_factor_all            0.065
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x+1/2, -y+1/2, z'
+   2   '-x+1/2, y+1/2, z'
+   3   '-x, -y, z'
+   4   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+Mo6+     6.
+Mo5+     5.
+Mo6+     6.
+Mo5+     5.
+Mo6+     6.
+Mo5+     5.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Mo1 Mo6+ 2 a 0 0 0.579 0.22 1.
+Mo2 Mo6+ 4 c 0.02427(16) 0.26120(23) 0.5789(32) 0.12 1.
+Mo3 Mo6+ 4 c 0.12948(19) 0.11753(21) 0.4006(29) 0.26 1.
+Mo4 Mo5+ 4 c 0.13558(20) 0.40039(27) 0.4117(32) 0.36 1.
+Mo5 Mo6+ 4 c 0.24223(18) 0.25749(23) 0.5626(36) 0.43 1.
+Mo6 Mo5+ 4 c 0.28823(18) 0.06502(23) 0.5773(34) 0.3 1.
+Mo7 Mo6+ 4 c 0.38259(20) 0.19341(21) 0.4062(30) 0.09 1.
+Mo8 Mo5+ 4 c 0.38568(25) 0.36643(26) 0.4096(29) 1.31 1.
+Mo9 Mo5+ 4 c 0.46517(20) 0.05591(25) 0.5619(33) 0.39 1.
+O1 O2- 4 c 0.0227(16) 0.2640(21) 0.026(14) 2. 1.
+O2 O2- 2 a 0 0 0.020(19) 1.9 1.
+O3 O2- 4 c 0.1286(18) 0.1219(19) 0.994(12) 1.9 1.
+O4 O2- 4 c 0.1331(14) 0.4025(18) 0.998(8) 0.7 1.
+O5 O2- 4 c 0.2459(16) 0.2571(18) -.01(1) 1.2 1.
+O6 O2- 4 c 0.2867(14) 0.0685(17) -.002(9) 0.8 1.
+O7 O2- 4 c 0.3829(17) 0.1957(19) 0.993(10) 1.4 1.
+O8 O2- 4 c 0.3879(13) 0.3584(15) 0.992(9) 0.2 1.
+O9 O2- 4 c 0.4635(14) 0.0565(18) 0.992(10) 0.8 1.
+O10 O2- 4 c 0.0746(15) 0.0447(16) 0.491(10) 0.6 1.
+O11 O2- 4 c 0.0588(14) 0.1782(15) 0.503(9) 0.4 1.
+O12 O2- 4 c 0.0875(13) 0.3215(16) 0.543(13) 0.8 1.
+O13 O2- 4 c 0.0575(18) 0.4577(21) 0.494(13) 2.2 1.
+O14 O2- 4 c 0.2037(16) 0.0672(19) 0.496(11) 1.5 1.
+O15 O2- 4 c 0.1773(16) 0.1986(19) 0.486(11) 1.5 1.
+O16 O2- 4 c 0.2062(14) 0.3396(16) 0.479(9) 0.5 1.
+O17 O2- 4 c 0.1869(19) 0.4758(22) 0.55(2) 2.9 1.
+O18 O2- 4 c 0.2950(12) 0.1692(15) 0.501(8) 0 1.
+O19 O2- 4 c 0.3322(13) 0.2808(17) 0.481 0.4 1.
+O20 O2- 4 c 0.3291(19) 0.4241(23) 0.465(14) 2.7 1.
+O21 O2- 4 c 0.3798(17) 0.0940(19) 0.518(11) 1.5 1.
+O22 O2- 4 c 0.4683(14) 0.1558(17) 0.499(11) 0.9 1.
+O23 O2- 4 c 0.4381(15) 0.2719(18) 0.480(11) 1.2 1.
+O24 O2- 4 c 0.4577(19) 0.4116(23) 0.496(13) 2.6 1.
+#End of data_4111-ICSD
+

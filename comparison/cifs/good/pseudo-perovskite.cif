@@ -1,0 +1,75 @@
+###############################################################################
+# Salje, E.K.H.;Rehmann, S.;Pobell, F.;Morris, D.;Knight, K.S.;\
+# Herrmannsdoerfer, T.;Dove, M.T. (1997)
+# Journal of Physics: Condensed Matter 9, 6563-6577
+# Crystal structure and paramagnetic behaviour of epsilon-(W O3-x)
+# 
+# CIF by ICSD-for-WWW,  Copyright 2003 FIZ-Karlsruhe & A.W.Hewat (hewat@ill.fr)
+# NOT TO BE PUBLISHED IN ANY FORM. See http://icsd.ill.fr/icsd/conditions.html
+###############################################################################
+
+data_84165-ICSD
+_database_code_ICSD                84165
+_audit_creation_date               1999-01-19
+_chemical_name_systematic
+'Tungsten oxide - epsilon'
+_chemical_formula_structural       
+'W O3'
+_chemical_formula_sum              
+'O3 W1'
+_publ_section_title                
+'O3 W1'
+loop_
+_citation_id
+_citation_journal_abbrev
+_citation_year
+_citation_journal_volume
+_citation_page_first
+_citation_page_last
+_citation_journal_id_ASTM
+primary 'Journal of Physics: Condensed Matter' 1997 9 6563 6577 JCOMEL
+loop_
+_publ_author_name
+Salje, E.K.H.;Rehmann, S.;Pobell, F.;Morris, D.;Knight, K.S.;\
+Herrmannsdoerfer, T.;Dove, M.T.
+_cell_length_a                     5.27770(1)
+_cell_length_b                     5.16185(1)
+_cell_length_c                     7.67495(1)
+_cell_angle_alpha                  90.
+_cell_angle_beta                   91.6820(2)
+_cell_angle_gamma                  90.
+_cell_volume                       209.0009
+_cell_formula_units_Z              4.000
+_symmetry_space_group_name_H-M     'P 1 c 1'
+_symmetry_Int_Tables_number        7
+_refine_ls_R_factor_all            0.0901
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+   1   'x, -y, z+1/2'
+   2   'x, y, z'
+loop_
+_atom_type_symbol
+_atom_type_oxidation_number
+W6+     6.
+O2-     -2.
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+W1 W6+ 2 a -.0110(5) -.010(1) 0.6752(2) 0.03(3) 1.
+W2 W6+ 2 a 0.5 0.470(1) 0.75 0.03(3) 1.
+O1 O2- 2 a 0.497(2) 0.582(1) -.028(1) 0.45(2) 1.
+O2 O2- 2 a 0.210(2) 0.294(1) 0.179(1) 0.45(2) 1.
+O3 O2- 2 a 0.278(2) 0.779(1) 0.254(1) 0.45(2) 1.
+O4 O2- 2 a 0.696(2) 0.206(1) 0.179(1) 0.45(2) 1.
+O5 O2- 2 a 0.786(2) 0.714(1) 0.255(1) 0.45(2) 1.
+O6 O2- 2 a -.009(2) 0.066(1) 0.457(1) 0.45(2) 1.
+#End of data_84165-ICSD
+

@@ -1,0 +1,44 @@
+# Sr2Ti2O6 extracted from /home/blokhin/perfect/bulk/sto140/b3pw/sto140b3pw_dft.cryst.out (structure no.-1)
+
+data_tilde_project
+_cell_length_a    5.530559
+_cell_length_b    5.530559
+_cell_length_c    5.530559
+_cell_angle_alpha 120.008375
+_cell_angle_beta  120.008375
+_cell_angle_gamma 89.985494
+_symmetry_space_group_name_H-M ' '
+loop_
+_symmetry_equiv_pos_as_xyz
++x,+y,+z
++y-z,+x-z,-z
+-x+0.5,-x+z+0.5,-x+y
+-y+z+0.5,-y+0.5,+x-y
+-y+0.5,-x+0.5,-z
+-x+z+0.5,-y+z+0.5,+z
++x-z,+x,+x-y
++y,+y-z,-x+y
+-x,-y,-z
+-y+z,-x+z,+z
++x+0.5,+x-z+0.5,+x-y
++y-z+0.5,+y+0.5,-x+y
++y+0.5,+x+0.5,+z
++x-z+0.5,+y-z+0.5,-z
+-x+z,-x,-x+y
+-y,-y+z,+x-y
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ti1   Ti    0.00000000    0.00000000    0.00000000
+Ti2   Ti   -0.50000000   -0.50000000    0.00000000
+O3   O   -0.25489900    0.24510100   -0.00979800
+O4   O    0.25489900   -0.24510100    0.00979800
+O5   O   -0.24510100   -0.25489900    0.50000000
+O6   O    0.24510100    0.25489900    0.50000000
+O7   O    0.25000000    0.25000000    0.00000000
+O8   O   -0.25000000   -0.25000000    0.00000000
+Sr9   Sr   -0.25000000    0.25000000    0.50000000
+Sr10   Sr    0.25000000   -0.25000000   -0.50000000

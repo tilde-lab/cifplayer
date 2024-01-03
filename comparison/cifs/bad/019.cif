@@ -1,0 +1,302 @@
+####################################################################### 
+# 
+# This file contains crystal structure data downloaded from the 
+# Cambridge Structural Database (CSD) hosted by the Cambridge 
+# Crystallographic Data Centre (CCDC).
+# 
+# Full information about CCDC data access policies and citation 
+# guidelines are available at http://www.ccdc.cam.ac.uk/access/V1 
+# 
+# Audit and citation data items may have been added by the CCDC. 
+# Please retain this information to preserve the provenance of 
+# this file and to allow appropriate attribution of the data. 
+# 
+#######################################################################
+
+data_shelx
+_audit_block_doi                 10.5517/ccdc.csd.cc1ns9zq
+_database_code_depnum_ccdc_archive 'CCDC 1542714'
+loop_
+_citation_id
+_citation_doi
+_citation_year
+1 10.1016/j.chempr.2017.11.005 2018
+_audit_update_record             
+;
+2017-04-06 deposited with the CCDC.	2019-06-07 downloaded from the CCDC.
+;
+
+_audit_creation_method           SHELXL-2014/7
+_shelx_SHELXL_version_number     2014/7
+_chemical_name_systematic        ?
+_chemical_name_common            ?
+_chemical_melting_point          ?
+_chemical_formula_moiety         'C69 H43 Cl Cr3 O15'
+_chemical_formula_sum            'C69 H43 Cl Cr3 O15'
+_chemical_formula_weight         1303.48
+
+loop_
+_atom_type_symbol
+_atom_type_description
+_atom_type_scat_dispersion_real
+_atom_type_scat_dispersion_imag
+_atom_type_scat_source
+C C 0.0181 0.0091 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'
+H H 0.0000 0.0000 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'
+Cr Cr -0.1635 2.4439 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'
+O O 0.0492 0.0322 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'
+Cl Cl 0.3639 0.7018 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'
+
+_space_group_crystal_system      cubic
+_space_group_IT_number           223
+_space_group_name_H-M_alt        'P m -3 n'
+_space_group_name_Hall           '-P 4n 2 3'
+
+_shelx_space_group_comment       
+;
+The symmetry employed for this shelxl refinement is uniquely defined
+by the following loop, which should always be used as a source of
+symmetry information in preference to the above space-group names.
+They are only intended as comments.
+;
+
+loop_
+_space_group_symop_operation_xyz
+'x, y, z'
+'-y+1/2, x+1/2, z+1/2'
+'-x, -y, z'
+'y+1/2, -x+1/2, z+1/2'
+'x+1/2, -z+1/2, y+1/2'
+'x, -y, -z'
+'x+1/2, z+1/2, -y+1/2'
+'z+1/2, y+1/2, -x+1/2'
+'-x, y, -z'
+'-z+1/2, y+1/2, x+1/2'
+'z, x, y'
+'y, z, x'
+'-y, -z, x'
+'z, -x, -y'
+'-y, z, -x'
+'-z, -x, y'
+'-z, x, -y'
+'y, -z, -x'
+'y+1/2, x+1/2, -z+1/2'
+'-y+1/2, -x+1/2, -z+1/2'
+'-x+1/2, z+1/2, y+1/2'
+'-x+1/2, -z+1/2, -y+1/2'
+'z+1/2, -y+1/2, x+1/2'
+'-z+1/2, -y+1/2, -x+1/2'
+'-x, -y, -z'
+'y-1/2, -x-1/2, -z-1/2'
+'x, y, -z'
+'-y-1/2, x-1/2, -z-1/2'
+'-x-1/2, z-1/2, -y-1/2'
+'-x, y, z'
+'-x-1/2, -z-1/2, y-1/2'
+'-z-1/2, -y-1/2, x-1/2'
+'x, -y, z'
+'z-1/2, -y-1/2, -x-1/2'
+'-z, -x, -y'
+'-y, -z, -x'
+'y, z, -x'
+'-z, x, y'
+'y, -z, x'
+'z, x, -y'
+'z, -x, y'
+'-y, z, x'
+'-y-1/2, -x-1/2, z-1/2'
+'y-1/2, x-1/2, z-1/2'
+'x-1/2, -z-1/2, -y-1/2'
+'x-1/2, z-1/2, y-1/2'
+'-z-1/2, y-1/2, -x-1/2'
+'z-1/2, y-1/2, x-1/2'
+
+_cell_length_a                   35.672(2)
+_cell_length_b                   35.672(2)
+_cell_length_c                   35.672(2)
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                90
+_cell_volume                     45393(7)
+_cell_formula_units_Z            8
+_cell_measurement_temperature    296.0(1)
+_cell_measurement_reflns_used    3351
+_cell_measurement_theta_min      4.29
+_cell_measurement_theta_max      33.84
+
+_exptl_crystal_description       cubic
+_exptl_crystal_colour            green
+_exptl_crystal_density_meas      ?
+_exptl_crystal_density_method    ?
+_exptl_crystal_density_diffrn    0.381
+_exptl_crystal_F_000             5328
+_exptl_transmission_factor_min   ?
+_exptl_transmission_factor_max   ?
+_exptl_crystal_size_max          0.050
+_exptl_crystal_size_mid          0.050
+_exptl_crystal_size_min          0.050
+_exptl_absorpt_coefficient_mu    1.426
+_shelx_estimated_absorpt_T_min   0.932
+_shelx_estimated_absorpt_T_max   0.932
+_exptl_absorpt_correction_type   multi-scan
+_exptl_absorpt_correction_T_min  0.5040
+_exptl_absorpt_correction_T_max  0.7467
+_exptl_absorpt_process_details   
+;
+SADABS-2014/5 (Bruker,2014/5) was used for absorption correction.
+wR2(int) was 0.0717 before and 0.0516 after correction.
+The Ratio of minimum to maximum transmission is 0.6750.
+The \l/2 correction factor is 0.00150.
+;
+_diffrn_ambient_temperature      296.0(1)
+_diffrn_radiation_wavelength     1.54178
+_diffrn_radiation_type           CuK\a
+_diffrn_source                   'Incoatec I\ms'
+_diffrn_measurement_device_type  'Bruker X8 PROSPECTOR APEX2 CCD'
+_diffrn_measurement_method       '\f and \w scans'
+_diffrn_radiation_monochromator  mirrors
+_diffrn_detector_area_resol_mean 8.3
+_diffrn_reflns_number            14217
+_diffrn_reflns_av_unetI/netI     0.0284
+_diffrn_reflns_av_R_equivalents  0.0488
+_diffrn_reflns_limit_h_min       -26
+_diffrn_reflns_limit_h_max       5
+_diffrn_reflns_limit_k_min       -25
+_diffrn_reflns_limit_k_max       17
+_diffrn_reflns_limit_l_min       -14
+_diffrn_reflns_limit_l_max       13
+_diffrn_reflns_theta_min         4.293
+_diffrn_reflns_theta_max         34.214
+_diffrn_reflns_theta_full        34.214
+_diffrn_measured_fraction_theta_max 0.989
+_diffrn_measured_fraction_theta_full 0.989
+_diffrn_reflns_Laue_measured_fraction_max 0.989
+_diffrn_reflns_Laue_measured_fraction_full 0.989
+_diffrn_reflns_point_group_measured_fraction_max 0.989
+_diffrn_reflns_point_group_measured_fraction_full 0.989
+_reflns_number_total             1666
+_reflns_number_gt                1241
+_reflns_threshold_expression     'I > 2\s(I)'
+_reflns_Friedel_coverage         0.000
+_reflns_Friedel_fraction_max     .
+_reflns_Friedel_fraction_full    .
+
+_reflns_special_details          
+;
+ Reflections were merged by SHELXL according to the crystal
+ class for the calculation of statistics and refinement.
+ 
+ Structure factors included contributions from the .fab file.
+ 
+ _reflns_Friedel_fraction is defined as the number of unique
+ Friedel pairs measured divided by the number that would be
+ possible theoretically, ignoring centric projections and
+ systematic absences.
+;
+
+_computing_data_collection       
+'Bruker APEX2 v2009.3-0 (Bruker AXS Inc., 2009)'
+_computing_cell_refinement       'SAINT v8.34A (Bruker, 2013)'
+_computing_data_reduction        'SAINT v8.34A (Bruker, 2013)'
+_computing_structure_solution    'ShelXS (Sheldrick, 2008)'
+_computing_structure_refinement  'SHELXL-2014/7 (Sheldrick, 2014)'
+_computing_molecular_graphics    'DIAMOND (Crystal Impact GbR, 2009'
+_computing_publication_material  
+'PublCIF. Westrip, S. P. (2010). J. Appl. Cryst. 43, 920-925.'
+
+_refine_special_details          
+;A full list of restraints and constraints is contained
+ within the CIF file.
+ An organic ligand molecule is disordered over two positions
+ with an equal occupancies fixed at 0.5.
+ Due to low resolution the geometry of the organic ligand
+ was restrained to be reasonable with a set of DFIX and FLAT
+ commands with standard deviations 0.01 as well as
+ AFIX 66 for benzene rings. 
+ Since it was not possible to use AFIX 43 to add and refine H
+ atoms at the disordered ligand core, a set of DFIX'es was used
+ to put H atoms to the proper positions.
+ Ligand's C atoms was refined anisoisotropically with
+ RIGU 0.001 0.001 restraint.
+ ISOR 0.01 was applied to thermal parameters of O3 atom to
+ avoid them to be non-positive defined.  
+ SADI 0.01 was used to make geometry of the benzene-carboxylate
+ fragments the same for both A and B parts of the disorder.
+ Cl anions refined with occupancy 0.33 at the same place and with the same
+ thermal parameters as O1W molecule.
+ Atoms C1A and C1B of the ligand carboxylate  were refined with the same
+ thermal parameters.
+ Atoms C12A, C13A and C14A of the ligand core were refined with the same
+ thermal parameters.
+ Strongly delocalized electron density was found in voids and
+ ommited from the refinement using the PLATON's SQUEEZE procedure.
+ The pore volume equals to 32306 A^3 (71.2% of the unit cell volume)., SQUEEZE
+;
+
+_refine_ls_structure_factor_coef Fsqd
+_refine_ls_matrix_type           full
+_refine_ls_weighting_scheme      calc
+_refine_ls_weighting_details     
+'w=1/[\s^2^(Fo^2^)+(0.2000P)^2^] where P=(Fo^2^+2Fc^2^)/3'
+_atom_sites_solution_primary     direct
+_atom_sites_solution_secondary   difmap
+_atom_sites_solution_hydrogens   mixed
+_refine_ls_hydrogen_treatment    constr
+_refine_ls_extinction_method     none
+_refine_ls_extinction_coef       .
+_refine_ls_number_reflns         1666
+_refine_ls_number_parameters     223
+_refine_ls_number_restraints     306
+_refine_ls_R_factor_all          0.1619
+_refine_ls_R_factor_gt           0.1418
+_refine_ls_wR_factor_ref         0.4302
+_refine_ls_wR_factor_gt          0.4128
+_refine_ls_goodness_of_fit_ref   1.914
+_refine_ls_restrained_S_all      2.421
+_refine_ls_shift/su_max          0.000
+_refine_ls_shift/su_mean         0.000
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+_atom_site_adp_type
+_atom_site_occupancy
+_atom_site_site_symmetry_order
+_atom_site_calc_flag
+_atom_site_refinement_flags_posn
+_atom_site_refinement_flags_adp
+_atom_site_refinement_flags_occupancy
+_atom_site_disorder_assembly
+_atom_site_disorder_group
+Cr1 Cr 0.21256(6) 0.28744(6) 0.2500 0.078(2) Uani 1 2 d S T P . .
+O1 O 0.2078(2) 0.2887(2) 0.1935(2) 0.101(4) Uani 1 1 d D . . . .
+O2 O 0.2501(2) 0.2503(2) 0.17112(19) 0.102(4) Uani 1 1 d D . . . .
+O3 O 0.2500 0.2500 0.2500 0.061(5) Uani 1 6 d S TU P . .
+O1W O 0.1707(2) 0.3293(2) 0.2500 0.195(5) Uani 0.6667 2 d S T P . .
+Cl1 Cl 0.1707(2) 0.3293(2) 0.2500 0.195(5) Uani 0.3333 2 d S T P . .
+C1A C 0.2191(3) 0.2657(3) 0.1695(3) 0.131(6) Uani 0.5 1 d D U P A 1
+C2A C 0.1993(5) 0.2516(5) 0.1345(4) 0.104(8) Uani 0.5 1 d DG U P A 1
+C3A C 0.1632(5) 0.2653(5) 0.1293(4) 0.101(7) Uani 0.5 1 d DG U P A 1
+H3A H 0.1520 0.2799 0.1478 0.121 Uiso 0.5 1 calc R U P A 1
+C4A C 0.1438(4) 0.2572(6) 0.0966(5) 0.130(9) Uani 0.5 1 d G U P A 1
+H4A H 0.1196 0.2663 0.0931 0.155 Uiso 0.5 1 calc R U P A 1
+C5A C 0.1605(5) 0.2353(6) 0.0689(4) 0.139(7) Uani 0.5 1 d DG U P A 1
+C6A C 0.1966(5) 0.2216(5) 0.0741(4) 0.131(9) Uani 0.5 1 d G U P A 1
+H6A H 0.2077 0.2070 0.0556 0.157 Uiso 0.5 1 calc R U P A 1
+C7A C 0.2160(4) 0.2298(5) 0.1069(5) 0.114(9) Uani 0.5 1 d DG U P A 1
+H7A H 0.2402 0.2206 0.1104 0.137 Uiso 0.5 1 calc R U P A 1
+C8A C 0.1561(4) 0.2314(8) 0.0000 0.166(18) Uani 0.5 2 d DS TU P A 1
+H8A H 0.1817 0.2364 0.0000 0.200 Uiso 0.5 2 calc R U P A 1
+C9A C 0.1372(4) 0.2278(5) 0.0341(3) 0.147(7) Uani 0.5 1 d D U P A 1
+C10A C 0.0989(4) 0.2204(9) 0.0335(3) 0.219(18) Uani 0.5 1 d D U P A 1
+H10A H 0.0860 0.2178 0.0561 0.263 Uiso 0.5 1 calc R U P A 1
+C11A C 0.0793(3) 0.2167(12) 0.0000 0.238(17) Uani 0.5 2 d DS TU P A 1
+C12A C 0.03655(10) 0.2135(6) 0.0000 0.243(17) Uani 0.5 2 d DS TU P A 1
+C13A C 0.01926(10) 0.2240(6) -0.03249(17) 0.243(17) Uani 0.25 1 d D U P A 1
+H13A H 0.0329 0.2308 -0.0536 0.291 Uiso 0.25 1 d DR U P A 1
+C14A C 0.01926(10) 0.2031(6) 0.03253(17) 0.243(17) Uani 0.25 1 d D U P A 1
+H14A H 0.0329 0.1963 0.0537 0.291 Uiso 0.25 1 d DR U P A 1
