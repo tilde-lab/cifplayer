@@ -4,9 +4,9 @@ namespace $.$$ {
 
 		contain: 'none', //otherwise in fullscreen 'fixed' positions plot relative to parent not to the viewport
 
-		'@': {
-			mol_drop_status: {
-				drag: {
+		'[mol_drop_status]': {
+			drag: {
+				Menu: {
 					background: {
 						color: $mol_theme.hover,
 					},
