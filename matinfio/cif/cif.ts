@@ -2,8 +2,13 @@ namespace $ {
 
 	const math = $mpds_cifplayer_lib_math
 
-	const startswith = ( str: string, prefix: string ) => {
-		return str.indexOf( prefix ) === 0
+	if( !String.prototype.startsWith ) {
+		Object.defineProperty( String.prototype, 'startsWith', {
+			value: function( search: string, rawPos: number ) {
+				var pos = rawPos > 0 ? rawPos|0 : 0;
+				return this.substring( pos, pos + search.length ) === search;
+			}
+		});
 	}
 
 	export function $mpds_cifplayer_matinfio_cif_to_obj( this: $, str: string ): $mpds_cifplayer_matinfio_internal_obj {
@@ -26,7 +31,7 @@ namespace $ {
 		let line_data: any[] = []
 		let symmetry_seq = []
 		const cell_props = [ 'a', 'b', 'c', 'alpha', 'beta', 'gamma' ]
-		const loop_vals = [ 
+		const loop_vals = [
 			'_atom_site_label',
 			'_atom_site_type_symbol',
 			'_atom_site_fract_x',
@@ -36,11 +41,11 @@ namespace $ {
 			"_atom_site_Cartn_y",
 			"_atom_site_Cartn_z",
 		]
-		const atom_props = [ 
-			'label', 
-			'symbol', 
-			'x', 
-			'y', 
+		const atom_props = [
+			'label',
+			'symbol',
+			'x',
+			'y',
 			'z',
 			'x',
 			'y',
@@ -55,7 +60,7 @@ namespace $ {
 		}
 
 		for( let i = 0; i < lines.length; i++ ) {
-			if( startswith( lines[ i ], '#' ) ) continue
+			if( lines[ i ].startsWith('#') ) continue
 			cur_line = lines[ i ].trim()
 			if( !cur_line ) {
 				loop_active = false, atprop_seq = [], symops_active = false
@@ -64,14 +69,14 @@ namespace $ {
 			fingerprt = cur_line.toLowerCase()
 			new_structure = false
 
-			if( startswith( fingerprt, 'data_' ) ) {
-				new_structure = true,
-					loop_active = false,
-					atprop_seq = [],
-					symops_active = false,
-					data_info = cur_line.substr( 5 )
+			if( fingerprt.startsWith( 'data_' ) ) {
+				new_structure = true
+				loop_active = false
+				atprop_seq = []
+				symops_active = false
+				data_info = cur_line.substr( 5 )
 
-			} else if( startswith( fingerprt, '_cell_' ) ) {
+			} else if( fingerprt.startsWith( '_cell_' ) ) {
 				loop_active = false
 				line_data = cur_line.split( " " )
 				const cell_data = line_data[ 0 ].split( "_" )
@@ -87,26 +92,26 @@ namespace $ {
 				}
 				continue
 
-			} else if( startswith( fingerprt, '_symmetry_space_group_name_h-m' ) || startswith( fingerprt, '_space_group.patterson_name_h-m' ) ) {
+			} else if( fingerprt.startsWith( '_symmetry_space_group_name_h-m' ) || fingerprt.startsWith( '_space_group.patterson_name_h-m' ) ) {
 				loop_active = false
 				cur_structure.sg_name = lines[ i ].trim().substr( 31 ).replace( /"/g, '' ).replace( /'/g, '' )
 				continue
 
-			} else if( startswith( fingerprt, '_space_group.it_number' ) || startswith( fingerprt, '_space_group_it_number' ) || startswith( fingerprt, '_symmetry_int_tables_number' ) ) {
+			} else if( fingerprt.startsWith( '_space_group.it_number' ) || fingerprt.startsWith( '_space_group_it_number' ) || fingerprt.startsWith( '_symmetry_int_tables_number' ) ) {
 				loop_active = false
 				line_data = cur_line.split( " " )
 				cur_structure.ng_name = line_data[ line_data.length - 1 ].trim()
 				continue
 
-			} else if( startswith( fingerprt, '_cif_error' ) ) { // custom tag
+			} else if( fingerprt.startsWith( '_cif_error' ) ) { // custom tag
 				const error_message = cur_line.substr( 12, cur_line.length - 13 )
 				return this.$mol_fail( new $mol_data_error( error_message ) )
 
-			} else if( startswith( fingerprt, '_pauling_file_entry' ) ) { // custom tag
+			} else if( fingerprt.startsWith( '_pauling_file_entry' ) ) { // custom tag
 				cur_structure.mpds_data = true
 				continue
 
-			} else if( startswith( fingerprt, 'loop_' ) ) {
+			} else if( fingerprt.startsWith( 'loop_' ) ) {
 				loop_active = true
 				atprop_seq = []
 				symops_active = false
@@ -114,9 +119,9 @@ namespace $ {
 			}
 
 			if( loop_active ) {
-				if( startswith( cur_line, '_symmetry_equiv' ) || startswith( cur_line, '_space_group' ) ) {
+				if( cur_line.startsWith( '_symmetry_equiv' ) || cur_line.startsWith( '_space_group' ) ) {
 					symops_active = true
-				} else if( startswith( cur_line, '_' ) ) {
+				} else if( cur_line.startsWith( '_' ) ) {
 					atprop_seq.push( cur_line )
 					if( cur_line == '_atom_site_Cartn_x' ) cur_structure.cartesian = true
 				} else {
@@ -147,9 +152,9 @@ namespace $ {
 							atom.overlays.label = atom.label
 							if( !atom.symbol ) atom.symbol = atom.label.replace( /[0-9]/g, '' )
 						}
-						if( !( $mpds_cifplayer_matinfio_chemical_elements.JmolColors as any )[ atom.symbol ] 
-							&& atom.symbol 
-							&& atom.symbol.length > 1 
+						if( !( $mpds_cifplayer_matinfio_chemical_elements.JmolColors as any )[ atom.symbol ]
+							&& atom.symbol
+							&& atom.symbol.length > 1
 						) {
 							atom.symbol = atom.symbol.substr( 0, atom.symbol.length - 1 )
 						}
@@ -178,8 +183,8 @@ namespace $ {
 		if( symops.length > 1 ) cur_structure.symops = symops
 		structures.push( cur_structure )
 
-		if( !structures.length ) return this.$mol_fail( new $mol_data_error('Error: unexpected CIF format') )
-		
+		if( !structures.length ) return this.$mol_fail( new $mol_data_error( 'Error: unexpected CIF format' ) )
+
 		return structures[ structures.length - 1 ] // TODO switch between frames
 	}
 
@@ -188,9 +193,9 @@ namespace $ {
 	/** Convert internal repr into CIF */
 	export function $mpds_cifplayer_matinfio_cif_from_obj( this: $, crystal: any ) {
 
-		var cif_str = "data_matinfio\n",
-			cell_abc,
-			cell_mat
+		let cif_str = "data_matinfio\n"
+		let cell_abc
+		let cell_mat
 
 		if( Object.keys( crystal.cell ).length == 6 ) {
 			cell_abc = crystal.cell
@@ -222,14 +227,14 @@ namespace $ {
 		if( crystal.cartesian ) {
 
 			//var t_cell_mat = math.transpose(cell_mat);
-			var t_cell_mat = cell_mat
+			const t_cell_mat = cell_mat
 			//console.log(t_cell_mat);
 
 			crystal.atoms.forEach( function( atom: any, i: number ) {
 				//console.log([atom.x, atom.y, atom.z]);
 				// TODO better test lusolve against usolve, lsolve etc.
-				var solved = math.lusolve( t_cell_mat, [ atom.x, atom.y, atom.z ] ),
-					fracs = math.transpose( solved )[ 0 ]
+				let solved = math.lusolve( t_cell_mat, [ atom.x, atom.y, atom.z ] )
+				let fracs = math.transpose( solved )[ 0 ]
 
 				//console.log(fracs);
 				cif_str += " " + atom.symbol + ( i + 1 ) + "  " + atom.symbol + "  "

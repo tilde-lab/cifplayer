@@ -5,6 +5,7 @@ namespace $.$$ {
 
 	export class $mpds_cifplayer_lib_three_view extends $.$mpds_cifplayer_lib_three_view {
 
+		@ $mol_mem
 		start_render_loop() {
 			const render_loop = ()=> {
 				this.rerender()
@@ -14,7 +15,6 @@ namespace $.$$ {
 		}
 
 		/** Get an existing object or create a new */
-		@ $mol_mem_key
 		object< T extends InstanceType< THREE["Object3D"] > >( name: string, make: ()=> T ): T {
 			const old = this.scene()?.getObjectByName( name )
 			if( old ) return old as T
