@@ -71,6 +71,8 @@ $mpds_cifplayer_player $mol_view
 				<= Switch_overlay $mol_switch
 					value? <=> overlay? \S
 					options <= available_overlays *
+						\
+							\display none
 						S \elements
 	colors_light *
 		a \#990000
