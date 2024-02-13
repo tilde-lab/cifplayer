@@ -1,0 +1,40 @@
+{
+	"name": "cifplayer",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Minimalistic and fast web-visualization of CIF, POSCAR, and OPTIMADE chemical structures",
+	"keywords": [
+		"cifplayer",
+		"nanoshow",
+		"MPDS",
+		"crystallography",
+		"spacegroups",
+		"symmetry operations",
+		"periodic translations",
+		"Crystallographic Information File CIF",
+		"VASP POSCAR",
+		"Optimade JSON"
+	],
+	"contributors": [
+	{
+		"name": "Stanislav Yaremenko",
+		"email": "contact@structpad.com",
+		"url": "https://github.com/stan-donarise"
+	},
+	{
+		"name": "Pavel Zubkov",
+		"url": "https://github.com/PavelZubkov"
+	},
+	{
+		"name": "Dmitriy Karlovsky",
+		"email": "jin@hyoo.ru",
+		"url": "https://jin.hyoo.ru"
+	}
+	],
+	"author": {
+		"name": "Evgeny Blokhin",
+		"email": "eb@tilde.pro",
+		"url": "https://orcid.org/0000-0002-5333-3947"
+	},
+	"license": "MIT"
+}
