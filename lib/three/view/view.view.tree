@@ -1,0 +1,12 @@
+$mpds_cifplayer_lib_three_view $mol_view
+	sub /
+		<= canvas null
+	scene null
+	camera null
+	controls null
+	controls_target null
+	on_render null
+	auto /
+		<= controls_target_changed null
+		<= resize null
+		<= start_render_loop null
