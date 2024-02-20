@@ -6,6 +6,8 @@ $mpds_cifplayer_lib_three_view $mol_view
 	controls null
 	controls_target null
 	on_render null
+	new_object*? null
+	object*? null
 	auto /
 		<= controls_target_changed null
 		<= resize null
