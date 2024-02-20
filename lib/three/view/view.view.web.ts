@@ -19,7 +19,7 @@ namespace $.$$ {
 			const old = this.scene()?.getObjectByName( name )
 			if( old ) return old as T
 
-			const obj: any = make()
+			const obj = make()
 			obj.name = name
 			this.scene().add( obj )
 
@@ -34,7 +34,7 @@ namespace $.$$ {
 				this.scene()?.remove( old )
 			}
 
-			const obj: any = make()
+			const obj = make()
 			obj.name = name
 			this.scene().add( obj )
 
