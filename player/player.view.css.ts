@@ -99,6 +99,17 @@ namespace $.$$ {
 			height: '2rem',
 		},
 
+		Message: {
+			background: {
+				color: $mol_theme.back,
+			},
+			position: 'absolute',
+			zIndex: 1,
+			top: '6rem',
+			left: '50%',
+			transform: 'translateX(-50%)',
+		},
+
 	} )
 
 }

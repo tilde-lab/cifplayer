@@ -74,6 +74,10 @@ $mpds_cifplayer_player $mol_view
 						\
 							\display none
 						S \elements
+		^ message_visible / <= Message $mol_view
+			sub /
+				<= Message_card $mol_card
+					title <= message? \
 	colors_light *
 		a \#990000
 		b \#009900

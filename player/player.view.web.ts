@@ -9,12 +9,6 @@ namespace $.$$ {
 	export class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
 
 		@ $mol_mem
-		render(): void {
-			this.structure_3d_data() //for bubbling errors into view
-			super.render()
-		}
-
-		@ $mol_mem
 		available_overlays() {
 			return {
 				...super.available_overlays(),
@@ -92,8 +86,26 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
+		message_visible() {
+			return this.message() ? super.message_visible() : []
+		}
+
+		@ $mol_mem
 		structure_3d_data() {
-			return new $mpds_cifplayer_matinfio( this.data() ).player()
+			try {
+
+				this.message( '' )
+				
+				return new $mpds_cifplayer_matinfio( this.data() ).player()
+
+			} catch ( error: any ) {
+
+				const message = error.message || error
+				this.message( message )
+
+				return {} as ReturnType< $mpds_cifplayer_matinfio['player'] >
+
+			}
 		}
 
 		@ $mol_mem_key
@@ -444,7 +456,6 @@ namespace $.$$ {
 
 		@ $mol_mem
 		left_panel(): readonly any[] {
-			console.log('this.structure_3d_data()', this.structure_3d_data())
 			return this.structure_3d_data().cell_matrix ? super.left_panel() : []
 		}
 
