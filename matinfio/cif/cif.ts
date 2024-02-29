@@ -83,9 +83,14 @@ namespace $ {
 				}
 				continue
 
-			} else if( fingerprt.startsWith( '_symmetry_space_group_name_h-m' ) || fingerprt.startsWith( '_space_group.patterson_name_h-m' ) ) {
+			} else if( 
+				fingerprt.startsWith( '_symmetry_space_group_name_h-m' ) 
+				|| fingerprt.startsWith( '_space_group.patterson_name_h-m' )
+				|| fingerprt.startsWith( '_space_group_name_h-m_alt' )
+			) {
 				loop_active = false
-				cur_structure.sg_name = lines[ i ].trim().substr( 31 ).replace( /"/g, '' ).replace( /'/g, '' )
+				const match = cur_line.match( /"(.*)"|'(.*)'/ )
+				cur_structure.sg_name = match?.[1] || match?.[2]
 				continue
 
 			} else if( fingerprt.startsWith( '_space_group.it_number' ) || fingerprt.startsWith( '_space_group_it_number' ) || fingerprt.startsWith( '_symmetry_int_tables_number' ) ) {

@@ -8,10 +8,10 @@ namespace $ {
 			super()
 		}
 
-		@ $mol_mem_key
-		static by_name_and_num( name: string, num: number ) {
-			const spacegroup = $mpds_cifplayer_matinfio_spacegroup.by_num( num )
-				?? $mpds_cifplayer_matinfio_spacegroup.by_name( name )
+		static by_name_or_num( name: string, num: number ) {
+			const spacegroup = num
+				? $mpds_cifplayer_matinfio_spacegroup.by_num( num )
+				: name ? $mpds_cifplayer_matinfio_spacegroup.by_name( name ) : null
 			return spacegroup ? spacegroup : $mpds_cifplayer_matinfio_spacegroup.unknown()
 		}
 
