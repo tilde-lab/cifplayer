@@ -153,7 +153,7 @@ namespace $.$$ {
 		spacegroup() {
 			const { sg_name, ng_name } = this.structure_3d_data()
 
-			return $mpds_cifplayer_matinfio_spacegroup.by_name_and_num( sg_name, ng_name )
+			return $mpds_cifplayer_matinfio_spacegroup.by_name_or_num( sg_name, ng_name )
 		}
 
 		@ $mol_mem
