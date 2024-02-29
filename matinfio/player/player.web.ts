@@ -15,6 +15,16 @@ namespace $ {
 
 		} else {
 			cell_matrix = crystal.cell_matrix // for POSCAR and OPTIMADE
+
+			const params = $mpds_cifplayer_matinfio_cell_params_from_matrix( cell_matrix! )
+			descr = {
+				'a': params[0],
+				'b': params[1],
+				'c': params[2],
+				'alpha': params[3],
+				'beta': params[4],
+				'gamma': params[5],
+			}
 		}
 
 		if( !crystal.atoms.length ) this.$mpds_cifplayer_matinfio_log.warning( "Note: no atomic coordinates supplied" )
