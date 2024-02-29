@@ -1,0 +1,7 @@
+[mpds_cifplayer_player][mol_view_error]:not([mol_view_error="Promise"]) {
+	color: var(--mol_theme_text);
+    background-image: none;
+	padding-top: 6rem;
+    align-items: flex-start;
+    justify-content: center;
+}
