@@ -10,8 +10,8 @@ namespace $.$$ {
 
 		@ $mol_mem
 		render(): void {
-			super.render()
 			this.structure_3d_data() //for bubbling errors into view
+			super.render()
 		}
 
 		@ $mol_mem
