@@ -70,14 +70,15 @@ $mpds_cifplayer_player $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch
 					value? <=> overlay? \S
-					options <= available_overlays *
+					options <= available_overlays *string
 						\
 							\display none
 						S \elements
 		^ message_visible / <= Message $mol_view
 			sub /
 				<= Message_card $mol_card
-					title <= message? \
+					theme \$mol_theme_special
+					title <= message \
 	colors_light *
 		a \#990000
 		b \#009900
