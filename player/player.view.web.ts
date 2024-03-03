@@ -10,6 +10,12 @@ namespace $.$$ {
 
 		@ $mol_mem
 		available_overlays() {
+			try {
+				this.structure_3d_data()
+			} catch (error) {
+				return {}
+			}
+
 			return {
 				...super.available_overlays(),
 				...this.structure_3d_data().overlayed
@@ -91,21 +97,19 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		structure_3d_data() {
+		message(): string {
 			try {
-
-				this.message( '' )
+				this.structure_3d_data()
+				return ''
 				
-				return new $mpds_cifplayer_matinfio( this.data() ).player()
-
 			} catch ( error: any ) {
-
-				const message = error.message || error
-				this.message( message )
-
-				return {} as ReturnType< $mpds_cifplayer_matinfio['player'] >
-
+				return error.message || error
 			}
+		}
+
+		@ $mol_mem
+		structure_3d_data() {
+			return new $mpds_cifplayer_matinfio( this.data() ).player()
 		}
 
 		@ $mol_mem_key
@@ -456,6 +460,12 @@ namespace $.$$ {
 
 		@ $mol_mem
 		left_panel(): readonly any[] {
+			try {
+				this.structure_3d_data()
+			} catch (error) {
+				return []
+			}
+
 			return this.structure_3d_data().cell_matrix ? super.left_panel() : []
 		}
 
