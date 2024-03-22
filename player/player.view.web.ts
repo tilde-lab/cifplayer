@@ -9,13 +9,13 @@ namespace $.$$ {
 	export class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
 
 		@ $mol_mem
-		render(): void {
-			super.render()
-			this.structure_3d_data() //for bubbling errors into view
-		}
-
-		@ $mol_mem
 		available_overlays() {
+			try {
+				this.structure_3d_data()
+			} catch (error) {
+				return {}
+			}
+
 			return {
 				...super.available_overlays(),
 				...this.structure_3d_data().overlayed
@@ -92,6 +92,22 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
+		message_visible() {
+			return this.message() ? super.message_visible() : []
+		}
+
+		@ $mol_mem
+		message(): string {
+			try {
+				this.structure_3d_data()
+				return ''
+				
+			} catch ( error: any ) {
+				return error.message || error
+			}
+		}
+
+		@ $mol_mem
 		structure_3d_data() {
 			return new $mpds_cifplayer_matinfio( this.data() ).player()
 		}
@@ -153,7 +169,7 @@ namespace $.$$ {
 		spacegroup() {
 			const { sg_name, ng_name } = this.structure_3d_data()
 
-			return $mpds_cifplayer_matinfio_spacegroup.by_name_and_num( sg_name, ng_name )
+			return $mpds_cifplayer_matinfio_spacegroup.by_name_or_num( sg_name, ng_name )
 		}
 
 		@ $mol_mem
@@ -444,7 +460,12 @@ namespace $.$$ {
 
 		@ $mol_mem
 		left_panel(): readonly any[] {
-			console.log('this.structure_3d_data()', this.structure_3d_data())
+			try {
+				this.structure_3d_data()
+			} catch (error) {
+				return []
+			}
+
 			return this.structure_3d_data().cell_matrix ? super.left_panel() : []
 		}
 

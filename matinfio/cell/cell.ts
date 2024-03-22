@@ -34,12 +34,9 @@ namespace $ {
 	}
 
 	/** 3x3 matrix to crystalline cell parameters */
-	export function $mpds_cifplayer_matinfio_cell_params_from_matrix( matrix: number[] ) {
-		const norms: number[] = []
+	export function $mpds_cifplayer_matinfio_cell_params_from_matrix( matrix: number[][] ) {
+		const norms: number[] = matrix.map( vec => math.norm( vec ) )
 		const angles = []
-		matrix.forEach( function( vec ) {
-			norms.push( math.norm( vec ) )
-		} )
 		let j = -1
 		let k = -2
 		for( let i = 0; i < 3; i++ ) {

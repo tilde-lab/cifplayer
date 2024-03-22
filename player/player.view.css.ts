@@ -99,6 +99,21 @@ namespace $.$$ {
 			height: '2rem',
 		},
 
+		Message: {
+			position: 'absolute',
+			zIndex: 1,
+			top: '6rem',
+			left: 0,
+			right: 0,
+		},
+
+		Message_card: {
+			background: {
+				color: $mol_theme.back,
+			},
+			margin: 'auto',
+		},
+
 	} )
 
 }
