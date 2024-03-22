@@ -780,16 +780,13 @@ var $;
                         result = this.task.call(this.host, ...this.args);
                         break;
                 }
-                if ($mol_promise_like(result)) {
+                if ($mol_promise_like(result) && !handled.has(result)) {
                     const put = (res) => {
                         if (this.cache === result)
                             this.put(res);
                         return res;
                     };
-                    result = Object.assign(result.then(put, put), {
-                        destructor: result['destructor'] ?? (() => { })
-                    });
-                    handled.add(result);
+                    result = result.then(put, put);
                 }
             }
             catch (error) {
@@ -800,14 +797,19 @@ var $;
                     result = new Error(String(error), { cause: error });
                 }
                 if ($mol_promise_like(result) && !handled.has(result)) {
-                    result = Object.assign(result.finally(() => {
+                    result = result.finally(() => {
                         if (this.cache === result)
                             this.absorb();
-                    }), {
-                        destructor: result['destructor'] ?? (() => { })
                     });
-                    handled.add(result);
                 }
+            }
+            if ($mol_promise_like(result) && !handled.has(result)) {
+                result = Object.assign(result, {
+                    destructor: result['destructor'] ?? (() => { })
+                });
+                handled.add(result);
+                const error = new Error(`Promise in ${this}`);
+                Object.defineProperty(result, 'stack', { get: () => error.stack });
             }
             if (!$mol_promise_like(result)) {
                 this.track_cut();
@@ -2062,10 +2064,10 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_style_prop(prefix, postfixes) {
-        const record = postfixes.reduce((record_obj, postfix) => {
-            record_obj[postfix] = $mol_style_func.vary(`--${prefix}_${postfix}`);
-            return record_obj;
+    function $mol_style_prop(prefix, keys) {
+        const record = keys.reduce((rec, key) => {
+            rec[key] = $mol_style_func.vary(`--${prefix}_${key}`);
+            return rec;
         }, {});
         return record;
     }
@@ -2847,7 +2849,10 @@ var $;
                 shrink: 1,
             },
             outline: 'none',
-            alignSelf: 'stretch',
+            align: {
+                self: 'stretch',
+                items: 'flex-start',
+            },
             boxSizing: 'border-box',
             willChange: 'scroll-position',
             scroll: {
@@ -3738,9 +3743,13 @@ var $;
                 return exists;
             if (next === exists)
                 return exists;
-            if (next)
+            if (next) {
                 this.parent().exists(true);
-            this.ensure();
+                this.ensure();
+            }
+            else {
+                this.drop();
+            }
             this.reset();
             return next;
         }
@@ -3797,6 +3806,12 @@ var $;
                 case 'file': return this.stat()?.size ?? 0;
                 default: return 0;
             }
+        }
+        open(...modes) {
+            return 0;
+        }
+        toJSON() {
+            return this.path();
         }
     }
     __decorate([
@@ -4036,6 +4051,9 @@ var $;
         }
         ensure() {
             throw new Error('$mol_file_web.ensure() not implemented');
+        }
+        drop() {
+            throw new Error('$mol_file_web.drop() not implemented');
         }
         sub() {
             throw new Error('$mol_file_web.sub() not implemented');
@@ -4732,7 +4750,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n\tuser-select: none;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_button]:where(:not(:disabled)):hover {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_button]:focus-visible {\n\toutline: none;\n\tz-index: var(--mol_layer_focus);\n}\n");
+    $mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n\tuser-select: none;\n\tborder-radius: var(--mol_gap_round);\n\tbackground: transparent;\n\tcolor: inherit;\n}\n\n[mol_button]:where(:not(:disabled)):hover {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_button]:focus-visible {\n\toutline: none;\n\tz-index: var(--mol_layer_focus);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -4819,8 +4837,7 @@ var $;
 (function ($) {
     let cache = null;
     function $mol_support_css_overflow_anchor() {
-        return cache ?? (cache = (!/Gecko\//.test(navigator.userAgent)
-            && this.$mol_dom_context.CSS?.supports('overflow-anchor:auto')) ?? false);
+        return cache ?? (cache = this.$mol_dom_context.CSS?.supports('overflow-anchor:auto') ?? false);
     }
     $.$mol_support_css_overflow_anchor = $mol_support_css_overflow_anchor;
 })($ || ($ = {}));
@@ -4882,21 +4899,21 @@ var $;
                 }
                 let top2 = top;
                 let bottom2 = bottom;
-                if (anchoring && (top <= limit_top) && (bottom2 < limit_bottom)) {
-                    min2 = Math.max(0, max - 1);
+                if (anchoring && (top < limit_top) && (bottom < limit_bottom) && (max < kids.length)) {
+                    min2 = max;
                     top2 = bottom;
                 }
-                if ((bottom >= limit_bottom) && (top2 >= limit_top)) {
-                    max2 = Math.min(min + 1, kids.length);
+                if ((bottom > limit_bottom) && (top > limit_top) && (min > 0)) {
+                    max2 = min;
                     bottom2 = top;
+                }
+                while (anchoring && ((top2 > limit_top) && (min2 > 0))) {
+                    --min2;
+                    top2 -= kids[min2].minimal_height();
                 }
                 while (bottom2 < limit_bottom && max2 < kids.length) {
                     bottom2 += kids[max2].minimal_height();
                     ++max2;
-                }
-                while (anchoring && ((top2 >= limit_top) && (min2 > 0))) {
-                    --min2;
-                    top2 -= kids[min2].minimal_height();
                 }
                 return [min2, max2];
             }
@@ -6190,6 +6207,9 @@ var $;
 		Menu_tools(){
 			return (this.Menu().Tools());
 		}
+		Menu_logo(){
+			return null;
+		}
 		menu_head(){
 			return [(this.Menu_title()), (this.Menu_tools())];
 		}
@@ -6240,6 +6260,7 @@ var $;
 		Menu(){
 			const obj = new this.$.$mol_page();
 			(obj.title) = () => ((this.menu_title()));
+			(obj.Logo) = () => ((this.Menu_logo()));
 			(obj.tools) = () => ([...(this.menu_tools()), ...(this.addon_tools())]);
 			(obj.head) = () => ((this.menu_head()));
 			(obj.body) = () => ((this.menu_body()));
@@ -8644,6 +8665,67 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_card) = class $mol_card extends ($.$mol_list) {
+		status(){
+			return "";
+		}
+		content(){
+			return [(this.title())];
+		}
+		Content(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.content()));
+			return obj;
+		}
+		status_text(){
+			return (this.status());
+		}
+		Status(){
+			const obj = new this.$.$mol_view();
+			(obj.minimal_height) = () => (30);
+			(obj.sub) = () => ([(this.status_text())]);
+			return obj;
+		}
+		attr(){
+			return {...(super.attr()), "mol_card_status_type": (this.status())};
+		}
+		rows(){
+			return [(this.Content()), (this.Status())];
+		}
+	};
+	($mol_mem(($.$mol_card.prototype), "Content"));
+	($mol_mem(($.$mol_card.prototype), "Status"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_card extends $.$mol_card {
+            rows() {
+                return [
+                    this.Content(),
+                    ...this.status_text() ? [this.Status()] : [],
+                ];
+            }
+        }
+        $$.$mol_card = $mol_card;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/card/card.view.css", "[mol_card] {\n\tbackground: var(--mol_theme_card);\n\tcolor: var(--mol_theme_text);\n\tborder-radius: var(--mol_gap_round);\n\tdisplay: flex;\n\tflex: 0 1 auto;\n\tflex-direction: column;\n\tposition: relative;\n\tbox-shadow: 0 0 0.5rem 0rem hsla(0,0%,0%,.125);\n\t/* overflow: hidden; */\n}\n\n[mol_card_content] {\n\tflex: 1 1 auto;\n\tborder-radius: var(--mol_gap_round);\n\tmargin: 0;\n\tpadding: var(--mol_gap_block);\n}\n\n[mol_card_status] {\n\tbackground: var(--mol_theme_line);\n\ttext-transform: capitalize;\n\tpadding: var(--mol_gap_text);\n\tmargin: 0;\n}\n\n[mol_card_status] {\n\tbackground: var(--mol_theme_line);\n}\n");
+})($ || ($ = {}));
+
+;
 	($.$mpds_cifplayer_player) = class $mpds_cifplayer_player extends ($.$mol_view) {
 		dir_light(){
 			return null;
@@ -8901,6 +8983,23 @@ var $;
 			(obj.sub) = () => ((this.overlays_sub()));
 			return obj;
 		}
+		message(){
+			return "";
+		}
+		Message_card(){
+			const obj = new this.$.$mol_card();
+			(obj.theme) = () => ("$mol_theme_special");
+			(obj.title) = () => ((this.message()));
+			return obj;
+		}
+		Message(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Message_card())]);
+			return obj;
+		}
+		message_visible(){
+			return [(this.Message())];
+		}
 		color_a(){
 			return "";
 		}
@@ -8943,7 +9042,8 @@ var $;
 				(this.Three()), 
 				(this.Left_panel()), 
 				(this.Tools()), 
-				(this.Overlays())
+				(this.Overlays()), 
+				...(this.message_visible())
 			];
 		}
 		colors_light(){
@@ -9016,6 +9116,8 @@ var $;
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "overlay"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Switch_overlay"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Overlays"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message_card"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "data"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "vibrate"));
 
@@ -9042,28 +9144,20 @@ var $;
 var $;
 (function ($) {
     class $mol_error_mix extends AggregateError {
-        name = $$.$mol_func_name(this.constructor);
-        constructor(message, ...errors) {
-            super(errors, [message, ...errors.map(e => e.message.replace(/^/gm, '  '))].join('\n'));
+        cause;
+        name = $$.$mol_func_name(this.constructor).replace(/^\$/, '') + '_Error';
+        constructor(message, cause = {}, ...errors) {
+            super(errors, message, { cause });
+            this.cause = cause;
+            const stack_get = Object.getOwnPropertyDescriptor(this, 'stack')?.get ?? (() => super.stack);
+            Object.defineProperty(this, 'stack', {
+                get: () => (stack_get.call(this) ?? this.message) + '\n' + [JSON.stringify(this.cause, null, '  ') ?? 'no cause', ...this.errors.map(e => e.stack)].map(e => e.trim()
+                    .replace(/at /gm, '   at ')
+                    .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
+            });
         }
-        get cause() {
-            return [].concat(...this.errors.map(e => e.cause).filter(Boolean));
-        }
-        toJSON() {
-            return this.errors.map(e => e.message);
-        }
-        pick(Class) {
-            if (this instanceof Class)
-                return this;
-            for (const e of this.errors) {
-                if (e instanceof Class)
-                    return e;
-            }
-            for (const e of this.cause) {
-                if (e && e instanceof Class)
-                    return e;
-            }
-            return null;
+        static make(...params) {
+            return new this(...params);
         }
     }
     $.$mol_error_mix = $mol_error_mix;
@@ -9074,7 +9168,6 @@ var $;
 var $;
 (function ($) {
     class $mol_data_error extends $mol_error_mix {
-        name = '$mol_data_error';
     }
     $.$mol_data_error = $mol_data_error;
 })($ || ($ = {}));
@@ -9227,9 +9320,10 @@ var $;
             super();
             this.data = data;
         }
-        static by_name_and_num(name, num) {
-            const spacegroup = $mpds_cifplayer_matinfio_spacegroup.by_num(num)
-                ?? $mpds_cifplayer_matinfio_spacegroup.by_name(name);
+        static by_name_or_num(name, num) {
+            const spacegroup = num
+                ? $mpds_cifplayer_matinfio_spacegroup.by_num(num)
+                : name ? $mpds_cifplayer_matinfio_spacegroup.by_name(name) : null;
             return spacegroup ? spacegroup : $mpds_cifplayer_matinfio_spacegroup.unknown();
         }
         static by_name(name) {
@@ -9267,9 +9361,6 @@ var $;
     __decorate([
         $mol_mem_key
     ], $mpds_cifplayer_matinfio_spacegroup.prototype, "symmetric_atoms", null);
-    __decorate([
-        $mol_mem_key
-    ], $mpds_cifplayer_matinfio_spacegroup, "by_name_and_num", null);
     __decorate([
         $mol_mem_key
     ], $mpds_cifplayer_matinfio_spacegroup, "by_name", null);
@@ -9388,11 +9479,8 @@ var $;
     }
     $.$mpds_cifplayer_matinfio_cell_to_matrix = $mpds_cifplayer_matinfio_cell_to_matrix;
     function $mpds_cifplayer_matinfio_cell_params_from_matrix(matrix) {
-        const norms = [];
+        const norms = matrix.map(vec => math.norm(vec));
         const angles = [];
-        matrix.forEach(function (vec) {
-            norms.push(math.norm(vec));
-        });
         let j = -1;
         let k = -2;
         for (let i = 0; i < 3; i++) {
@@ -9492,9 +9580,12 @@ var $;
                 }
                 continue;
             }
-            else if (fingerprt.startsWith('_symmetry_space_group_name_h-m') || fingerprt.startsWith('_space_group.patterson_name_h-m')) {
+            else if (fingerprt.startsWith('_symmetry_space_group_name_h-m')
+                || fingerprt.startsWith('_space_group.patterson_name_h-m')
+                || fingerprt.startsWith('_space_group_name_h-m_alt')) {
                 loop_active = false;
-                cur_structure.sg_name = lines[i].trim().substr(31).replace(/"/g, '').replace(/'/g, '');
+                const match = cur_line.match(/"(.*)"|'(.*)'/);
+                cur_structure.sg_name = match?.[1] || match?.[2];
                 continue;
             }
             else if (fingerprt.startsWith('_space_group.it_number') || fingerprt.startsWith('_space_group_it_number') || fingerprt.startsWith('_symmetry_int_tables_number')) {
@@ -9826,6 +9917,15 @@ var $;
         }
         else {
             cell_matrix = crystal.cell_matrix;
+            const params = $mpds_cifplayer_matinfio_cell_params_from_matrix(cell_matrix);
+            descr = {
+                'a': params[0],
+                'b': params[1],
+                'c': params[2],
+                'alpha': params[3],
+                'beta': params[4],
+                'gamma': params[5],
+            };
         }
         if (!crystal.atoms.length)
             this.$mpds_cifplayer_matinfio_log.warning("Note: no atomic coordinates supplied");
@@ -10038,6 +10138,19 @@ var $;
                 width: '2rem',
                 height: '2rem',
             },
+            Message: {
+                position: 'absolute',
+                zIndex: 1,
+                top: '6rem',
+                left: 0,
+                right: 0,
+            },
+            Message_card: {
+                background: {
+                    color: $mol_theme.back,
+                },
+                margin: 'auto',
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -10051,11 +10164,13 @@ var $;
         const THREE = $mpds_cifplayer_lib_three;
         const TWEEN = $mpds_cifplayer_lib_tween.TWEEN;
         class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
-            render() {
-                super.render();
-                this.structure_3d_data();
-            }
             available_overlays() {
+                try {
+                    this.structure_3d_data();
+                }
+                catch (error) {
+                    return {};
+                }
                 return {
                     ...super.available_overlays(),
                     ...this.structure_3d_data().overlayed
@@ -10104,6 +10219,18 @@ var $;
             zoom_down() {
                 this.camera().position.add(this.camera_distance().multiplyScalar(this.zoom_scale_step()));
             }
+            message_visible() {
+                return this.message() ? super.message_visible() : [];
+            }
+            message() {
+                try {
+                    this.structure_3d_data();
+                    return '';
+                }
+                catch (error) {
+                    return error.message || error;
+                }
+            }
             structure_3d_data() {
                 return new $mpds_cifplayer_matinfio(this.data()).player();
             }
@@ -10146,7 +10273,7 @@ var $;
             }
             spacegroup() {
                 const { sg_name, ng_name } = this.structure_3d_data();
-                return $mpds_cifplayer_matinfio_spacegroup.by_name_and_num(sg_name, ng_name);
+                return $mpds_cifplayer_matinfio_spacegroup.by_name_or_num(sg_name, ng_name);
             }
             sym_checks() {
                 return this.spacegroup().symmetry_list().map(name => this.Sym_check(name));
@@ -10331,13 +10458,15 @@ var $;
                 return;
             }
             left_panel() {
-                console.log('this.structure_3d_data()', this.structure_3d_data());
+                try {
+                    this.structure_3d_data();
+                }
+                catch (error) {
+                    return [];
+                }
                 return this.structure_3d_data().cell_matrix ? super.left_panel() : [];
             }
         }
-        __decorate([
-            $mol_mem
-        ], $mpds_cifplayer_player.prototype, "render", null);
         __decorate([
             $mol_mem
         ], $mpds_cifplayer_player.prototype, "available_overlays", null);
@@ -10380,6 +10509,12 @@ var $;
         __decorate([
             $mol_action
         ], $mpds_cifplayer_player.prototype, "zoom_down", null);
+        __decorate([
+            $mol_mem
+        ], $mpds_cifplayer_player.prototype, "message_visible", null);
+        __decorate([
+            $mol_mem
+        ], $mpds_cifplayer_player.prototype, "message", null);
         __decorate([
             $mol_mem
         ], $mpds_cifplayer_player.prototype, "structure_3d_data", null);

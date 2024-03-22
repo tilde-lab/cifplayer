@@ -299,6 +299,7 @@ $mol_book2_catalog $mol_book2
 			Title => Menu_title
 			title <= menu_title \
 			Tools => Menu_tools
+			Logo <= Menu_logo null
 			tools /
 				^ menu_tools
 				^ addon_tools
@@ -617,6 +618,19 @@ $mol_check_list $mol_view
 $mol_switch $mol_check_list
 	value? \
 
+$mol_card $mol_list
+	attr *
+		^
+		mol_card_status_type <= status \
+	rows /$mol_view
+		<= Content $mol_view
+			sub <= content /$mol_view_content
+				<= title
+		<= Status $mol_view
+			minimal_height 30
+			sub /
+				<= status_text <= status \
+
 $mpds_cifplayer_player $mol_view
 	data? null
 	atom_radius_scale 0.6
@@ -689,10 +703,15 @@ $mpds_cifplayer_player $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch
 					value? <=> overlay? \S
-					options <= available_overlays *
+					options <= available_overlays *string
 						\
 							\display none
 						S \elements
+		^ message_visible / <= Message $mol_view
+			sub /
+				<= Message_card $mol_card
+					theme \$mol_theme_special
+					title <= message \
 	colors_light *
 		a \#990000
 		b \#009900
