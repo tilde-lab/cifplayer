@@ -1,6 +1,5 @@
 {
 	"name": "cifplayer",
-	"version": "1.0.0",
 	"private": true,
 	"description": "Minimalistic and fast web-visualization of CIF, POSCAR, and OPTIMADE chemical structures",
 	"keywords": [
