@@ -63,6 +63,8 @@ namespace $ {
 
 		/** Guessing what to do */
 		static detect_format( data: any ) {
+			
+			if( !data ) throw new Error("Crystal data is empty");
 
 			if( typeof data === 'object' ) return 'OPTIMADE'
 
