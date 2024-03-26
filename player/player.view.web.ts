@@ -471,6 +471,8 @@ namespace $.$$ {
 
 	}
 
+	$mol_view_component( $mpds_cifplayer_player )
+
 	function is_overlap( check: $mpds_cifplayer_matinfio_internal_obj_atom, atoms: $mpds_cifplayer_matinfio_internal_obj_atom[], delta: number ) {
 		for (const atom of atoms) {
 			if ( check.x < atom.x - delta || check.x > atom.x + delta ) continue
