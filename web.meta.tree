@@ -11,6 +11,7 @@
 	pack yuf git \https://github.com/zerkalica/yuf.git
 \/mpds
 	pack visavis git \https://github.com/mpds-io/visavis
+	pack cifplayer git \https://github.com/tilde-lab/cifplayer
 \/mol
 	pack icon git \https://github.com/nin-jin/mol_icon.git
 \/mol/view
