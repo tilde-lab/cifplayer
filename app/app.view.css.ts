@@ -2,7 +2,7 @@ namespace $.$$ {
 
 	$mol_style_define( $mpds_cifplayer_app, {
 
-		contain: 'none', //otherwise in fullscreen 'fixed' positions plot relative to parent not to the viewport
+		contain: 'none', // otherwise in fullscreen 'fixed' positions plot relative to parent is not in the viewport
 
 		'[mol_drop_status]': {
 			drag: {

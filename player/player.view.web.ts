@@ -101,7 +101,7 @@ namespace $.$$ {
 			try {
 				this.structure_3d_data()
 				return ''
-				
+
 			} catch ( error: any ) {
 				return error.message || error
 			}
@@ -115,7 +115,7 @@ namespace $.$$ {
 		@ $mol_mem_key
 		text_canvas( text: string ) {
 			const canvas = document.createElement( 'canvas' )
-			
+
 			const context = canvas.getContext( '2d' )!
 
 			const metrics = context.measureText( text )
@@ -127,7 +127,7 @@ namespace $.$$ {
 			context.textBaseline = "middle"
 			context.fillStyle = this.$.$mol_lights() ? "#000" : "#fff"
 			context.fillText( text, canvas.width / 2, canvas.height / 2 )
-			
+
 			return canvas
 		}
 
@@ -164,7 +164,7 @@ namespace $.$$ {
 
 			return this.centered() ? cell_center.clone() : new THREE.Vector3()
 		}
-		
+
 		@ $mol_mem
 		spacegroup() {
 			const { sg_name, ng_name } = this.structure_3d_data()
@@ -219,7 +219,7 @@ namespace $.$$ {
 			if( !cell_matrix ) return
 
 			return structure.atoms.map(
-				( data: any ) => this.spacegroup().symmetric_atom( symmetry, data, cell_matrix ) 
+				( data: any ) => this.spacegroup().symmetric_atom( symmetry, data, cell_matrix )
 			)
 		}
 
@@ -228,7 +228,7 @@ namespace $.$$ {
 			const structure = this.structure_3d_data()
 
 			if( !structure.cell_matrix ) return structure.atoms
-			
+
 			const atoms: $mpds_cifplayer_matinfio_internal_obj_atom[] = []
 
 			const symmetries_enabled = this.spacegroup().symmetry_list().filter( name => this.symmetry_visible( name ) )
@@ -246,7 +246,7 @@ namespace $.$$ {
 							return
 						}
 					}
-	
+
 					atoms.push( data )
 				} )
 
@@ -282,7 +282,7 @@ namespace $.$$ {
 			this.overlay_box().children.forEach( ( label: InstanceType< THREE["Object3D"] >, i: number ) => {
 
 				label.children.forEach( ( sprite: InstanceType< THREE["Object3D"] > ) => label.remove( sprite ) )
-				
+
 				if( overlay ) {
 					const sprite = this.create_sprite( String( atom_datas[ i ].overlays[ overlay ] ) )
 					label.add( sprite )
@@ -345,7 +345,7 @@ namespace $.$$ {
 
 			const origin = new THREE.Vector3( 0, 0, 0 )
 
-			const arrows = axis.map( ( axis, i ) => 
+			const arrows = axis.map( ( axis, i ) =>
 				new THREE.ArrowHelper(
 					axis.clone().normalize(),
 					origin,
@@ -396,14 +396,14 @@ namespace $.$$ {
 			add_line( bc, b )
 			add_line( bc, c )
 			add_line( bc, abc )
-			
+
 			const cell_center = this.cell_center()
 			if( this.centered() && cell_center ) {
 				const axes_helper = new THREE.AxesHelper( 2 )
 				axes_helper.position.fromArray( cell_center.toArray() )
 				cell_box.add( axes_helper )
 			}
-			
+
 			return cell_box
 		}
 
@@ -426,12 +426,12 @@ namespace $.$$ {
 			atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
 				const start = atom.position.toArray()
 				const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * 6 )
-				
+
 				this.tweens.add( new TWEEN.Tween( atom.position ).to( { x, y, z }, 750 )
-					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start() 
+					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
 				)
 				this.tweens.add( new TWEEN.Tween( labels[ i ].position ).to( { x, y, z }, 750 )
-					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start() 
+					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
 				)
 			} )
 		}

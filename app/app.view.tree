@@ -7,10 +7,11 @@ $mpds_cifplayer_app $mol_drop
 		Placeholder null
 	pages /
 		<= Menu $mol_page
-			title \3d-crystals web-viewer
+			title \Crystal structure web-viewer
 			tools /
-				<= Source $mol_link_source
+				<= Source $mol_link_iconed
 					uri \https://github.com/tilde-lab/cifplayer
+					title \
 				<= Lights $mol_lights_toggle
 			body <= menu_body /
 				<= Upload $mol_button_open
@@ -22,7 +23,7 @@ $mpds_cifplayer_app $mol_drop
 						\Choose file
 				<= Data_text $mol_textarea
 					value? <=> data_str?
-					hint \Paste here...
+					hint \or paste here...
 		<= Player $mpds_cifplayer_player
 			data <= data_str? \
 			vibrate? => vibrate?

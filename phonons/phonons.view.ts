@@ -1,6 +1,6 @@
 namespace $.$$ {
 	export class $mpds_cifplayer_phonons extends $.$mpds_cifplayer_phonons {
-		
+
 		@ $mol_action
 		set_example() {
 
@@ -23,11 +23,11 @@ namespace $.$$ {
 		@ $mol_mem
 		phonons(): Record< string, number[][] > {
 			return {
-				'Phonon #1': [ 
-					[1, 1, 1], 
+				'Phonon #1': [
+					[1, 1, 1],
 					[1, 1, 1],
 				],
-				'Phonon #2': [ 
+				'Phonon #2': [
 					[1, -1, 0],
 					[-1, 1, 0],
 				],
@@ -44,7 +44,7 @@ namespace $.$$ {
 			return Object.fromEntries( Object.keys( this.phonons() ).map( p => [ p, p ] ) )
 
 		}
-		
+
 	}
 
 }
