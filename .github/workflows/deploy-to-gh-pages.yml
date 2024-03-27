@@ -1,4 +1,4 @@
-name: $mpds_cifplayer
+name: build demo
 
 on:
   workflow_dispatch:
@@ -14,10 +14,10 @@ jobs:
 
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'mpds/cifplayer'
-        modules: 'demo'
+        package: mpds/cifplayer
+        modules: app
 
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: 'mpds/cifplayer/demo/-'
+        folder: mpds/cifplayer/app/-
