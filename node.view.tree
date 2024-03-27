@@ -344,14 +344,32 @@ $mol_drop $mol_ghost
 		\move
 		\link
 
-$mol_icon_script $mol_icon path \M17.8,20C17.4,21.2 16.3,22 15,22H5C3.3,22 2,20.7 2,19V18H5L14.2,18C14.6,19.2 15.7,20 17,20H17.8M19,2H8C6.3,2 5,3.3 5,5V16H16V17C16,17.6 16.4,18 17,18H18V5C18,4.4 18.4,4 19,4C19.6,4 20,4.4 20,5V6H22V5C22,3.3 20.7,2 19,2Z
+$mol_image $mol_view
+	dom_name \img
+	field *any
+		^
+		src <= uri \
+		alt <= title
+		loading <= loading \eager
+		decoding <= decoding \async
+		crossOrigin <= cors null
+	attr *any
+		^
+		width <= natural_width 0
+		height <= natural_height 0
+	event *any
+		load? <=> load? null
+	minimal_width 16
+	minimal_height 16
 
-$mol_icon_script_text $mol_icon path \M17.8,20C17.4,21.2 16.3,22 15,22H5C3.3,22 2,20.7 2,19V18H5L14.2,18C14.6,19.2 15.7,20 17,20H17.8M19,2C20.7,2 22,3.3 22,5V6H20V5C20,4.4 19.6,4 19,4C18.4,4 18,4.4 18,5V18H17C16.4,18 16,17.6 16,17V16H5V5C5,3.3 6.3,2 8,2H19M8,6V8H15V6H8M8,10V12H14V10H8Z
-
-$mol_link_source $mol_link
-	hint @ \Source code
+$mol_link_iconed $mol_link
 	sub /
-		<= Icon $mol_icon_script_text
+		<= Icon $mol_image
+			uri <= icon \
+			title \
+	content /
+		<= title <= uri
+	host \
 
 $mol_check $mol_button_minor
 	attr *
@@ -803,33 +821,6 @@ $mol_grid_cell $mol_view
 
 $mol_grid_number $mol_grid_cell
 
-$mol_image $mol_view
-	dom_name \img
-	field *any
-		^
-		src <= uri \
-		alt <= title
-		loading <= loading \eager
-		decoding <= decoding \async
-		crossOrigin <= cors null
-	attr *any
-		^
-		width <= natural_width 0
-		height <= natural_height 0
-	event *any
-		load? <=> load? null
-	minimal_width 16
-	minimal_height 16
-
-$mol_link_iconed $mol_link
-	sub /
-		<= Icon $mol_image
-			uri <= icon \
-			title \
-	content /
-		<= title <= uri
-	host \
-
 $mol_embed_native $mol_scroll
 	uri? \
 	dom_name \object
@@ -1009,10 +1000,11 @@ $mpds_cifplayer_app $mol_drop
 		Placeholder null
 	pages /
 		<= Menu $mol_page
-			title \3d-crystals web-viewer
+			title \Crystal structure web-viewer
 			tools /
-				<= Source $mol_link_source
+				<= Source $mol_link_iconed
 					uri \https://github.com/tilde-lab/cifplayer
+					title \
 				<= Lights $mol_lights_toggle
 			body <= menu_body /
 				<= Upload $mol_button_open
@@ -1024,7 +1016,7 @@ $mpds_cifplayer_app $mol_drop
 						\Choose file
 				<= Data_text $mol_textarea
 					value? <=> data_str?
-					hint \Paste here...
+					hint \or paste here...
 		<= Player $mpds_cifplayer_player
 			data <= data_str? \
 			vibrate? => vibrate?
