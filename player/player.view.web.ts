@@ -460,6 +460,9 @@ namespace $.$$ {
 
 		@ $mol_mem
 		left_panel(): readonly any[] {
+
+			if (this.externals()?.skip_panel) return []
+
 			try {
 				this.structure_3d_data()
 			} catch (error) {
