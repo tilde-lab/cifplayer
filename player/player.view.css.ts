@@ -51,7 +51,7 @@ namespace $.$$ {
 		},
 
 		Toogle_all: {
-			boxShadow: `0 0.5rem 0.5rem -0.5rem hsla(0,0%,0%,.5)`,	
+			boxShadow: `0 0.5rem 0.5rem -0.5rem hsla(0,0%,0%,.5)`,
 		},
 
 		Overlays: {
@@ -112,6 +112,10 @@ namespace $.$$ {
 				color: $mol_theme.back,
 			},
 			margin: 'auto',
+		},
+
+		Three: {
+			cursor: 'move',
 		},
 
 	} )

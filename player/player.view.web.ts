@@ -6,7 +6,13 @@ namespace $.$$ {
 	const TWEEN = $mpds_cifplayer_lib_tween.TWEEN
 	type TWEEN = typeof TWEEN
 
+	const phonon_amp: number = 6
+
 	export class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
+
+		theme() {
+			return '$mol_theme_' + (this.externals()?.theme || 'dark')
+		}
 
 		@ $mol_mem
 		available_overlays() {
@@ -420,12 +426,12 @@ namespace $.$$ {
 			const labels = this.overlay_box().children
 
 			if( phonon.length !== atoms.length) {
-				this.$.$mol_fail( new $mol_data_error(`Internal error: phonon length does not match number of atoms`) )
+				this.$.$mol_fail( new $mol_data_error(`Phonon length does not match number of atoms`) )
 			}
 
 			atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
 				const start = atom.position.toArray()
-				const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * 6 )
+				const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * phonon_amp )
 
 				this.tweens.add( new TWEEN.Tween( atom.position ).to( { x, y, z }, 750 )
 					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
