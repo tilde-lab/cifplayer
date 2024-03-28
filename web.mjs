@@ -9604,6 +9604,13 @@ var $;
 
 ;
 "use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mpds/cifplayer/player/player.view.css", "[mol_theme=\"$mol_theme_light\"] {\n\t--mol_theme_back: white;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -9708,6 +9715,9 @@ var $;
                 },
                 margin: 'auto',
             },
+            Three: {
+                cursor: 'move',
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -9720,7 +9730,11 @@ var $;
     (function ($$) {
         const THREE = $mpds_cifplayer_lib_three;
         const TWEEN = $mpds_cifplayer_lib_tween.TWEEN;
+        const phonon_amp = 6;
         class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
+            theme() {
+                return '$mol_theme_' + (this.externals()?.theme || 'dark');
+            }
             available_overlays() {
                 try {
                     this.structure_3d_data();
@@ -9988,11 +10002,11 @@ var $;
                 const atoms = this.atom_box().children;
                 const labels = this.overlay_box().children;
                 if (phonon.length !== atoms.length) {
-                    this.$.$mol_fail(new $mol_data_error(`Internal error: phonon length does not match number of atoms`));
+                    this.$.$mol_fail(new $mol_data_error(`Phonon length does not match number of atoms`));
                 }
                 atoms.forEach((atom, i) => {
                     const start = atom.position.toArray();
-                    const [x, y, z] = phonon[i].map((v, i) => start[i] + v * 6);
+                    const [x, y, z] = phonon[i].map((v, i) => start[i] + v * phonon_amp);
                     this.tweens.add(new TWEEN.Tween(atom.position).to({ x, y, z }, 750)
                         .easing(TWEEN.Easing.Cubic.InOut).repeat(Infinity).yoyo(true).start());
                     this.tweens.add(new TWEEN.Tween(labels[i].position).to({ x, y, z }, 750)

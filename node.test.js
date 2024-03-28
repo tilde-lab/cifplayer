@@ -8892,6 +8892,13 @@ var $;
 
 ;
 "use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mpds/cifplayer/player/player.view.css", "[mol_theme=\"$mol_theme_light\"] {\n\t--mol_theme_back: white;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -8995,6 +9002,9 @@ var $;
                     color: $mol_theme.back,
                 },
                 margin: 'auto',
+            },
+            Three: {
+                cursor: 'move',
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
