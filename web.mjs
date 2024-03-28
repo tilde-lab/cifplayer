@@ -4230,7 +4230,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/button/typed/typed.view.css", "[mol_button_typed] {\n\talign-content: center;\n\talign-items: center;\n\tpadding: var(--mol_gap_text);\n\tborder-radius: var(--mol_gap_round);\n\tgap: var(--mol_gap_space);\n\tuser-select: none;\n\tcursor: pointer;\n}\n\n[mol_button_typed][disabled] {\n\tpointer-events: none;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus-visible {\n\tbackground-color: var(--mol_theme_hover);\n}\n\n[mol_button_typed]:active {\n\tcolor: var(--mol_theme_focus);\n}\n\n");
+    $mol_style_attach("mol/button/typed/typed.view.css", "[mol_button_typed] {\n\talign-content: center;\n\talign-items: center;\n\tpadding: var(--mol_gap_text);\n\tborder-radius: var(--mol_gap_round);\n\tgap: var(--mol_gap_space);\n\tuser-select: none;\n\tcursor: pointer;\n}\n\n[mol_button_typed][disabled] {\n\tpointer-events: none;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus-visible {\n\tbox-shadow: inset 0 0 0 10rem var(--mol_theme_hover);\n}\n\n[mol_button_typed]:active {\n\tcolor: var(--mol_theme_focus);\n}\n\n");
 })($ || ($ = {}));
 
 ;
@@ -8500,6 +8500,10 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		externals(next){
+			if(next !== undefined) return next;
+			return null;
+		}
 		atom_radius_scale(){
 			return 0.6;
 		}
@@ -8606,6 +8610,7 @@ var $;
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message_card"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "data"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "externals"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "vibrate"));
 
 
@@ -10010,6 +10015,8 @@ var $;
                 return;
             }
             left_panel() {
+                if (this.externals()?.skip_panel)
+                    return [];
                 try {
                     this.structure_3d_data();
                 }

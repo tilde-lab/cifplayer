@@ -551,6 +551,7 @@ $mol_card $mol_list
 
 $mpds_cifplayer_player $mol_view
 	data? null
+	externals? null
 	atom_radius_scale 0.6
 	zoom_scale_step 0.3
 	vibrate? null
@@ -596,7 +597,7 @@ $mpds_cifplayer_player $mol_view
 							click? <=> toogle_all_symmetry? null
 						<= Sym_list $mol_scroll
 							sub /
-								<= Sym_checks $mol_list 
+								<= Sym_checks $mol_list
 									sub <= sym_checks /
 										<= Sym_check*0 $mol_check_box
 											title <= sym_name* \
