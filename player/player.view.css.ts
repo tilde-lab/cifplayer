@@ -6,6 +6,8 @@ namespace $.$$ {
 			color: $mol_theme.back,
 		},
 
+		position: 'relative',
+
 		'@': {
 			fullscreen: {
 				'true': {
