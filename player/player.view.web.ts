@@ -38,32 +38,32 @@ namespace $.$$ {
 
 		@ $mol_mem
 		descr_a(): string {
-			return `a=${ parseFloat( this.structure_3d_data().descr.a ).toFixed( 3 ) }Å`
+			return `a=${ this.structure_3d_data().descr.a.toFixed( 3 ) }Å`
 		}
 
 		@ $mol_mem
 		descr_b(): string {
-			return `b=${ parseFloat( this.structure_3d_data().descr.b ).toFixed( 3 ) }Å`
+			return `b=${ this.structure_3d_data().descr.b.toFixed( 3 ) }Å`
 		}
 
 		@ $mol_mem
 		descr_c(): string {
-			return `c=${ parseFloat( this.structure_3d_data().descr.c ).toFixed( 3 ) }Å`
+			return `c=${ this.structure_3d_data().descr.c.toFixed( 3 ) }Å`
 		}
 
 		@ $mol_mem
 		descr_alpha(): string {
-			return `α=${ parseFloat( this.structure_3d_data().descr.alpha ).toFixed( 3 ) }°`
+			return `α=${ this.structure_3d_data().descr.alpha.toFixed( 3 ) }°`
 		}
 
 		@ $mol_mem
 		descr_beta(): string {
-			return `β=${ parseFloat( this.structure_3d_data().descr.beta ).toFixed( 3 ) }°`
+			return `β=${ this.structure_3d_data().descr.beta.toFixed( 3 ) }°`
 		}
 
 		@ $mol_mem
 		descr_gamma(): string {
-			return `γ=${ parseFloat( this.structure_3d_data().descr.gamma ).toFixed( 3 ) }°`
+			return `γ=${ this.structure_3d_data().descr.gamma.toFixed( 3 ) }°`
 		}
 
 		@ $mol_mem
@@ -247,7 +247,7 @@ namespace $.$$ {
 
 				const next_symmetries = symmetries_enabled.slice( 0, symmetries_enabled.indexOf( symmetry ) )
 
-				this.symmetry_atoms( symmetry )!.forEach( ( data: any ) => {
+				this.symmetry_atoms( symmetry )!.forEach( data => {
 
 					for (const name of next_symmetries) {
 
@@ -265,22 +265,34 @@ namespace $.$$ {
 			return atoms
 		}
 
-		@ $mol_mem
-		atom_box() {
-			const atom_box = this.Three().new_object( `atom_box`, ()=> new THREE.Object3D() )
+		@ $mol_mem_key
+		atom_box( cell_index: [ number, number, number ] ) {
+			const atom_box = this.Three().new_object( `atom_box` + cell_index.toString(), ()=> new THREE.Object3D() )
 
-			this.visible_atoms().forEach( ( data: any ) => {
+			const cell = this.structure_3d_data().cell
+
+			this.visible_atoms().forEach( data => {
 
 				const atom = new THREE.Mesh(
 					new THREE.SphereGeometry( data.r * this.atom_radius_scale(), 10, 8 ),
 					new THREE.MeshLambertMaterial( { color: data.c } )
 				)
-				atom.position.set( data.x, data.y, data.z )
+				atom.position.set(
+					data.x,
+					data.y,
+					data.z,
+				)
 
 				atom_box.add( atom )
 			} )
 
 			return atom_box
+		}
+
+		atom_boxes() {
+			return [ 
+				this.atom_box([1,1,1]),
+			]
 		}
 
 		@ $mol_mem
@@ -426,7 +438,7 @@ namespace $.$$ {
 		vibrate( phonon: number[][] ) {
 			$mol_wire_sync( this ).unvibrate()
 
-			const atoms = this.atom_box().children
+			const atoms = this.atom_box([0,0,0]).children
 			const labels = this.overlay_box().children
 
 			if( phonon.length !== atoms.length) {
@@ -453,7 +465,7 @@ namespace $.$$ {
 			this.tweens.removeAll()
 
 			const atom_datas = this.visible_atoms()
-			const atoms = this.atom_box().children
+			const atoms = this.atom_box([0,0,0]).children
 			const labels = this.overlay_box().children
 
 			atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
@@ -489,6 +501,11 @@ namespace $.$$ {
 			return ( this.symmetry_list().length > 1 ) || this.symlabel()
 				? super.symlabel_visible()
 				: []
+		}
+
+		@ $mol_mem
+		spread_cell_label() {
+			return this.spread_cells().join('×')
 		}
 
 	}

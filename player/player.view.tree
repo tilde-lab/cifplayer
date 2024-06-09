@@ -5,14 +5,18 @@ $mpds_cifplayer_player $mol_view
 	zoom_scale_step 0.3
 	vibrate? null
 	unvibrate null
+	-
 	auto /
 		<= dir_light null
 		<= ambient_light null
-		<= atom_box null
-		<= overlay_box null
+		^ atom_boxes /
+		^ overlay_boxes /
 		<= cell_box null
 		<= axes_box null
 		<= overlay_changed null
+	atom_box* null
+	overlay_box* null
+	-
 	sub /
 		<= Three $mpds_cifplayer_lib_three_view
 			scene => scene
@@ -51,6 +55,9 @@ $mpds_cifplayer_player $mol_view
 										<= Sym_check*0 $mol_check_box
 											title <= sym_name* \
 											checked? <=> symmetry_visible*? false
+				<= Spread_cells $mol_pick
+					trigger_content /
+						<= spread_cell_label \1×1×1
 				<= Center $mol_check_icon
 					checked? <=> centered? true
 					Icon <= Center_icon $mol_icon_image_filter_center_focus
@@ -93,6 +100,10 @@ $mpds_cifplayer_player $mol_view
 		<= color_a \
 		<= color_b \
 		<= color_c \
+	spread_cells /
+		<= spread_a 2
+		<= spread_b 1
+		<= spread_c 1
 	style *
 		^
 		--color_a <= color_a

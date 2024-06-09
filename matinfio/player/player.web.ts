@@ -25,7 +25,7 @@ namespace $ {
 
 		if( !crystal.atoms.length ) this.$mpds_cifplayer_matinfio_log.warning( "Note: no atomic coordinates supplied" )
 
-		const render = {
+		const render: $mpds_cifplayer_matinfio_player_obj = {
 			atoms: [] as any[],
 			cell_matrix: cell_matrix,
 			cell: descr,
