@@ -542,6 +542,15 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
+		spread_cells() {
+			return [
+				this.spread_a() || 1,
+				this.spread_b() || 1,
+				this.spread_c() || 1,
+			]
+		}
+
+		@ $mol_mem
 		spread_cell_label() {
 			return this.spread_cells().join('×')
 		}
