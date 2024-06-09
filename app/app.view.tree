@@ -13,7 +13,7 @@ $mpds_cifplayer_app $mol_drop
 					uri \https://github.com/tilde-lab/cifplayer
 					title \
 				<= Lights $mol_lights_toggle
-			body <= menu_body /
+			body / <= Body $mol_view sub /
 				<= Upload $mol_button_open
 					Icon => Upload_icon
 					Native => Upload_native
