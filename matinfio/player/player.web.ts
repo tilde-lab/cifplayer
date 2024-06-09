@@ -4,26 +4,22 @@ namespace $ {
 
 	/** Prepare internal repr for visualization in three.js */
 	export function $mpds_cifplayer_matinfio_player_from_obj( this: $, crystal: $mpds_cifplayer_matinfio_internal_obj ) {
-		let cell_matrix
+		let cell_matrix: number[][] | undefined
 		let descr: any = false
 
 		if( crystal.cell && Object.keys( crystal.cell ).length == 6 ) { // for CIF
+
 			cell_matrix = this.$mpds_cifplayer_matinfio_cell_to_matrix( crystal.cell )
 			descr = crystal.cell
 			var symlabel = ( crystal.sg_name || crystal.ng_name ) ? ( ( crystal.sg_name ? crystal.sg_name : "" ) + ( crystal.ng_name ? ( " (" + crystal.ng_name + ")" ) : "" ) ) : false
 			if( symlabel ) descr.symlabel = symlabel
 
 		} else {
+			
 			cell_matrix = crystal.cell_matrix // for POSCAR and OPTIMADE
-
-			const params = $mpds_cifplayer_matinfio_cell_params_from_matrix( cell_matrix! )
-			descr = {
-				'a': params[0],
-				'b': params[1],
-				'c': params[2],
-				'alpha': params[3],
-				'beta': params[4],
-				'gamma': params[5],
+			if( cell_matrix ) {
+				const [ a, b, c, alpha, beta, gamma ] = $mpds_cifplayer_matinfio_cell_params_from_matrix( cell_matrix )
+				descr = { a, b, c, alpha, beta, gamma }
 			}
 		}
 
