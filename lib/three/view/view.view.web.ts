@@ -29,16 +29,19 @@ namespace $.$$ {
 		/** Remove an existing object and create a new */
 		new_object< T extends InstanceType< THREE["Object3D"] > >( name: string, make: ()=> T ): T {
 			const old = this.scene()?.getObjectByName( name )
-			if( old ) {
-				$mpds_cifplayer_lib_three_view_dispose_deep( old )
-				this.scene()?.remove( old )
-			}
+			if( old ) this.remove_object( old )
 
 			const obj = make()
 			obj.name = name
 			this.scene().add( obj )
+			obj.destructor = ()=> this.remove_object( obj )
 
 			return obj
+		}
+
+		remove_object( obj: any ) {
+			$mpds_cifplayer_lib_three_view_dispose_deep( obj )
+			this.scene()?.remove( obj )
 		}
 
 		@ $mol_mem
