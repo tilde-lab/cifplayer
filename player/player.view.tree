@@ -77,14 +77,14 @@ $mpds_cifplayer_player $mol_view
 							value? <=> spread_b?
 							hint \1
 							value_min 1
-							value_max <= spread_limit_b
+							value_max <= spread_limit_b 1
 						<= Spread_label_c $mol_paragraph
 							title \c
 						<= Spread_c $mol_number
 							value? <=> spread_c?
 							hint \1
 							value_min 1
-							value_max <= spread_limit_c
+							value_max <= spread_limit_c 1
 				<= Center $mol_check_icon
 					checked? <=> centered? true
 					Icon <= Center_icon $mol_icon_image_filter_center_focus
