@@ -546,6 +546,24 @@ namespace $.$$ {
 			return this.spread_cells().join('×')
 		}
 
+		@ $mol_mem
+		spread_limit_a() {
+			const [ a, b, c ] = this.spread_cells()
+			return Math.floor( this.spread_cells_limit() / ( b * c ) )
+		}
+
+		@ $mol_mem
+		spread_limit_b() {
+			const [ a, b, c ] = this.spread_cells()
+			return Math.floor( this.spread_cells_limit() / ( a * c ) )
+		}
+
+		@ $mol_mem
+		spread_limit_c() {
+			const [ a, b, c ] = this.spread_cells()
+			return Math.floor( this.spread_cells_limit() / ( a * b ) )
+		}
+
 	}
 
 	$mol_view_component( $mpds_cifplayer_player )

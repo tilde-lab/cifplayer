@@ -5,6 +5,11 @@ $mpds_cifplayer_player $mol_view
 	zoom_scale_step 0.3
 	vibrate? null
 	unvibrate null
+	spread_cells /
+		<= spread_a? 2
+		<= spread_b? 1
+		<= spread_c? 1
+	spread_cells_limit 50
 	-
 	auto /
 		<= dir_light null
@@ -58,6 +63,19 @@ $mpds_cifplayer_player $mol_view
 				<= Spread_cells $mol_pick
 					trigger_content /
 						<= spread_cell_label \1×1×1
+					bubble_content /
+						<= Spread_a $mol_number
+							value? <=> spread_a?
+							value_min 1
+							value_max <= spread_limit_a 1
+						<= Spread_b $mol_number
+							value? <=> spread_b?
+							value_min 1
+							value_max <= spread_limit_b
+						<= Spread_c $mol_number
+							value? <=> spread_c?
+							value_min 1
+							value_max <= spread_limit_c
 				<= Center $mol_check_icon
 					checked? <=> centered? true
 					Icon <= Center_icon $mol_icon_image_filter_center_focus
@@ -100,10 +118,6 @@ $mpds_cifplayer_player $mol_view
 		<= color_a \
 		<= color_b \
 		<= color_c \
-	spread_cells /
-		<= spread_a 2
-		<= spread_b 1
-		<= spread_c 1
 	style *
 		^
 		--color_a <= color_a
