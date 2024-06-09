@@ -36,7 +36,7 @@ $mpds_cifplayer_player $mol_view
 							title <= descr_beta \β=
 						<= Descr_gamma $mol_paragraph
 							title <= descr_gamma \γ=
-				<= Symlabel $mol_pick
+				^ symlabel_visible / <= Symlabel $mol_pick
 					trigger_content /
 						<= Sym_icon $mol_icon_eye_check
 						<= symlabel \SG

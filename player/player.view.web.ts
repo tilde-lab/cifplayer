@@ -30,11 +30,10 @@ namespace $.$$ {
 
 		@ $mol_mem
 		symlabel(): string {
-			return this.structure_3d_data().mpds_data
-				? ''
-				: (this.structure_3d_data().descr.symlabel)
-					? 'SG ' + this.structure_3d_data().descr.symlabel
-					: ''
+			const data = this.structure_3d_data()
+			if( data.mpds_data ) return ''
+
+			return data.descr.symlabel ? `SG  ${data.descr.symlabel}` : ''
 		}
 
 		@ $mol_mem
@@ -180,7 +179,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		sym_checks() {
-			return this.spacegroup().symmetry_list().map( name => this.Sym_check( name ) )
+			return this.symmetry_list().map( name => this.Sym_check( name ) )
 		}
 
 		sym_name( id: any ): string {
@@ -230,6 +229,11 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
+		symmetry_list() {
+			return this.spacegroup().symmetry_list()
+		}
+
+		@ $mol_mem
 		visible_atoms(){
 			const structure = this.structure_3d_data()
 
@@ -237,7 +241,7 @@ namespace $.$$ {
 
 			const atoms: $mpds_cifplayer_matinfio_internal_obj_atom[] = []
 
-			const symmetries_enabled = this.spacegroup().symmetry_list().filter( name => this.symmetry_visible( name ) )
+			const symmetries_enabled = this.symmetry_list().filter( name => this.symmetry_visible( name ) )
 
 			symmetries_enabled.forEach( symmetry => {
 
@@ -475,7 +479,16 @@ namespace $.$$ {
 				return []
 			}
 
-			return this.structure_3d_data().cell_matrix ? super.left_panel() : []
+			if( !this.structure_3d_data().cell_matrix ) return []
+
+			return super.left_panel()
+		}
+
+		@ $mol_mem
+		symlabel_visible() {
+			return ( this.symmetry_list().length > 1 ) || this.symlabel()
+				? super.symlabel_visible()
+				: []
 		}
 
 	}
