@@ -17,6 +17,7 @@ $mpds_cifplayer_app $mol_drop
 				<= Upload $mol_button_open
 					Icon => Upload_icon
 					Native => Upload_native
+					files? <=> files_read? null
 					sub /
 						<= Upload_icon
 						<= Upload_native
