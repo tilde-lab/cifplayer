@@ -6,6 +6,8 @@ namespace $.$$ {
 			color: $mol_theme.back,
 		},
 
+		position: 'relative',
+
 		'@': {
 			fullscreen: {
 				'true': {
@@ -29,6 +31,28 @@ namespace $.$$ {
 
 		Descr_c: {
 			color: $mol_style_func.vary('--color_c')
+		},
+
+		Spread_label_a: {
+			color: $mol_style_func.vary('--color_a'),
+			padding: $mol_gap.text,
+		},
+
+		Spread_label_b: {
+			color: $mol_style_func.vary('--color_b'),
+			padding: $mol_gap.text,
+		},
+
+		Spread_label_c: {
+			color: $mol_style_func.vary('--color_c'),
+			padding: $mol_gap.text,
+		},
+
+		Spread_cells: {
+			Bubble: {
+				display: 'grid',
+				gridTemplateColumns: 'auto auto',
+			},
 		},
 
 		Left_panel: {

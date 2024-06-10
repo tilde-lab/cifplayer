@@ -34,11 +34,21 @@ namespace $.$$ {
 			Body_content: {
 				gap: $mol_gap.block,
 				maxWidth: '25rem',
+				flex: {
+					direction: 'row',
+				},
 			},
 			Head: {
 				justify: {
 					content: 'flex-start'
 				},
+			},
+		},
+
+		Body: {
+			flex: { 
+				direction: 'column',
+				grow: 1,
 			},
 		},
 

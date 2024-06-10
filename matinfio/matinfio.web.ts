@@ -34,6 +34,8 @@ namespace $ {
 		x: number,
 		y: number,
 		z: number,
+		c: string, //color
+		r: number, //radius
 		symbol: string,
 		label: string,
 		overlays: Record< string, string | number >,
@@ -41,19 +43,39 @@ namespace $ {
 
 	export type $mpds_cifplayer_matinfio_internal_obj = {
 		cell_matrix?: number[][],
-		cell?: {
-			a: number,
-			b: number,
-			c: number,
-			alpha: number,
-			beta: number,
-			gamma: number,
-		},
+		cell?: $mpds_cifplayer_matinfio_cell,
 		atoms: $mpds_cifplayer_matinfio_internal_obj_atom[],
 		sg_name: string,
 		ng_name: string,
 		info: string,
 		cartesian: boolean,
+		mpds_demo: boolean,
+		mpds_data: boolean,
+	}
+
+	export type $mpds_cifplayer_matinfio_player_obj = {
+		cell_matrix?: number[][],
+		cell?: $mpds_cifplayer_matinfio_cell,
+		descr: $mpds_cifplayer_matinfio_cell & {
+			symlabel?: string,
+		},
+		overlayed: Record< string, string >,
+		atoms: {
+			fract: {
+				x: number,
+				y: number,
+				z: number,
+			} | null,
+			x: number,
+			y: number,
+			z: number,
+			c: string, //color
+			r: number, //radius
+			overlays: Record< string, string | number >,
+		}[],
+		sg_name: string,
+		ng_name: number,
+		info: string,
 		mpds_demo: boolean,
 		mpds_data: boolean,
 	}
