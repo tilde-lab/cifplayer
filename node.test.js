@@ -622,20 +622,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_after_frame extends $mol_after_timeout {
-        task;
-        constructor(task) {
-            super(16, task);
-            this.task = task;
-        }
-    }
-    $.$mol_after_frame = $mol_after_frame;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_promise_like(val) {
         return val && typeof val === 'object' && 'then' in val && typeof val.then === 'function';
     }
@@ -657,7 +643,7 @@ var $;
         static plan() {
             if (this.plan_task)
                 return;
-            this.plan_task = new $mol_after_frame(() => {
+            this.plan_task = new $mol_after_timeout(0, () => {
                 try {
                     this.sync();
                 }
@@ -717,6 +703,7 @@ var $;
         plan() {
             $mol_wire_fiber.planning.add(this);
             $mol_wire_fiber.plan();
+            return this;
         }
         reap() {
             $mol_wire_fiber.reaping.add(this);
@@ -816,6 +803,7 @@ var $;
             }
             this.track_off(bu);
             this.put(result);
+            return this;
         }
         refresh() {
             this.cursor = $mol_wire_cursor.stale;
@@ -859,7 +847,7 @@ var $;
                 sub.track_off(prev);
                 sub.absorb = () => {
                     done(null);
-                    sub.destructor();
+                    setTimeout(() => sub.destructor());
                 };
             });
         }
@@ -927,6 +915,20 @@ var $;
         });
     }
     $.$mol_key = $mol_key;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_frame extends $mol_after_timeout {
+        task;
+        constructor(task) {
+            super(16, task);
+            this.task = task;
+        }
+    }
+    $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
 
 ;
@@ -1475,6 +1477,9 @@ var $;
         if (typeof json === 'string') {
             return $mol_tree2.data(json, [], span);
         }
+        if (typeof json.toJSON === 'function') {
+            return $mol_tree2_from_json(json.toJSON());
+        }
         if (Array.isArray(json)) {
             const sub = json.map(json => $mol_tree2_from_json(json, span));
             return new $mol_tree2('/', '', sub, span);
@@ -1485,9 +1490,6 @@ var $;
         }
         if (json instanceof Date) {
             return new $mol_tree2('', json.toISOString(), [], span);
-        }
-        if (typeof json.toJSON === 'function') {
-            return $mol_tree2_from_json(json.toJSON());
         }
         if (json.toString !== Object.prototype.toString) {
             return $mol_tree2.data(json.toString(), [], span);
@@ -2399,29 +2401,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let all = [];
-    let el = null;
-    let timer = null;
-    function $mol_style_attach_force() {
-        if (all.length) {
-            el.innerHTML += '\n' + all.join('\n\n');
-            all = [];
-        }
-        timer = null;
-        return el;
-    }
-    $.$mol_style_attach_force = $mol_style_attach_force;
     function $mol_style_attach(id, text) {
-        all.push(`/* ${id} */\n\n${text}`);
-        if (timer)
-            return el;
         const doc = $mol_dom_context.document;
         if (!doc)
             return null;
-        el = doc.createElement('style');
-        el.id = `$mol_style_attach`;
-        doc.head.appendChild(el);
-        timer = new $mol_after_tick($mol_style_attach_force);
+        const elid = `$mol_style_attach:${id}`;
+        let el = doc.getElementById(elid);
+        if (!el) {
+            el = doc.createElement('style');
+            el.id = elid;
+            doc.head.appendChild(el);
+        }
+        if (el.innerHTML != text)
+            el.innerHTML = text;
         return el;
     }
     $.$mol_style_attach = $mol_style_attach;
@@ -3189,14 +3181,14 @@ var $;
 		}
 		event(){
 			return {
-				"dragenter": (next) => (this.enter(next)), 
-				"dragover": (next) => (this.move(next)), 
-				"dragleave": (next) => (this.leave(next)), 
-				"drop": (next) => (this.drop(next))
+				"dragenter": (next) => (this?.enter(next)), 
+				"dragover": (next) => (this?.move(next)), 
+				"dragleave": (next) => (this?.leave(next)), 
+				"drop": (next) => (this?.drop(next))
 			};
 		}
 		attr(){
-			return {"mol_drop_status": (this.status())};
+			return {"mol_drop_status": (this?.status())};
 		}
 		adopt(next){
 			if(next !== undefined) return next;
@@ -3299,7 +3291,7 @@ var $;
 			return "";
 		}
 		attr(){
-			return {"mol_theme": (this.theme())};
+			return {"mol_theme": (this?.theme())};
 		}
 	};
 
@@ -4031,10 +4023,10 @@ var $;
 			return 0;
 		}
 		field(){
-			return {...(super.field()), "tabIndex": (this.tabindex())};
+			return {...(super.field()), "tabIndex": (this?.tabindex())};
 		}
 		event(){
-			return {...(super.event()), "scroll": (next) => (this.event_scroll(next))};
+			return {...(super.event()), "scroll": (next) => (this?.event_scroll(next))};
 		}
 	};
 	($mol_mem(($.$mol_scroll.prototype), "event_scroll"));
@@ -4329,7 +4321,7 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this.pages());
+			return (this?.pages());
 		}
 		minimal_width(){
 			return 0;
@@ -4440,7 +4432,7 @@ var $;
 			return "";
 		}
 		hint_safe(){
-			return (this.hint());
+			return (this?.hint());
 		}
 		target(){
 			return "_self";
@@ -4459,7 +4451,7 @@ var $;
 			return null;
 		}
 		click(next){
-			return (this.event_click(next));
+			return (this?.event_click(next));
 		}
 		uri(){
 			return "";
@@ -4479,22 +4471,22 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"href": (this.uri_toggle()), 
-				"title": (this.hint_safe()), 
-				"target": (this.target()), 
-				"download": (this.file_name()), 
-				"mol_link_current": (this.current()), 
-				"rel": (this.relation())
+				"href": (this?.uri_toggle()), 
+				"title": (this?.hint_safe()), 
+				"target": (this?.target()), 
+				"download": (this?.file_name()), 
+				"mol_link_current": (this?.current()), 
+				"rel": (this?.relation())
 			};
 		}
 		sub(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 		arg(){
 			return {};
 		}
 		event(){
-			return {...(super.event()), "click": (next) => (this.click(next))};
+			return {...(super.event()), "click": (next) => (this?.click(next))};
 		}
 	};
 	($mol_mem(($.$mol_link.prototype), "event_click"));
@@ -4655,22 +4647,22 @@ var $;
 		field(){
 			return {
 				...(super.field()), 
-				"src": (this.uri()), 
-				"alt": (this.title()), 
-				"loading": (this.loading()), 
-				"decoding": (this.decoding()), 
-				"crossOrigin": (this.cors())
+				"src": (this?.uri()), 
+				"alt": (this?.title()), 
+				"loading": (this?.loading()), 
+				"decoding": (this?.decoding()), 
+				"crossOrigin": (this?.cors())
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"width": (this.natural_width()), 
-				"height": (this.natural_height())
+				"width": (this?.natural_width()), 
+				"height": (this?.natural_height())
 			};
 		}
 		event(){
-			return {"load": (next) => (this.load(next))};
+			return {"load": (next) => (this?.load(next))};
 		}
 		minimal_width(){
 			return 16;
@@ -4735,18 +4727,18 @@ var $;
 		}
 		Icon(){
 			const obj = new this.$.$mol_image();
-			(obj.uri) = () => ((this.icon()));
+			(obj.uri) = () => ((this?.icon()));
 			(obj.title) = () => ("");
 			return obj;
 		}
 		title(){
-			return (this.uri());
+			return (this?.uri());
 		}
 		sub(){
-			return [(this.Icon())];
+			return [(this?.Icon())];
 		}
 		content(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 		host(){
 			return "";
@@ -4818,13 +4810,13 @@ var $;
 			return null;
 		}
 		attr(){
-			return {...(super.attr()), "mol_theme": (this.theme())};
+			return {...(super.attr()), "mol_theme": (this?.theme())};
 		}
 		style(){
 			return {...(super.style()), "minHeight": "1em"};
 		}
 		sub(){
-			return [(this.value())];
+			return [(this?.value())];
 		}
 	};
 
@@ -4863,7 +4855,7 @@ var $;
 			return "";
 		}
 		hint_safe(){
-			return (this.hint());
+			return (this?.hint());
 		}
 		error(){
 			return "";
@@ -4882,26 +4874,26 @@ var $;
 		event(){
 			return {
 				...(super.event()), 
-				"click": (next) => (this.event_activate(next)), 
-				"dblclick": (next) => (this.clicks(next)), 
-				"keydown": (next) => (this.event_key_press(next))
+				"click": (next) => (this?.event_activate(next)), 
+				"dblclick": (next) => (this?.clicks(next)), 
+				"keydown": (next) => (this?.event_key_press(next))
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"disabled": (this.disabled()), 
+				"disabled": (this?.disabled()), 
 				"role": "button", 
-				"tabindex": (this.tab_index()), 
-				"title": (this.hint_safe())
+				"tabindex": (this?.tab_index()), 
+				"title": (this?.hint_safe())
 			};
 		}
 		sub(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 		Speck(){
 			const obj = new this.$.$mol_speck();
-			(obj.value) = () => ((this.error()));
+			(obj.value) = () => ((this?.error()));
 			return obj;
 		}
 	};
@@ -5153,22 +5145,22 @@ var $;
 		}
 		Title(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.title())]);
+			(obj.sub) = () => ([(this?.title())]);
 			return obj;
 		}
 		label(){
-			return [(this.Title())];
+			return [(this?.Title())];
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_check_checked": (this.checked()), 
-				"aria-checked": (this.aria_checked()), 
-				"role": (this.aria_role())
+				"mol_check_checked": (this?.checked()), 
+				"aria-checked": (this?.aria_checked()), 
+				"role": (this?.aria_role())
 			};
 		}
 		sub(){
-			return [(this.Icon()), (this.label())];
+			return [(this?.Icon()), (this?.label())];
 		}
 	};
 	($mol_mem(($.$mol_check.prototype), "checked"));
@@ -5338,8 +5330,8 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"viewBox": (this.view_box()), 
-				"preserveAspectRatio": (this.aspect())
+				"viewBox": (this?.view_box()), 
+				"preserveAspectRatio": (this?.aspect())
 			};
 		}
 	};
@@ -5364,7 +5356,7 @@ var $;
 			return "path";
 		}
 		attr(){
-			return {...(super.attr()), "d": (this.geometry())};
+			return {...(super.attr()), "d": (this?.geometry())};
 		}
 	};
 
@@ -5379,7 +5371,7 @@ var $;
 		}
 		Path(){
 			const obj = new this.$.$mol_svg_path();
-			(obj.geometry) = () => ((this.path()));
+			(obj.geometry) = () => ((this?.path()));
 			return obj;
 		}
 		view_box(){
@@ -5392,7 +5384,7 @@ var $;
 			return 16;
 		}
 		sub(){
-			return [(this.Path())];
+			return [(this?.Path())];
 		}
 	};
 	($mol_mem(($.$mol_icon.prototype), "Path"));
@@ -5411,7 +5403,7 @@ var $;
 ;
 	($.$mol_icon_brightness_6) = class $mol_icon_brightness_6 extends ($.$mol_icon) {
 		path(){
-			return "M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z";
+			return "M12,18V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z";
 		}
 	};
 
@@ -5496,13 +5488,13 @@ var $;
 			return false;
 		}
 		Icon(){
-			return (this.Lights_icon());
+			return (this?.Lights_icon());
 		}
 		hint(){
 			return (this.$.$mol_locale.text("$mol_lights_toggle_hint"));
 		}
 		checked(next){
-			return (this.lights(next));
+			return (this?.lights(next));
 		}
 	};
 	($mol_mem(($.$mol_lights_toggle.prototype), "Lights_icon"));
@@ -5556,13 +5548,13 @@ var $;
 		}
 		Native(){
 			const obj = new this.$.$mol_button_open_native();
-			(obj.files) = (next) => ((this.files(next)));
-			(obj.accept) = () => ((this.accept()));
-			(obj.multiple) = () => ((this.multiple()));
+			(obj.files) = (next) => ((this?.files(next)));
+			(obj.accept) = () => ((this?.accept()));
+			(obj.multiple) = () => ((this?.multiple()));
 			return obj;
 		}
 		sub(){
-			return [(this.Icon()), (this.Native())];
+			return [(this?.Icon()), (this?.Native())];
 		}
 	};
 	($mol_mem(($.$mol_button_open.prototype), "Icon"));
@@ -5589,12 +5581,12 @@ var $;
 		attr(){
 			return {
 				"type": "file", 
-				"accept": (this.accept()), 
-				"multiple": (this.multiple())
+				"accept": (this?.accept()), 
+				"multiple": (this?.multiple())
 			};
 		}
 		event(){
-			return {"change": (next) => (this.picked(next))};
+			return {"change": (next) => (this?.picked(next))};
 		}
 	};
 	($mol_mem(($.$mol_button_open_native.prototype), "picked"));
@@ -5661,7 +5653,7 @@ var $;
 			return 0;
 		}
 		sub(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 	};
 
@@ -5739,16 +5731,16 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this.parts());
+			return (this?.parts());
 		}
 		Low(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ([(this.string(id))]);
+			(obj.sub) = () => ([(this?.string(id))]);
 			return obj;
 		}
 		High(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ([(this.string(id))]);
+			(obj.sub) = () => ([(this?.string(id))]);
 			return obj;
 		}
 	};
@@ -6103,7 +6095,7 @@ var $;
 			return "";
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_code_token_type": (this.type())};
+			return {...(super.attr()), "mol_text_code_token_type": (this?.type())};
 		}
 	};
 	($.$mol_text_code_token_link) = class $mol_text_code_token_link extends ($.$mol_text_code_token) {
@@ -6119,7 +6111,7 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"href": (this.uri()), 
+				"href": (this?.uri()), 
 				"target": "_blank"
 			};
 		}
@@ -6220,21 +6212,21 @@ var $;
 		}
 		Numb(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.numb())]);
+			(obj.sub) = () => ([(this?.numb())]);
 			return obj;
 		}
 		Token(id){
 			const obj = new this.$.$mol_text_code_token();
-			(obj.type) = () => ((this.token_type(id)));
-			(obj.haystack) = () => ((this.token_text(id)));
-			(obj.needle) = () => ((this.highlight()));
+			(obj.type) = () => ((this?.token_type(id)));
+			(obj.haystack) = () => ((this?.token_text(id)));
+			(obj.needle) = () => ((this?.highlight()));
 			return obj;
 		}
 		Token_link(id){
 			const obj = new this.$.$mol_text_code_token_link();
-			(obj.haystack) = () => ((this.token_text(id)));
-			(obj.needle) = () => ((this.highlight()));
-			(obj.uri) = () => ((this.token_uri(id)));
+			(obj.haystack) = () => ((this?.token_text(id)));
+			(obj.needle) = () => ((this?.highlight()));
+			(obj.uri) = () => ((this?.token_uri(id)));
 			return obj;
 		}
 		find_pos(id){
@@ -6337,7 +6329,7 @@ var $;
         'code-call': /\.?\w+ *(?=\()/,
         'code-sexpr': /\((\w+ )/,
         'code-field': /(?:(?:\.|::|->)\w+|[\w-]+\??\s*:(?!\/\/|:))/,
-        'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|struct|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|val|let|const|for|do|while|until|in|out|of|new|if|then|else|switch|case|this|return|async|await|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void|int|float|ref)\b/,
+        'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|struct|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|val|let|const|for|do|while|until|in|out|of|new|if|then|else|switch|case|this|return|async|await|yield|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void|int|float|ref)\b/,
         'code-global': /[$]+\w*|\b[A-Z][a-z0-9]+[A-Z]\w*/,
         'code-word': /\w+/,
         'code-decorator': /@\s*\S+/,
@@ -6510,7 +6502,7 @@ var $;
 			return 0;
 		}
 		sub(){
-			return (this.rows());
+			return (this?.rows());
 		}
 		Empty(){
 			const obj = new this.$.$mol_view();
@@ -6518,12 +6510,12 @@ var $;
 		}
 		Gap_before(){
 			const obj = new this.$.$mol_view();
-			(obj.style) = () => ({"paddingTop": (this.gap_before())});
+			(obj.style) = () => ({"paddingTop": (this?.gap_before())});
 			return obj;
 		}
 		Gap_after(){
 			const obj = new this.$.$mol_view();
-			(obj.style) = () => ({"paddingTop": (this.gap_after())});
+			(obj.style) = () => ({"paddingTop": (this?.gap_after())});
 			return obj;
 		}
 		view_window(){
@@ -6698,7 +6690,7 @@ var $;
 ;
 	($.$mol_icon_clipboard) = class $mol_icon_clipboard extends ($.$mol_icon) {
 		path(){
-			return "M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3";
+			return "M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3";
 		}
 	};
 
@@ -6709,7 +6701,7 @@ var $;
 ;
 	($.$mol_icon_clipboard_outline) = class $mol_icon_clipboard_outline extends ($.$mol_icon) {
 		path(){
-			return "M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3M7,7H17V5H19V19H5V5H7V7Z";
+			return "M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7Z";
 		}
 	};
 
@@ -6720,11 +6712,11 @@ var $;
 ;
 	($.$mol_button_copy) = class $mol_button_copy extends ($.$mol_button_minor) {
 		text(){
-			return (this.title());
+			return (this?.title());
 		}
 		text_blob(next){
 			if(next !== undefined) return next;
-			const obj = new this.$.$mol_blob([(this.text())], {"type": "text/plain"});
+			const obj = new this.$.$mol_blob([(this?.text())], {"type": "text/plain"});
 			return obj;
 		}
 		html(){
@@ -6732,7 +6724,7 @@ var $;
 		}
 		html_blob(next){
 			if(next !== undefined) return next;
-			const obj = new this.$.$mol_blob([(this.html())], {"type": "text/html"});
+			const obj = new this.$.$mol_blob([(this?.html())], {"type": "text/html"});
 			return obj;
 		}
 		Icon(){
@@ -6743,13 +6735,13 @@ var $;
 			return "";
 		}
 		blobs(){
-			return [(this.text_blob()), (this.html_blob())];
+			return [(this?.text_blob()), (this?.html_blob())];
 		}
 		data(){
 			return {};
 		}
 		sub(){
-			return [(this.Icon()), (this.title())];
+			return [(this?.Icon()), (this?.title())];
 		}
 	};
 	($mol_mem(($.$mol_button_copy.prototype), "text_blob"));
@@ -6836,21 +6828,21 @@ var $;
 		}
 		Row(id){
 			const obj = new this.$.$mol_text_code_row();
-			(obj.numb_showed) = () => ((this.sidebar_showed()));
-			(obj.numb) = () => ((this.row_numb(id)));
-			(obj.text) = () => ((this.row_text(id)));
-			(obj.syntax) = () => ((this.syntax()));
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.highlight) = () => ((this.highlight()));
+			(obj.numb_showed) = () => ((this?.sidebar_showed()));
+			(obj.numb) = () => ((this?.row_numb(id)));
+			(obj.text) = () => ((this?.row_text(id)));
+			(obj.syntax) = () => ((this?.syntax()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.highlight) = () => ((this?.highlight()));
 			return obj;
 		}
 		rows(){
-			return [(this.Row("0"))];
+			return [(this?.Row("0"))];
 		}
 		Rows(){
 			const obj = new this.$.$mol_list();
-			(obj.render_visible_only) = () => ((this.render_visible_only()));
-			(obj.rows) = () => ((this.rows()));
+			(obj.render_visible_only) = () => ((this?.render_visible_only()));
+			(obj.rows) = () => ((this?.rows()));
 			return obj;
 		}
 		text_export(){
@@ -6859,11 +6851,11 @@ var $;
 		Copy(){
 			const obj = new this.$.$mol_button_copy();
 			(obj.hint) = () => ((this.$.$mol_locale.text("$mol_text_code_Copy_hint")));
-			(obj.text) = () => ((this.text_export()));
+			(obj.text) = () => ((this?.text_export()));
 			return obj;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_code_sidebar_showed": (this.sidebar_showed())};
+			return {...(super.attr()), "mol_text_code_sidebar_showed": (this?.sidebar_showed())};
 		}
 		text(){
 			return "";
@@ -6878,7 +6870,7 @@ var $;
 			return "";
 		}
 		sub(){
-			return [(this.Rows()), (this.Copy())];
+			return [(this?.Rows()), (this?.Copy())];
 		}
 	};
 	($mol_mem_key(($.$mol_text_code.prototype), "Row"));
@@ -6900,7 +6892,7 @@ var $;
                 return this.$.$mol_support_css_overflow_anchor();
             }
             text_lines() {
-                return this.text().split('\n');
+                return (this.text() ?? '').split('\n');
             }
             rows() {
                 return this.text_lines().map((_, index) => this.Row(index + 1));
@@ -7018,7 +7010,7 @@ var $;
 			return null;
 		}
 		event(){
-			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
+			return {...(super.event()), "keydown": (next) => (this?.keydown(next))};
 		}
 		key(){
 			return {};
@@ -7086,13 +7078,13 @@ var $;
 			return "";
 		}
 		value_changed(next){
-			return (this.value(next));
+			return (this?.value(next));
 		}
 		hint(){
 			return "";
 		}
 		hint_visible(){
-			return (this.hint());
+			return (this?.hint());
 		}
 		spellcheck(){
 			return true;
@@ -7132,8 +7124,8 @@ var $;
 		}
 		Submit(){
 			const obj = new this.$.$mol_hotkey();
-			(obj.mod_ctrl) = () => ((this.submit_with_ctrl()));
-			(obj.key) = () => ({"enter": (next) => (this.submit(next))});
+			(obj.mod_ctrl) = () => ((this?.submit_with_ctrl()));
+			(obj.key) = () => ({"enter": (next) => (this?.submit(next))});
 			return obj;
 		}
 		dom_name(){
@@ -7153,34 +7145,34 @@ var $;
 			return [0, 0];
 		}
 		auto(){
-			return [(this.selection_watcher()), (this.error_report())];
+			return [(this?.selection_watcher()), (this?.error_report())];
 		}
 		field(){
 			return {
 				...(super.field()), 
-				"disabled": (this.disabled()), 
-				"value": (this.value_changed()), 
-				"placeholder": (this.hint_visible()), 
-				"spellcheck": (this.spellcheck()), 
-				"autocomplete": (this.autocomplete_native()), 
-				"selectionEnd": (this.selection_end()), 
-				"selectionStart": (this.selection_start()), 
-				"inputMode": (this.keyboard()), 
-				"enterkeyhint": (this.enter())
+				"disabled": (this?.disabled()), 
+				"value": (this?.value_changed()), 
+				"placeholder": (this?.hint_visible()), 
+				"spellcheck": (this?.spellcheck()), 
+				"autocomplete": (this?.autocomplete_native()), 
+				"selectionEnd": (this?.selection_end()), 
+				"selectionStart": (this?.selection_start()), 
+				"inputMode": (this?.keyboard()), 
+				"enterkeyhint": (this?.enter())
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"maxlength": (this.length_max()), 
-				"type": (this.type())
+				"maxlength": (this?.length_max()), 
+				"type": (this?.type())
 			};
 		}
 		event(){
-			return {...(super.event()), "input": (next) => (this.event_change(next))};
+			return {...(super.event()), "input": (next) => (this?.event_change(next))};
 		}
 		plugins(){
-			return [(this.Submit())];
+			return [(this?.Submit())];
 		}
 	};
 	($mol_mem(($.$mol_string.prototype), "value"));
@@ -7334,7 +7326,7 @@ var $;
 			return [];
 		}
 		bring(){
-			return (this.Edit().bring());
+			return (this?.Edit()?.bring());
 		}
 		submit(next){
 			if(next !== undefined) return next;
@@ -7345,14 +7337,14 @@ var $;
 		}
 		Edit(){
 			const obj = new this.$.$mol_textarea_edit();
-			(obj.value) = (next) => ((this.value(next)));
-			(obj.hint) = () => ((this.hint()));
-			(obj.enabled) = () => ((this.enabled()));
-			(obj.spellcheck) = () => ((this.spellcheck()));
-			(obj.length_max) = () => ((this.length_max()));
-			(obj.selection) = (next) => ((this.selection(next)));
-			(obj.submit) = (next) => ((this.submit(next)));
-			(obj.submit_with_ctrl) = () => ((this.submit_with_ctrl()));
+			(obj.value) = (next) => ((this?.value(next)));
+			(obj.hint) = () => ((this?.hint()));
+			(obj.enabled) = () => ((this?.enabled()));
+			(obj.spellcheck) = () => ((this?.spellcheck()));
+			(obj.length_max) = () => ((this?.length_max()));
+			(obj.selection) = (next) => ((this?.selection(next)));
+			(obj.submit) = (next) => ((this?.submit(next)));
+			(obj.submit_with_ctrl) = () => ((this?.submit_with_ctrl()));
 			return obj;
 		}
 		row_numb(id){
@@ -7363,25 +7355,25 @@ var $;
 		}
 		View(){
 			const obj = new this.$.$mol_text_code();
-			(obj.text) = () => ((this.value()));
+			(obj.text) = () => ((this?.value()));
 			(obj.render_visible_only) = () => (false);
-			(obj.row_numb) = (id) => ((this.row_numb(id)));
-			(obj.sidebar_showed) = () => ((this.sidebar_showed()));
-			(obj.highlight) = () => ((this.highlight()));
+			(obj.row_numb) = (id) => ((this?.row_numb(id)));
+			(obj.sidebar_showed) = () => ((this?.sidebar_showed()));
+			(obj.highlight) = () => ((this?.highlight()));
 			return obj;
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_textarea_clickable": (this.clickable()), 
-				"mol_textarea_sidebar_showed": (this.sidebar_showed())
+				"mol_textarea_clickable": (this?.clickable()), 
+				"mol_textarea_sidebar_showed": (this?.sidebar_showed())
 			};
 		}
 		event(){
-			return {"keydown": (next) => (this.press(next)), "pointermove": (next) => (this.hover(next))};
+			return {"keydown": (next) => (this?.press(next)), "pointermove": (next) => (this?.hover(next))};
 		}
 		sub(){
-			return [(this.Edit()), (this.View())];
+			return [(this?.Edit()), (this?.View())];
 		}
 		symbols_alt(){
 			return {
@@ -7551,7 +7543,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n\tpointer-events: none;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n}\n\n[mol_textarea_view_copy] {\n\tpointer-events: all;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n\tpointer-events: all;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
+    $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n\tpointer-events: none;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n\tuser-select: none;\n}\n\n[mol_textarea_view_copy] {\n\tpointer-events: all;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n\tpointer-events: all;\n\tuser-select: auto;\n}\n\n[mol_textarea_clickable] > [mol_textarea_edit] {\n\tuser-select: none;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -7563,12 +7555,12 @@ var $;
 			return null;
 		}
 		title_content(){
-			return [(this.Logo()), (this.title())];
+			return [(this?.Logo()), (this?.title())];
 		}
 		Title(){
 			const obj = new this.$.$mol_view();
 			(obj.dom_name) = () => ("h1");
-			(obj.sub) = () => ((this.title_content()));
+			(obj.sub) = () => ((this?.title_content()));
 			return obj;
 		}
 		tools(){
@@ -7576,36 +7568,36 @@ var $;
 		}
 		Tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.tools()));
+			(obj.sub) = () => ((this?.tools()));
 			return obj;
 		}
 		head(){
-			return [(this.Title()), (this.Tools())];
+			return [(this?.Title()), (this?.Tools())];
 		}
 		Head(){
 			const obj = new this.$.$mol_view();
 			(obj.minimal_height) = () => (64);
 			(obj.dom_name) = () => ("header");
-			(obj.sub) = () => ((this.head()));
+			(obj.sub) = () => ((this?.head()));
 			return obj;
 		}
 		body_scroll_top(next){
-			return (this.Body().scroll_top(next));
+			return (this?.Body()?.scroll_top(next));
 		}
 		body(){
 			return [];
 		}
 		Body_content(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.body()));
+			(obj.sub) = () => ((this?.body()));
 			return obj;
 		}
 		body_content(){
-			return [(this.Body_content())];
+			return [(this?.Body_content())];
 		}
 		Body(){
 			const obj = new this.$.$mol_scroll();
-			(obj.sub) = () => ((this.body_content()));
+			(obj.sub) = () => ((this?.body_content()));
 			return obj;
 		}
 		foot(){
@@ -7614,20 +7606,20 @@ var $;
 		Foot(){
 			const obj = new this.$.$mol_view();
 			(obj.dom_name) = () => ("footer");
-			(obj.sub) = () => ((this.foot()));
+			(obj.sub) = () => ((this?.foot()));
 			return obj;
 		}
 		dom_name(){
 			return "article";
 		}
 		field(){
-			return {...(super.field()), "tabIndex": (this.tabindex())};
+			return {...(super.field()), "tabIndex": (this?.tabindex())};
 		}
 		sub(){
 			return [
-				(this.Head()), 
-				(this.Body()), 
-				(this.Foot())
+				(this?.Head()), 
+				(this?.Body()), 
+				(this?.Foot())
 			];
 		}
 	};
@@ -7649,7 +7641,7 @@ var $;
     var $$;
     (function ($$) {
         const { per, rem } = $mol_style_unit;
-        const { calc } = $mol_style_func;
+        const { hsla } = $mol_style_func;
         $mol_style_define($mol_page, {
             display: 'flex',
             flex: {
@@ -7680,7 +7672,9 @@ var $;
                 border: {
                     radius: $mol_gap.round,
                 },
-                boxShadow: `0 0.5rem 0.5rem -0.5rem hsla(0,0%,0%,.25)`,
+                box: {
+                    shadow: [[0, `0.5rem`, `0.5rem`, `-0.5rem`, hsla(0, 0, 0, .25)]],
+                },
                 zIndex: 2,
             },
             Title: {
@@ -7740,7 +7734,9 @@ var $;
                 border: {
                     radius: $mol_gap.round,
                 },
-                boxShadow: `0 -0.5rem 0.5rem -0.5rem hsla(0,0%,0%,.25)`,
+                box: {
+                    shadow: [[0, `-0.5rem`, `0.5rem`, `-0.5rem`, hsla(0, 0, 0, .25)]],
+                },
                 zIndex: 1,
                 padding: $mol_gap.block,
                 ':empty': {
@@ -7774,7 +7770,7 @@ var $;
 			return null;
 		}
 		sub(){
-			return [(this.canvas())];
+			return [(this?.canvas())];
 		}
 		scene(){
 			return null;
@@ -7801,9 +7797,9 @@ var $;
 		}
 		auto(){
 			return [
-				(this.controls_target_changed()), 
-				(this.resize()), 
-				(this.start_render_loop())
+				(this?.controls_target_changed()), 
+				(this?.resize()), 
+				(this?.start_render_loop())
 			];
 		}
 	};
@@ -7832,7 +7828,7 @@ var $;
 ;
 	($.$mol_icon_eye) = class $mol_icon_eye extends ($.$mol_icon) {
 		path(){
-			return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
+			return "M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
 		}
 	};
 
@@ -7843,7 +7839,7 @@ var $;
 ;
 	($.$mol_icon_eye_check) = class $mol_icon_eye_check extends ($.$mol_icon) {
 		path(){
-			return "M23.5,17L18.5,22L15,18.5L16.5,17L18.5,19L22,15.5L23.5,17M12,9C13.66,9 15,10.34 15,12C15,13.66 13.66,15 12,15C10.34,15 9,13.66 9,12C9,10.34 10.34,9 12,9M12,17C12.5,17 12.97,16.93 13.42,16.79C13.15,17.5 13,18.22 13,19V19.45L12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5C17,4.5 21.27,7.61 23,12C22.75,12.64 22.44,13.26 22.08,13.85C21.18,13.31 20.12,13 19,13C18.22,13 17.5,13.15 16.79,13.42C16.93,12.97 17,12.5 17,12C17,9.24 14.76,7 12,7C9.24,7 7,9.24 7,12C7,14.76 9.24,17 12,17Z";
+			return "M23.5,17L18.5,22L15,18.5L16.5,17L18.5,19L22,15.5L23.5,17M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,17C12.5,17 12.97,16.93 13.42,16.79C13.15,17.5 13,18.22 13,19V19.45L12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5C17,4.5 21.27,7.61 23,12C22.75,12.64 22.44,13.26 22.08,13.85C21.18,13.31 20.12,13 19,13C18.22,13 17.5,13.15 16.79,13.42C16.93,12.97 17,12.5 17,12A5,5 0 0,0 12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17Z";
 		}
 	};
 
@@ -7898,9 +7894,9 @@ var $;
 		}
 		Bubble(){
 			const obj = new this.$.$mol_pop_bubble();
-			(obj.align) = () => ((this.align()));
-			(obj.content) = () => ((this.bubble_content()));
-			(obj.height_max) = () => ((this.height_max()));
+			(obj.align) = () => ((this?.align()));
+			(obj.content) = () => ((this?.bubble_content()));
+			(obj.height_max) = () => ((this?.height_max()));
 			return obj;
 		}
 		showed(next){
@@ -7917,10 +7913,10 @@ var $;
 			return "vert";
 		}
 		sub(){
-			return [(this.Anchor())];
+			return [(this?.Anchor())];
 		}
 		sub_visible(){
-			return [(this.Anchor()), (this.Bubble())];
+			return [(this?.Anchor()), (this?.Bubble())];
 		}
 	};
 	($mol_mem(($.$mol_pop.prototype), "Bubble"));
@@ -7936,15 +7932,15 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this.content());
+			return (this?.content());
 		}
 		style(){
-			return {...(super.style()), "maxHeight": (this.height_max())};
+			return {...(super.style()), "maxHeight": (this?.height_max())};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_pop_align": (this.align()), 
+				"mol_pop_align": (this?.align()), 
 				"tabindex": 0
 			};
 		}
@@ -8067,7 +8063,7 @@ var $;
 			return null;
 		}
 		trigger_content(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 		hint(){
 			return "";
@@ -8076,18 +8072,18 @@ var $;
 			const obj = new this.$.$mol_check();
 			(obj.minimal_width) = () => (40);
 			(obj.minimal_height) = () => (40);
-			(obj.enabled) = () => ((this.trigger_enabled()));
-			(obj.checked) = (next) => ((this.showed(next)));
-			(obj.clicks) = (next) => ((this.clicks(next)));
-			(obj.sub) = () => ((this.trigger_content()));
-			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this?.trigger_enabled()));
+			(obj.checked) = (next) => ((this?.showed(next)));
+			(obj.clicks) = (next) => ((this?.clicks(next)));
+			(obj.sub) = () => ((this?.trigger_content()));
+			(obj.hint) = () => ((this?.hint()));
 			return obj;
 		}
 		event(){
-			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
+			return {...(super.event()), "keydown": (next) => (this?.keydown(next))};
 		}
 		Anchor(){
-			return (this.Trigger());
+			return (this?.Trigger());
 		}
 	};
 	($mol_mem(($.$mol_pick.prototype), "keydown"));
@@ -8130,9 +8126,206 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_minus) = class $mol_icon_minus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H5V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_plus) = class $mol_icon_plus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_number) = class $mol_number extends ($.$mol_view) {
+		precision(){
+			return 1;
+		}
+		type(){
+			return "tel";
+		}
+		value_string(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		hint(){
+			return " ";
+		}
+		string_enabled(){
+			return (this?.enabled());
+		}
+		submit(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		String(){
+			const obj = new this.$.$mol_string();
+			(obj.type) = () => ((this?.type()));
+			(obj.value) = (next) => ((this?.value_string(next)));
+			(obj.hint) = () => ((this?.hint()));
+			(obj.enabled) = () => ((this?.string_enabled()));
+			(obj.submit) = (next) => ((this?.submit(next)));
+			return obj;
+		}
+		event_dec(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		dec_enabled(){
+			return (this?.enabled());
+		}
+		dec_icon(){
+			const obj = new this.$.$mol_icon_minus();
+			return obj;
+		}
+		Dec(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.event_click) = (next) => ((this?.event_dec(next)));
+			(obj.enabled) = () => ((this?.dec_enabled()));
+			(obj.sub) = () => ([(this?.dec_icon())]);
+			return obj;
+		}
+		event_inc(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		inc_enabled(){
+			return (this?.enabled());
+		}
+		inc_icon(){
+			const obj = new this.$.$mol_icon_plus();
+			return obj;
+		}
+		Inc(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.event_click) = (next) => ((this?.event_inc(next)));
+			(obj.enabled) = () => ((this?.inc_enabled()));
+			(obj.sub) = () => ([(this?.inc_icon())]);
+			return obj;
+		}
+		precision_view(){
+			return (this?.precision());
+		}
+		precision_change(){
+			return (this?.precision());
+		}
+		value_min(){
+			return -Infinity;
+		}
+		value_max(){
+			return +Infinity;
+		}
+		value(next){
+			if(next !== undefined) return next;
+			return +NaN;
+		}
+		enabled(){
+			return true;
+		}
+		sub(){
+			return [
+				(this?.String()), 
+				(this?.Dec()), 
+				(this?.Inc())
+			];
+		}
+	};
+	($mol_mem(($.$mol_number.prototype), "value_string"));
+	($mol_mem(($.$mol_number.prototype), "submit"));
+	($mol_mem(($.$mol_number.prototype), "String"));
+	($mol_mem(($.$mol_number.prototype), "event_dec"));
+	($mol_mem(($.$mol_number.prototype), "dec_icon"));
+	($mol_mem(($.$mol_number.prototype), "Dec"));
+	($mol_mem(($.$mol_number.prototype), "event_inc"));
+	($mol_mem(($.$mol_number.prototype), "inc_icon"));
+	($mol_mem(($.$mol_number.prototype), "Inc"));
+	($mol_mem(($.$mol_number.prototype), "value"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/number/number.css", "[mol_number] {\n\tdisplay: flex;\n\tflex: 0 1 auto;\n\tposition: relative;\n\talign-items: stretch;\n\tmax-width: 100%;\n}\n\n[mol_number_string] {\n\tappearance: textfield;\n\tflex: 1 1 7rem;\n\twidth: 7rem;\n}\n\n[mol_number_string]::-webkit-inner-spin-button {\n\tdisplay: none;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_number extends $.$mol_number {
+            value_limited(next) {
+                if (next === undefined)
+                    return this.value();
+                if (next === '')
+                    return this.value(Number.NaN);
+                const min = this.value_min();
+                const max = this.value_max();
+                const val = Number(next);
+                if (val < min)
+                    return this.value(min);
+                if (val > max)
+                    return this.value(max);
+                return this.value(val);
+            }
+            event_dec(next) {
+                this.value_limited((this.value_limited() || 0) - this.precision_change());
+            }
+            event_inc(next) {
+                this.value_limited((this.value_limited() || 0) + this.precision_change());
+            }
+            value_string(next) {
+                const next_num = this.value_limited(next);
+                const precisionView = this.precision_view();
+                if (next_num === 0)
+                    return '0';
+                if (!next_num)
+                    return '';
+                if (precisionView >= 1) {
+                    return (next_num / precisionView).toFixed();
+                }
+                else {
+                    const fixedNumber = Math.log10(1 / precisionView);
+                    return next_num.toFixed(Math.ceil(fixedNumber));
+                }
+            }
+            dec_enabled() {
+                return this.enabled() && (!((this.value() || 0) <= this.value_min()));
+            }
+            inc_enabled() {
+                return this.enabled() && (!((this.value() || 0) >= this.value_max()));
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_number.prototype, "dec_enabled", null);
+        __decorate([
+            $mol_mem
+        ], $mol_number.prototype, "inc_enabled", null);
+        $$.$mol_number = $mol_number;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$mol_icon_image) = class $mol_icon_image extends ($.$mol_icon) {
 		path(){
-			return "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19Z";
+			return "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z";
 		}
 	};
 
@@ -8154,7 +8347,7 @@ var $;
 ;
 	($.$mol_icon_image_filter_center_focus) = class $mol_icon_image_filter_center_focus extends ($.$mol_icon) {
 		path(){
-			return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M19,19H15V21H19C20.1,21 21,20.1 21,19V15H19M19,3H15V5H19V9H21V5C21,3.9 20.1,3 19,3M5,5H9V3H5C3.9,3 3,3.9 3,5V9H5M5,15H3V19C3,20.1 3.9,21 5,21H9V19H5V15Z";
+			return "M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M19,19H15V21H19A2,2 0 0,0 21,19V15H19M19,3H15V5H19V9H21V5A2,2 0 0,0 19,3M5,5H9V3H5A2,2 0 0,0 3,5V9H5M5,15H3V19A2,2 0 0,0 5,21H9V19H5V15Z";
 		}
 	};
 
@@ -8187,7 +8380,7 @@ var $;
 ;
 	($.$mol_icon_magnify) = class $mol_icon_magnify extends ($.$mol_icon) {
 		path(){
-			return "M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z";
+			return "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z";
 		}
 	};
 
@@ -8198,7 +8391,7 @@ var $;
 ;
 	($.$mol_icon_magnify_plus) = class $mol_icon_magnify_plus extends ($.$mol_icon) {
 		path(){
-			return "M9,2C12.87,2 16,5.13 16,9C16,10.57 15.5,12 14.61,13.19L15.41,14H16L22,20L20,22L14,16V15.41L13.19,14.61C12,15.5 10.57,16 9,16C5.13,16 2,12.87 2,9C2,5.13 5.13,2 9,2M8,5V8H5V10H8V13H10V10H13V8H10V5H8Z";
+			return "M9,2A7,7 0 0,1 16,9C16,10.57 15.5,12 14.61,13.19L15.41,14H16L22,20L20,22L14,16V15.41L13.19,14.61C12,15.5 10.57,16 9,16A7,7 0 0,1 2,9A7,7 0 0,1 9,2M8,5V8H5V10H8V13H10V10H13V8H10V5H8Z";
 		}
 	};
 
@@ -8209,7 +8402,7 @@ var $;
 ;
 	($.$mol_icon_magnify_plus_outline) = class $mol_icon_magnify_plus_outline extends ($.$mol_icon) {
 		path(){
-			return "M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z";
+			return "M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z";
 		}
 	};
 
@@ -8220,7 +8413,7 @@ var $;
 ;
 	($.$mol_icon_magnify_minus) = class $mol_icon_magnify_minus extends ($.$mol_icon) {
 		path(){
-			return "M9,2C12.87,2 16,5.13 16,9C16,10.57 15.5,12 14.61,13.19L15.41,14H16L22,20L20,22L14,16V15.41L13.19,14.61C12,15.5 10.57,16 9,16C5.13,16 2,12.87 2,9C2,5.13 5.13,2 9,2M5,8V10H13V8H5Z";
+			return "M9,2A7,7 0 0,1 16,9C16,10.57 15.5,12 14.61,13.19L15.41,14H16L22,20L20,22L14,16V15.41L13.19,14.61C12,15.5 10.57,16 9,16A7,7 0 0,1 2,9A7,7 0 0,1 9,2M5,8V10H13V8H5Z";
 		}
 	};
 
@@ -8231,7 +8424,7 @@ var $;
 ;
 	($.$mol_icon_magnify_minus_outline) = class $mol_icon_magnify_minus_outline extends ($.$mol_icon) {
 		path(){
-			return "M15.5,14H14.71L14.43,13.73C15.41,12.59 16,11.11 16,9.5C16,5.91 13.09,3 9.5,3C5.91,3 3,5.91 3,9.5C3,13.09 5.91,16 9.5,16C11.11,16 12.59,15.41 13.73,14.43L14,14.71V15.5L19,20.5L20.5,19L15.5,14M9.5,14C7,14 5,12 5,9.5C5,7 7,5 9.5,5C12,5 14,7 14,9.5C14,12 12,14 9.5,14M7,9H12V10H7V9Z";
+			return "M15.5,14H14.71L14.43,13.73C15.41,12.59 16,11.11 16,9.5A6.5,6.5 0 0,0 9.5,3A6.5,6.5 0 0,0 3,9.5A6.5,6.5 0 0,0 9.5,16C11.11,16 12.59,15.41 13.73,14.43L14,14.71V15.5L19,20.5L20.5,19L15.5,14M9.5,14C7,14 5,12 5,9.5C5,7 7,5 9.5,5C12,5 14,7 14,9.5C14,12 12,14 9.5,14M7,9H12V10H7V9Z";
 		}
 	};
 
@@ -8249,13 +8442,13 @@ var $;
 			return "";
 		}
 		option_label(id){
-			return [(this.option_title(id))];
+			return [(this?.option_title(id))];
 		}
 		enabled(){
 			return true;
 		}
 		option_enabled(id){
-			return (this.enabled());
+			return (this?.enabled());
 		}
 		option_hint(id){
 			return "";
@@ -8268,10 +8461,10 @@ var $;
 		}
 		Option(id){
 			const obj = new this.$.$mol_check();
-			(obj.checked) = (next) => ((this.option_checked(id, next)));
-			(obj.label) = () => ((this.option_label(id)));
-			(obj.enabled) = () => ((this.option_enabled(id)));
-			(obj.hint) = () => ((this.option_hint(id)));
+			(obj.checked) = (next) => ((this?.option_checked(id, next)));
+			(obj.label) = () => ((this?.option_label(id)));
+			(obj.enabled) = () => ((this?.option_enabled(id)));
+			(obj.hint) = () => ((this?.option_hint(id)));
 			(obj.minimal_height) = () => (24);
 			return obj;
 		}
@@ -8282,7 +8475,7 @@ var $;
 			return [];
 		}
 		sub(){
-			return (this.items());
+			return (this?.items());
 		}
 	};
 	($mol_mem_key(($.$mol_check_list.prototype), "option_checked"));
@@ -8433,27 +8626,27 @@ var $;
 			return "";
 		}
 		content(){
-			return [(this.title())];
+			return [(this?.title())];
 		}
 		Content(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.content()));
+			(obj.sub) = () => ((this?.content()));
 			return obj;
 		}
 		status_text(){
-			return (this.status());
+			return (this?.status());
 		}
 		Status(){
 			const obj = new this.$.$mol_view();
 			(obj.minimal_height) = () => (30);
-			(obj.sub) = () => ([(this.status_text())]);
+			(obj.sub) = () => ([(this?.status_text())]);
 			return obj;
 		}
 		attr(){
-			return {...(super.attr()), "mol_card_status_type": (this.status())};
+			return {...(super.attr()), "mol_card_status_type": (this?.status())};
 		}
 		rows(){
-			return [(this.Content()), (this.Status())];
+			return [(this?.Content()), (this?.Status())];
 		}
 	};
 	($mol_mem(($.$mol_card.prototype), "Content"));
@@ -8490,17 +8683,29 @@ var $;
 
 ;
 	($.$mpds_cifplayer_player) = class $mpds_cifplayer_player extends ($.$mol_view) {
+		spread_a(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		spread_b(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		spread_c(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
 		dir_light(){
 			return null;
 		}
 		ambient_light(){
 			return null;
 		}
-		atom_box(){
-			return null;
+		atom_boxes(){
+			return [];
 		}
-		overlay_box(){
-			return null;
+		overlay_boxes(){
+			return [];
 		}
 		cell_box(){
 			return null;
@@ -8512,24 +8717,24 @@ var $;
 			return null;
 		}
 		scene(){
-			return (this.Three().scene());
+			return (this?.Three()?.scene());
 		}
 		controls(){
-			return (this.Three().controls());
+			return (this?.Three()?.controls());
 		}
 		controls_target(){
 			return null;
 		}
 		camera(){
-			return (this.Three().camera());
+			return (this?.Three()?.camera());
 		}
 		on_render(){
 			return null;
 		}
 		Three(){
 			const obj = new this.$.$mpds_cifplayer_lib_three_view();
-			(obj.controls_target) = () => ((this.controls_target()));
-			(obj.on_render) = () => ((this.on_render()));
+			(obj.controls_target) = () => ((this?.controls_target()));
+			(obj.on_render) = () => ((this?.on_render()));
 			return obj;
 		}
 		descr_a(){
@@ -8537,7 +8742,7 @@ var $;
 		}
 		Descr_a(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_a()));
+			(obj.title) = () => ((this?.descr_a()));
 			return obj;
 		}
 		descr_b(){
@@ -8545,7 +8750,7 @@ var $;
 		}
 		Descr_b(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_b()));
+			(obj.title) = () => ((this?.descr_b()));
 			return obj;
 		}
 		descr_c(){
@@ -8553,7 +8758,7 @@ var $;
 		}
 		Descr_c(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_c()));
+			(obj.title) = () => ((this?.descr_c()));
 			return obj;
 		}
 		descr_alpha(){
@@ -8561,7 +8766,7 @@ var $;
 		}
 		Descr_alpha(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_alpha()));
+			(obj.title) = () => ((this?.descr_alpha()));
 			return obj;
 		}
 		descr_beta(){
@@ -8569,7 +8774,7 @@ var $;
 		}
 		Descr_beta(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_beta()));
+			(obj.title) = () => ((this?.descr_beta()));
 			return obj;
 		}
 		descr_gamma(){
@@ -8577,22 +8782,22 @@ var $;
 		}
 		Descr_gamma(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this.descr_gamma()));
+			(obj.title) = () => ((this?.descr_gamma()));
 			return obj;
 		}
 		info_sub(){
 			return [
-				(this.Descr_a()), 
-				(this.Descr_b()), 
-				(this.Descr_c()), 
-				(this.Descr_alpha()), 
-				(this.Descr_beta()), 
-				(this.Descr_gamma())
+				(this?.Descr_a()), 
+				(this?.Descr_b()), 
+				(this?.Descr_c()), 
+				(this?.Descr_alpha()), 
+				(this?.Descr_beta()), 
+				(this?.Descr_gamma())
 			];
 		}
 		Info(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.info_sub()));
+			(obj.sub) = () => ((this?.info_sub()));
 			return obj;
 		}
 		Sym_icon(){
@@ -8611,8 +8816,8 @@ var $;
 		}
 		Toogle_all(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.title) = () => ((this.Toogle_all_title()));
-			(obj.click) = (next) => ((this.toogle_all_symmetry(next)));
+			(obj.title) = () => ((this?.Toogle_all_title()));
+			(obj.click) = (next) => ((this?.toogle_all_symmetry(next)));
 			return obj;
 		}
 		sym_name(id){
@@ -8624,27 +8829,94 @@ var $;
 		}
 		Sym_check(id){
 			const obj = new this.$.$mol_check_box();
-			(obj.title) = () => ((this.sym_name(id)));
-			(obj.checked) = (next) => ((this.symmetry_visible(id, next)));
+			(obj.title) = () => ((this?.sym_name(id)));
+			(obj.checked) = (next) => ((this?.symmetry_visible(id, next)));
 			return obj;
 		}
 		sym_checks(){
-			return [(this.Sym_check("0"))];
+			return [(this?.Sym_check("0"))];
 		}
 		Sym_checks(){
 			const obj = new this.$.$mol_list();
-			(obj.sub) = () => ((this.sym_checks()));
+			(obj.sub) = () => ((this?.sym_checks()));
 			return obj;
 		}
 		Sym_list(){
 			const obj = new this.$.$mol_scroll();
-			(obj.sub) = () => ([(this.Sym_checks())]);
+			(obj.sub) = () => ([(this?.Sym_checks())]);
 			return obj;
 		}
 		Symlabel(){
 			const obj = new this.$.$mol_pick();
-			(obj.trigger_content) = () => ([(this.Sym_icon()), (this.symlabel())]);
-			(obj.bubble_content) = () => ([(this.Toogle_all()), (this.Sym_list())]);
+			(obj.trigger_content) = () => ([(this?.Sym_icon()), (this?.symlabel())]);
+			(obj.bubble_content) = () => ([(this?.Toogle_all()), (this?.Sym_list())]);
+			return obj;
+		}
+		symlabel_visible(){
+			return [(this?.Symlabel())];
+		}
+		spread_cell_label(){
+			return "1×1×1";
+		}
+		Spread_label_a(){
+			const obj = new this.$.$mol_paragraph();
+			(obj.title) = () => ("a");
+			return obj;
+		}
+		spread_limit_a(){
+			return 1;
+		}
+		Spread_a(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this?.spread_a(next)));
+			(obj.hint) = () => ("1");
+			(obj.value_min) = () => (1);
+			(obj.value_max) = () => ((this?.spread_limit_a()));
+			return obj;
+		}
+		Spread_label_b(){
+			const obj = new this.$.$mol_paragraph();
+			(obj.title) = () => ("b");
+			return obj;
+		}
+		spread_limit_b(){
+			return 1;
+		}
+		Spread_b(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this?.spread_b(next)));
+			(obj.hint) = () => ("1");
+			(obj.value_min) = () => (1);
+			(obj.value_max) = () => ((this?.spread_limit_b()));
+			return obj;
+		}
+		Spread_label_c(){
+			const obj = new this.$.$mol_paragraph();
+			(obj.title) = () => ("c");
+			return obj;
+		}
+		spread_limit_c(){
+			return 1;
+		}
+		Spread_c(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this?.spread_c(next)));
+			(obj.hint) = () => ("1");
+			(obj.value_min) = () => (1);
+			(obj.value_max) = () => ((this?.spread_limit_c()));
+			return obj;
+		}
+		Spread_cells(){
+			const obj = new this.$.$mol_pick();
+			(obj.trigger_content) = () => ([(this?.spread_cell_label())]);
+			(obj.bubble_content) = () => ([
+				(this?.Spread_label_a()), 
+				(this?.Spread_a()), 
+				(this?.Spread_label_b()), 
+				(this?.Spread_b()), 
+				(this?.Spread_label_c()), 
+				(this?.Spread_c())
+			]);
 			return obj;
 		}
 		centered(next){
@@ -8657,20 +8929,21 @@ var $;
 		}
 		Center(){
 			const obj = new this.$.$mol_check_icon();
-			(obj.checked) = (next) => ((this.centered(next)));
-			(obj.Icon) = () => ((this.Center_icon()));
+			(obj.checked) = (next) => ((this?.centered(next)));
+			(obj.Icon) = () => ((this?.Center_icon()));
 			return obj;
 		}
 		left_panel(){
 			return [
-				(this.Info()), 
-				(this.Symlabel()), 
-				(this.Center())
+				(this?.Info()), 
+				...(this.symlabel_visible()), 
+				(this?.Spread_cells()), 
+				(this?.Center())
 			];
 		}
 		Left_panel(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.left_panel()));
+			(obj.sub) = () => ((this?.left_panel()));
 			return obj;
 		}
 		fullscreen(next){
@@ -8683,8 +8956,8 @@ var $;
 		}
 		Fullscreen(){
 			const obj = new this.$.$mol_check();
-			(obj.checked) = (next) => ((this.fullscreen(next)));
-			(obj.Icon) = () => ((this.Expand_icon()));
+			(obj.checked) = (next) => ((this?.fullscreen(next)));
+			(obj.Icon) = () => ((this?.Expand_icon()));
 			return obj;
 		}
 		zoom_up(next){
@@ -8697,8 +8970,8 @@ var $;
 		}
 		Zoom_up(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.click) = (next) => ((this.zoom_up(next)));
-			(obj.sub) = () => ([(this.Zoom_up_icon())]);
+			(obj.click) = (next) => ((this?.zoom_up(next)));
+			(obj.sub) = () => ([(this?.Zoom_up_icon())]);
 			return obj;
 		}
 		zoom_down(next){
@@ -8711,18 +8984,18 @@ var $;
 		}
 		Zoom_down(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.click) = (next) => ((this.zoom_down(next)));
-			(obj.sub) = () => ([(this.Zoom_down_icon())]);
+			(obj.click) = (next) => ((this?.zoom_down(next)));
+			(obj.sub) = () => ([(this?.Zoom_down_icon())]);
 			return obj;
 		}
 		Zoom_section(){
 			const obj = new this.$.$mol_list();
-			(obj.sub) = () => ([(this.Zoom_up()), (this.Zoom_down())]);
+			(obj.sub) = () => ([(this?.Zoom_up()), (this?.Zoom_down())]);
 			return obj;
 		}
 		Tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.Fullscreen()), (this.Zoom_section())]);
+			(obj.sub) = () => ([(this?.Fullscreen()), (this?.Zoom_section())]);
 			return obj;
 		}
 		overlay(next){
@@ -8734,16 +9007,16 @@ var $;
 		}
 		Switch_overlay(){
 			const obj = new this.$.$mol_switch();
-			(obj.value) = (next) => ((this.overlay(next)));
-			(obj.options) = () => ((this.available_overlays()));
+			(obj.value) = (next) => ((this?.overlay(next)));
+			(obj.options) = () => ((this?.available_overlays()));
 			return obj;
 		}
 		overlays_sub(){
-			return [(this.Switch_overlay())];
+			return [(this?.Switch_overlay())];
 		}
 		Overlays(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.overlays_sub()));
+			(obj.sub) = () => ((this?.overlays_sub()));
 			return obj;
 		}
 		message(){
@@ -8752,16 +9025,16 @@ var $;
 		Message_card(){
 			const obj = new this.$.$mol_card();
 			(obj.theme) = () => ("$mol_theme_special");
-			(obj.title) = () => ((this.message()));
+			(obj.title) = () => ((this?.message()));
 			return obj;
 		}
 		Message(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.Message_card())]);
+			(obj.sub) = () => ([(this?.Message_card())]);
 			return obj;
 		}
 		message_visible(){
-			return [(this.Message())];
+			return [(this?.Message())];
 		}
 		color_a(){
 			return "";
@@ -8793,23 +9066,39 @@ var $;
 		unvibrate(){
 			return null;
 		}
+		spread_cells(){
+			return [
+				(this?.spread_a()), 
+				(this?.spread_b()), 
+				(this?.spread_c())
+			];
+		}
+		spread_cells_limit(){
+			return 50;
+		}
 		auto(){
 			return [
-				(this.dir_light()), 
-				(this.ambient_light()), 
-				(this.atom_box()), 
-				(this.overlay_box()), 
-				(this.cell_box()), 
-				(this.axes_box()), 
-				(this.overlay_changed())
+				(this?.dir_light()), 
+				(this?.ambient_light()), 
+				...(this.atom_boxes()), 
+				...(this.overlay_boxes()), 
+				(this?.cell_box()), 
+				(this?.axes_box()), 
+				(this?.overlay_changed())
 			];
+		}
+		atom_box(id){
+			return null;
+		}
+		overlay_box(id){
+			return null;
 		}
 		sub(){
 			return [
-				(this.Three()), 
-				(this.Left_panel()), 
-				(this.Tools()), 
-				(this.Overlays()), 
+				(this?.Three()), 
+				(this?.Left_panel()), 
+				(this?.Tools()), 
+				(this?.Overlays()), 
 				...(this.message_visible())
 			];
 		}
@@ -8832,23 +9121,26 @@ var $;
 		}
 		axcolor(){
 			return [
-				(this.color_a()), 
-				(this.color_b()), 
-				(this.color_c())
+				(this?.color_a()), 
+				(this?.color_b()), 
+				(this?.color_c())
 			];
 		}
 		style(){
 			return {
 				...(super.style()), 
-				"--color_a": (this.color_a()), 
-				"--color_b": (this.color_b()), 
-				"--color_c": (this.color_c())
+				"--color_a": (this?.color_a()), 
+				"--color_b": (this?.color_b()), 
+				"--color_c": (this?.color_c())
 			};
 		}
 		attr(){
-			return {...(super.attr()), "fullscreen": (this.fullscreen())};
+			return {...(super.attr()), "fullscreen": (this?.fullscreen())};
 		}
 	};
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_a"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_b"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_c"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Three"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_a"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_b"));
@@ -8865,6 +9157,13 @@ var $;
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Sym_checks"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Sym_list"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Symlabel"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_a"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_a"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_b"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_b"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_c"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_c"));
+	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_cells"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "centered"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Center_icon"));
 	($mol_mem(($.$mpds_cifplayer_player.prototype), "Center"));
@@ -8910,6 +9209,7 @@ var $;
             background: {
                 color: $mol_theme.back,
             },
+            position: 'relative',
             '@': {
                 fullscreen: {
                     'true': {
@@ -8930,6 +9230,24 @@ var $;
             },
             Descr_c: {
                 color: $mol_style_func.vary('--color_c')
+            },
+            Spread_label_a: {
+                color: $mol_style_func.vary('--color_a'),
+                padding: $mol_gap.text,
+            },
+            Spread_label_b: {
+                color: $mol_style_func.vary('--color_b'),
+                padding: $mol_gap.text,
+            },
+            Spread_label_c: {
+                color: $mol_style_func.vary('--color_c'),
+                padding: $mol_gap.text,
+            },
+            Spread_cells: {
+                Bubble: {
+                    display: 'grid',
+                    gridTemplateColumns: 'auto auto',
+                },
             },
             Left_panel: {
                 position: 'absolute',
@@ -9059,13 +9377,13 @@ var $;
 			return 0;
 		}
 		style(){
-			return {...(super.style()), "paddingLeft": (this.level_style())};
+			return {...(super.style()), "paddingLeft": (this?.level_style())};
 		}
 		checked(next){
-			return (this.expanded(next));
+			return (this?.expanded(next));
 		}
 		enabled(){
-			return (this.expandable());
+			return (this?.expandable());
 		}
 	};
 	($mol_mem(($.$mol_check_expand.prototype), "expanded"));
@@ -9107,7 +9425,7 @@ var $;
 		}
 		Table(){
 			const obj = new this.$.$mol_grid_table();
-			(obj.sub) = () => ((this.rows()));
+			(obj.sub) = () => ((this?.rows()));
 			return obj;
 		}
 		head_cells(){
@@ -9120,10 +9438,10 @@ var $;
 			return [];
 		}
 		cell_content_text(id){
-			return (this.cell_content(id));
+			return (this?.cell_content(id));
 		}
 		cell_content_number(id){
-			return (this.cell_content(id));
+			return (this?.cell_content(id));
 		}
 		col_head_content(id){
 			return [];
@@ -9143,8 +9461,8 @@ var $;
 		}
 		Cell_dimmer(id){
 			const obj = new this.$.$mol_dimmer();
-			(obj.needle) = () => ((this.needle()));
-			(obj.haystack) = () => ((this.cell_value(id)));
+			(obj.needle) = () => ((this?.needle()));
+			(obj.haystack) = () => ((this?.cell_value(id)));
 			return obj;
 		}
 		row_height(){
@@ -9175,18 +9493,18 @@ var $;
 			return 0;
 		}
 		sub(){
-			return [(this.Head()), (this.Table())];
+			return [(this?.Head()), (this?.Table())];
 		}
 		Head(){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this.head_cells()));
+			(obj.cells) = () => ((this?.head_cells()));
 			return obj;
 		}
 		Row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.minimal_height) = () => ((this.row_height()));
-			(obj.minimal_width) = () => ((this.minimal_width()));
-			(obj.cells) = () => ((this.cells(id)));
+			(obj.minimal_height) = () => ((this?.row_height()));
+			(obj.minimal_width) = () => ((this?.minimal_width()));
+			(obj.cells) = () => ((this?.cells(id)));
 			return obj;
 		}
 		Cell(id){
@@ -9198,29 +9516,29 @@ var $;
 		}
 		Cell_text(id){
 			const obj = new this.$.$mol_grid_cell();
-			(obj.sub) = () => ((this.cell_content_text(id)));
+			(obj.sub) = () => ((this?.cell_content_text(id)));
 			return obj;
 		}
 		Cell_number(id){
 			const obj = new this.$.$mol_grid_number();
-			(obj.sub) = () => ((this.cell_content_number(id)));
+			(obj.sub) = () => ((this?.cell_content_number(id)));
 			return obj;
 		}
 		Col_head(id){
 			const obj = new this.$.$mol_float();
 			(obj.dom_name) = () => ("th");
-			(obj.sub) = () => ((this.col_head_content(id)));
+			(obj.sub) = () => ((this?.col_head_content(id)));
 			return obj;
 		}
 		Cell_branch(id){
 			const obj = new this.$.$mol_check_expand();
-			(obj.level) = () => ((this.cell_level(id)));
-			(obj.label) = () => ((this.cell_content(id)));
-			(obj.expanded) = (next) => ((this.cell_expanded(id, next)));
+			(obj.level) = () => ((this?.cell_level(id)));
+			(obj.label) = () => ((this?.cell_content(id)));
+			(obj.expanded) = (next) => ((this?.cell_expanded(id, next)));
 			return obj;
 		}
 		Cell_content(id){
-			return [(this.Cell_dimmer(id))];
+			return [(this?.Cell_dimmer(id))];
 		}
 	};
 	($mol_mem(($.$mol_grid.prototype), "Table"));
@@ -9239,7 +9557,7 @@ var $;
 			return [];
 		}
 		sub(){
-			return (this.cells());
+			return (this?.cells());
 		}
 	};
 	($.$mol_grid_cell) = class $mol_grid_cell extends ($.$mol_view) {
@@ -9404,8 +9722,8 @@ var $;
 		}
 		Fallback(){
 			const obj = new this.$.$mol_link();
-			(obj.uri) = () => ((this.uri()));
-			(obj.sub) = () => ([(this.title())]);
+			(obj.uri) = () => ((this?.uri()));
+			(obj.sub) = () => ([(this?.title())]);
 			return obj;
 		}
 		uri_change(next){
@@ -9425,15 +9743,15 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"data": (this.uri()), 
-				"type": (this.mime())
+				"data": (this?.uri()), 
+				"type": (this?.mime())
 			};
 		}
 		sub(){
-			return [(this.Fallback())];
+			return [(this?.Fallback())];
 		}
 		message(){
-			return {"hashchange": (next) => (this.uri_change(next))};
+			return {"hashchange": (next) => (this?.uri_change(next))};
 		}
 	};
 	($mol_mem(($.$mol_embed_native.prototype), "Fallback"));
@@ -9585,9 +9903,9 @@ var $;
 				...(super.attr()), 
 				"data": null, 
 				"type": null, 
-				"src": (this.uri()), 
-				"srcdoc": (this.html()), 
-				"allow": (this.allow())
+				"src": (this?.uri()), 
+				"srcdoc": (this?.html()), 
+				"allow": (this?.allow())
 			};
 		}
 		fullscreen(){
@@ -9674,8 +9992,8 @@ var $;
 		}
 		Image(){
 			const obj = new this.$.$mol_image();
-			(obj.title) = () => ((this.title()));
-			(obj.uri) = () => ((this.video_preview()));
+			(obj.title) = () => ((this?.title()));
+			(obj.uri) = () => ((this?.video_preview()));
 			return obj;
 		}
 		Hint(){
@@ -9687,8 +10005,8 @@ var $;
 		}
 		Frame(){
 			const obj = new this.$.$mol_frame();
-			(obj.title) = () => ((this.title()));
-			(obj.uri) = () => ((this.video_embed()));
+			(obj.title) = () => ((this?.title()));
+			(obj.uri) = () => ((this?.video_embed()));
 			return obj;
 		}
 		uri(){
@@ -9698,13 +10016,13 @@ var $;
 			return "";
 		}
 		checked(next){
-			return (this.active(next));
+			return (this?.active(next));
 		}
 		sub(){
 			return [
-				(this.Image()), 
-				(this.Hint()), 
-				(this.Frame())
+				(this?.Image()), 
+				(this?.Hint()), 
+				(this?.Frame())
 			];
 		}
 	};
@@ -9774,20 +10092,20 @@ var $;
 		}
 		Image(){
 			const obj = new this.$.$mol_image();
-			(obj.title) = () => ((this.title()));
-			(obj.uri) = () => ((this.uri()));
+			(obj.title) = () => ((this?.title()));
+			(obj.uri) = () => ((this?.uri()));
 			return obj;
 		}
 		Object(){
 			const obj = new this.$.$mol_embed_native();
-			(obj.title) = () => ((this.title()));
-			(obj.uri) = () => ((this.uri()));
+			(obj.title) = () => ((this?.title()));
+			(obj.uri) = () => ((this?.uri()));
 			return obj;
 		}
 		Youtube(){
 			const obj = new this.$.$mol_embed_youtube();
-			(obj.title) = () => ((this.title()));
-			(obj.uri) = () => ((this.uri()));
+			(obj.title) = () => ((this?.title()));
+			(obj.uri) = () => ((this?.uri()));
 			return obj;
 		}
 	};
@@ -9876,7 +10194,7 @@ var $;
 			return true;
 		}
 		pre_sidebar_showed(){
-			return (this.code_sidebar_showed());
+			return (this?.code_sidebar_showed());
 		}
 		table_head_cells(id){
 			return [];
@@ -9933,27 +10251,27 @@ var $;
 			return "";
 		}
 		auto(){
-			return [(this.auto_scroll())];
+			return [(this?.auto_scroll())];
 		}
 		Paragraph(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ((this.block_content(id)));
+			(obj.sub) = () => ((this?.block_content(id)));
 			return obj;
 		}
 		Quote(id){
 			const obj = new this.$.$mol_text();
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.text) = () => ((this.quote_text(id)));
-			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.text) = () => ((this?.quote_text(id)));
+			(obj.highlight) = () => ((this?.highlight()));
 			(obj.auto_scroll) = () => (null);
 			return obj;
 		}
 		List(id){
 			const obj = new this.$.$mol_text_list();
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.type) = () => ((this.list_type(id)));
-			(obj.text) = () => ((this.list_text(id)));
-			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.type) = () => ((this?.list_type(id)));
+			(obj.text) = () => ((this?.list_text(id)));
+			(obj.highlight) = () => ((this?.highlight()));
 			return obj;
 		}
 		item_index(id){
@@ -9962,17 +10280,17 @@ var $;
 		Header(id){
 			const obj = new this.$.$mol_text_header();
 			(obj.minimal_height) = () => (40);
-			(obj.level) = () => ((this.header_level(id)));
-			(obj.content) = () => ((this.block_content(id)));
-			(obj.arg) = () => ((this.header_arg(id)));
+			(obj.level) = () => ((this?.header_level(id)));
+			(obj.content) = () => ((this?.block_content(id)));
+			(obj.arg) = () => ((this?.header_arg(id)));
 			return obj;
 		}
 		Pre(id){
 			const obj = new this.$.$mol_text_code();
-			(obj.text) = () => ((this.pre_text(id)));
-			(obj.highlight) = () => ((this.highlight()));
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.sidebar_showed) = () => ((this.pre_sidebar_showed()));
+			(obj.text) = () => ((this?.pre_text(id)));
+			(obj.highlight) = () => ((this?.highlight()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.sidebar_showed) = () => ((this?.pre_sidebar_showed()));
 			return obj;
 		}
 		Cut(id){
@@ -9982,80 +10300,80 @@ var $;
 		}
 		Table(id){
 			const obj = new this.$.$mol_grid();
-			(obj.head_cells) = () => ((this.table_head_cells(id)));
-			(obj.rows) = () => ((this.table_rows(id)));
+			(obj.head_cells) = () => ((this?.table_head_cells(id)));
+			(obj.rows) = () => ((this?.table_rows(id)));
 			return obj;
 		}
 		Table_row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this.table_cells(id)));
+			(obj.cells) = () => ((this?.table_cells(id)));
 			return obj;
 		}
 		Table_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
-			(obj.highlight) = () => ((this.highlight()));
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.text) = () => ((this.table_cell_text(id)));
+			(obj.highlight) = () => ((this?.highlight()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.text) = () => ((this?.table_cell_text(id)));
 			return obj;
 		}
 		Grid(id){
 			const obj = new this.$.$mol_grid();
-			(obj.rows) = () => ((this.grid_rows(id)));
+			(obj.rows) = () => ((this?.grid_rows(id)));
 			return obj;
 		}
 		Grid_row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this.grid_cells(id)));
+			(obj.cells) = () => ((this?.grid_cells(id)));
 			return obj;
 		}
 		Grid_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
-			(obj.highlight) = () => ((this.highlight()));
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.text) = () => ((this.grid_cell_text(id)));
+			(obj.highlight) = () => ((this?.highlight()));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.text) = () => ((this?.grid_cell_text(id)));
 			return obj;
 		}
 		String(id){
 			const obj = new this.$.$mol_dimmer();
 			(obj.dom_name) = () => ("span");
-			(obj.needle) = () => ((this.highlight()));
-			(obj.haystack) = () => ((this.line_text(id)));
+			(obj.needle) = () => ((this?.highlight()));
+			(obj.haystack) = () => ((this?.line_text(id)));
 			return obj;
 		}
 		Span(id){
 			const obj = new this.$.$mol_text_span();
 			(obj.dom_name) = () => ("span");
-			(obj.type) = () => ((this.line_type(id)));
-			(obj.sub) = () => ((this.line_content(id)));
+			(obj.type) = () => ((this?.line_type(id)));
+			(obj.sub) = () => ((this?.line_content(id)));
 			return obj;
 		}
 		Code_line(id){
 			const obj = new this.$.$mol_text_code_row();
 			(obj.numb_showed) = () => (false);
-			(obj.highlight) = () => ((this.highlight()));
-			(obj.text) = () => ((this.line_text(id)));
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.syntax) = () => ((this.code_syntax()));
+			(obj.highlight) = () => ((this?.highlight()));
+			(obj.text) = () => ((this?.line_text(id)));
+			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
+			(obj.syntax) = () => ((this?.code_syntax()));
 			return obj;
 		}
 		Link(id){
 			const obj = new this.$.$mol_link_iconed();
-			(obj.uri) = () => ((this.link_uri(id)));
-			(obj.content) = () => ((this.line_content(id)));
+			(obj.uri) = () => ((this?.link_uri(id)));
+			(obj.content) = () => ((this?.line_content(id)));
 			return obj;
 		}
 		Link_http(id){
 			const obj = new this.$.$mol_link_iconed();
-			(obj.uri) = () => ((this.link_uri(id)));
-			(obj.content) = () => ([(this.link_host(id))]);
+			(obj.uri) = () => ((this?.link_uri(id)));
+			(obj.content) = () => ([(this?.link_host(id))]);
 			return obj;
 		}
 		Embed(id){
 			const obj = new this.$.$mol_embed_any();
-			(obj.uri) = () => ((this.link_uri(id)));
-			(obj.title) = () => ((this.line_text(id)));
+			(obj.uri) = () => ((this?.link_uri(id)));
+			(obj.title) = () => ((this?.line_text(id)));
 			return obj;
 		}
 	};
@@ -10086,16 +10404,16 @@ var $;
 		}
 		Link(){
 			const obj = new this.$.$mol_link();
-			(obj.arg) = () => ((this.arg()));
+			(obj.arg) = () => ((this?.arg()));
 			(obj.hint) = () => ((this.$.$mol_locale.text("$mol_text_header_Link_hint")));
-			(obj.sub) = () => ((this.content()));
+			(obj.sub) = () => ((this?.content()));
 			return obj;
 		}
 		level(){
 			return 1;
 		}
 		sub(){
-			return [(this.Link())];
+			return [(this?.Link())];
 		}
 	};
 	($mol_mem(($.$mol_text_header.prototype), "Link"));
@@ -10107,7 +10425,7 @@ var $;
 			return "span";
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_type": (this.type())};
+			return {...(super.attr()), "mol_text_type": (this?.type())};
 		}
 	};
 
@@ -10436,8 +10754,8 @@ var $;
 		}
 		Book(){
 			const obj = new this.$.$mol_book2();
-			(obj.plugins) = () => ([(this.Theme())]);
-			(obj.pages) = () => ((this.pages()));
+			(obj.plugins) = () => ([(this?.Theme())]);
+			(obj.pages) = () => ((this?.pages()));
 			(obj.Placeholder) = () => (null);
 			return obj;
 		}
@@ -10452,34 +10770,41 @@ var $;
 			return obj;
 		}
 		Upload_icon(){
-			return (this.Upload().Icon());
+			return (this?.Upload()?.Icon());
 		}
 		Upload_native(){
-			return (this.Upload().Native());
+			return (this?.Upload()?.Native());
+		}
+		files_read(next){
+			if(next !== undefined) return next;
+			return null;
 		}
 		Upload(){
 			const obj = new this.$.$mol_button_open();
+			(obj.files) = (next) => ((this?.files_read(next)));
 			(obj.sub) = () => ([
-				(this.Upload_icon()), 
-				(this.Upload_native()), 
+				(this?.Upload_icon()), 
+				(this?.Upload_native()), 
 				"Choose file"
 			]);
 			return obj;
 		}
 		Data_text(){
 			const obj = new this.$.$mol_textarea();
-			(obj.value) = (next) => ((this.data_str(next)));
+			(obj.value) = (next) => ((this?.data_str(next)));
 			(obj.hint) = () => ("or paste here...");
 			return obj;
 		}
-		menu_body(){
-			return [(this.Upload()), (this.Data_text())];
+		Body(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.Upload()), (this?.Data_text())]);
+			return obj;
 		}
 		Menu(){
 			const obj = new this.$.$mol_page();
 			(obj.title) = () => ("Crystal structure web-viewer");
-			(obj.tools) = () => ([(this.Source()), (this.Lights())]);
-			(obj.body) = () => ((this.menu_body()));
+			(obj.tools) = () => ([(this?.Source()), (this?.Lights())]);
+			(obj.body) = () => ([(this?.Body())]);
 			return obj;
 		}
 		data_str(next){
@@ -10487,14 +10812,14 @@ var $;
 			return "";
 		}
 		vibrate(next){
-			return (this.Player().vibrate(next));
+			return (this?.Player()?.vibrate(next));
 		}
 		unvibrate(){
-			return (this.Player().unvibrate());
+			return (this?.Player()?.unvibrate());
 		}
 		Player(){
 			const obj = new this.$.$mpds_cifplayer_player();
-			(obj.data) = () => ((this.data_str()));
+			(obj.data) = () => ((this?.data_str()));
 			return obj;
 		}
 		Start_message(){
@@ -10509,21 +10834,21 @@ var $;
 		Paste_example(){
 			const obj = new this.$.$mol_button_minor();
 			(obj.title) = () => ("Show example");
-			(obj.click) = (next) => ((this.paste_example(next)));
+			(obj.click) = (next) => ((this?.paste_example(next)));
 			return obj;
 		}
 		receive(next){
-			return (this.drop_file(next));
+			return (this?.drop_file(next));
 		}
 		Sub(){
-			return (this.Book());
+			return (this?.Book());
 		}
 		pages(){
-			return [(this.Menu()), (this.Player())];
+			return [(this?.Menu()), (this?.Player())];
 		}
 		Start(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.Start_message()), (this.Paste_example())]);
+			(obj.sub) = () => ([(this?.Start_message()), (this?.Paste_example())]);
 			return obj;
 		}
 	};
@@ -10532,8 +10857,10 @@ var $;
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Book"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Source"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Lights"));
+	($mol_mem(($.$mpds_cifplayer_app.prototype), "files_read"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Upload"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Data_text"));
+	($mol_mem(($.$mpds_cifplayer_app.prototype), "Body"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Menu"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "data_str"));
 	($mol_mem(($.$mpds_cifplayer_app.prototype), "Player"));
@@ -10552,12 +10879,12 @@ var $;
 			return null;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_list_type": (this.type())};
+			return {...(super.attr()), "mol_text_list_type": (this?.type())};
 		}
 		Paragraph(id){
 			const obj = new this.$.$mol_text_list_item();
-			(obj.index) = () => ((this.item_index(id)));
-			(obj.sub) = () => ((this.block_content(id)));
+			(obj.index) = () => ((this?.item_index(id)));
+			(obj.sub) = () => ((this?.block_content(id)));
 			return obj;
 		}
 	};
@@ -10567,7 +10894,7 @@ var $;
 			return 0;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_list_item_index": (this.index())};
+			return {...(super.attr()), "mol_text_list_item_index": (this?.index())};
 		}
 	};
 
@@ -10621,11 +10948,20 @@ var $;
                 Body_content: {
                     gap: $mol_gap.block,
                     maxWidth: '25rem',
+                    flex: {
+                        direction: 'row',
+                    },
                 },
                 Head: {
                     justify: {
                         content: 'flex-start'
                     },
+                },
+            },
+            Body: {
+                flex: {
+                    direction: 'column',
+                    grow: 1,
                 },
             },
             Player: {
@@ -11892,15 +12228,6 @@ var $;
 ;
 "use strict";
 var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_after_frame = $mol_after_mock_commmon;
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
 (function ($) {
     $mol_test({
         'Sync execution'() {
@@ -12878,6 +13205,15 @@ var $;
             $mol_assert_equal($mol_key(/./), '"/./"');
             $mol_assert_equal($mol_key(/\./gimsu), '"/\\\\./gimsu"');
         },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_frame = $mol_after_mock_commmon;
     });
 })($ || ($ = {}));
 
