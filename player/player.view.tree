@@ -1,4 +1,4 @@
-$mpds_cifplayer_player $mol_view
+$optimade_cifplayer_player $mol_view
 	data? null
 	externals? null
 	atom_radius_scale 0.6
@@ -23,7 +23,7 @@ $mpds_cifplayer_player $mol_view
 	overlay_box* null
 	-
 	sub /
-		<= Three $mpds_cifplayer_lib_three_view
+		<= Three $optimade_cifplayer_lib_three_view
 			scene => scene
 			controls => controls
 			controls_target <= controls_target null

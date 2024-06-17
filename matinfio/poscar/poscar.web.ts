@@ -1,12 +1,12 @@
 namespace $ {
 
-	const math = $mpds_cifplayer_lib_math
+	const math = $optimade_cifplayer_lib_math
 
 	const is_numeric = function( v: any ) {
 		return !isNaN( parseFloat( v ) ) && isFinite( v )
 	}
 
-	export function $mpds_cifplayer_matinfio_poscar_to_obj( this: $, str: string ) {
+	export function $optimade_cifplayer_matinfio_poscar_to_obj( this: $, str: string ) {
 		var lines = str.toString().replace( /(\r\n|\r)/gm, "\n" ).split( "\n" ),
 			cell_matrix = [],
 			atoms = [],
@@ -28,7 +28,7 @@ namespace $ {
 		for( let i = 0; i < lines.length; i++ ) {
 			if( i == 0 ) {
 				tryarr = lines[ i ].split( " " ).filter( function( o ) { return o ? true : false } )
-				periodic_table = Object.keys( $mpds_cifplayer_matinfio_chemical_elements.AseRadii )
+				periodic_table = Object.keys( $optimade_cifplayer_matinfio_chemical_elements.AseRadii )
 				for( let k = 0; k < tryarr.length; k++ ) {
 					if( periodic_table.indexOf( tryarr[ k ] ) == -1 ) continue loop_poscar_parse
 				}
@@ -85,7 +85,7 @@ namespace $ {
 					break
 				else if( line_data.length == 3 ) elems.length ? line_data.push( elems[ atidx ] ) : line_data.push( 'Xx' )
 				else if( line_data.length < 3 ) {
-					this.$mpds_cifplayer_matinfio_log.error( "Error: unknown atom definition" )
+					this.$optimade_cifplayer_matinfio_log.error( "Error: unknown atom definition" )
 					return false
 				}
 
@@ -95,7 +95,7 @@ namespace $ {
 				}
 				//console.log(atom);
 				if( !atom.symbol ) {
-					this.$mpds_cifplayer_matinfio_log.error( "Error: unknown data lines order" )
+					this.$optimade_cifplayer_matinfio_log.error( "Error: unknown data lines order" )
 					return false
 				}
 				atom.symbol = atom.symbol.replace( /\W+/, '' ).replace( /\d+/, '' )
@@ -115,7 +115,7 @@ namespace $ {
 				'cartesian': cartesian
 			}
 		else {
-			this.$mpds_cifplayer_matinfio_log.error( "Error: unexpected POSCAR format" )
+			this.$optimade_cifplayer_matinfio_log.error( "Error: unexpected POSCAR format" )
 			return false
 		}
 	}

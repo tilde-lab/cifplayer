@@ -1,6 +1,6 @@
 namespace $.$$ {
 
-	$mol_style_define( $mpds_cifplayer_player, {
+	$mol_style_define( $optimade_cifplayer_player, {
 
 		background: {
 			color: $mol_theme.back,

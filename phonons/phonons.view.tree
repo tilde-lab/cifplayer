@@ -1,4 +1,4 @@
-$mpds_cifplayer_phonons $mpds_cifplayer_app
+$optimade_cifplayer_phonons $optimade_cifplayer_app
 	auto /
 		<= set_example null
 	menu_body /

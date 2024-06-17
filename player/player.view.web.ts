@@ -1,14 +1,14 @@
 namespace $.$$ {
 
-	const THREE = $mpds_cifplayer_lib_three
+	const THREE = $optimade_cifplayer_lib_three
 	type THREE = typeof THREE
 
-	const TWEEN = $mpds_cifplayer_lib_tween.TWEEN
+	const TWEEN = $optimade_cifplayer_lib_tween.TWEEN
 	type TWEEN = typeof TWEEN
 
 	const phonon_amp: number = 6
 
-	export class $mpds_cifplayer_player extends $.$mpds_cifplayer_player {
+	export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
 
 		theme() {
 			return '$mol_theme_' + (this.externals()?.theme || 'dark')
@@ -114,7 +114,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		structure_3d_data() {
-			return new $mpds_cifplayer_matinfio( this.data() ).player()
+			return new $optimade_cifplayer_matinfio( this.data() ).player()
 		}
 
 		@ $mol_mem_key
@@ -174,7 +174,7 @@ namespace $.$$ {
 		spacegroup() {
 			const { sg_name, ng_name } = this.structure_3d_data()
 
-			return $mpds_cifplayer_matinfio_spacegroup.by_name_or_num( sg_name, ng_name )
+			return $optimade_cifplayer_matinfio_spacegroup.by_name_or_num( sg_name, ng_name )
 		}
 
 		@ $mol_mem
@@ -239,7 +239,7 @@ namespace $.$$ {
 
 			if( !structure.cell_matrix ) return structure.atoms
 
-			const atoms: $mpds_cifplayer_matinfio_internal_obj_atom[] = []
+			const atoms: $optimade_cifplayer_matinfio_internal_obj_atom[] = []
 
 			const symmetries_enabled = this.symmetry_list().filter( name => this.symmetry_visible( name ) )
 
@@ -575,9 +575,9 @@ namespace $.$$ {
 
 	}
 
-	$mol_view_component( $mpds_cifplayer_player )
+	$mol_view_component( $optimade_cifplayer_player )
 
-	function is_overlap( check: $mpds_cifplayer_matinfio_internal_obj_atom, atoms: $mpds_cifplayer_matinfio_internal_obj_atom[], delta: number ) {
+	function is_overlap( check: $optimade_cifplayer_matinfio_internal_obj_atom, atoms: $optimade_cifplayer_matinfio_internal_obj_atom[], delta: number ) {
 		for (const atom of atoms) {
 			if ( check.x < atom.x - delta || check.x > atom.x + delta ) continue
 			if ( check.y < atom.y - delta || check.y > atom.y + delta ) continue

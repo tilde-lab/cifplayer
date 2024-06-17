@@ -1,12 +1,12 @@
 namespace $ {
 
-	const math = $mpds_cifplayer_lib_math
+	const math = $optimade_cifplayer_lib_math
 
 	function unit( vec: number[] ): number[] {
 		return math.divide( vec, math.norm( vec ) )
 	}
 
-	export type $mpds_cifplayer_matinfio_cell = {
+	export type $optimade_cifplayer_matinfio_cell = {
 		a: number,
 		b: number,
 		c: number,
@@ -16,7 +16,7 @@ namespace $ {
 	}
 
 	/** Crystalline cell parameters to 3x3 matrix */
-	export function $mpds_cifplayer_matinfio_cell_to_matrix( this : $, cell: $mpds_cifplayer_matinfio_cell ): number[][] {
+	export function $optimade_cifplayer_matinfio_cell_to_matrix( this : $, cell: $optimade_cifplayer_matinfio_cell ): number[][] {
 		const { a, b, c, alpha, beta, gamma } = cell
 		if( !a || !b || !c || !alpha || !beta || !gamma ) {
 			return this.$mol_fail( new $mol_data_error('Error: invalid cell definition') )
@@ -43,7 +43,7 @@ namespace $ {
 	}
 
 	/** 3x3 matrix to crystalline cell parameters */
-	export function $mpds_cifplayer_matinfio_cell_params_from_matrix( matrix: number[][] ) {
+	export function $optimade_cifplayer_matinfio_cell_params_from_matrix( matrix: number[][] ) {
 		const norms: number[] = matrix.map( vec => math.norm( vec ) )
 		const angles = []
 		let j = -1
