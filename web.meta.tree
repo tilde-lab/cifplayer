@@ -1,28 +1,29 @@
 \/
+	pack bun git \https://github.com/spleekz/mam_bun.git
 	pack hyoo git \https://github.com/hyoo-ru/mam_hyoo.git
 	pack jin git \https://github.com/nin-jin/mam_jin.git
-	pack node git \https://github.com/hyoo-ru/mam_node.git
-	pack mol git \https://github.com/hyoo-ru/mam_mol.git
 	pack lib git \https://github.com/hyoo-ru/mam_lib.git
+	pack mol git \https://github.com/hyoo-ru/mam_mol.git
+	pack mpds git \https://github.com/mpds-io/mam_mpds.git
+	pack node git \https://github.com/hyoo-ru/mam_node.git
+	pack optimade git \https://github.com/mpds-io/mam_optimade.git
 	pack piterjs git \https://github.com/piterjs/piterjs.git
 	pack psb git \https://github.com/MolDevHack/psb.git
-	pack mpds git \https://github.com/mpds-io/mam_mpds
-	pack bun git \https://github.com/spleekz/mam_bun
 	pack yuf git \https://github.com/zerkalica/yuf.git
-\/mpds
-	pack visavis git \https://github.com/mpds-io/visavis
+\/optimade
 	pack cifplayer git \https://github.com/tilde-lab/cifplayer
+	pack tmdne git \https://github.com/stan-donarise/this-material-does-not-exist
 \/mol
 	pack icon git \https://github.com/nin-jin/mol_icon.git
 \/mol/view
 	include \/mol/view/tree/test
-\/mpds/cifplayer/lib/three
-	require \/mpds/cifplayer/lib/three/_three.js
-\/mpds/cifplayer/lib/tween
-	require \/mpds/cifplayer/lib/tween/_tween.js
-\/mpds/cifplayer/lib/math
-	require \/mpds/cifplayer/lib/math/_math.js
-\/mpds/cifplayer/lib/spacegroups
-	require \/mpds/cifplayer/lib/spacegroups/_spacegroups.js
-\/mpds/cifplayer/player
-	deploy \/mpds/cifplayer/player/spacegroup.tree
+\/optimade/cifplayer/lib/three
+	require \/optimade/cifplayer/lib/three/_three.js
+\/optimade/cifplayer/lib/tween
+	require \/optimade/cifplayer/lib/tween/_tween.js
+\/optimade/cifplayer/lib/math
+	require \/optimade/cifplayer/lib/math/_math.js
+\/optimade/cifplayer/lib/spacegroups
+	require \/optimade/cifplayer/lib/spacegroups/_spacegroups.js
+\/optimade/cifplayer/player
+	deploy \/optimade/cifplayer/player/spacegroup.tree

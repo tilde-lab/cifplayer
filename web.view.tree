@@ -438,7 +438,7 @@ $mol_page $mol_view
 			dom_name \footer
 			sub <= foot /$mol_view
 
-$mpds_cifplayer_lib_three_view $mol_view
+$optimade_cifplayer_lib_three_view $mol_view
 	sub /
 		<= canvas null
 	scene null
@@ -578,7 +578,7 @@ $mol_card $mol_list
 			sub /
 				<= status_text <= status \
 
-$mpds_cifplayer_player $mol_view
+$optimade_cifplayer_player $mol_view
 	data? null
 	externals? null
 	atom_radius_scale 0.6
@@ -603,7 +603,7 @@ $mpds_cifplayer_player $mol_view
 	overlay_box* null
 	-
 	sub /
-		<= Three $mpds_cifplayer_lib_three_view
+		<= Three $optimade_cifplayer_lib_three_view
 			scene => scene
 			controls => controls
 			controls_target <= controls_target null
@@ -681,6 +681,7 @@ $mpds_cifplayer_player $mol_view
 						<= Zoom_down $mol_button_minor
 							click? <=> zoom_down? null
 							sub / <= Zoom_down_icon $mol_icon_magnify_minus_outline
+				<= Lights $mol_lights_toggle
 		<= Overlays $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch
@@ -955,7 +956,7 @@ $mol_text_list_item $mol_paragraph
 		^
 		mol_text_list_item_index <= index 0
 
-$mpds_cifplayer_app $mol_drop
+$optimade_cifplayer_app $mol_drop
 	receive? <=> drop_file? null
 	Sub <= Book $mol_book2
 		plugins /
@@ -982,7 +983,7 @@ $mpds_cifplayer_app $mol_drop
 				<= Data_text $mol_textarea
 					value? <=> data_str?
 					hint \or paste here...
-		<= Player $mpds_cifplayer_player
+		<= Player $optimade_cifplayer_player
 			data <= data_str? \
 			vibrate? => vibrate?
 			unvibrate => unvibrate

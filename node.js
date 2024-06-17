@@ -3778,6 +3778,8 @@ var $;
             return this.absolute($node.path.resolve(this.base, path).replace(/\\/g, '/'));
         }
         watcher() {
+            if (/\/\./.test(this.path()))
+                return { destructor() { } };
             const watcher = $node.chokidar.watch(this.path(), {
                 persistent: true,
                 ignored: /(^\.|___$)/,
@@ -7759,7 +7761,7 @@ var $;
 ;
 
 var $node = $node || {}
-void function( module ) { var exports = module.exports = this; function require( id ) { return $node[ id.replace( /^.\// , "../mpds/cifplayer/lib/three/" ) ] }; 
+void function( module ) { var exports = module.exports = this; function require( id ) { return $node[ id.replace( /^.\// , "../optimade/cifplayer/lib/three/" ) ] }; 
 ;
 "use strict";
 /**
@@ -7770,9 +7772,9 @@ void function( module ) { var exports = module.exports = this; function require(
 
 ;
 
-$node[ "../mpds/cifplayer/lib/three/_three" ] = $node[ "../mpds/cifplayer/lib/three/_three.js" ] = module.exports }.call( {} , {} )
+$node[ "../optimade/cifplayer/lib/three/_three" ] = $node[ "../optimade/cifplayer/lib/three/_three.js" ] = module.exports }.call( {} , {} )
 ;
-	($.$mpds_cifplayer_lib_three_view) = class $mpds_cifplayer_lib_three_view extends ($.$mol_view) {
+	($.$optimade_cifplayer_lib_three_view) = class $optimade_cifplayer_lib_three_view extends ($.$mol_view) {
 		canvas(){
 			return null;
 		}
@@ -7819,8 +7821,8 @@ $node[ "../mpds/cifplayer/lib/three/_three" ] = $node[ "../mpds/cifplayer/lib/th
 			];
 		}
 	};
-	($mol_mem_key(($.$mpds_cifplayer_lib_three_view.prototype), "new_object"));
-	($mol_mem_key(($.$mpds_cifplayer_lib_three_view.prototype), "object"));
+	($mol_mem_key(($.$optimade_cifplayer_lib_three_view.prototype), "new_object"));
+	($mol_mem_key(($.$optimade_cifplayer_lib_three_view.prototype), "object"));
 
 
 ;
@@ -7832,7 +7834,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($mpds_cifplayer_lib_three_view, {
+        $mol_style_define($optimade_cifplayer_lib_three_view, {
             flex: {
                 grow: 1,
                 basis: '20rem',
@@ -8698,7 +8700,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mpds_cifplayer_player) = class $mpds_cifplayer_player extends ($.$mol_view) {
+	($.$optimade_cifplayer_player) = class $optimade_cifplayer_player extends ($.$mol_view) {
 		spread_a(next){
 			if(next !== undefined) return next;
 			return 1;
@@ -8748,7 +8750,7 @@ var $;
 			return null;
 		}
 		Three(){
-			const obj = new this.$.$mpds_cifplayer_lib_three_view();
+			const obj = new this.$.$optimade_cifplayer_lib_three_view();
 			(obj.controls_target) = () => ((this?.controls_target()));
 			(obj.on_render) = () => ((this?.on_render()));
 			return obj;
@@ -9009,9 +9011,17 @@ var $;
 			(obj.sub) = () => ([(this?.Zoom_up()), (this?.Zoom_down())]);
 			return obj;
 		}
+		Lights(){
+			const obj = new this.$.$mol_lights_toggle();
+			return obj;
+		}
 		Tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.Fullscreen()), (this?.Zoom_section())]);
+			(obj.sub) = () => ([
+				(this?.Fullscreen()), 
+				(this?.Zoom_section()), 
+				(this?.Lights())
+			]);
 			return obj;
 		}
 		overlay(next){
@@ -9154,62 +9164,63 @@ var $;
 			return {...(super.attr()), "fullscreen": (this?.fullscreen())};
 		}
 	};
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_a"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_b"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "spread_c"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Three"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_a"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_b"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_c"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_alpha"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_beta"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Descr_gamma"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Info"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Sym_icon"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "toogle_all_symmetry"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Toogle_all"));
-	($mol_mem_key(($.$mpds_cifplayer_player.prototype), "symmetry_visible"));
-	($mol_mem_key(($.$mpds_cifplayer_player.prototype), "Sym_check"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Sym_checks"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Sym_list"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Symlabel"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_a"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_a"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_b"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_b"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_label_c"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_c"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Spread_cells"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "centered"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Center_icon"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Center"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Left_panel"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "fullscreen"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Expand_icon"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Fullscreen"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "zoom_up"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Zoom_up_icon"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Zoom_up"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "zoom_down"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Zoom_down_icon"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Zoom_down"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Zoom_section"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Tools"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "overlay"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Switch_overlay"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Overlays"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message_card"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "Message"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "data"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "externals"));
-	($mol_mem(($.$mpds_cifplayer_player.prototype), "vibrate"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Three"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_alpha"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_beta"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_gamma"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Info"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Sym_icon"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "toogle_all_symmetry"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Toogle_all"));
+	($mol_mem_key(($.$optimade_cifplayer_player.prototype), "symmetry_visible"));
+	($mol_mem_key(($.$optimade_cifplayer_player.prototype), "Sym_check"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Sym_checks"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Sym_list"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Symlabel"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_cells"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "centered"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center_icon"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Left_panel"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "fullscreen"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Expand_icon"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Fullscreen"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "zoom_up"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_up_icon"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_up"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "zoom_down"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_down_icon"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_down"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_section"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Lights"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Tools"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "overlay"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Switch_overlay"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Overlays"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Message_card"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Message"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "data"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "externals"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibrate"));
 
 
 ;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mpds/cifplayer/player/player.view.css", "[mol_theme=\"$mol_theme_light\"] {\n\t--mol_theme_back: white;\n}\n");
+    $mol_style_attach("optimade/cifplayer/player/player.view.css", "[mol_theme=\"$mol_theme_light\"] {\n\t--mol_theme_back: white;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -9221,7 +9232,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($mpds_cifplayer_player, {
+        $mol_style_define($optimade_cifplayer_player, {
             background: {
                 color: $mol_theme.back,
             },
@@ -9313,7 +9324,7 @@ var $;
             Zoom_section: {
                 padding: {
                     top: '2rem',
-                    bottom: '2rem',
+                    bottom: '1rem',
                 },
             },
             Zoom_up_icon: {
@@ -10759,7 +10770,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mpds_cifplayer_app) = class $mpds_cifplayer_app extends ($.$mol_drop) {
+	($.$optimade_cifplayer_app) = class $optimade_cifplayer_app extends ($.$mol_drop) {
 		drop_file(next){
 			if(next !== undefined) return next;
 			return null;
@@ -10834,7 +10845,7 @@ var $;
 			return (this?.Player()?.unvibrate());
 		}
 		Player(){
-			const obj = new this.$.$mpds_cifplayer_player();
+			const obj = new this.$.$optimade_cifplayer_player();
 			(obj.data) = () => ((this?.data_str()));
 			return obj;
 		}
@@ -10868,22 +10879,22 @@ var $;
 			return obj;
 		}
 	};
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "drop_file"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Theme"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Book"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Source"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Lights"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "files_read"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Upload"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Data_text"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Body"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Menu"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "data_str"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Player"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Start_message"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "paste_example"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Paste_example"));
-	($mol_mem(($.$mpds_cifplayer_app.prototype), "Start"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "drop_file"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Theme"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Book"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Source"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Lights"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "files_read"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Upload"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Data_text"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Body"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Menu"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "data_str"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Player"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Start_message"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "paste_example"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Paste_example"));
+	($mol_mem(($.$optimade_cifplayer_app.prototype), "Start"));
 
 
 ;
@@ -10934,7 +10945,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($mpds_cifplayer_app, {
+        $mol_style_define($optimade_cifplayer_app, {
             contain: 'none',
             '[mol_drop_status]': {
                 drag: {

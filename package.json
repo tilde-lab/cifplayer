@@ -1,5 +1,5 @@
 {
-  "name": "mpds_cifplayer_app",
+  "name": "optimade_cifplayer_app",
   "version": "0.0.1",
   "exports": {
     "node": {
@@ -15,9 +15,9 @@
   "browser": "./web.js",
   "types": "./web.d.ts",
   "keywords": [
-    "$mpds_cifplayer_app",
-    "$mpds_cifplayer",
-    "$mpds",
+    "$optimade_cifplayer_app",
+    "$optimade_cifplayer",
+    "$optimade",
     "$mol_drop",
     "$mol",
     "$mol_ghost",
@@ -187,10 +187,10 @@
     "$mol_string",
     "$mol_hotkey",
     "$mol_page",
-    "$mpds_cifplayer_player",
-    "$mpds_cifplayer_lib_three_view",
-    "$mpds_cifplayer_lib_three",
-    "$mpds_cifplayer_lib",
+    "$optimade_cifplayer_player",
+    "$optimade_cifplayer_lib_three_view",
+    "$optimade_cifplayer_lib_three",
+    "$optimade_cifplayer_lib",
     "$mol_icon_eye_check",
     "$mol_icon_eye",
     "$mol_check_box",
