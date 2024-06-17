@@ -101,6 +101,7 @@ $optimade_cifplayer_player $mol_view
 						<= Zoom_down $mol_button_minor
 							click? <=> zoom_down? null
 							sub / <= Zoom_down_icon $mol_icon_magnify_minus_outline
+				<= Lights $mol_lights_toggle
 		<= Overlays $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch

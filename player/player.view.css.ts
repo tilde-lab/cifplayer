@@ -109,7 +109,7 @@ namespace $.$$ {
 		Zoom_section: {
 			padding: {
 				top: '2rem',
-				bottom: '2rem',
+				bottom: '1rem',
 			},
 		},
 
