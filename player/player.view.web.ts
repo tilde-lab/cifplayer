@@ -284,6 +284,8 @@ namespace $.$$ {
 			} )
 		}
 
+		atom_width_segments = 32
+		atom_height_segments = 16
 		@ $mol_mem_key
 		atom_box( fract_translate: [ number, number, number ] ) {
 			const atom_box = this.Three().new_object( `atom_box` + fract_translate.toString(), ()=> new THREE.Object3D() )
@@ -291,7 +293,7 @@ namespace $.$$ {
 			this.visible_atoms_translated( fract_translate ).forEach( data => {
 
 				const atom = new THREE.Mesh(
-					new THREE.SphereGeometry( data.r * this.atom_radius_scale(), 10, 8 ),
+					new THREE.SphereGeometry( data.r * this.atom_radius_scale(), this.atom_width_segments, this.atom_height_segments ),
 					new THREE.MeshLambertMaterial( { color: data.c } )
 				)
 				atom.position.set( data.x, data.y, data.z )
@@ -366,7 +368,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		dir_light(): InstanceType< THREE["DirectionalLight"] >  {
-			const intensity = this.$.$mol_lights() ? 1.5 : 0.5
+			const intensity = this.$.$mol_lights() ? 2.2 : 0.7
 
 			const dir_light = this.Three().object( 'dir_light', ()=> new THREE.DirectionalLight( 0xffffff, intensity ) )
 			dir_light.intensity = intensity
@@ -377,7 +379,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		ambient_light(): InstanceType< THREE["AmbientLight"] > {
-			const intensity = this.$.$mol_lights() ? 5 : 1.5
+			const intensity = this.$.$mol_lights() ? 1.8 : 0.6
 
 			const ambient_light = this.Three().object( 'ambient_light', ()=> new THREE.AmbientLight( 0x999999, intensity ) )
 			ambient_light.intensity = intensity
@@ -470,6 +472,7 @@ namespace $.$$ {
 		tweens = new TWEEN.Group()
 		on_render() {
 			this.tweens.update()
+			this.dir_light().position.copy( this.camera().position )
 		}
 
 		@ $mol_action
