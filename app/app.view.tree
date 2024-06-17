@@ -1,4 +1,4 @@
-$mpds_cifplayer_app $mol_drop
+$optimade_cifplayer_app $mol_drop
 	receive? <=> drop_file? null
 	Sub <= Book $mol_book2
 		plugins /
@@ -25,7 +25,7 @@ $mpds_cifplayer_app $mol_drop
 				<= Data_text $mol_textarea
 					value? <=> data_str?
 					hint \or paste here...
-		<= Player $mpds_cifplayer_player
+		<= Player $optimade_cifplayer_player
 			data <= data_str? \
 			vibrate? => vibrate?
 			unvibrate => unvibrate

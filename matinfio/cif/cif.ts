@@ -1,13 +1,13 @@
 namespace $ {
 
-	const math = $mpds_cifplayer_lib_math
+	const math = $optimade_cifplayer_lib_math
 
-	export function $mpds_cifplayer_matinfio_cif_to_obj( this: $, str: string ): $mpds_cifplayer_matinfio_internal_obj {
+	export function $optimade_cifplayer_matinfio_cif_to_obj( this: $, str: string ): $optimade_cifplayer_matinfio_internal_obj {
 		const structures = []
 		let symops = []
 		let atprop_seq: any[] = []
 		let lines = str.toString().replace( /(\r\n|\r)/gm, "\n" ).split( "\n" )
-		let cur_structure: any | $mpds_cifplayer_matinfio_internal_obj = {
+		let cur_structure: any | $optimade_cifplayer_matinfio_internal_obj = {
 			cell: {},
 			atoms: [],
 			cartesian: false,
@@ -45,7 +45,7 @@ namespace $ {
 		const chem_element_idxs = [ 0, 1 ]
 		let overlayed_idxs = []
 
-		for( let oprop in $mpds_cifplayer_matinfio_custom_atom_loop_props ) {
+		for( let oprop in $optimade_cifplayer_matinfio_custom_atom_loop_props ) {
 			overlayed_idxs.push( loop_vals.length )
 			loop_vals.push( oprop )
 		}
@@ -127,7 +127,7 @@ namespace $ {
 					}
 					line_data = cur_line.replace( /\t/g, " " ).split( " " ).filter( function( o ) { return o ? true : false } )
 
-					const atom: any | $mpds_cifplayer_matinfio_internal_obj_atom = { overlays: {} }
+					const atom: any | $optimade_cifplayer_matinfio_internal_obj_atom = { overlays: {} }
 
 					for( let j = 0; j < atprop_seq.length; j++ ) { // TODO handle in-loop mismatch
 						const atom_index = loop_vals.indexOf( atprop_seq[ j ] )
@@ -148,7 +148,7 @@ namespace $ {
 							atom.overlays.label = atom.label
 							if( !atom.symbol ) atom.symbol = atom.label.replace( /[0-9]/g, '' )
 						}
-						if( !( $mpds_cifplayer_matinfio_chemical_elements.JmolColors as any )[ atom.symbol ]
+						if( !( $optimade_cifplayer_matinfio_chemical_elements.JmolColors as any )[ atom.symbol ]
 							&& atom.symbol
 							&& atom.symbol.length > 1
 						) {
@@ -187,7 +187,7 @@ namespace $ {
 
 
 	/** Convert internal repr into CIF */
-	export function $mpds_cifplayer_matinfio_cif_from_obj( this: $, crystal: any ) {
+	export function $optimade_cifplayer_matinfio_cif_from_obj( this: $, crystal: any ) {
 
 		let cif_str = "data_matinfio\n"
 		let cell_abc
@@ -195,10 +195,10 @@ namespace $ {
 
 		if( Object.keys( crystal.cell ).length == 6 ) {
 			cell_abc = crystal.cell
-			cell_mat = this.$mpds_cifplayer_matinfio_cell_to_matrix( crystal.cell )
+			cell_mat = this.$optimade_cifplayer_matinfio_cell_to_matrix( crystal.cell )
 			// cell_mat = this.cell2vec( ...( crystal.cell as [ number, number, number, number, number, number ] ) )
 		} else {
-			cell_abc = $mpds_cifplayer_matinfio_cell_params_from_matrix( crystal.cell )
+			cell_abc = $optimade_cifplayer_matinfio_cell_params_from_matrix( crystal.cell )
 			cell_mat = crystal.cell
 		}
 		cif_str += "_cell_length_a    " + cell_abc[ 0 ].toFixed( 6 ) + "\n"

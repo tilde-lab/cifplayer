@@ -1,6 +1,6 @@
 namespace $ {
 
-	export const $mpds_cifplayer_matinfio_chemical_elements = {
+	export const $optimade_cifplayer_matinfio_chemical_elements = {
 		JmolColors: { "D": "#FFFFC0", "H": "#FFFFFF", "He": "#D9FFFF", "Li": "#CC80FF", "Be": "#C2FF00", "B": "#FFB5B5", "C": "#909090", "N": "#3050F8", "O": "#FF0D0D", "F": "#90E050", "Ne": "#B3E3F5", "Na": "#AB5CF2", "Mg": "#8AFF00", "Al": "#BFA6A6", "Si": "#F0C8A0", "P": "#FF8000", "S": "#FFFF30", "Cl": "#1FF01F", "Ar": "#80D1E3", "K": "#8F40D4", "Ca": "#3DFF00", "Sc": "#E6E6E6", "Ti": "#BFC2C7", "V": "#A6A6AB", "Cr": "#8A99C7", "Mn": "#9C7AC7", "Fe": "#E06633", "Co": "#F090A0", "Ni": "#50D050", "Cu": "#C88033", "Zn": "#7D80B0", "Ga": "#C28F8F", "Ge": "#668F8F", "As": "#BD80E3", "Se": "#FFA100", "Br": "#A62929", "Kr": "#5CB8D1", "Rb": "#702EB0", "Sr": "#00FF00", "Y": "#94FFFF", "Zr": "#94E0E0", "Nb": "#73C2C9", "Mo": "#54B5B5", "Tc": "#3B9E9E", "Ru": "#248F8F", "Rh": "#0A7D8C", "Pd": "#006985", "Ag": "#C0C0C0", "Cd": "#FFD98F", "In": "#A67573", "Sn": "#668080", "Sb": "#9E63B5", "Te": "#D47A00", "I": "#940094", "Xe": "#429EB0", "Cs": "#57178F", "Ba": "#00C900", "La": "#70D4FF", "Ce": "#FFFFC7", "Pr": "#D9FFC7", "Nd": "#C7FFC7", "Pm": "#A3FFC7", "Sm": "#8FFFC7", "Eu": "#61FFC7", "Gd": "#45FFC7", "Tb": "#30FFC7", "Dy": "#1FFFC7", "Ho": "#00FF9C", "Er": "#00E675", "Tm": "#00D452", "Yb": "#00BF38", "Lu": "#00AB24", "Hf": "#4DC2FF", "Ta": "#4DA6FF", "W": "#2194D6", "Re": "#267DAB", "Os": "#266696", "Ir": "#175487", "Pt": "#D0D0E0", "Au": "#FFD123", "Hg": "#B8B8D0", "Tl": "#A6544D", "Pb": "#575961", "Bi": "#9E4FB5", "Po": "#AB5C00", "At": "#754F45", "Rn": "#428296", "Fr": "#420066", "Ra": "#007D00", "Ac": "#70ABFA", "Th": "#00BAFF", "Pa": "#00A1FF", "U": "#008FFF", "Np": "#0080FF", "Pu": "#006BFF", "Am": "#545CF2", "Cm": "#785CE3", "Bk": "#8A4FE3", "Cf": "#A136D4", "Es": "#B31FD4", "Fm": "#B31FBA", "Md": "#B30DA6", "No": "#BD0D87", "Lr": "#C70066", "Rf": "#CC0059", "Db": "#D1004F", "Sg": "#D90045", "Bh": "#E00038", "Hs": "#E6002E", "Mt": "#EB0026" },
 
 		// NB starting from Bk the radii data are incorrect
@@ -8,7 +8,7 @@ namespace $ {
 	}
 
 	/** These non-obligatory CIF props are stored in the atom's "overlays" sub-object */
-	export const $mpds_cifplayer_matinfio_custom_atom_loop_props: Record< string, string > = {
+	export const $optimade_cifplayer_matinfio_custom_atom_loop_props: Record< string, string > = {
 		'_atom_site_occupancy': 'site occupancies',
 		'_atom_site_charge': 'formal charges',
 
@@ -20,12 +20,12 @@ namespace $ {
 
 	type Format = 'CIF' | 'OPTIMADE' | 'POSCAR' | 'OPTIMADE_str' | 'unknown'
 
-	export const $mpds_cifplayer_matinfio_log = {
+	export const $optimade_cifplayer_matinfio_log = {
 		error: console.error,
 		warning: console.warn,
 	}
 
-	export type $mpds_cifplayer_matinfio_internal_obj_atom = {
+	export type $optimade_cifplayer_matinfio_internal_obj_atom = {
 		fract: {
 			x: number,
 			y: number,
@@ -41,10 +41,10 @@ namespace $ {
 		overlays: Record< string, string | number >,
 	}
 
-	export type $mpds_cifplayer_matinfio_internal_obj = {
+	export type $optimade_cifplayer_matinfio_internal_obj = {
 		cell_matrix?: number[][],
-		cell?: $mpds_cifplayer_matinfio_cell,
-		atoms: $mpds_cifplayer_matinfio_internal_obj_atom[],
+		cell?: $optimade_cifplayer_matinfio_cell,
+		atoms: $optimade_cifplayer_matinfio_internal_obj_atom[],
 		sg_name: string,
 		ng_name: string,
 		info: string,
@@ -53,10 +53,10 @@ namespace $ {
 		mpds_data: boolean,
 	}
 
-	export type $mpds_cifplayer_matinfio_player_obj = {
+	export type $optimade_cifplayer_matinfio_player_obj = {
 		cell_matrix?: number[][],
-		cell?: $mpds_cifplayer_matinfio_cell,
-		descr: $mpds_cifplayer_matinfio_cell & {
+		cell?: $optimade_cifplayer_matinfio_cell,
+		descr: $optimade_cifplayer_matinfio_cell & {
 			symlabel?: string,
 		},
 		overlayed: Record< string, string >,
@@ -80,9 +80,9 @@ namespace $ {
 		mpds_data: boolean,
 	}
 
-	export class $mpds_cifplayer_matinfio extends $mol_object2 {
+	export class $optimade_cifplayer_matinfio extends $mol_object2 {
 
-		static log = this.$.$mpds_cifplayer_matinfio_log
+		static log = this.$.$optimade_cifplayer_matinfio_log
 
 		/** Guessing what to do */
 		static detect_format( data: any ) {
@@ -116,24 +116,24 @@ namespace $ {
 			super()
 			this.source = {
 				data,
-				format: format ?? $mpds_cifplayer_matinfio.detect_format( data )
+				format: format ?? $optimade_cifplayer_matinfio.detect_format( data )
 			}
 		}
 
 		@ $mol_mem
-		internal_obj(): $mpds_cifplayer_matinfio_internal_obj {
+		internal_obj(): $optimade_cifplayer_matinfio_internal_obj {
 			switch( this.source.format ) {
-				case 'CIF': return this.$.$mpds_cifplayer_matinfio_cif_to_obj( this.source.data )
-				case 'POSCAR': return this.$.$mpds_cifplayer_matinfio_poscar_to_obj( this.source.data ) as any
-				case 'OPTIMADE': return this.$.$mpds_cifplayer_matinfio_optimade_to_obj( this.source.data ) as any
-				case 'OPTIMADE_str': return this.$.$mpds_cifplayer_matinfio_optimade_str_to_obj( this.source.data ) as any
+				case 'CIF': return this.$.$optimade_cifplayer_matinfio_cif_to_obj( this.source.data )
+				case 'POSCAR': return this.$.$optimade_cifplayer_matinfio_poscar_to_obj( this.source.data ) as any
+				case 'OPTIMADE': return this.$.$optimade_cifplayer_matinfio_optimade_to_obj( this.source.data ) as any
+				case 'OPTIMADE_str': return this.$.$optimade_cifplayer_matinfio_optimade_str_to_obj( this.source.data ) as any
 			}
 			return this.$.$mol_fail( new $mol_data_error('Error: file format not recognized') )
 		}
 
 		@ $mol_mem
 		player() {
-			return this.$.$mpds_cifplayer_matinfio_player_from_obj( this.internal_obj() )
+			return this.$.$optimade_cifplayer_matinfio_player_from_obj( this.internal_obj() )
 		}
 
 		@ $mol_mem
@@ -142,14 +142,14 @@ namespace $ {
 				return this.$.$mol_fail( new $mol_data_error('OPTIMADE not supported') )
 			}
 
-			return this.$.$mpds_cifplayer_matinfio_flatten_from_obj( this.internal_obj() )
+			return this.$.$optimade_cifplayer_matinfio_flatten_from_obj( this.internal_obj() )
 		}
 
 		@ $mol_mem
 		cif() {
 			if( this.source.format == 'CIF' ) return this.source.data
 
-			return this.$.$mpds_cifplayer_matinfio_cif_from_obj( this.internal_obj() )
+			return this.$.$optimade_cifplayer_matinfio_cif_from_obj( this.internal_obj() )
 		}
 
 	}

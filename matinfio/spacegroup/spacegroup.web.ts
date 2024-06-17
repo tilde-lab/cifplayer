@@ -1,36 +1,36 @@
 namespace $ {
 
-	const math = $mpds_cifplayer_lib_math
+	const math = $optimade_cifplayer_lib_math
 
-	export class $mpds_cifplayer_matinfio_spacegroup extends $mol_object2 {
+	export class $optimade_cifplayer_matinfio_spacegroup extends $mol_object2 {
 
-		protected constructor( public readonly data: $mpds_cifplayer_lib_spacegroups_info ) {
+		protected constructor( public readonly data: $optimade_cifplayer_lib_spacegroups_info ) {
 			super()
 		}
 
 		static by_name_or_num( name: string, num: number ) {
 			const spacegroup = num
-				? $mpds_cifplayer_matinfio_spacegroup.by_num( num )
-				: name ? $mpds_cifplayer_matinfio_spacegroup.by_name( name ) : null
-			return spacegroup ? spacegroup : $mpds_cifplayer_matinfio_spacegroup.unknown()
+				? $optimade_cifplayer_matinfio_spacegroup.by_num( num )
+				: name ? $optimade_cifplayer_matinfio_spacegroup.by_name( name ) : null
+			return spacegroup ? spacegroup : $optimade_cifplayer_matinfio_spacegroup.unknown()
 		}
 
 		@ $mol_mem_key
 		static by_name( name: string ) {
 			const name_fixed = name.charAt( 0 ).toUpperCase() + name.slice( 1 )
-			const data = $mpds_cifplayer_lib_spacegroups.SpaceGroup.getByHMName( name_fixed )
-			return data ? new $mpds_cifplayer_matinfio_spacegroup( data ) : null
+			const data = $optimade_cifplayer_lib_spacegroups.SpaceGroup.getByHMName( name_fixed )
+			return data ? new $optimade_cifplayer_matinfio_spacegroup( data ) : null
 		}
 
 		@ $mol_mem_key
 		static by_num( num: number ) {
-			const data = $mpds_cifplayer_lib_spacegroups.SpaceGroup.getById( num )
-			return data ? new $mpds_cifplayer_matinfio_spacegroup( data ) : null
+			const data = $optimade_cifplayer_lib_spacegroups.SpaceGroup.getById( num )
+			return data ? new $optimade_cifplayer_matinfio_spacegroup( data ) : null
 		}
 
 		@ $mol_mem
 		static unknown() {
-			return new $mpds_cifplayer_matinfio_spacegroup( $mpds_cifplayer_lib_spacegroups.SpaceGroup.getById( 1 ) )
+			return new $optimade_cifplayer_matinfio_spacegroup( $optimade_cifplayer_lib_spacegroups.SpaceGroup.getById( 1 ) )
 		}
 
 		@ $mol_mem
@@ -38,7 +38,7 @@ namespace $ {
 			return this.data.s
 		}
 
-		symmetric_atom( symmetry: string, atom: $mpds_cifplayer_matinfio_internal_obj_atom, cell: number[][] ): $mpds_cifplayer_matinfio_internal_obj_atom {
+		symmetric_atom( symmetry: string, atom: $optimade_cifplayer_matinfio_internal_obj_atom, cell: number[][] ): $optimade_cifplayer_matinfio_internal_obj_atom {
 			const spans = symmetry.split( ',' )
 
 			const fract = {
@@ -53,7 +53,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		symmetric_atoms( atom: $mpds_cifplayer_matinfio_internal_obj_atom, cell_matrix: number[][] ) {
+		symmetric_atoms( atom: $optimade_cifplayer_matinfio_internal_obj_atom, cell_matrix: number[][] ) {
 			return this.symmetry_list().map( name => this.symmetric_atom( name, atom, cell_matrix ) )
 		}
 

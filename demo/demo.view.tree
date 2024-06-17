@@ -1,10 +1,10 @@
-$mpds_cifplayer_demo $mol_book2_catalog
+$optimade_cifplayer_demo $mol_book2_catalog
 	plugins /
 		<= Theme $mol_theme_auto
 	menu_title \Demo
 	Placeholder null
 	spreads *
-		app <= App $mpds_cifplayer_app
+		app <= App $optimade_cifplayer_app
 			title \App
-		phonons <= Phonons $mpds_cifplayer_phonons
+		phonons <= Phonons $optimade_cifplayer_phonons
 			title \Phonons example

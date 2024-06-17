@@ -1,6 +1,6 @@
 namespace $.$$ {
 
-	$mol_style_define( $mpds_cifplayer_app, {
+	$mol_style_define( $optimade_cifplayer_app, {
 
 		contain: 'none', // otherwise in fullscreen 'fixed' positions plot relative to parent is not in the viewport
 

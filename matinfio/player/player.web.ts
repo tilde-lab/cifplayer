@@ -1,15 +1,15 @@
 namespace $ {
 
-	const math = $mpds_cifplayer_lib_math
+	const math = $optimade_cifplayer_lib_math
 
 	/** Prepare internal repr for visualization in three.js */
-	export function $mpds_cifplayer_matinfio_player_from_obj( this: $, crystal: $mpds_cifplayer_matinfio_internal_obj ) {
+	export function $optimade_cifplayer_matinfio_player_from_obj( this: $, crystal: $optimade_cifplayer_matinfio_internal_obj ) {
 		let cell_matrix: number[][] | undefined
 		let descr: any = false
 
 		if( crystal.cell && Object.keys( crystal.cell ).length == 6 ) { // for CIF
 
-			cell_matrix = this.$mpds_cifplayer_matinfio_cell_to_matrix( crystal.cell )
+			cell_matrix = this.$optimade_cifplayer_matinfio_cell_to_matrix( crystal.cell )
 			descr = crystal.cell
 			var symlabel = ( crystal.sg_name || crystal.ng_name ) ? ( ( crystal.sg_name ? crystal.sg_name : "" ) + ( crystal.ng_name ? ( " (" + crystal.ng_name + ")" ) : "" ) ) : false
 			if( symlabel ) descr.symlabel = symlabel
@@ -18,14 +18,14 @@ namespace $ {
 			
 			cell_matrix = crystal.cell_matrix // for POSCAR and OPTIMADE
 			if( cell_matrix ) {
-				const [ a, b, c, alpha, beta, gamma ] = $mpds_cifplayer_matinfio_cell_params_from_matrix( cell_matrix )
+				const [ a, b, c, alpha, beta, gamma ] = $optimade_cifplayer_matinfio_cell_params_from_matrix( cell_matrix )
 				descr = { a, b, c, alpha, beta, gamma }
 			}
 		}
 
-		if( !crystal.atoms.length ) this.$mpds_cifplayer_matinfio_log.warning( "Note: no atomic coordinates supplied" )
+		if( !crystal.atoms.length ) this.$optimade_cifplayer_matinfio_log.warning( "Note: no atomic coordinates supplied" )
 
-		const render: $mpds_cifplayer_matinfio_player_obj = {
+		const render: $optimade_cifplayer_matinfio_player_obj = {
 			atoms: [] as any[],
 			cell_matrix: cell_matrix,
 			cell: descr,
@@ -64,8 +64,8 @@ namespace $ {
 					render.atoms[ hashes[ hash ] ].overlays[ oprop ] += update
 				}
 			} else {
-				const color = ($mpds_cifplayer_matinfio_chemical_elements.JmolColors as any)[ crystal.atoms[ i ].symbol ] || '#FFFF00'
-				const radius = ($mpds_cifplayer_matinfio_chemical_elements.AseRadii as any)[ crystal.atoms[ i ].symbol ] || 0.66
+				const color = ($optimade_cifplayer_matinfio_chemical_elements.JmolColors as any)[ crystal.atoms[ i ].symbol ] || '#FFFF00'
+				const radius = ($optimade_cifplayer_matinfio_chemical_elements.AseRadii as any)[ crystal.atoms[ i ].symbol ] || 0.66
 				
 				const overlays: Record< string, string | number > = {
 					"S": crystal.atoms[ i ].symbol,
@@ -97,7 +97,7 @@ namespace $ {
 		}
 
 		for( let oprop in crystal.atoms.at(-1)!.overlays ) {
-			render.overlayed[ oprop ] = $mpds_cifplayer_matinfio_custom_atom_loop_props[ oprop ]
+			render.overlayed[ oprop ] = $optimade_cifplayer_matinfio_custom_atom_loop_props[ oprop ]
 		}
 		
 		return render

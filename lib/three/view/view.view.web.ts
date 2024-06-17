@@ -1,9 +1,9 @@
 namespace $.$$ {
 
-	const THREE = $mpds_cifplayer_lib_three
+	const THREE = $optimade_cifplayer_lib_three
 	type THREE = typeof THREE
 
-	export class $mpds_cifplayer_lib_three_view extends $.$mpds_cifplayer_lib_three_view {
+	export class $optimade_cifplayer_lib_three_view extends $.$optimade_cifplayer_lib_three_view {
 
 		@ $mol_mem
 		start_render_loop() {
@@ -40,7 +40,7 @@ namespace $.$$ {
 		}
 
 		remove_object( obj: any ) {
-			$mpds_cifplayer_lib_three_view_dispose_deep( obj )
+			$optimade_cifplayer_lib_three_view_dispose_deep( obj )
 			this.scene()?.remove( obj )
 		}
 
@@ -125,7 +125,7 @@ namespace $.$$ {
 		}
 
 		destructor(): void {
-			$mpds_cifplayer_lib_three_view_dispose_deep( this.scene() )
+			$optimade_cifplayer_lib_three_view_dispose_deep( this.scene() )
 			this.renderer()?.dispose()
 		}
 
@@ -138,7 +138,7 @@ namespace $.$$ {
 	 * @param object  Object3D, BufferGeometry, Material or Texture
 	 * @param disposeMedia If set to true will dispose of the texture image or video element, default false
 	 */
-	export function $mpds_cifplayer_lib_three_view_dispose_deep(
+	export function $optimade_cifplayer_lib_three_view_dispose_deep(
 		object: InstanceType< THREE["Object3D"] > | InstanceType< THREE["BufferGeometry"] > | InstanceType< THREE["Material"] > | InstanceType< THREE["Texture"] >
 	) {
 		const dispose = ( object: InstanceType< THREE["BufferGeometry"] > | InstanceType< THREE["Material"] > | InstanceType< THREE["Texture"] > ) => {

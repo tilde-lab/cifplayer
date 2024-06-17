@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $mpds_cifplayer_phonons extends $.$mpds_cifplayer_phonons {
+	export class $optimade_cifplayer_phonons extends $.$optimade_cifplayer_phonons {
 
 		@ $mol_action
 		set_example() {

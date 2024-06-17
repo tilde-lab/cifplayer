@@ -1,4 +1,4 @@
-$mpds_cifplayer_lib_three_view $mol_view
+$optimade_cifplayer_lib_three_view $mol_view
 	sub /
 		<= canvas null
 	scene null

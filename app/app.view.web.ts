@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $mpds_cifplayer_app extends $.$mpds_cifplayer_app {
+	export class $optimade_cifplayer_app extends $.$optimade_cifplayer_app {
 
 		@ $mol_mem
 		pages(): readonly any[] {

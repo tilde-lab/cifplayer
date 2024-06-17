@@ -1,23 +1,23 @@
 namespace $ {
 
-	export function $mpds_cifplayer_matinfio_optimade_str_to_obj( this: $, str: string ) {
+	export function $optimade_cifplayer_matinfio_optimade_str_to_obj( this: $, str: string ) {
 		const payload = JSON.parse( str )
 		
-		return this.$mpds_cifplayer_matinfio_optimade_to_obj( payload )
+		return this.$optimade_cifplayer_matinfio_optimade_to_obj( payload )
 	}
 
-	export function $mpds_cifplayer_matinfio_optimade_to_obj( this: $, payload: Record< string, any > ) {
+	export function $optimade_cifplayer_matinfio_optimade_to_obj( this: $, payload: Record< string, any > ) {
 		const atoms: any[] = []
 		const src = payload?.data?.[ 0 ] ?? payload
 
 		if( !src ) {
-			this.$mpds_cifplayer_matinfio_log.error( "Error: unexpected OPTIMADE format" )
+			this.$optimade_cifplayer_matinfio_log.error( "Error: unexpected OPTIMADE format" )
 			return false
 		}
 
 		var n_atoms = src.attributes.cartesian_site_positions.length
 		if( !n_atoms ) {
-			this.$mpds_cifplayer_matinfio_log.error( "Error: no atomic positions found" )
+			this.$optimade_cifplayer_matinfio_log.error( "Error: no atomic positions found" )
 			return false
 		}
 
@@ -41,7 +41,7 @@ namespace $ {
 				} )
 			} )
 		} else {
-			this.$mpds_cifplayer_matinfio_log.error( "Error: no atomic data found" )
+			this.$optimade_cifplayer_matinfio_log.error( "Error: no atomic data found" )
 			return false
 		}
 
