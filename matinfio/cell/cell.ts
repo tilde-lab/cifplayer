@@ -46,14 +46,12 @@ namespace $ {
 	export function $optimade_cifplayer_matinfio_cell_params_from_matrix( matrix: number[][] ) {
 		const norms: number[] = matrix.map( vec => math.norm( vec ) )
 		const angles = []
-		let j = -1
-		let k = -2
 		for( let i = 0; i < 3; i++ ) {
-			j = i - 1
-			k = i - 2
-			const lenmult = norms[ j ] * norms[ k ]
+			const j = i - 1
+			const k = i - 2
+			const lenmult = norms.at(j)! * norms.at(k)!
 			const tau = lenmult > 1e-16 
-				? 180 / Math.PI * Math.acos( math.dot( matrix[ j ], matrix[ k ] ) / lenmult )
+				? 180 / Math.PI * Math.acos( math.dot( matrix.at(j), matrix.at(k) ) / lenmult )
 				: 90.0
 			angles.push( tau )
 		}
