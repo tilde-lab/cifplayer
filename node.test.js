@@ -1955,9 +1955,9 @@ var $node = new Proxy({ require }, {
         while (!fs.existsSync(path.join(dir, suffix))) {
             const parent = path.resolve(dir, '..');
             if (parent === dir) {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
+                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '--no-save', name);
                 try {
-                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
+                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '--no-save', '@types/' + name);
                 }
                 catch { }
                 break;
@@ -6326,7 +6326,7 @@ var $;
         'code-comment-block': /(?:\/\*[^]*?\*\/|\/\+[^]*?\+\/|<![^]*?>)/,
         'code-link': /(?:\w+:\/\/|#)\S+?(?=\s|\\\\|""|$)/,
         'code-comment-inline': /\/\/.*?(?:$|\/\/)/,
-        'code-string': /(?:".*?"|'.*?'|`.*?`|\/.+?\/[dygimsu]*(?!\p{Letter})|(?:^|[ \t])\\[^\n]*\n)/,
+        'code-string': /(?:".*?"|'.*?'|`.*?`|\/.+?\/[dygimsu]*(?!\p{Letter})|(?:^|[ \t])\\[^\n]*\n)/u,
         'code-number': /[+-]?(?:\d*\.)?\d+\w*/,
         'code-call': /\.?\w+ *(?=\()/,
         'code-sexpr': /\((\w+ )/,
@@ -8697,6 +8697,10 @@ var $;
 			if(next !== undefined) return next;
 			return 1;
 		}
+		Theme(){
+			const obj = new this.$.$mol_theme_auto();
+			return obj;
+		}
 		dir_light(){
 			return null;
 		}
@@ -9086,6 +9090,9 @@ var $;
 		spread_cells_limit(){
 			return 50;
 		}
+		plugins(){
+			return [(this?.Theme())];
+		}
 		auto(){
 			return [
 				(this?.dir_light()), 
@@ -9151,6 +9158,7 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_a"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_b"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Theme"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Three"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_a"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_b"));
@@ -14188,7 +14196,7 @@ var $;
             const check = (input, right) => {
                 const tokens = [];
                 $mol_syntax2_md_flow.tokenize(input, (...token) => tokens.push(token));
-                $mol_assert_like(tokens, right);
+                $mol_assert_equal(tokens, right);
             };
             check('Hello,\nWorld..\r\n\r\n\nof Love!', [
                 ['block', 'Hello,\n', ['Hello,', '\n'], 0],
