@@ -34,7 +34,7 @@ namespace $.$$ {
 			const obj = make()
 			obj.name = name
 			this.scene().add( obj )
-			obj.destructor = ()=> this.remove_object( obj )
+			;(obj as any).destructor = ()=> this.remove_object( obj )
 
 			return obj
 		}
