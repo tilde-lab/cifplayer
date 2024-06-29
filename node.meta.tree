@@ -12,7 +12,7 @@
 	pack yuf git \https://github.com/zerkalica/yuf.git
 \/optimade
 	pack cifplayer git \https://github.com/tilde-lab/cifplayer
-	pack tmdne git \https://github.com/stan-donarise/this-material-does-not-exist
+	pack tmdne git \https://github.com/mpds-io/this-material-does-not-exist
 \/mol
 	pack icon git \https://github.com/nin-jin/mol_icon.git
 \/mol/view
