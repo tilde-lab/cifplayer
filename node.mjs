@@ -1964,9 +1964,9 @@ var $node = new Proxy({ require }, {
         while (!fs.existsSync(path.join(dir, suffix))) {
             const parent = path.resolve(dir, '..');
             if (parent === dir) {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '--no-save', name);
+                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
                 try {
-                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '--no-save', '@types/' + name);
+                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
                 }
                 catch { }
                 break;
@@ -9279,12 +9279,15 @@ var $;
                 padding: $mol_gap.text,
             },
             Spread_cells: {
+                pointerEvents: 'auto',
                 Bubble: {
                     display: 'grid',
                     gridTemplateColumns: 'auto auto',
                 },
             },
             Left_panel: {
+                userSelect: 'none',
+                pointerEvents: 'none',
                 position: 'absolute',
                 zIndex: 1,
                 flex: {
@@ -9300,6 +9303,12 @@ var $;
                 flex: {
                     direction: 'column',
                 },
+            },
+            Symlabel: {
+                pointerEvents: 'auto',
+            },
+            Center: {
+                pointerEvents: 'auto',
             },
             Toogle_all: {
                 boxShadow: `0 0.5rem 0.5rem -0.5rem hsla(0,0%,0%,.5)`,
