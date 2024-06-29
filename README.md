@@ -5,29 +5,52 @@ HTML5 CIF player
 
 In-browser ultra-fast and lightweight renderer of the [crystallographic information files (CIF)](https://en.wikipedia.org/wiki/Crystallographic_Information_File), [OPTIMADE JSON](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-list), and VASP [POSCAR](https://www.vasp.at/wiki/index.php/POSCAR) atomic structures, written in a pure JavaScript.
 
-In a compiled form it is only one **standalone** file `player.html` of 500 Kb (100 Kb gzipped). See it [online](http://tilde-lab.github.io/cifplayer). Only a web-browser is required. After the code is loaded, no internet connection is needed.
+In a compiled form it is only one standalone embeddable file `web.js` of 300 Kb (gzipped). See it [online](https://tilde-lab.github.io/cifplayer). Only a web-browser is required. After the code is loaded, no internet connection is needed.
 
 
 Technical details
 ------
 
-This app is written in the [$mol](https://github.com/hyoo-ru) framework and employs [three.js](https://github.com/mrdoob/three.js) for 3d-rendering and [tween.js](https://github.com/tweenjs/tween.js) for phonon animation. Scientific formats conversion is done with `matinfio.js`.
+This app is written in the `$mol` framework and employs [three.js](https://github.com/mrdoob/three.js) for 3d-rendering and [tween.js](https://github.com/tweenjs/tween.js) for phonon animation. Scientific formats conversion is done with `matinfio.js`.
+
+Compilation is done as follows. Note that, unlike many other frontend frameworks, `$mol` provides the same single environment for all its projects, under the standard namespace scheme. That is, all your `$mol`-based code lives inside the same directory `$MOL_HOME`. So if you don't have `$MOL_HOME` yet, please create it and navigate there:
+
+```bash
+mkdir $MOL_HOME && cd $MOL_HOME
+```
+
+Then build with
+
+```bash
+npm exec mam optimade/cifplayer/player
+```
+
+This will fetch the MAM server (MAM stands for the `$mol` abstract modules), clone this project, and compile it inside `optimade/cifplayer/player/-/` subfolder. You will need the `web.js` bundle, that's it.
+
+Development is similar to above: inside the `$MOL_HOME`, start the MAM dev-server with
+
+```bash
+npm exec mam
+```
+
+and navigate to http://localhost:9080, there select `optimade` namespace, then `cifplayer`, then `app`. As you go through the folder structure, the selected project is being cloned and compiled on the fly, inside the corresponding subfolder of `$MOL_HOME`.
 
 
 Integration with the other software
 ------
 
-The file `player.html` can be embedded into the **iframe** HTML element. In this case, the parent webpage is checked for the content to be rendered (as a string) in the global variable `playerdata`. If found, the content is loaded and rendered. The browser domain policies must apply.
+The compiled bundle `web.js` defines a web-component `optimade-cifplayer-player`. It can be controlled in a standard way with e.g.
 
-Additionally, the content from anywhere on the web can be rendered, if the domain policies apply. A file URL must be given via the `document.location.hash` property (browser's address bar, after **#** symbol). To bypass CORS, the proxy for the remote requests could be used. There are examples of PHP and Python proxies (**not for production use!**) in `src` folder. Obviously, it is safer to serve supported files from the same domain.
-
-Finally, the **postMessage** interface is supported. The parent webpage should call `iframe.postMessage(payload, '*')` providing the content as the **payload**.
+```js
+const player = document.getElementsByTagName('optimade-cifplayer-player')[0].view;
+player.data(structure);
+```
 
 
 Comparison with the other open-source plugin-free engines
 ------
 
-See a detailed [comparison](https://github.com/blokhin/cif-js-engines) as well as the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660).
+See a detailed [comparison](https://github.com/blokhin/cif-js-engines) as well as the [blog post](https://blog.tilde.pro/in-browser-plugin-free-cif-visualization-comparison-of-open-source-engines-a3d0b4098660), written in 2015. As of now, it is unfortunately severely outdated.
 
 
 ## License
