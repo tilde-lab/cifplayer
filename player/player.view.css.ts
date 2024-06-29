@@ -49,6 +49,7 @@ namespace $.$$ {
 		},
 
 		Spread_cells: {
+			pointerEvents: 'auto',
 			Bubble: {
 				display: 'grid',
 				gridTemplateColumns: 'auto auto',
@@ -56,6 +57,8 @@ namespace $.$$ {
 		},
 
 		Left_panel: {
+			userSelect: 'none',
+			pointerEvents: 'none',
 			position: 'absolute',
 			zIndex: 1,
 			flex: {
@@ -72,6 +75,14 @@ namespace $.$$ {
 			flex: {
 				direction: 'column',
 			},
+		},
+
+		Symlabel: {
+			pointerEvents: 'auto',
+		},
+
+		Center: {
+			pointerEvents: 'auto',
 		},
 
 		Toogle_all: {
