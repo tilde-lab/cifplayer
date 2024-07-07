@@ -10,9 +10,17 @@ namespace $.$$ {
 
 	export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
 
-		theme() {
-			const theme = this.externals()?.theme ?? this.$.$mol_lights() ? 'light' : 'dark'
-			return '$mol_theme_' + theme
+		@ $mol_mem
+		external_theme_auto() {
+			const external = this.externals()?.theme
+			if( !external ) return
+
+			this.$.$mol_lights( external == 'light' ? true : false )
+		}
+		
+		@ $mol_mem
+		lights_toggle() {
+			return this.externals()?.theme ? [] : super.lights_toggle()
 		}
 
 		@ $mol_mem
