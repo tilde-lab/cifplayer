@@ -15,6 +15,7 @@ $optimade_cifplayer_player $mol_view
 		<= Theme $mol_theme_auto
 	-
 	auto /
+		<= external_theme_auto null
 		<= dir_light null
 		<= ambient_light null
 		^ atom_boxes /
@@ -104,7 +105,7 @@ $optimade_cifplayer_player $mol_view
 						<= Zoom_down $mol_button_minor
 							click? <=> zoom_down? null
 							sub / <= Zoom_down_icon $mol_icon_magnify_minus_outline
-				<= Lights $mol_lights_toggle
+				^ lights_toggle / <= Lights $mol_lights_toggle
 		<= Overlays $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch
