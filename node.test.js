@@ -3404,6 +3404,25 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_media extends $mol_object2 {
+        static match(query, next) {
+            if (next !== undefined)
+                return next;
+            const res = this.$.$mol_dom_context.matchMedia?.(query) ?? {};
+            res.onchange = () => this.match(query, res.matches);
+            return res.matches;
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $mol_media, "match", null);
+    $.$mol_media = $mol_media;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_mem_persist = $mol_wire_solid;
 })($ || ($ = {}));
 
@@ -3972,7 +3991,7 @@ var $;
     }
     function $mol_lights(next) {
         const arg = parse(this.$mol_state_arg.value('mol_lights'));
-        const base = false;
+        const base = this.$mol_media.match('(prefers-color-scheme: light)');
         if (next === undefined) {
             return arg ?? this.$mol_state_local.value('$mol_lights') ?? base;
         }
@@ -8701,6 +8720,9 @@ var $;
 			const obj = new this.$.$mol_theme_auto();
 			return obj;
 		}
+		external_theme_auto(){
+			return null;
+		}
 		dir_light(){
 			return null;
 		}
@@ -9003,12 +9025,15 @@ var $;
 			const obj = new this.$.$mol_lights_toggle();
 			return obj;
 		}
+		lights_toggle(){
+			return [(this?.Lights())];
+		}
 		Tools(){
 			const obj = new this.$.$mol_view();
 			(obj.sub) = () => ([
 				(this?.Fullscreen()), 
 				(this?.Zoom_section()), 
-				(this?.Lights())
+				...(this.lights_toggle())
 			]);
 			return obj;
 		}
@@ -9095,6 +9120,7 @@ var $;
 		}
 		auto(){
 			return [
+				(this?.external_theme_auto()), 
 				(this?.dir_light()), 
 				(this?.ambient_light()), 
 				...(this.atom_boxes()), 
