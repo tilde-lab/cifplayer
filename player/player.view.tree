@@ -11,9 +11,6 @@ $optimade_cifplayer_player $mol_view
 		<= spread_c? 1
 	spread_cells_limit 50
 	-
-	plugins /
-		<= Theme $mol_theme_auto
-	-
 	auto /
 		<= dir_light null
 		<= ambient_light null
