@@ -46,6 +46,13 @@ const player = document.getElementsByTagName('optimade-cifplayer-player')[0].vie
 player.data(structure);
 ```
 
+Or in another `$mol` application natively, using a tree markup:
+
+```
+    <= Your_block_name $optimade_cifplayer_player
+        data <= your_data_string null
+```
+
 
 Comparison with the other open-source plugin-free engines
 ------
