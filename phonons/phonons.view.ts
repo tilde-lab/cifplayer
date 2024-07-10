@@ -9,7 +9,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		phonon( next?: string ): string {
+		phonon_str( next?: string ): string {
 
 			if( next === '' ) this.unvibrate()
 

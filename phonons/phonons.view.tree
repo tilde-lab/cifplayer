@@ -4,5 +4,5 @@ $optimade_cifplayer_phonons $optimade_cifplayer_app
 	menu_body /
 		<= Body $mol_list sub /
 			<= Switch $mol_switch
-				value? <=> phonon? \
+				value? <=> phonon_str? \
 				options <= phonon_options *
