@@ -17,7 +17,7 @@ namespace $.$$ {
 
 			this.$.$mol_lights( external == 'light' ? true : false )
 		}
-		
+
 		@ $mol_mem
 		lights_toggle() {
 			return this.externals()?.theme ? [] : super.lights_toggle()
@@ -317,11 +317,11 @@ namespace $.$$ {
 		cell_translations() {
 			const translations: [ number, number, number ][] = []
 
-			const [ spread_a, spread_b, spread_c ] = this.spread_cells()
+			const [ translate_a, translate_b, translate_c ] = this.translate_cells()
 
-			for( let a = 0; a < spread_a; a++ ) {
-				for( let b = 0; b < spread_b; b++ ) {
-					for( let c = 0; c < spread_c; c++ ) {
+			for( let a = 0; a < translate_a; a++ ) {
+				for( let b = 0; b < translate_b; b++ ) {
+					for( let c = 0; c < translate_c; c++ ) {
 						translations.push( [ a, b, c ] )
 					}
 				}
@@ -343,9 +343,9 @@ namespace $.$$ {
 			this.overlay_boxes().forEach( box => {
 
 				box.children.forEach( ( label: InstanceType< THREE["Object3D"] >, i: number ) => {
-	
+
 					label.children.forEach( ( sprite: InstanceType< THREE["Object3D"] > ) => label.remove( sprite ) )
-	
+
 					if( overlay ) {
 						const sprite = this.create_sprite( String( atom_datas[ i ].overlays[ overlay ] ) )
 						label.add( sprite )
@@ -368,7 +368,7 @@ namespace $.$$ {
 
 			return overlay_box
 		}
-		
+
 		@ $mol_mem
 		overlay_boxes() {
 			return [ this.overlay_box( [0,0,0] ) ]
@@ -554,35 +554,35 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		spread_cells() {
+		translate_cells() {
 			return [
-				this.spread_a() || 1,
-				this.spread_b() || 1,
-				this.spread_c() || 1,
+				this.translate_a() || 1,
+				this.translate_b() || 1,
+				this.translate_c() || 1,
 			]
 		}
 
 		@ $mol_mem
-		spread_cell_label() {
-			return this.spread_cells().join('×')
+		translate_cell_label() {
+			return this.translate_cells().join('×')
 		}
 
 		@ $mol_mem
-		spread_limit_a() {
-			const [ a, b, c ] = this.spread_cells()
-			return Math.floor( this.spread_cells_limit() / ( b * c ) )
+		translate_limit_a() {
+			const [ a, b, c ] = this.translate_cells()
+			return Math.floor( this.translate_cells_limit() / ( b * c ) )
 		}
 
 		@ $mol_mem
-		spread_limit_b() {
-			const [ a, b, c ] = this.spread_cells()
-			return Math.floor( this.spread_cells_limit() / ( a * c ) )
+		translate_limit_b() {
+			const [ a, b, c ] = this.translate_cells()
+			return Math.floor( this.translate_cells_limit() / ( a * c ) )
 		}
 
 		@ $mol_mem
-		spread_limit_c() {
-			const [ a, b, c ] = this.spread_cells()
-			return Math.floor( this.spread_cells_limit() / ( a * b ) )
+		translate_limit_c() {
+			const [ a, b, c ] = this.translate_cells()
+			return Math.floor( this.translate_cells_limit() / ( a * b ) )
 		}
 
 	}

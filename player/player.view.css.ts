@@ -33,22 +33,22 @@ namespace $.$$ {
 			color: $mol_style_func.vary('--color_c')
 		},
 
-		Spread_label_a: {
+		Translate_label_a: {
 			color: $mol_style_func.vary('--color_a'),
 			padding: $mol_gap.text,
 		},
 
-		Spread_label_b: {
+		Translate_label_b: {
 			color: $mol_style_func.vary('--color_b'),
 			padding: $mol_gap.text,
 		},
 
-		Spread_label_c: {
+		Translate_label_c: {
 			color: $mol_style_func.vary('--color_c'),
 			padding: $mol_gap.text,
 		},
 
-		Spread_cells: {
+		Translate_cells: {
 			pointerEvents: 'auto',
 			Bubble: {
 				display: 'grid',
