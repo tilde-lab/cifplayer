@@ -8704,15 +8704,15 @@ var $;
 
 ;
 	($.$optimade_cifplayer_player) = class $optimade_cifplayer_player extends ($.$mol_view) {
-		spread_a(next){
+		translate_a(next){
 			if(next !== undefined) return next;
 			return 1;
 		}
-		spread_b(next){
+		translate_b(next){
 			if(next !== undefined) return next;
 			return 1;
 		}
-		spread_c(next){
+		translate_c(next){
 			if(next !== undefined) return next;
 			return 1;
 		}
@@ -8883,67 +8883,67 @@ var $;
 		symlabel_visible(){
 			return [(this?.Symlabel())];
 		}
-		spread_cell_label(){
+		translate_cell_label(){
 			return "1×1×1";
 		}
-		Spread_label_a(){
+		Translate_label_a(){
 			const obj = new this.$.$mol_paragraph();
 			(obj.title) = () => ("a");
 			return obj;
 		}
-		spread_limit_a(){
+		translate_limit_a(){
 			return 1;
 		}
-		Spread_a(){
+		Translate_a(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.spread_a(next)));
+			(obj.value) = (next) => ((this?.translate_a(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.spread_limit_a()));
+			(obj.value_max) = () => ((this?.translate_limit_a()));
 			return obj;
 		}
-		Spread_label_b(){
+		Translate_label_b(){
 			const obj = new this.$.$mol_paragraph();
 			(obj.title) = () => ("b");
 			return obj;
 		}
-		spread_limit_b(){
+		translate_limit_b(){
 			return 1;
 		}
-		Spread_b(){
+		Translate_b(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.spread_b(next)));
+			(obj.value) = (next) => ((this?.translate_b(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.spread_limit_b()));
+			(obj.value_max) = () => ((this?.translate_limit_b()));
 			return obj;
 		}
-		Spread_label_c(){
+		Translate_label_c(){
 			const obj = new this.$.$mol_paragraph();
 			(obj.title) = () => ("c");
 			return obj;
 		}
-		spread_limit_c(){
+		translate_limit_c(){
 			return 1;
 		}
-		Spread_c(){
+		Translate_c(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.spread_c(next)));
+			(obj.value) = (next) => ((this?.translate_c(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.spread_limit_c()));
+			(obj.value_max) = () => ((this?.translate_limit_c()));
 			return obj;
 		}
-		Spread_cells(){
+		Translate_cells(){
 			const obj = new this.$.$mol_pick();
-			(obj.trigger_content) = () => ([(this?.spread_cell_label())]);
+			(obj.trigger_content) = () => ([(this?.translate_cell_label())]);
 			(obj.bubble_content) = () => ([
-				(this?.Spread_label_a()), 
-				(this?.Spread_a()), 
-				(this?.Spread_label_b()), 
-				(this?.Spread_b()), 
-				(this?.Spread_label_c()), 
-				(this?.Spread_c())
+				(this?.Translate_label_a()), 
+				(this?.Translate_a()), 
+				(this?.Translate_label_b()), 
+				(this?.Translate_b()), 
+				(this?.Translate_label_c()), 
+				(this?.Translate_c())
 			]);
 			return obj;
 		}
@@ -8965,7 +8965,7 @@ var $;
 			return [
 				(this?.Info()), 
 				...(this.symlabel_visible()), 
-				(this?.Spread_cells()), 
+				(this?.Translate_cells()), 
 				(this?.Center())
 			];
 		}
@@ -9105,14 +9105,14 @@ var $;
 		unvibrate(){
 			return null;
 		}
-		spread_cells(){
+		translate_cells(){
 			return [
-				(this?.spread_a()), 
-				(this?.spread_b()), 
-				(this?.spread_c())
+				(this?.translate_a()), 
+				(this?.translate_b()), 
+				(this?.translate_c())
 			];
 		}
-		spread_cells_limit(){
+		translate_cells_limit(){
 			return 50;
 		}
 		plugins(){
@@ -9181,9 +9181,9 @@ var $;
 			return {...(super.attr()), "fullscreen": (this?.fullscreen())};
 		}
 	};
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_a"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_b"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "spread_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_c"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Theme"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Three"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_a"));
@@ -9201,13 +9201,13 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Sym_checks"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Sym_list"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Symlabel"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_a"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_a"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_b"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_b"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_label_c"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_c"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Spread_cells"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_label_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_a"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_label_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_b"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_label_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_c"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "Translate_cells"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "centered"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center_icon"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center"));
@@ -9276,19 +9276,19 @@ var $;
             Descr_c: {
                 color: $mol_style_func.vary('--color_c')
             },
-            Spread_label_a: {
+            Translate_label_a: {
                 color: $mol_style_func.vary('--color_a'),
                 padding: $mol_gap.text,
             },
-            Spread_label_b: {
+            Translate_label_b: {
                 color: $mol_style_func.vary('--color_b'),
                 padding: $mol_gap.text,
             },
-            Spread_label_c: {
+            Translate_label_c: {
                 color: $mol_style_func.vary('--color_c'),
                 padding: $mol_gap.text,
             },
-            Spread_cells: {
+            Translate_cells: {
                 pointerEvents: 'auto',
                 Bubble: {
                     display: 'grid',
