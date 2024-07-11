@@ -485,42 +485,57 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		vibrate( phonon: number[][] ) {
-			$mol_wire_sync( this ).unvibrate()
+		vibration_start( phonon: number[][] ) {
+			this.vibration_end()
 
-			const atoms = this.atom_box([0,0,0]).children
 			const labels = this.overlay_box([0,0,0]).children
-
-			if( phonon.length !== atoms.length) {
+			if( phonon.length !== labels.length) {
 				this.$.$mol_fail( new $mol_data_error(`Phonon length does not match number of atoms`) )
 			}
 
-			atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
-				const start = atom.position.toArray()
+			labels.forEach( ( label: InstanceType< THREE["Object3D"] >, i: number ) => {
+				const start = label.position.toArray()
 				const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * phonon_amp )
 
-				this.tweens.add( new TWEEN.Tween( atom.position ).to( { x, y, z }, 750 )
+				this.tweens.add( new TWEEN.Tween( label.position ).to( { x, y, z }, 750 )
 					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
 				)
-				this.tweens.add( new TWEEN.Tween( labels[ i ].position ).to( { x, y, z }, 750 )
-					.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
-				)
+			} )
+
+			this.cell_translations().map( t => {
+
+				const atoms = this.atom_box( t ).children
+				atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
+					const start = atom.position.toArray()
+					const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * phonon_amp )
+	
+					this.tweens.add( new TWEEN.Tween( atom.position ).to( { x, y, z }, 750 )
+						.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
+					)
+				} )
+
 			} )
 		}
 
 		@ $mol_action
-		unvibrate() {
+		vibration_end() {
 			if( this.tweens.getAll().length == 0 ) return
 
 			this.tweens.removeAll()
 
 			const atom_datas = this.visible_atoms()
-			const atoms = this.atom_box([0,0,0]).children
 			const labels = this.overlay_box([0,0,0]).children
+			labels.forEach( ( label: InstanceType< THREE["Object3D"] >, i: number ) => {
+				this.tweens.add( new TWEEN.Tween( label.position ).to( atom_datas[ i ], 250 ).start() )
+			} )
 
-			atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
-				this.tweens.add( new TWEEN.Tween( atom.position ).to( atom_datas[ i ], 250 ).start() )
-				this.tweens.add( new TWEEN.Tween( labels[ i ].position ).to( atom_datas[ i ], 250 ).start() )
+			this.cell_translations().map( t => {
+				const atoms = this.atom_box( t ).children
+				const atom_datas = this.visible_atoms_translated( t )
+
+				atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
+					this.tweens.add( new TWEEN.Tween( atom.position ).to( atom_datas[ i ], 250 ).start() )
+				} )
 			} )
 
 			this.$.$mol_wait_timeout( 250 )
@@ -528,6 +543,36 @@ namespace $.$$ {
 			this.tweens.removeAll()
 
 			return
+		}
+
+		@ $mol_mem
+		vibration_active( next?: boolean ) {
+			const phonon = this.phonon()
+			if( next ) {
+				if( phonon ) this.vibration_start( phonon )
+			} else {
+				this.vibration_end()
+			}
+			return next ?? false
+		}
+
+		@ $mol_action
+		vibrate( phonon: number[][] ) {
+			this.phonon( phonon )
+			this.$.$mol_wire_async( this ).vibration_active( true )
+		}
+
+		@ $mol_action
+		unvibrate() {
+			this.phonon( null )
+			this.$.$mol_wire_async( this ).vibration_active( false )
+		}
+
+		@ $mol_mem
+		vibration_restart() {
+			this.cell_translations()
+			this.vibration_active( false )
+			this.vibration_active( true )
 		}
 
 		@ $mol_mem
