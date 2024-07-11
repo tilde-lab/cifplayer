@@ -583,8 +583,11 @@ $optimade_cifplayer_player $mol_view
 	externals? null
 	atom_radius_scale 0.6
 	zoom_scale_step 0.3
+	-
 	vibrate? null
 	unvibrate null
+	phonon? null
+	-
 	translate_cells /
 		<= translate_a? 1
 		<= translate_b? 1
@@ -603,6 +606,8 @@ $optimade_cifplayer_player $mol_view
 		<= cell_box null
 		<= axes_box null
 		<= overlay_changed null
+		<= vibration_active? false
+		<= vibration_restart null
 	atom_box* null
 	overlay_box* null
 	-

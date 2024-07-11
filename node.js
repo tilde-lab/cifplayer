@@ -8760,6 +8760,13 @@ var $;
 		overlay_changed(){
 			return null;
 		}
+		vibration_active(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		vibration_restart(){
+			return null;
+		}
 		scene(){
 			return (this?.Three()?.scene());
 		}
@@ -9121,6 +9128,10 @@ var $;
 		unvibrate(){
 			return null;
 		}
+		phonon(next){
+			if(next !== undefined) return next;
+			return null;
+		}
 		translate_cells(){
 			return [
 				(this?.translate_a()), 
@@ -9143,7 +9154,9 @@ var $;
 				...(this.overlay_boxes()), 
 				(this?.cell_box()), 
 				(this?.axes_box()), 
-				(this?.overlay_changed())
+				(this?.overlay_changed()), 
+				(this?.vibration_active()), 
+				(this?.vibration_restart())
 			];
 		}
 		atom_box(id){
@@ -9201,6 +9214,7 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_b"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_c"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Theme"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibration_active"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Three"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_a"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_b"));
@@ -9248,6 +9262,7 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "data"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "externals"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibrate"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "phonon"));
 
 
 ;

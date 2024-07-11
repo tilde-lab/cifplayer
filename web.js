@@ -8469,6 +8469,13 @@ var $;
 		overlay_changed(){
 			return null;
 		}
+		vibration_active(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		vibration_restart(){
+			return null;
+		}
 		scene(){
 			return (this?.Three()?.scene());
 		}
@@ -8830,6 +8837,10 @@ var $;
 		unvibrate(){
 			return null;
 		}
+		phonon(next){
+			if(next !== undefined) return next;
+			return null;
+		}
 		translate_cells(){
 			return [
 				(this?.translate_a()), 
@@ -8852,7 +8863,9 @@ var $;
 				...(this.overlay_boxes()), 
 				(this?.cell_box()), 
 				(this?.axes_box()), 
-				(this?.overlay_changed())
+				(this?.overlay_changed()), 
+				(this?.vibration_active()), 
+				(this?.vibration_restart())
 			];
 		}
 		atom_box(id){
@@ -8910,6 +8923,7 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_b"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_c"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Theme"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibration_active"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Three"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_a"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Descr_b"));
@@ -8957,6 +8971,7 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "data"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "externals"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibrate"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "phonon"));
 
 
 ;
@@ -10419,36 +10434,71 @@ var $;
                 this.tweens.update();
                 this.dir_light().position.copy(this.camera().position);
             }
-            vibrate(phonon) {
-                $mol_wire_sync(this).unvibrate();
-                const atoms = this.atom_box([0, 0, 0]).children;
+            vibration_start(phonon) {
+                this.vibration_end();
                 const labels = this.overlay_box([0, 0, 0]).children;
-                if (phonon.length !== atoms.length) {
+                if (phonon.length !== labels.length) {
                     this.$.$mol_fail(new $mol_data_error(`Phonon length does not match number of atoms`));
                 }
-                atoms.forEach((atom, i) => {
-                    const start = atom.position.toArray();
+                labels.forEach((label, i) => {
+                    const start = label.position.toArray();
                     const [x, y, z] = phonon[i].map((v, i) => start[i] + v * phonon_amp);
-                    this.tweens.add(new TWEEN.Tween(atom.position).to({ x, y, z }, 750)
-                        .easing(TWEEN.Easing.Cubic.InOut).repeat(Infinity).yoyo(true).start());
-                    this.tweens.add(new TWEEN.Tween(labels[i].position).to({ x, y, z }, 750)
+                    this.tweens.add(new TWEEN.Tween(label.position).to({ x, y, z }, 750)
                         .easing(TWEEN.Easing.Cubic.InOut).repeat(Infinity).yoyo(true).start());
                 });
+                this.cell_translations().map(t => {
+                    const atoms = this.atom_box(t).children;
+                    atoms.forEach((atom, i) => {
+                        const start = atom.position.toArray();
+                        const [x, y, z] = phonon[i].map((v, i) => start[i] + v * phonon_amp);
+                        this.tweens.add(new TWEEN.Tween(atom.position).to({ x, y, z }, 750)
+                            .easing(TWEEN.Easing.Cubic.InOut).repeat(Infinity).yoyo(true).start());
+                    });
+                });
             }
-            unvibrate() {
+            vibration_end() {
                 if (this.tweens.getAll().length == 0)
                     return;
                 this.tweens.removeAll();
                 const atom_datas = this.visible_atoms();
-                const atoms = this.atom_box([0, 0, 0]).children;
                 const labels = this.overlay_box([0, 0, 0]).children;
-                atoms.forEach((atom, i) => {
-                    this.tweens.add(new TWEEN.Tween(atom.position).to(atom_datas[i], 250).start());
-                    this.tweens.add(new TWEEN.Tween(labels[i].position).to(atom_datas[i], 250).start());
+                labels.forEach((label, i) => {
+                    this.tweens.add(new TWEEN.Tween(label.position).to(atom_datas[i], 250).start());
+                });
+                this.cell_translations().map(t => {
+                    const atoms = this.atom_box(t).children;
+                    const atom_datas = this.visible_atoms_translated(t);
+                    atoms.forEach((atom, i) => {
+                        this.tweens.add(new TWEEN.Tween(atom.position).to(atom_datas[i], 250).start());
+                    });
                 });
                 this.$.$mol_wait_timeout(250);
                 this.tweens.removeAll();
                 return;
+            }
+            vibration_active(next) {
+                const phonon = this.phonon();
+                if (next) {
+                    if (phonon)
+                        this.vibration_start(phonon);
+                }
+                else {
+                    this.vibration_end();
+                }
+                return next ?? false;
+            }
+            vibrate(phonon) {
+                this.phonon(phonon);
+                this.$.$mol_wire_async(this).vibration_active(true);
+            }
+            unvibrate() {
+                this.phonon(null);
+                this.$.$mol_wire_async(this).vibration_active(false);
+            }
+            vibration_restart() {
+                this.cell_translations();
+                this.vibration_active(false);
+                this.vibration_active(true);
             }
             left_panel() {
                 if (this.externals()?.skip_panel)
@@ -10619,10 +10669,22 @@ var $;
         ], $optimade_cifplayer_player.prototype, "cell_box", null);
         __decorate([
             $mol_action
+        ], $optimade_cifplayer_player.prototype, "vibration_start", null);
+        __decorate([
+            $mol_action
+        ], $optimade_cifplayer_player.prototype, "vibration_end", null);
+        __decorate([
+            $mol_mem
+        ], $optimade_cifplayer_player.prototype, "vibration_active", null);
+        __decorate([
+            $mol_action
         ], $optimade_cifplayer_player.prototype, "vibrate", null);
         __decorate([
             $mol_action
         ], $optimade_cifplayer_player.prototype, "unvibrate", null);
+        __decorate([
+            $mol_mem
+        ], $optimade_cifplayer_player.prototype, "vibration_restart", null);
         __decorate([
             $mol_mem
         ], $optimade_cifplayer_player.prototype, "left_panel", null);
