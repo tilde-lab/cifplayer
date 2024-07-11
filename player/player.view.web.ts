@@ -486,7 +486,7 @@ namespace $.$$ {
 
 		@ $mol_action
 		vibration_start( phonon: number[][] ) {
-			this.$.$mol_wire_sync( this ).vibration_end()
+			this.vibration_end()
 
 			const labels = this.overlay_box([0,0,0]).children
 			if( phonon.length !== labels.length) {
@@ -549,9 +549,9 @@ namespace $.$$ {
 		vibration_active( next?: boolean ) {
 			const phonon = this.phonon()
 			if( next ) {
-				if( phonon ) this.$.$mol_wire_sync( this ).vibration_start( phonon )
+				if( phonon ) this.vibration_start( phonon )
 			} else {
-				this.$.$mol_wire_sync( this ).vibration_end()
+				this.vibration_end()
 			}
 			return next ?? false
 		}
@@ -571,8 +571,8 @@ namespace $.$$ {
 		@ $mol_mem
 		vibration_restart() {
 			this.cell_translations()
-			this.$.$mol_wire_sync( this ).vibration_active( false )
-			this.$.$mol_wire_sync( this ).vibration_active( true )
+			this.vibration_active( false )
+			this.vibration_active( true )
 		}
 
 		@ $mol_mem
