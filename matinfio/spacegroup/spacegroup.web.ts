@@ -42,9 +42,9 @@ namespace $ {
 			const spans = symmetry.split( ',' )
 
 			const fract = {
-				x: fract_cord_norm( calc_symmetry_span( spans[ 0 ], atom.fract ) ),
-				y: fract_cord_norm( calc_symmetry_span( spans[ 1 ], atom.fract ) ),
-				z: fract_cord_norm( calc_symmetry_span( spans[ 2 ], atom.fract ) ),
+				x: fract_cord_norm( calc_symmetry_span( spans[ 0 ], atom.fract! ) ),
+				y: fract_cord_norm( calc_symmetry_span( spans[ 1 ], atom.fract! ) ),
+				z: fract_cord_norm( calc_symmetry_span( spans[ 2 ], atom.fract! ) ),
 			}
 
 			const [ x, y, z ] = math.multiply( [ fract.x, fract.y, fract.z ], cell )
@@ -96,9 +96,8 @@ namespace $ {
 	}
 
 	function fract_cord_norm( cord: number ){
-		let res = cord % 1
-		if( res < 0 ) res = res + 1
-		return res
+		const res = cord % 1
+		return res > 0 ? res : res + 1
 	}
 
 }

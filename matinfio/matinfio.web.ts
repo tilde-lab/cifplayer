@@ -30,7 +30,7 @@ namespace $ {
 			x: number,
 			y: number,
 			z: number,
-		},
+		} | null,
 		x: number,
 		y: number,
 		z: number,
@@ -60,19 +60,7 @@ namespace $ {
 			symlabel?: string,
 		},
 		overlayed: Record< string, string >,
-		atoms: {
-			fract: {
-				x: number,
-				y: number,
-				z: number,
-			} | null,
-			x: number,
-			y: number,
-			z: number,
-			c: string, //color
-			r: number, //radius
-			overlays: Record< string, string | number >,
-		}[],
+		atoms: $optimade_cifplayer_matinfio_internal_obj_atom[]
 		sg_name: string,
 		ng_name: number,
 		info: string,
