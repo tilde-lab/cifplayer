@@ -73,6 +73,8 @@ namespace $ {
 
 	export class $optimade_cifplayer_matinfio extends $mol_object2 {
 
+		static pos_overlap_limit = 0.1
+
 		static log = this.$.$optimade_cifplayer_matinfio_log
 
 		/** Guessing what to do */

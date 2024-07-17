@@ -261,7 +261,7 @@ namespace $.$$ {
 					for (const name of next_symmetries) {
 
 						const atoms = this.symmetry_atoms( name )!
-						if( is_overlap( data, atoms, 0.01 ) ) {
+						if( is_overlap( data, atoms, $optimade_cifplayer_matinfio.pos_overlap_limit ) ) {
 							return
 						}
 					}

@@ -48,17 +48,14 @@ namespace $ {
 			// CIF has fractional positions
 			// OPTIMADE has cartesian positions
 			// POSCAR may have either of two
-			let cpos = pos
-			let fpos: number[] | null = null
-			if( !crystal.cartesian ) {
-				fpos = pos.map( fract_cord_norm )
-				cpos = math.multiply( fpos, cell_matrix )
+			
+			const fpos: number[] | null = crystal.cartesian
+				? cell_matrix ? math.divide( pos, cell_matrix ).map( fract_cord_norm ) : null
+				: pos.map( fract_cord_norm )
 
-			} else if( cell_matrix ) {
-				fpos = math.divide( pos, cell_matrix ).map( fract_cord_norm )
-			}
+			const cpos: number[] = fpos ? math.multiply( fpos, cell_matrix ) : pos
 
-			const pos_hash = ( fpos ?? cpos ).map( c => c.toFixed( 2 ) ).join( ',' )
+			const pos_hash = cpos.map( c => Math.round( c / $optimade_cifplayer_matinfio.pos_overlap_limit ) ).join( ',' )
 
 			// make atoms unique, i.e. remove collisions;
 			// makes special sense for partial occupancies
