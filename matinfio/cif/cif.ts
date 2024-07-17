@@ -148,7 +148,7 @@ namespace $ {
 							atom.overlays.label = atom.label
 							if( !atom.symbol ) atom.symbol = atom.label.replace( /[0-9]/g, '' )
 						}
-						if( !( $optimade_cifplayer_matinfio_chemical_elements.JmolColors as any )[ atom.symbol ]
+						if( ! $optimade_cifplayer_matinfio_chemical_elements.JmolColors[ atom.symbol ]
 							&& atom.symbol
 							&& atom.symbol.length > 1
 						) {

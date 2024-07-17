@@ -96,8 +96,8 @@ namespace $ {
 				overlays[ oprop ] = atom.overlays[ oprop ]
 			}
 
-			const color = ($optimade_cifplayer_matinfio_chemical_elements.JmolColors as any)[ atom.symbol ] || '#FFFF00'
-			const radius = ($optimade_cifplayer_matinfio_chemical_elements.AseRadii as any)[ atom.symbol ] || 0.66
+			const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[ atom.symbol ] || '#FFFF00'
+			const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom.symbol ] || 0.66
 			const atom_result = { 
 				fract: fpos ? {
 					x: fpos[ 0 ],
