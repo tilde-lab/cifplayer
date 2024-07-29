@@ -617,7 +617,12 @@ var $;
 var $;
 (function ($) {
     function $mol_promise_like(val) {
-        return val && typeof val === 'object' && 'then' in val && typeof val.then === 'function';
+        try {
+            return val && typeof val === 'object' && 'then' in val && typeof val.then === 'function';
+        }
+        catch {
+            return false;
+        }
     }
     $.$mol_promise_like = $mol_promise_like;
 })($ || ($ = {}));
@@ -4778,6 +4783,9 @@ var $;
         json() {
             return $mol_wire_sync(this.native).json();
         }
+        blob() {
+            return $mol_wire_sync(this.native).blob();
+        }
         buffer() {
             return $mol_wire_sync(this.native).arrayBuffer();
         }
@@ -4797,9 +4805,6 @@ var $;
     __decorate([
         $mol_action
     ], $mol_fetch_response.prototype, "text", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch_response.prototype, "buffer", null);
     __decorate([
         $mol_action
     ], $mol_fetch_response.prototype, "xml", null);
@@ -4846,6 +4851,9 @@ var $;
         static json(input, init) {
             return this.success(input, init).json();
         }
+        static blob(input, init) {
+            return this.success(input, init).blob();
+        }
         static buffer(input, init) {
             return this.success(input, init).buffer();
         }
@@ -4874,6 +4882,9 @@ var $;
     __decorate([
         $mol_action
     ], $mol_fetch, "json", null);
+    __decorate([
+        $mol_action
+    ], $mol_fetch, "blob", null);
     __decorate([
         $mol_action
     ], $mol_fetch, "buffer", null);
@@ -5857,6 +5868,7 @@ var $;
 (function ($) {
     $.$mol_syntax2_md_flow = new $mol_syntax2({
         'quote': /^((?:(?:[>"] )(?:[^]*?)$(\r?\n?))+)([\n\r]*)/,
+        'spoiler': /^((?:(?:[\?] )(?:[^]*?)$(\r?\n?))+)([\n\r]*)/,
         'header': /^([#=]+)(\s+)(.*?)$([\n\r]*)/,
         'list': /^((?:(?: ?([*+-])|(?:\d+[\.\)])+) +(?:[^]*?)$(?:\r?\n?)(?:  (?:[^]*?)$(?:\r?\n?))*)+)((?:\r?\n)*)/,
         'code': /^(```\s*)([\w.-]*)[\r\n]+([^]*?)^(```)$([\n\r]*)/,
@@ -6538,11 +6550,6 @@ var $;
             },
             Rows: {
                 padding: $mol_gap.text,
-            },
-            Row: {
-                font: {
-                    family: 'inherit',
-                },
             },
             Copy: {
                 alignSelf: 'flex-start',
@@ -9153,54 +9160,76 @@ var $;
             mpds_data: crystal.mpds_data,
             mpds_demo: crystal.mpds_demo
         };
-        const pos2els = {};
-        const hashes = {};
+        const groups = [];
         for (let i = 0; i < crystal.atoms.length; i++) {
-            const pos = [crystal.atoms[i].x, crystal.atoms[i].y, crystal.atoms[i].z];
-            const hash = pos.map(function (item) { return item.toFixed(2); }).join(',');
-            if (hashes.hasOwnProperty(hash)) {
-                var update = "";
-                for (let oprop in render.atoms[hashes[hash]].overlays) {
+            const atom = crystal.atoms[i];
+            const pos = [atom.x, atom.y, atom.z];
+            const fpos = crystal.cartesian
+                ? cell_matrix ? math.divide(pos, cell_matrix).map(fract_cord_norm) : null
+                : pos.map(fract_cord_norm);
+            const cpos = fpos ? math.multiply(fpos, cell_matrix) : pos;
+            if (groups.some(group => {
+                if (is_overlap(cpos, group.cpos, $optimade_cifplayer_matinfio.pos_overlap_limit)) {
+                    const AseRadii = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[atom.symbol];
+                    const pos = group.atoms.findIndex(atom2 => {
+                        return AseRadii > $optimade_cifplayer_matinfio_chemical_elements.AseRadii[atom2.symbol];
+                    });
+                    if (pos == -1)
+                        group.atoms.push(atom);
+                    else
+                        group.atoms.splice(pos, 0, atom);
+                    return true;
+                }
+            })) {
+                continue;
+            }
+            groups.push({ fpos, cpos, atoms: [atom] });
+        }
+        for (let i = 0; i < groups.length; i++) {
+            const { fpos, cpos, atoms } = groups[i];
+            const overlays = {
+                "S": atoms[0].symbol,
+                "N": i + 1,
+            };
+            for (let oprop in atoms[0].overlays) {
+                overlays[oprop] = atoms[0].overlays[oprop];
+            }
+            atoms.slice(1).forEach(atom => {
+                for (let oprop in overlays) {
                     if (oprop == 'S') {
-                        if (pos2els[hash].indexOf(crystal.atoms[i].symbol) == -1) {
-                            update = " " + crystal.atoms[i].symbol;
-                            pos2els[hash].push(crystal.atoms[i].symbol);
+                        if (atoms.every(a => a.symbol != atom.symbol)) {
+                            overlays[oprop] += ' ' + atom.symbol;
                         }
                     }
-                    else if (oprop == 'N')
-                        update = ", " + (i + 1);
-                    else if (oprop == '_atom_site_occupancy')
-                        update = "+" + crystal.atoms[i].overlays[oprop];
-                    else
-                        update = " " + crystal.atoms[i].overlays[oprop];
-                    render.atoms[hashes[hash]].overlays[oprop] += update;
+                    else if (oprop == 'N') {
+                        overlays[oprop] += ', ' + (i + 1);
+                    }
+                    else if (oprop == '_atom_site_occupancy') {
+                        overlays[oprop] += '+' + atom.overlays[oprop];
+                    }
+                    else {
+                        overlays[oprop] += ' ' + atom.overlays[oprop];
+                    }
                 }
-            }
-            else {
-                const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[crystal.atoms[i].symbol] || '#FFFF00';
-                const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[crystal.atoms[i].symbol] || 0.66;
-                const overlays = {
-                    "S": crystal.atoms[i].symbol,
-                    "N": i + 1,
-                };
-                for (let oprop in crystal.atoms[i].overlays) {
-                    overlays[oprop] = crystal.atoms[i].overlays[oprop];
-                }
-                const cpos = crystal.cartesian ? pos : math.multiply(pos, cell_matrix);
-                const fpos = !crystal.cartesian ? pos : cell_matrix ? math.divide(pos, cell_matrix) : null;
-                const fract = fpos ? { 'x': fpos[0], 'y': fpos[1], 'z': fpos[2] } : null;
-                render.atoms.push({
-                    'fract': fract,
-                    'x': cpos[0],
-                    'y': cpos[1],
-                    'z': cpos[2],
-                    'c': color,
-                    'r': radius,
-                    'overlays': overlays
-                });
-                hashes[hash] = render.atoms.length - 1;
-                pos2els[hash] = [crystal.atoms[i].symbol];
-            }
+            });
+            const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[atoms[0].symbol] || '#FFFF00';
+            const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[atoms[0].symbol] || 0.66;
+            const atom_result = {
+                fract: fpos ? {
+                    x: fpos[0],
+                    y: fpos[1],
+                    z: fpos[2],
+                } : null,
+                x: cpos[0],
+                y: cpos[1],
+                z: cpos[2],
+                c: color,
+                r: radius,
+                overlays,
+                symbol: atoms[0].symbol,
+                label: atoms[0].label,
+            };
+            render.atoms.push(atom_result);
         }
         for (let oprop in crystal.atoms.at(-1).overlays) {
             render.overlayed[oprop] = $optimade_cifplayer_matinfio_custom_atom_loop_props[oprop];
@@ -9208,6 +9237,17 @@ var $;
         return render;
     }
     $.$optimade_cifplayer_matinfio_player_from_obj = $optimade_cifplayer_matinfio_player_from_obj;
+    function fract_cord_norm(cord) {
+        const res = cord % 1;
+        return res > 0 ? res : res + 1;
+    }
+    function is_overlap(pos1, pos2, threshold) {
+        for (let i = 0; i < 3; i++) {
+            if (pos1[i] < pos2[i] - threshold || pos1[i] > pos2[i] + threshold)
+                return false;
+        }
+        return true;
+    }
 })($ || ($ = {}));
 
 ;
@@ -9228,6 +9268,7 @@ var $;
         warning: console.warn,
     };
     class $optimade_cifplayer_matinfio extends $mol_object2 {
+        static pos_overlap_limit = 0.1;
         static log = this.$.$optimade_cifplayer_matinfio_log;
         static detect_format(data) {
             if (!data)
@@ -9404,10 +9445,8 @@ var $;
         return res;
     }
     function fract_cord_norm(cord) {
-        let res = cord % 1;
-        if (res < 0)
-            res = res + 1;
-        return res;
+        const res = cord % 1;
+        return res > 0 ? res : res + 1;
     }
 })($ || ($ = {}));
 
@@ -9457,14 +9496,13 @@ var $;
             return;
         class Component extends HTMLElement {
             static tag = $$.$mol_func_name(View).replace(/\W/g, '').replace(/^(?=\d+)/, '-').replace(/_/g, '-');
-            static observedAttributes = new Set;
+            static observedAttributes = new Set();
             view = new View;
             root;
             connectedCallback() {
                 if (!this.shadowRoot) {
                     this.attachShadow({ mode: 'open' });
                     const node = this.view.dom_node();
-                    node.setAttribute('mol_view_root', '');
                     for (const style of $mol_dom_context.document.getElementsByTagName('style')) {
                         this.shadowRoot.append(style.cloneNode(true));
                     }
@@ -9485,7 +9523,10 @@ var $;
                 this.root = undefined;
             }
             attributeChangedCallback(name, prev, next) {
-                this.view[name](JSON.parse(next));
+                if (name[0] === '#')
+                    this.view[name.slice(1)](JSON.parse(next));
+                else
+                    this.view[name](next);
             }
             toString() {
                 return '<' + this.constructor.tag + '#' + this.id + '/>';
@@ -9504,6 +9545,7 @@ var $;
                 if (typeof descr.value !== 'function')
                     continue;
                 Component.observedAttributes.add(field);
+                Component.observedAttributes.add('#' + field);
             }
             attributes_observe(Reflect.getPrototypeOf(proto));
         }
@@ -10287,7 +10329,7 @@ var $;
                     this.symmetry_atoms(symmetry).forEach(data => {
                         for (const name of next_symmetries) {
                             const atoms = this.symmetry_atoms(name);
-                            if (is_overlap(data, atoms, 0.01)) {
+                            if (is_overlap(data, atoms, $optimade_cifplayer_matinfio.pos_overlap_limit)) {
                                 return;
                             }
                         }
@@ -10810,7 +10852,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
+    $mol_style_attach("mol/check/expand/expand.view.css", "[mol_check_expand] {\n\tmin-width: 20px;\n}\n\n:where([mol_check_expand][disabled]) [mol_check_expand_icon] {\n\tvisibility: hidden;\n}\n\n[mol_check_expand_icon] {\n\tbox-shadow: none;\n\tmargin-left: -0.375rem;\n}\n[mol_check_expand_icon] {\n\ttransform: rotateZ(0deg);\n}\n\n:where([mol_check_checked]) [mol_check_expand_icon] {\n\ttransform: rotateZ(90deg);\n}\n\n[mol_check_expand_icon] {\n\tvertical-align: text-top;\n}\n\n[mol_check_expand_label] {\n\tmargin-left: 0;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -11517,6 +11559,85 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_expander) = class $mol_expander extends ($.$mol_list) {
+		expanded(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		expandable(){
+			return true;
+		}
+		label(){
+			return [(this?.title())];
+		}
+		Trigger(){
+			const obj = new this.$.$mol_check_expand();
+			(obj.checked) = (next) => ((this?.expanded(next)));
+			(obj.expandable) = () => ((this?.expandable()));
+			(obj.label) = () => ((this?.label()));
+			return obj;
+		}
+		Tools(){
+			return null;
+		}
+		Label(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this?.Trigger()), (this?.Tools())]);
+			return obj;
+		}
+		content(){
+			return [];
+		}
+		Content(){
+			const obj = new this.$.$mol_list();
+			(obj.rows) = () => ((this?.content()));
+			return obj;
+		}
+		rows(){
+			return [(this?.Label()), (this?.Content())];
+		}
+	};
+	($mol_mem(($.$mol_expander.prototype), "expanded"));
+	($mol_mem(($.$mol_expander.prototype), "Trigger"));
+	($mol_mem(($.$mol_expander.prototype), "Label"));
+	($mol_mem(($.$mol_expander.prototype), "Content"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_expander extends $.$mol_expander {
+            rows() {
+                return [
+                    this.Label(),
+                    ...this.expanded() ? [this.Content()] : []
+                ];
+            }
+            expandable() {
+                return this.content().length > 0;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_expander.prototype, "rows", null);
+        $$.$mol_expander = $mol_expander;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/expander/expander.view.css", "[mol_expander] {\n\tflex-direction: column;\n}\n\n[mol_expander_label] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_expander_trigger] {\n\tflex: auto;\n\tposition: relative;\n}\n");
+})($ || ($ = {}));
+
+;
 	($.$mol_text) = class $mol_text extends ($.$mol_list) {
 		auto_scroll(){
 			return null;
@@ -11592,6 +11713,22 @@ var $;
 		}
 		link_host(id){
 			return "";
+		}
+		spoiler_label(id){
+			return "";
+		}
+		Spoiler_label(id){
+			const obj = new this.$.$mol_text();
+			(obj.text) = () => ((this?.spoiler_label(id)));
+			return obj;
+		}
+		spoiler_content(id){
+			return "";
+		}
+		Spoiler_content(id){
+			const obj = new this.$.$mol_text();
+			(obj.text) = () => ((this?.spoiler_content(id)));
+			return obj;
 		}
 		uri_base(){
 			return "";
@@ -11734,7 +11871,15 @@ var $;
 			(obj.title) = () => ((this?.line_text(id)));
 			return obj;
 		}
+		Spoiler(id){
+			const obj = new this.$.$mol_expander();
+			(obj.label) = () => ([(this?.Spoiler_label(id))]);
+			(obj.content) = () => ([(this?.Spoiler_content(id))]);
+			return obj;
+		}
 	};
+	($mol_mem_key(($.$mol_text.prototype), "Spoiler_label"));
+	($mol_mem_key(($.$mol_text.prototype), "Spoiler_content"));
 	($mol_mem_key(($.$mol_text.prototype), "Paragraph"));
 	($mol_mem_key(($.$mol_text.prototype), "Quote"));
 	($mol_mem_key(($.$mol_text.prototype), "List"));
@@ -11753,6 +11898,7 @@ var $;
 	($mol_mem_key(($.$mol_text.prototype), "Link"));
 	($mol_mem_key(($.$mol_text.prototype), "Link_http"));
 	($mol_mem_key(($.$mol_text.prototype), "Embed"));
+	($mol_mem_key(($.$mol_text.prototype), "Spoiler"));
 	($.$mol_text_header) = class $mol_text_header extends ($.$mol_paragraph) {
 		arg(){
 			return {};
@@ -11810,6 +11956,7 @@ var $;
                 return this.flow_tokens().map(({ name }, index) => {
                     switch (name) {
                         case 'quote': return this.Quote(index);
+                        case 'spoiler': return this.Spoiler(index);
                         case 'header': return this.Header(index);
                         case 'list': return this.List(index);
                         case 'code': return this.Pre(index);
@@ -11995,6 +12142,15 @@ var $;
                     new $mol_after_tick(() => this.ensure_visible(header));
                 }
             }
+            spoiler_rows(index) {
+                return this.flow_tokens()[index].chunks[0].replace(/^[\?] /mg, '').split('\n');
+            }
+            spoiler_label(index) {
+                return this.spoiler_rows(index)[0];
+            }
+            spoiler_content(index) {
+                return this.spoiler_rows(index).slice(1).join('\n');
+            }
         }
         __decorate([
             $mol_mem
@@ -12083,6 +12239,15 @@ var $;
         __decorate([
             $mol_mem
         ], $mol_text.prototype, "auto_scroll", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "spoiler_rows", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "spoiler_label", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_text.prototype, "spoiler_content", null);
         $$.$mol_text = $mol_text;
         class $mol_text_header extends $.$mol_text_header {
             dom_name() {
@@ -12097,7 +12262,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
+    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n}\n\n[mol_text_spoiler_label_paragraph] {\n\tpadding: 0;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
 })($ || ($ = {}));
 
 ;
