@@ -38,8 +38,9 @@ namespace $ {
 			mpds_demo: crystal.mpds_demo
 		}
 
-		const in_pos: Map< string, $optimade_cifplayer_matinfio_internal_obj_atom[] > = new Map
+		const groups: { fpos: number[] | null, cpos: number[], atoms: $optimade_cifplayer_matinfio_internal_obj_atom[] }[] = []
 
+		// make atoms unique, i.e. remove collisions;
 		for( let i = 0; i < crystal.atoms.length; i++ ) {
 			const atom = crystal.atoms[ i ]
 
@@ -48,53 +49,68 @@ namespace $ {
 			// CIF has fractional positions
 			// OPTIMADE has cartesian positions
 			// POSCAR may have either of two
-			
 			const fpos: number[] | null = crystal.cartesian
 				? cell_matrix ? math.divide( pos, cell_matrix ).map( fract_cord_norm ) : null
 				: pos.map( fract_cord_norm )
 
 			const cpos: number[] = fpos ? math.multiply( fpos, cell_matrix ) : pos
 
-			const pos_hash = cpos.map( c => Math.round( c / $optimade_cifplayer_matinfio.pos_overlap_limit ) ).join( ',' )
+			if( groups.some( group => {
+				if( is_overlap( cpos, group.cpos, $optimade_cifplayer_matinfio.pos_overlap_limit ) ) {
 
-			// make atoms unique, i.e. remove collisions;
-			// makes special sense for partial occupancies
-			if( in_pos.get( pos_hash )?.length! > 0 ) {
+					const AseRadii = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom.symbol ]
+					const pos = group.atoms.findIndex( atom2 => {
+						return AseRadii > $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom2.symbol ]
+					} )
 
-				const first = in_pos.get( pos_hash )![0]
+					if( pos == -1 ) group.atoms.push( atom )
+					else group.atoms.splice( pos, 0, atom )
 
-				for( let oprop in first.overlays ) {
+					return true
+
+				}
+			} ) ) {
+				continue
+			}
+
+			groups.push( { fpos, cpos, atoms: [ atom ] } )
+		}
+
+		for( let i = 0; i < groups.length; i++ ) {
+
+			const { fpos, cpos, atoms } = groups[i]
+
+			const overlays: Record< string, string | number > = {
+				"S": atoms[0].symbol,
+				"N": i + 1,
+			}
+			for( let oprop in atoms[0].overlays ) {
+				overlays[ oprop ] = atoms[0].overlays[ oprop ]
+			}
+
+			atoms.slice(1).forEach( atom => {
+				for( let oprop in overlays ) {
 					
 					if( oprop == 'S' ) {
-						if( in_pos.get( pos_hash )?.every( a => a.symbol != atom.symbol ) ) {
-							first.overlays[ oprop ] += ' ' + atom.symbol
+						if( atoms.every( a => a.symbol != atom.symbol ) ) {
+							overlays[ oprop ] += ' ' + atom.symbol
 						}
 
 					} else if( oprop == 'N' ) {
-						first.overlays[ oprop ] += ', ' + ( i + 1 )
+						overlays[ oprop ] += ', ' + ( i + 1 )
 
 					} else if( oprop == '_atom_site_occupancy' ) {
-						first.overlays[ oprop ] += '+' + atom.overlays[ oprop ]
+						overlays[ oprop ] += '+' + atom.overlays[ oprop ]
 
 					} else {
-						first.overlays[ oprop ] += ' ' + atom.overlays[ oprop ]
+						overlays[ oprop ] += ' ' + atom.overlays[ oprop ]
 					}
 
 				}
-				
-				continue
-			}
-			
-			const overlays: Record< string, string | number > = {
-				"S": atom.symbol,
-				"N": i + 1,
-			}
-			for( let oprop in atom.overlays ) {
-				overlays[ oprop ] = atom.overlays[ oprop ]
-			}
+			} )
 
-			const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[ atom.symbol ] || '#FFFF00'
-			const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom.symbol ] || 0.66
+			const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[ atoms[0].symbol ] || '#FFFF00'
+			const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atoms[0].symbol ] || 0.66
 			const atom_result = { 
 				fract: fpos ? {
 					x: fpos[ 0 ],
@@ -107,13 +123,11 @@ namespace $ {
 				c: color,
 				r: radius,
 				overlays,
-				symbol: atom.symbol,
-				label: atom.label,
+				symbol: atoms[0].symbol,
+				label: atoms[0].label,
 			}
 
 			render.atoms.push( atom_result )
-
-			in_pos.get( pos_hash )?.push( atom_result ) ?? in_pos.set( pos_hash, [ atom_result ] )
 			
 		}
 
@@ -128,6 +142,13 @@ namespace $ {
 	function fract_cord_norm( cord: number ){
 		const res = cord % 1
 		return res > 0 ? res : res + 1
+	}
+
+	function is_overlap( pos1: number[], pos2: number[], threshold: number ) {
+		for( let i = 0; i < 3; i++ ) {
+			if ( pos1[i] < pos2[i] - threshold || pos1[i] > pos2[i] + threshold ) return false
+		}
+		return true
 	}
 
 }
