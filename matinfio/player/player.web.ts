@@ -37,63 +37,98 @@ namespace $ {
 			mpds_data: crystal.mpds_data,
 			mpds_demo: crystal.mpds_demo
 		}
-		const pos2els: any = {}
-		const hashes: any = {}
 
+		const groups: { fpos: number[] | null, cpos: number[], atoms: $optimade_cifplayer_matinfio_internal_obj_atom[] }[] = []
+
+		// make atoms unique, i.e. remove collisions;
 		for( let i = 0; i < crystal.atoms.length; i++ ) {
-			const pos = [ crystal.atoms[ i ].x, crystal.atoms[ i ].y, crystal.atoms[ i ].z ]
-			const hash = pos.map( function( item ) { return item.toFixed( 2 ) } ).join( ',' )
-			// make atoms unique, i.e. remove collisions;
-			// makes special sense for partial occupancies
-			if( hashes.hasOwnProperty( hash ) ) {
-				var update = ""
-				for( let oprop in render.atoms[ hashes[ hash ] ].overlays ) {
-					if( oprop == 'S' ) {
-						if( pos2els[ hash ].indexOf( crystal.atoms[ i ].symbol ) == -1 ) {
-							update = " " + crystal.atoms[ i ].symbol
-							pos2els[ hash ].push( crystal.atoms[ i ].symbol )
-						}
-					}
-					else if( oprop == 'N' )
-						update = ", " + ( i + 1 )
-					else if( oprop == '_atom_site_occupancy' )
-						update = "+" + crystal.atoms[ i ].overlays[ oprop ]
-					else
-						update = " " + crystal.atoms[ i ].overlays[ oprop ]
+			const atom = crystal.atoms[ i ]
 
-					render.atoms[ hashes[ hash ] ].overlays[ oprop ] += update
-				}
-			} else {
-				const color = ($optimade_cifplayer_matinfio_chemical_elements.JmolColors as any)[ crystal.atoms[ i ].symbol ] || '#FFFF00'
-				const radius = ($optimade_cifplayer_matinfio_chemical_elements.AseRadii as any)[ crystal.atoms[ i ].symbol ] || 0.66
-				
-				const overlays: Record< string, string | number > = {
-					"S": crystal.atoms[ i ].symbol,
-					"N": i + 1,
-				}
-				for( let oprop in crystal.atoms[ i ].overlays ) {
-					overlays[ oprop ] = crystal.atoms[ i ].overlays[ oprop ]
-				}
+			const pos = [ atom.x, atom.y, atom.z ]
 
-				// CIF has fractional positions
-				// OPTIMADE has cartesian positions
-				// POSCAR may have either of two
-				const cpos = crystal.cartesian ? pos : math.multiply( pos, cell_matrix )
-				const fpos = !crystal.cartesian ? pos : cell_matrix ? math.divide( pos, cell_matrix ) : null
-				const fract = fpos ? { 'x': fpos[ 0 ], 'y': fpos[ 1 ], 'z': fpos[ 2 ] } : null
-				
-				render.atoms.push( { 
-					'fract': fract,
-					'x': cpos[ 0 ],
-					'y': cpos[ 1 ],
-					'z': cpos[ 2 ],
-					'c': color,
-					'r': radius,
-					'overlays': overlays
-				} )
-				hashes[ hash ] = render.atoms.length - 1
-				pos2els[ hash ] = [ crystal.atoms[ i ].symbol ]
+			// CIF has fractional positions
+			// OPTIMADE has cartesian positions
+			// POSCAR may have either of two
+			const fpos: number[] | null = crystal.cartesian
+				? cell_matrix ? math.divide( pos, cell_matrix ).map( fract_cord_norm ) : null
+				: pos.map( fract_cord_norm )
+
+			const cpos: number[] = fpos ? math.multiply( fpos, cell_matrix ) : pos
+
+			if( groups.some( group => {
+				if( is_overlap( cpos, group.cpos, $optimade_cifplayer_matinfio.pos_overlap_limit ) ) {
+
+					const AseRadii = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom.symbol ]
+					const pos = group.atoms.findIndex( atom2 => {
+						return AseRadii > $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atom2.symbol ]
+					} )
+
+					if( pos == -1 ) group.atoms.push( atom )
+					else group.atoms.splice( pos, 0, atom )
+
+					return true
+
+				}
+			} ) ) {
+				continue
 			}
+
+			groups.push( { fpos, cpos, atoms: [ atom ] } )
+		}
+
+		for( let i = 0; i < groups.length; i++ ) {
+
+			const { fpos, cpos, atoms } = groups[i]
+
+			const overlays: Record< string, string | number > = {
+				"S": atoms[0].symbol,
+				"N": i + 1,
+			}
+			for( let oprop in atoms[0].overlays ) {
+				overlays[ oprop ] = atoms[0].overlays[ oprop ]
+			}
+
+			atoms.slice(1).forEach( atom => {
+				for( let oprop in overlays ) {
+					
+					if( oprop == 'S' ) {
+						if( atoms.every( a => a.symbol != atom.symbol ) ) {
+							overlays[ oprop ] += ' ' + atom.symbol
+						}
+
+					} else if( oprop == 'N' ) {
+						overlays[ oprop ] += ', ' + ( i + 1 )
+
+					} else if( oprop == '_atom_site_occupancy' ) {
+						overlays[ oprop ] += '+' + atom.overlays[ oprop ]
+
+					} else {
+						overlays[ oprop ] += ' ' + atom.overlays[ oprop ]
+					}
+
+				}
+			} )
+
+			const color = $optimade_cifplayer_matinfio_chemical_elements.JmolColors[ atoms[0].symbol ] || '#FFFF00'
+			const radius = $optimade_cifplayer_matinfio_chemical_elements.AseRadii[ atoms[0].symbol ] || 0.66
+			const atom_result = { 
+				fract: fpos ? {
+					x: fpos[ 0 ],
+					y: fpos[ 1 ],
+					z: fpos[ 2 ],
+				} : null,
+				x: cpos[ 0 ],
+				y: cpos[ 1 ],
+				z: cpos[ 2 ],
+				c: color,
+				r: radius,
+				overlays,
+				symbol: atoms[0].symbol,
+				label: atoms[0].label,
+			}
+
+			render.atoms.push( atom_result )
+			
 		}
 
 		for( let oprop in crystal.atoms.at(-1)!.overlays ) {
@@ -101,6 +136,19 @@ namespace $ {
 		}
 		
 		return render
+	}
+	
+
+	function fract_cord_norm( cord: number ){
+		const res = cord % 1
+		return res > 0 ? res : res + 1
+	}
+
+	function is_overlap( pos1: number[], pos2: number[], threshold: number ) {
+		for( let i = 0; i < 3; i++ ) {
+			if ( pos1[i] < pos2[i] - threshold || pos1[i] > pos2[i] + threshold ) return false
+		}
+		return true
 	}
 
 }
