@@ -8881,6 +8881,9 @@ var $;
 		overlay_box(id){
 			return null;
 		}
+		minimal_heigth(){
+			return 300;
+		}
 		sub(){
 			return [
 				(this?.Three()), 
@@ -10027,6 +10030,7 @@ var $;
                 color: $mol_theme.back,
             },
             position: 'relative',
+            height: '100%',
             '@': {
                 fullscreen: {
                     'true': {
