@@ -31,6 +31,7 @@ $optimade_cifplayer_player $mol_view
 	atom_box* null
 	overlay_box* null
 	-
+	minimal_heigth 300
 	sub /
 		<= Three $optimade_cifplayer_lib_three_view
 			scene => scene

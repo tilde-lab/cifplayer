@@ -7,6 +7,7 @@ namespace $.$$ {
 		},
 
 		position: 'relative',
+		height: '100%',
 
 		'@': {
 			fullscreen: {
