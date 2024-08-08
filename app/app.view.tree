@@ -39,4 +39,4 @@ $optimade_cifplayer_app $mol_drop
 			<= Green_triangle_icon $mol_link
 				uri \https://absolidix.com
 				sub /
-					<= Icon $mol_icon_triangle_outline
+					<= Icon $mol_icon_play_outline

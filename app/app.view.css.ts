@@ -63,7 +63,7 @@ namespace $.$$ {
 			position: "fixed",
 			bottom: "20px",
 			right: "20px",
-			fontSize: "24px",
+			fontSize: "32px",
 			color: 'green'
 		}
 	} )
