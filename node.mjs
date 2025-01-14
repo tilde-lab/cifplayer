@@ -653,7 +653,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    const handled = new WeakSet();
+    const wrappers = new WeakMap();
     class $mol_wire_fiber extends $mol_wire_pub_sub {
         task;
         host;
@@ -788,13 +788,21 @@ var $;
                         result = this.task.call(this.host, ...this.args);
                         break;
                 }
-                if ($mol_promise_like(result) && !handled.has(result)) {
-                    const put = (res) => {
-                        if (this.cache === result)
-                            this.put(res);
-                        return res;
-                    };
-                    result = result.then(put, put);
+                if ($mol_promise_like(result)) {
+                    if (wrappers.has(result)) {
+                        result = wrappers.get(result).then(a => a);
+                    }
+                    else {
+                        const put = (res) => {
+                            if (this.cache === result)
+                                this.put(res);
+                            return res;
+                        };
+                        wrappers.set(result, result = Object.assign(result.then(put, put), { destructor: result.destructor || (() => { }) }));
+                        wrappers.set(result, result);
+                        const error = new Error(`Promise in ${this}`);
+                        Object.defineProperty(result, 'stack', { get: () => error.stack });
+                    }
                 }
             }
             catch (error) {
@@ -804,20 +812,19 @@ var $;
                 else {
                     result = new Error(String(error), { cause: error });
                 }
-                if ($mol_promise_like(result) && !handled.has(result)) {
-                    result = result.finally(() => {
-                        if (this.cache === result)
-                            this.absorb();
-                    });
+                if ($mol_promise_like(result)) {
+                    if (wrappers.has(result)) {
+                        result = wrappers.get(result);
+                    }
+                    else {
+                        wrappers.set(result, result = Object.assign(result.finally(() => {
+                            if (this.cache === result)
+                                this.absorb();
+                        }), { destructor: result.destructor || (() => { }) }));
+                        const error = new Error(`Promise in ${this}`);
+                        Object.defineProperty(result, 'stack', { get: () => error.stack });
+                    }
                 }
-            }
-            if ($mol_promise_like(result) && !handled.has(result)) {
-                result = Object.assign(result, {
-                    destructor: result['destructor'] ?? (() => { })
-                });
-                handled.add(result);
-                const error = new Error(`Promise in ${this}`);
-                Object.defineProperty(result, 'stack', { get: () => error.stack });
             }
             if (!$mol_promise_like(result)) {
                 this.track_cut();
@@ -844,7 +851,7 @@ var $;
             }
             return this.cache;
         }
-        async async() {
+        async async_raw() {
             while (true) {
                 this.fresh();
                 if (this.cache instanceof Error) {
@@ -860,6 +867,12 @@ var $;
                 }
             }
         }
+        async() {
+            const promise = this.async_raw();
+            if (!promise.destructor)
+                promise.destructor = () => this.destructor();
+            return promise;
+        }
         step() {
             return new Promise(done => {
                 const sub = new $mol_wire_pub_sub;
@@ -871,6 +884,12 @@ var $;
                     setTimeout(() => sub.destructor());
                 };
             });
+        }
+        destructor() {
+            super.destructor();
+            if ($mol_owning_check(this, this.cache)) {
+                this.cache.destructor();
+            }
         }
     }
     $.$mol_wire_fiber = $mol_wire_fiber;
@@ -896,6 +915,7 @@ var $;
 var $;
 (function ($) {
     $.$mol_key_store = new WeakMap();
+    const TypedArray = Object.getPrototypeOf(Uint8Array);
     function $mol_key(value) {
         if (typeof value === 'bigint')
             return value.toString() + 'n';
@@ -925,7 +945,7 @@ var $;
                 return value;
             if (value instanceof RegExp)
                 return value.toString();
-            if (value instanceof Uint8Array)
+            if (value instanceof TypedArray)
                 return [...value];
             let key = $.$mol_key_store.get(value);
             if (key)
@@ -1154,7 +1174,7 @@ var $;
             this.row = row;
             this.col = col;
             this.length = length;
-            this[Symbol.toStringTag] = `${this.uri}#${this.row}:${this.col}/${this.length}`;
+            this[Symbol.toStringTag] = this.uri + ('#' + this.row + ':' + this.col + '/' + this.length);
         }
         static unknown = $mol_span.begin('?');
         static begin(uri, source = '') {
@@ -1650,12 +1670,14 @@ var $;
                         break reuse;
                     return existen;
                 }
-                const next = new $mol_wire_task(`${host?.[Symbol.toStringTag] ?? host}.${task.name}<#>`, task, host, args);
+                const key = (host?.[Symbol.toStringTag] ?? host) + ('.' + task.name + '<#>');
+                const next = new $mol_wire_task(key, task, host, args);
                 if (existen?.temp) {
                     $$.$mol_log3_warn({
                         place: '$mol_wire_task',
                         message: `Non idempotency`,
-                        existen,
+                        sub,
+                        pubs: [...sub?.pub_list ?? [], existen],
                         next,
                         hint: 'Ignore it',
                     });
@@ -1678,6 +1700,14 @@ var $;
                 this.cursor = $mol_wire_cursor.fresh;
                 if (next !== prev)
                     this.emit();
+                if ($mol_owning_catch(this, next)) {
+                    try {
+                        next[Symbol.toStringTag] = this[Symbol.toStringTag];
+                    }
+                    catch {
+                        Object.defineProperty(next, Symbol.toStringTag, { value: this[Symbol.toStringTag] });
+                    }
+                }
                 return next;
             }
             this.cursor = $mol_wire_cursor.final;
@@ -1767,7 +1797,7 @@ var $;
             if (existen)
                 return existen;
             const prefix = host?.[Symbol.toStringTag] ?? (host instanceof Function ? $$.$mol_func_name(host) : host);
-            const key = `${prefix}.${field}`;
+            const key = prefix + ('.' + field);
             const fiber = new $mol_wire_atom(key, task, host, []);
             (host ?? task)[field] = fiber;
             return fiber;
@@ -1785,7 +1815,7 @@ var $;
             else {
                 dict = (host ?? task)[field] = new Map();
             }
-            const id = `${prefix}.${task.name}<${key_str.replace(/^"|"$/g, "'")}>`;
+            const id = prefix + ('.' + task.name) + ('<' + key_str.replace(/^"|"$/g, "'") + '>');
             const fiber = new $mol_wire_atom(id, task, host, [key]);
             dict.set(key_str, fiber);
             return fiber;
@@ -1832,10 +1862,6 @@ var $;
         }
         destructor() {
             super.destructor();
-            const prev = this.cache;
-            if ($mol_owning_check(this, prev)) {
-                prev.destructor();
-            }
             if (this.pub_from === 0) {
                 ;
                 (this.host ?? this.task)[this.field()] = null;
@@ -1990,30 +2016,26 @@ var $node = new Proxy({ require }, {
             return target.require(name);
         if (name[0] === '.')
             return target.require(name);
-        const path = target.require('path');
-        const fs = target.require('fs');
-        let dir = path.resolve('.');
-        const suffix = `./node_modules/${name}`;
-        const $$ = $;
-        while (!fs.existsSync(path.join(dir, suffix))) {
-            const parent = path.resolve(dir, '..');
-            if (parent === dir) {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
-                try {
-                    $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
-                }
-                catch { }
-                break;
+        try {
+            target.require.resolve(name);
+        }
+        catch {
+            const $$ = $;
+            $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
+            try {
+                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
             }
-            else {
-                dir = parent;
+            catch (e) {
+                if ($$.$mol_fail_catch(e)) {
+                    $$.$mol_fail_log(e);
+                }
             }
         }
         try {
             return target.require(name);
         }
         catch (error) {
-            if (error.code === 'ERR_REQUIRE_ESM') {
+            if ($.$mol_fail_catch(error) && error.code === 'ERR_REQUIRE_ESM') {
                 const module = cache.get(name);
                 if (module)
                     return module;
@@ -2032,6 +2054,36 @@ const cache = new Map();
 require = (req => Object.assign(function require(name) {
     return $node[name];
 }, req))(require);
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_error_mix extends AggregateError {
+        cause;
+        name = $$.$mol_func_name(this.constructor).replace(/^\$/, '') + '_Error';
+        constructor(message, cause = {}, ...errors) {
+            super(errors, message, { cause });
+            this.cause = cause;
+            const stack_get = Object.getOwnPropertyDescriptor(this, 'stack')?.get ?? (() => super.stack);
+            Object.defineProperty(this, 'stack', {
+                get: () => (stack_get.call(this) ?? this.message) + '\n' + [JSON.stringify(this.cause, null, '  ') ?? 'no cause', ...this.errors.map(e => e.stack)].map(e => e.trim()
+                    .replace(/at /gm, '   at ')
+                    .replace(/^(?!    +at )(.*)/gm, '    at | $1 (#)')).join('\n')
+            });
+        }
+        static [Symbol.toPrimitive]() {
+            return this.toString();
+        }
+        static toString() {
+            return $$.$mol_func_name(this);
+        }
+        static make(...params) {
+            return new this(...params);
+        }
+    }
+    $.$mol_error_mix = $mol_error_mix;
+})($ || ($ = {}));
 
 ;
 "use strict";
@@ -2056,26 +2108,166 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_exec(dir, command, ...args) {
-        let [app, ...args0] = command.split(' ');
-        args = [...args0, ...args];
-        this.$mol_log3_come({
-            place: '$mol_exec',
-            dir: $node.path.relative('', dir),
-            message: 'Run',
-            command: `${app} ${args.join(' ')}`,
+    const factories = new WeakMap();
+    function factory(val) {
+        let make = factories.get(val);
+        if (make)
+            return make;
+        make = $mol_func_name_from((...args) => new val(...args), val);
+        factories.set(val, make);
+        return make;
+    }
+    function $mol_wire_sync(obj) {
+        return new Proxy(obj, {
+            get(obj, field) {
+                let val = obj[field];
+                if (typeof val !== 'function')
+                    return val;
+                const temp = $mol_wire_task.getter(val);
+                return function $mol_wire_sync(...args) {
+                    const fiber = temp(obj, args);
+                    return fiber.sync();
+                };
+            },
+            construct(obj, args) {
+                const temp = $mol_wire_task.getter(factory(obj));
+                return temp(obj, args).sync();
+            },
+            apply(obj, self, args) {
+                const temp = $mol_wire_task.getter(obj);
+                return temp(self, args).sync();
+            },
         });
-        var res = $node['child_process'].spawnSync(app, args, {
-            cwd: $node.path.resolve(dir),
-            shell: true,
-            env: this.$mol_env(),
-        });
-        if (res.status || res.error) {
-            return $mol_fail(res.error || new Error(res.stderr.toString(), { cause: res.stdout }));
+    }
+    $.$mol_wire_sync = $mol_wire_sync;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_run_error extends $mol_error_mix {
+    }
+    $.$mol_run_error = $mol_run_error;
+    $.$mol_run_spawn = (...args) => $node['child_process'].spawn(...args);
+    $.$mol_run_spawn_sync = (...args) => $node['child_process'].spawnSync(...args);
+    class $mol_run extends $mol_object {
+        static async_enabled() {
+            return Boolean(this.$.$mol_env()['MOL_RUN_ASYNC']);
         }
-        if (!res.stdout)
-            res.stdout = Buffer.from([]);
-        return res;
+        static spawn(options) {
+            const sync = !this.async_enabled() || !Boolean($mol_wire_auto());
+            const env = options.env ?? this.$.$mol_env();
+            return $mol_wire_sync(this).spawn_async({ ...options, sync, env });
+        }
+        static spawn_async({ dir, sync, timeout, command, env }) {
+            const args_raw = typeof command === 'string' ? command.split(' ') : command;
+            const [app, ...args] = args_raw;
+            const opts = { shell: true, cwd: dir, env };
+            const log_object = {
+                place: `${this}.spawn()`,
+                message: 'Run',
+                command: args_raw.join(' '),
+                dir: $node.path.relative('', dir),
+            };
+            if (sync) {
+                this.$.$mol_log3_come({
+                    hint: 'Run inside fiber',
+                    ...log_object
+                });
+                let error;
+                let res;
+                try {
+                    res = this.$.$mol_run_spawn_sync(app, args, opts);
+                    error = res.error;
+                }
+                catch (err) {
+                    error = err;
+                }
+                if (!res || error || res.status) {
+                    throw new $mol_run_error(this.error_message(res), { ...log_object, status: res?.status, signal: res?.signal }, ...(error ? [error] : []));
+                }
+                return res;
+            }
+            let sub;
+            try {
+                sub = this.$.$mol_run_spawn(app, args, {
+                    ...opts,
+                    stdio: ['pipe', 'inherit', 'inherit'],
+                });
+            }
+            catch (error) {
+                throw new $mol_run_error(this.error_message(undefined), log_object, error);
+            }
+            const pid = sub.pid ?? 0;
+            this.$.$mol_log3_come({
+                ...log_object,
+                pid,
+            });
+            let timeout_kill = false;
+            let timer;
+            const std_data = [];
+            const error_data = [];
+            const add = (std_chunk, error_chunk) => {
+                if (std_chunk)
+                    std_data.push(std_chunk);
+                if (error_chunk)
+                    error_data.push(error_chunk);
+                if (!timeout)
+                    return;
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    const signal = timeout_kill ? 'SIGKILL' : 'SIGTERM';
+                    timeout_kill = true;
+                    add();
+                    sub.kill(signal);
+                }, timeout);
+            };
+            add();
+            sub.stdout?.on('data', data => add(data));
+            sub.stderr?.on('data', data => add(undefined, data));
+            const result_promise = new Promise((done, fail) => {
+                const close = (error, status = null, signal = null) => {
+                    if (!timer && timeout)
+                        return;
+                    clearTimeout(timer);
+                    timer = undefined;
+                    const res = {
+                        pid,
+                        signal,
+                        get stdout() { return Buffer.concat(std_data); },
+                        get stderr() { return Buffer.concat(error_data); }
+                    };
+                    if (error || status || timeout_kill)
+                        return fail(new $mol_run_error(this.error_message(res) + (timeout_kill ? ', timeout' : ''), { ...log_object, pid, status, signal, timeout_kill }, ...error ? [error] : []));
+                    this.$.$mol_log3_done({
+                        ...log_object,
+                        pid,
+                    });
+                    done(res);
+                };
+                sub.on('disconnect', () => close(new Error('Disconnected')));
+                sub.on('error', err => close(err));
+                sub.on('exit', (status, signal) => close(null, status, signal));
+            });
+            return Object.assign(result_promise, { destructor: () => {
+                    clearTimeout(timer);
+                    sub.kill('SIGKILL');
+                } });
+        }
+        static error_message(res) {
+            return res?.stderr.toString() || res?.stdout.toString() || 'Run error';
+        }
+    }
+    $.$mol_run = $mol_run;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_exec(dir, command, ...args) {
+        return this.$mol_run.spawn({ command: [command, ...args], dir });
     }
     $.$mol_exec = $mol_exec;
 })($ || ($ = {}));
@@ -2162,16 +2354,25 @@ var $;
     class $mol_memo extends $mol_wrapper {
         static wrap(task) {
             const store = new WeakMap();
-            return function (next) {
+            const fun = function (next) {
                 if (next === undefined && store.has(this))
                     return store.get(this);
                 const val = task.call(this, next) ?? next;
                 store.set(this, val);
                 return val;
             };
+            Reflect.defineProperty(fun, 'name', { value: task.name + ' ' });
+            return fun;
         }
     }
     $.$mol_memo = $mol_memo;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_dom = $mol_dom_context;
 })($ || ($ = {}));
 
 ;
@@ -2373,6 +2574,8 @@ var $;
         for (let key in fields) {
             const val = fields[key];
             if (val === undefined)
+                continue;
+            if (val === el[key])
                 continue;
             el[key] = val;
         }
@@ -2671,7 +2874,6 @@ var $;
         return suffix;
     }
     $.$mol_view_state_key = $mol_view_state_key;
-    const error_showed = new WeakMap();
     class $mol_view extends $mol_object {
         static Root(id) {
             return new this;
@@ -2818,14 +3020,11 @@ var $;
                 $mol_dom_render_attributes(node, { mol_view_error });
                 if ($mol_promise_like(error))
                     break render;
-                if ((error_showed.get(error) ?? this) !== this)
-                    break render;
                 try {
                     const message = error.message || error;
                     node.innerText = message.replace(/^|$/mg, '\xA0\xA0');
                 }
                 catch { }
-                error_showed.set(error, this);
             }
             try {
                 this.auto();
@@ -3007,7 +3206,9 @@ var $;
             const win = this.$.$mol_dom_context;
             if (win.parent !== win.self && !win.document.hasFocus())
                 return;
-            this.focused(true);
+            new this.$.$mol_after_timeout(0, () => {
+                this.focused(true);
+            });
         }
         destructor() {
             const node = $mol_wire_probe(() => this.dom_node());
@@ -3197,14 +3398,14 @@ var $;
 		}
 		event(){
 			return {
-				"dragenter": (next) => (this?.enter(next)), 
-				"dragover": (next) => (this?.move(next)), 
-				"dragleave": (next) => (this?.leave(next)), 
-				"drop": (next) => (this?.drop(next))
+				"dragenter": (next) => (this.enter(next)), 
+				"dragover": (next) => (this.move(next)), 
+				"dragleave": (next) => (this.leave(next)), 
+				"drop": (next) => (this.drop(next))
 			};
 		}
 		attr(){
-			return {"mol_drop_status": (this?.status())};
+			return {"mol_drop_status": (this.status())};
 		}
 		adopt(next){
 			if(next !== undefined) return next;
@@ -3307,7 +3508,7 @@ var $;
 			return "";
 		}
 		attr(){
-			return {"mol_theme": (this?.theme())};
+			return {"mol_theme": (this.theme())};
 		}
 	};
 
@@ -3377,7 +3578,7 @@ var $;
             return chunks.join(' ');
         }
         static go(next) {
-            this.href(this.make_link(next));
+            this.href(this.link(next));
         }
         constructor(prefix = '') {
             super();
@@ -3447,32 +3648,6 @@ var $;
 var $;
 (function ($) {
     $.$mol_mem_cached = $mol_wire_probe;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_sync(obj) {
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                const temp = $mol_wire_task.getter(val);
-                return function $mol_wire_sync(...args) {
-                    const fiber = temp(obj, args);
-                    return fiber.sync();
-                };
-            },
-            apply(obj, self, args) {
-                const temp = $mol_wire_task.getter(obj);
-                const fiber = temp(self, args);
-                return fiber.sync();
-            },
-        });
-    }
-    $.$mol_wire_sync = $mol_wire_sync;
 })($ || ($ = {}));
 
 ;
@@ -3582,6 +3757,58 @@ var $;
 
 ;
 "use strict";
+var $;
+(function ($) {
+    class $mol_lock extends $mol_object {
+        promise = null;
+        async wait() {
+            let next = () => { };
+            let destructed = false;
+            const task = $mol_wire_auto();
+            if (!task)
+                return next;
+            const destructor = task.destructor.bind(task);
+            task.destructor = () => {
+                destructor();
+                destructed = true;
+                next();
+            };
+            let promise;
+            do {
+                promise = this.promise;
+                await promise;
+                if (destructed)
+                    return next;
+            } while (promise !== this.promise);
+            this.promise = new Promise(done => { next = done; });
+            return next;
+        }
+        grab() { return $mol_wire_sync(this).wait(); }
+    }
+    $.$mol_lock = $mol_lock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_compare_array(a, b) {
+        if (a === b)
+            return true;
+        if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
+            return false;
+        if (a.length !== b.length)
+            return false;
+        for (let i = 0; i < a.length; i++)
+            if (a[i] !== b[i])
+                return false;
+        return true;
+    }
+    $.$mol_compare_array = $mol_compare_array;
+})($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -3613,12 +3840,82 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_file_not_found extends Error {
+    class $mol_file_transaction extends $mol_object {
+        path() { return ''; }
+        modes() { return []; }
+        write(options) {
+            return 0;
+        }
+        read() {
+            return new Uint8Array();
+        }
+        truncate(size) { }
+        close() { }
+        destructor() {
+            this.close();
+        }
     }
-    $.$mol_file_not_found = $mol_file_not_found;
-    class $mol_file extends $mol_object {
+    $.$mol_file_transaction = $mol_file_transaction;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    let file_modes;
+    (function (file_modes) {
+        file_modes[file_modes["create"] = $node.fs.constants.O_CREAT] = "create";
+        file_modes[file_modes["exists_truncate"] = $node.fs.constants.O_TRUNC] = "exists_truncate";
+        file_modes[file_modes["exists_fail"] = $node.fs.constants.O_EXCL] = "exists_fail";
+        file_modes[file_modes["read_only"] = $node.fs.constants.O_RDONLY] = "read_only";
+        file_modes[file_modes["write_only"] = $node.fs.constants.O_WRONLY] = "write_only";
+        file_modes[file_modes["read_write"] = $node.fs.constants.O_RDWR] = "read_write";
+        file_modes[file_modes["append"] = $node.fs.constants.O_APPEND] = "append";
+    })(file_modes || (file_modes = {}));
+    function mode_mask(modes) {
+        return modes.reduce((res, mode) => res | file_modes[mode], 0);
+    }
+    class $mol_file_transaction_node extends $mol_file_transaction {
+        descr() {
+            $mol_wire_solid();
+            return $node.fs.openSync(this.path(), mode_mask(this.modes()));
+        }
+        write({ buffer, offset = 0, length, position = null }) {
+            if (Array.isArray(buffer)) {
+                return $node.fs.writevSync(this.descr(), buffer, position ?? undefined);
+            }
+            if (typeof buffer === 'string') {
+                return $node.fs.writeSync(this.descr(), buffer, position);
+            }
+            length = length ?? buffer.byteLength;
+            return $node.fs.writeSync(this.descr(), buffer, offset, length, position);
+        }
+        truncate(size) {
+            $node.fs.ftruncateSync(this.descr());
+        }
+        read() {
+            return $mol_file_node_buffer_normalize($node.fs.readFileSync(this.descr()));
+        }
+        close() {
+            $node.fs.closeSync(this.descr());
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_file_transaction_node.prototype, "descr", null);
+    $.$mol_file_transaction_node = $mol_file_transaction_node;
+    $.$mol_file_transaction = $mol_file_transaction_node;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_file_base extends $mol_object {
         static absolute(path) {
-            throw new Error('Not implemented yet');
+            return this.make({
+                path: $mol_const(path)
+            });
         }
         static relative(path) {
             throw new Error('Not implemented yet');
@@ -3630,27 +3927,164 @@ var $;
         parent() {
             return this.resolve('..');
         }
-        reset() {
+        exists_cut() { return this.exists(); }
+        root() {
+            const path = this.path();
+            const base = this.constructor.base;
+            return base.startsWith(path) || this == this.parent();
+        }
+        stat(next, virt) {
+            const path = this.path();
+            const parent = this.parent();
+            if (!this.root()) {
+                parent.version();
+            }
+            parent.watcher();
+            if (virt)
+                return next ?? null;
+            return next ?? this.info(path);
+        }
+        static changed = new Set;
+        static frame = null;
+        static changed_add(type, path) {
+            if (/([\/\\]\.|___$)/.test(path))
+                return;
+            const file = this.relative(path.at(-1) === '/' ? path.slice(0, -1) : path);
+            this.changed.add(file);
+            if (!this.watching)
+                return;
+            this.frame?.destructor();
+            this.frame = new this.$.$mol_after_timeout(this.watch_debounce(), () => {
+                if (!this.watching)
+                    return;
+                this.watching = false;
+                $mol_wire_async(this).flush();
+            });
+        }
+        static watch_debounce() { return 500; }
+        static flush() {
+            for (const file of this.changed) {
+                const parent = file.parent();
+                try {
+                    if ($mol_wire_probe(() => parent.sub()))
+                        parent.sub(null);
+                    file.reset();
+                }
+                catch (error) {
+                    if ($mol_fail_catch(error))
+                        $mol_fail_log(error);
+                }
+            }
+            this.changed.clear();
+            this.watching = true;
+        }
+        static watching = true;
+        static lock = new $mol_lock;
+        static watch_off(path) {
+            this.watching = false;
+            this.flush();
+            this.watching = false;
+            this.changed.add(this.absolute(path));
+        }
+        static unwatched(side_effect, affected_dir) {
+            const unlock = this.lock.grab();
+            this.watch_off(affected_dir);
             try {
-                this.stat(null);
+                const result = side_effect();
+                this.flush();
+                unlock();
+                return result;
+            }
+            catch (e) {
+                if (!$mol_promise_like(e)) {
+                    this.flush();
+                    unlock();
+                }
+                $mol_fail_hidden(e);
+            }
+        }
+        reset() {
+            this.stat(null);
+        }
+        modified() { return this.stat()?.mtime ?? null; }
+        version() {
+            const next = this.stat()?.mtime.getTime().toString(36).toUpperCase() ?? '';
+            return next;
+        }
+        info(path) { return null; }
+        ensure() { }
+        drop() { }
+        copy(to) { }
+        read() { return new Uint8Array; }
+        write(buffer) { }
+        kids() {
+            return [];
+        }
+        readable(opts) {
+            return new ReadableStream;
+        }
+        writable(opts) {
+            return new WritableStream;
+        }
+        buffer(next) {
+            let readed = new Uint8Array();
+            if (next === undefined) {
+                if (this.version())
+                    readed = this.read();
+            }
+            const prev = $mol_mem_cached(() => this.buffer());
+            const changed = prev === undefined || !$mol_compare_array(prev, next ?? readed);
+            if (prev !== undefined && changed) {
+                this.$.$mol_log3_rise({
+                    place: `$mol_file_node.buffer()`,
+                    message: 'Changed',
+                    path: this.relate(),
+                });
+            }
+            if (next === undefined)
+                return changed ? readed : prev;
+            if (!changed && this.exists())
+                return prev;
+            this.parent().exists(true);
+            this.stat(this.stat_make(next.length), 'virt');
+            this.write(next);
+            return next;
+        }
+        stat_make(size) {
+            const now = new Date();
+            return {
+                type: 'file',
+                size,
+                atime: now,
+                mtime: now,
+                ctime: now,
+            };
+        }
+        clone(to) {
+            if (!this.exists())
+                return null;
+            const target = this.constructor.absolute(to);
+            try {
+                this.version();
+                target.parent().exists(true);
+                this.copy(to);
+                target.reset();
+                return target;
             }
             catch (error) {
-                if (error instanceof $mol_file_not_found)
-                    return;
-                return $mol_fail_hidden(error);
+                if ($mol_fail_catch(error)) {
+                    console.error(error);
+                }
             }
-        }
-        version() {
-            return this.stat()?.mtime.getTime().toString(36).toUpperCase() ?? '';
+            return null;
         }
         watcher() {
-            console.warn('$mol_file_web.watcher() not implemented');
             return {
                 destructor() { }
             };
         }
         exists(next) {
-            let exists = Boolean(this.stat());
+            const exists = Boolean(this.stat());
             if (next === undefined)
                 return exists;
             if (next === exists)
@@ -3676,25 +4110,39 @@ var $;
             return match ? match[1].substring(1) : '';
         }
         text(next, virt) {
+            if (next !== undefined)
+                this.exists();
+            return this.text_int(next, virt);
+        }
+        text_int(next, virt) {
             if (virt) {
-                const now = new Date;
-                this.stat({
-                    type: 'file',
-                    size: 0,
-                    atime: now,
-                    mtime: now,
-                    ctime: now,
-                }, 'virt');
+                this.stat(this.stat_make(0), 'virt');
                 return next;
             }
             if (next === undefined) {
-                return $mol_charset_decode(this.buffer(undefined));
+                return $mol_charset_decode(this.buffer());
             }
             else {
-                const buffer = next === undefined ? undefined : $mol_charset_encode(next);
+                const buffer = $mol_charset_encode(next);
                 this.buffer(buffer);
                 return next;
             }
+        }
+        sub(reset) {
+            if (!this.exists())
+                return [];
+            if (this.type() !== 'dir')
+                return [];
+            this.version();
+            return this.kids().filter(file => file.exists());
+        }
+        resolve(path) {
+            throw new Error('implement');
+        }
+        relate(base = this.constructor.relative('.')) {
+            const base_path = base.path();
+            const path = this.path();
+            return path.startsWith(base_path) ? path.slice(base_path.length) : path;
         }
         find(include, exclude) {
             const found = [];
@@ -3719,42 +4167,80 @@ var $;
                 default: return 0;
             }
         }
-        open(...modes) {
-            return 0;
-        }
         toJSON() {
             return this.path();
         }
+        open(...modes) {
+            return this.$.$mol_file_transaction.make({
+                path: () => this.path(),
+                modes: () => modes
+            });
+        }
     }
     __decorate([
-        $mol_mem
-    ], $mol_file.prototype, "exists", null);
+        $mol_action
+    ], $mol_file_base.prototype, "exists_cut", null);
     __decorate([
         $mol_mem
-    ], $mol_file.prototype, "text", null);
+    ], $mol_file_base.prototype, "stat", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "modified", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "version", null);
     __decorate([
         $mol_mem_key
-    ], $mol_file, "absolute", null);
-    $.$mol_file = $mol_file;
+    ], $mol_file_base.prototype, "readable", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_file_base.prototype, "writable", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "buffer", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_base.prototype, "stat_make", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_file_base.prototype, "clone", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "exists", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "type", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "text_int", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "sub", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_base.prototype, "size", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_base.prototype, "open", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_file_base, "absolute", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_base, "flush", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_base, "watch_off", null);
+    $.$mol_file_base = $mol_file_base;
 })($ || ($ = {}));
 
 ;
 "use strict";
 var $;
 (function ($) {
-    function $mol_compare_array(a, b) {
-        if (a === b)
-            return true;
-        if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
-            return false;
-        if (a.length !== b.length)
-            return false;
-        for (let i = 0; i < a.length; i++)
-            if (a[i] !== b[i])
-                return false;
-        return true;
+    class $mol_file extends $mol_file_base {
     }
-    $.$mol_compare_array = $mol_compare_array;
+    $.$mol_file = $mol_file;
 })($ || ($ = {}));
 
 ;
@@ -3781,186 +4267,183 @@ var $;
             ctime: stat.ctime
         };
     }
-    function buffer_normalize(buf) {
+    function $mol_file_node_buffer_normalize(buf) {
         return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
     }
-    let $mol_file_mode_open;
-    (function ($mol_file_mode_open) {
-        $mol_file_mode_open[$mol_file_mode_open["create"] = $node.fs.constants.O_CREAT] = "create";
-        $mol_file_mode_open[$mol_file_mode_open["exists_truncate"] = $node.fs.constants.O_TRUNC] = "exists_truncate";
-        $mol_file_mode_open[$mol_file_mode_open["exists_fail"] = $node.fs.constants.O_EXCL] = "exists_fail";
-        $mol_file_mode_open[$mol_file_mode_open["read_only"] = $node.fs.constants.O_RDONLY] = "read_only";
-        $mol_file_mode_open[$mol_file_mode_open["write_only"] = $node.fs.constants.O_WRONLY] = "write_only";
-        $mol_file_mode_open[$mol_file_mode_open["read_write"] = $node.fs.constants.O_RDWR] = "read_write";
-        $mol_file_mode_open[$mol_file_mode_open["append"] = $node.fs.constants.O_APPEND] = "append";
-    })($mol_file_mode_open = $.$mol_file_mode_open || ($.$mol_file_mode_open = {}));
+    $.$mol_file_node_buffer_normalize = $mol_file_node_buffer_normalize;
     class $mol_file_node extends $mol_file {
-        static absolute(path) {
-            return this.make({
-                path: $mol_const(path)
-            });
-        }
         static relative(path) {
             return this.absolute($node.path.resolve(this.base, path).replace(/\\/g, '/'));
         }
-        watcher() {
-            if (/\/\./.test(this.path()))
-                return { destructor() { } };
-            const watcher = $node.chokidar.watch(this.path(), {
-                persistent: true,
-                ignored: path => /([\/\\]\.|___$)/.test(path),
-                depth: 0,
-                ignoreInitial: true,
-                awaitWriteFinish: {
-                    stabilityThreshold: 100,
-                },
+        watcher(reset) {
+            const path = this.path();
+            const root = this.root();
+            if (!root && !this.exists())
+                return super.watcher();
+            let watcher;
+            try {
+                watcher = $node.fs.watch(path);
+            }
+            catch (error) {
+                if (!(error instanceof Error))
+                    error = new Error('Unknown watch error', { cause: error });
+                error.message += '\n' + path;
+                if (root || error.code !== 'ENOENT') {
+                    this.$.$mol_fail_log(error);
+                }
+                return super.watcher();
+            }
+            watcher.on('change', (type, name) => {
+                if (!name)
+                    return;
+                const path = $node.path.join(this.path(), name.toString());
+                this.constructor.changed_add(type, path);
             });
-            watcher
-                .on('all', (type, path) => {
-                const file = $mol_file.relative(path.replace(/\\/g, '/'));
-                file.reset();
-                if (type === 'change') {
-                    this.stat(null);
-                }
-                else {
-                    file.parent().reset();
-                }
-            })
-                .on('error', $mol_fail_log);
+            watcher.on('error', e => this.$.$mol_fail_log(e));
+            let destructed = false;
+            watcher.on('close', () => {
+                if (!destructed)
+                    setTimeout(() => $mol_wire_async(this).watcher(null), 500);
+            });
             return {
                 destructor() {
+                    destructed = true;
                     watcher.close();
                 }
             };
         }
-        stat(next, virt) {
-            let stat = next;
-            const path = this.path();
-            this.parent().watcher();
-            if (virt)
-                return next;
+        info(path) {
             try {
-                stat = next ?? stat_convert($node.fs.statSync(path, { throwIfNoEntry: false }));
+                return stat_convert($node.fs.statSync(path));
             }
             catch (error) {
-                if (error.code === 'ENOENT')
-                    error = new $mol_file_not_found(`File not found`);
-                error.message += '\n' + path;
-                return this.$.$mol_fail_hidden(error);
+                if (this.$.$mol_fail_catch(error)) {
+                    if (error.code === 'ENOENT')
+                        return null;
+                    error.message += '\n' + path;
+                    this.$.$mol_fail_hidden(error);
+                }
             }
-            return stat;
+            return null;
         }
         ensure() {
             const path = this.path();
             try {
-                $node.fs.mkdirSync(path);
+                $node.fs.mkdirSync(path, { recursive: true });
+                return null;
             }
             catch (e) {
-                e.message += '\n' + path;
-                this.$.$mol_fail_hidden(e);
+                if (this.$.$mol_fail_catch(e)) {
+                    if (e.code === 'EEXIST')
+                        return null;
+                    e.message += '\n' + path;
+                    this.$.$mol_fail_hidden(e);
+                }
             }
+        }
+        copy(to) {
+            $node.fs.copyFileSync(this.path(), to);
         }
         drop() {
             $node.fs.unlinkSync(this.path());
         }
-        buffer(next) {
+        read() {
             const path = this.path();
-            if (next === undefined) {
-                if (!this.stat())
-                    return new Uint8Array;
-                try {
-                    const prev = $mol_mem_cached(() => this.buffer());
-                    next = buffer_normalize($node.fs.readFileSync(path));
-                    if (prev !== undefined && !$mol_compare_array(prev, next)) {
-                        this.$.$mol_log3_rise({
-                            place: `$mol_file_node..buffer()`,
-                            message: 'Changed',
-                            path: this.relate(),
-                        });
-                    }
-                    return next;
-                }
-                catch (error) {
-                    error.message += '\n' + path;
-                    return this.$.$mol_fail_hidden(error);
-                }
-            }
-            this.parent().exists(true);
-            const now = new Date;
-            this.stat({
-                type: 'file',
-                size: next.length,
-                atime: now,
-                mtime: now,
-                ctime: now,
-            }, 'virt');
             try {
-                $node.fs.writeFileSync(path, next);
+                return $mol_file_node_buffer_normalize($node.fs.readFileSync(path));
             }
             catch (error) {
-                error.message += '\n' + path;
+                if (!$mol_promise_like(error)) {
+                    error.message += '\n' + path;
+                }
+                $mol_fail_hidden(error);
+            }
+        }
+        write(buffer) {
+            const path = this.path();
+            try {
+                $node.fs.writeFileSync(path, buffer);
+            }
+            catch (error) {
+                if (this.$.$mol_fail_catch(error)) {
+                    error.message += '\n' + path;
+                }
                 return this.$.$mol_fail_hidden(error);
             }
-            return next;
         }
-        sub() {
-            if (!this.exists())
-                return [];
-            if (this.type() !== 'dir')
-                return [];
+        kids() {
             const path = this.path();
-            this.stat();
             try {
-                return $node.fs.readdirSync(path)
+                const kids = $node.fs.readdirSync(path)
                     .filter(name => !/^\.+$/.test(name))
                     .map(name => this.resolve(name));
+                return kids;
             }
             catch (e) {
-                e.message += '\n' + path;
-                return this.$.$mol_fail_hidden(e);
+                if (this.$.$mol_fail_catch(e)) {
+                    if (e.code === 'ENOENT')
+                        return [];
+                    e.message += '\n' + path;
+                }
+                $mol_fail_hidden(e);
             }
         }
         resolve(path) {
-            return this.constructor.relative($node.path.join(this.path(), path));
+            return this.constructor
+                .relative($node.path.join(this.path(), path));
         }
         relate(base = this.constructor.relative('.')) {
             return $node.path.relative(base.path(), this.path()).replace(/\\/g, '/');
         }
-        append(next) {
-            const path = this.path();
-            try {
-                $node.fs.appendFileSync(path, next);
-            }
-            catch (e) {
-                e.message += '\n' + path;
-                return this.$.$mol_fail_hidden(e);
-            }
+        readable(opts) {
+            const { Readable } = $node['node:stream'];
+            const stream = $node.fs.createReadStream(this.path(), {
+                flags: 'r',
+                autoClose: true,
+                start: opts?.start,
+                end: opts?.end,
+                encoding: 'binary',
+            });
+            return Readable.toWeb(stream);
         }
-        open(...modes) {
-            return $node.fs.openSync(this.path(), modes.reduce((res, mode) => res | $mol_file_mode_open[mode], 0));
+        writable(opts) {
+            const { Writable } = $node['node:stream'];
+            const stream = $node.fs.createWriteStream(this.path(), {
+                flags: 'w+',
+                autoClose: true,
+                start: opts?.start,
+                encoding: 'binary',
+            });
+            return Writable.toWeb(stream);
         }
     }
     __decorate([
         $mol_mem
     ], $mol_file_node.prototype, "watcher", null);
     __decorate([
-        $mol_mem
-    ], $mol_file_node.prototype, "stat", null);
+        $mol_action
+    ], $mol_file_node.prototype, "info", null);
     __decorate([
-        $mol_mem
+        $mol_action
     ], $mol_file_node.prototype, "ensure", null);
+    __decorate([
+        $mol_action
+    ], $mol_file_node.prototype, "copy", null);
     __decorate([
         $mol_action
     ], $mol_file_node.prototype, "drop", null);
     __decorate([
-        $mol_mem
-    ], $mol_file_node.prototype, "buffer", null);
+        $mol_action
+    ], $mol_file_node.prototype, "read", null);
     __decorate([
-        $mol_mem
-    ], $mol_file_node.prototype, "sub", null);
+        $mol_action
+    ], $mol_file_node.prototype, "write", null);
     __decorate([
         $mol_mem_key
-    ], $mol_file_node, "absolute", null);
+    ], $mol_file_node.prototype, "readable", null);
+    __decorate([
+        $mol_mem
+    ], $mol_file_node.prototype, "writable", null);
     $.$mol_file_node = $mol_file_node;
     $.$mol_file = $mol_file_node;
 })($ || ($ = {}));
@@ -4060,10 +4543,10 @@ var $;
 			return 0;
 		}
 		field(){
-			return {...(super.field()), "tabIndex": (this?.tabindex())};
+			return {...(super.field()), "tabIndex": (this.tabindex())};
 		}
 		event(){
-			return {...(super.event()), "scroll": (next) => (this?.event_scroll(next))};
+			return {...(super.event()), "scroll": (next) => (this.event_scroll(next))};
 		}
 	};
 	($mol_mem(($.$mol_scroll.prototype), "event_scroll"));
@@ -4339,7 +4822,7 @@ var $;
             },
             '@media': {
                 'print': {
-                    overflow: 'visible',
+                    overflow: 'hidden',
                     contain: 'none',
                     maxHeight: 'unset',
                 },
@@ -4357,7 +4840,7 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this?.pages());
+			return (this.pages());
 		}
 		minimal_width(){
 			return 0;
@@ -4442,7 +4925,6 @@ var $;
                             left: p.offsetLeft + p.offsetWidth - b.offsetWidth,
                             behavior: 'smooth',
                         });
-                        new this.$.$mol_after_timeout(1000, () => n.bring());
                     });
                     break;
                 }
@@ -4467,7 +4949,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/book2/book2.view.css", "[mol_book2] {\n\tdisplay: flex;\n\tflex-flow: row nowrap;\n\talign-items: stretch;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tmargin: 0;\n\t/* box-shadow: 0 0 0 1px var(--mol_theme_line); */\n\t/* transform: translateZ(0); */\n\ttransition: none;\n\toverflow: overlay;\n\tscroll-snap-type: x mandatory;\n\t/* padding: 0 1px;\n\tscroll-padding: 0 1px;\n\tgap: 1px; */\n}\n\n[mol_book2] > * {\n/* \tflex: none; */\n\tscroll-snap-stop: always;\n\tscroll-snap-align: end;\n\tposition: relative;\n\tmin-height: 100%;\n\tmax-height: 100%;\n\tmax-width: 100%;\n\tflex-shrink: 0;\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_field);\n}\n\n[mol_book2] > *:not(:first-of-type):before,\n[mol_book2] > *:not(:last-of-type)::after {\n\tcontent: '';\n\tposition: absolute;\n\ttop: 1.5rem;\n\twidth: 3px;\n\theight: 1rem;\n\tbackground: linear-gradient(\n\t\tto bottom,\n\t\tvar(--mol_theme_focus) 0%,\n\t\tvar(--mol_theme_focus) 14%,\n\t\ttransparent 15%,\n\t\ttransparent 42%,\n\t\tvar(--mol_theme_focus) 43%,\n\t\tvar(--mol_theme_focus) 57%,\n\t\ttransparent 58%,\n\t\ttransparent 85%,\n\t\tvar(--mol_theme_focus) 86%,\n\t\tvar(--mol_theme_focus) 100%\n\t);\n\topacity: .5;\n\tz-index: var(--mol_layer_speck);\n}\n[mol_book2] > *:not(:first-of-type):before {\n\tleft: -1px;\n}\n[mol_book2] > *:not(:last-of-type)::after {\n\tright: -1px;\n}\n\n:where([mol_book2]) > * {\n\tbackground-color: var(--mol_theme_card);\n\t/* box-shadow: 0 0 0 1px var(--mol_theme_back); */\n}\n\n[mol_book2] > [mol_book2] {\n\tdisplay: contents;\n}\n\n[mol_book2] > *:first-child {\n\tscroll-snap-align: start;\n}\n\n[mol_book2] > [mol_view] {\n\ttransform: none; /* prevent content clipping */\n}\n\n[mol_book2_placeholder] {\n\tflex: 1 1 0;\n\tbackground: none;\n}\n\n[mol_book2_gap] {\n\tbackground: none;\n\tflex-grow: 1;\n\tscroll-snap-align: none;\n\tmargin-right: -1px;\n\tbox-shadow: none;\n}\n\n[mol_book2_gap]::before,\n[mol_book2_gap]::after {\n\tdisplay: none;\n}\n");
+    $mol_style_attach("mol/book2/book2.view.css", "[mol_book2] {\n\tdisplay: flex;\n\tflex-flow: row nowrap;\n\talign-items: stretch;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tmargin: 0;\n\t/* box-shadow: 0 0 0 1px var(--mol_theme_line); */\n\t/* transform: translateZ(0); */\n\ttransition: none;\n\tscroll-snap-type: x mandatory;\n\t/* padding: 0 1px;\n\tscroll-padding: 0 1px;\n\tgap: 1px; */\n}\n\n[mol_book2] > * {\n/* \tflex: none; */\n\tscroll-snap-stop: always;\n\tscroll-snap-align: end;\n\tposition: relative;\n\tmin-height: 100%;\n\tmax-height: 100%;\n\tmax-width: 100%;\n\tflex-shrink: 0;\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_field);\n}\n\n[mol_book2] > *:not(:first-of-type):before,\n[mol_book2] > *:not(:last-of-type)::after {\n\tcontent: '';\n\tposition: absolute;\n\ttop: 1.5rem;\n\twidth: 3px;\n\theight: 1rem;\n\tbackground: linear-gradient(\n\t\tto bottom,\n\t\tvar(--mol_theme_focus) 0%,\n\t\tvar(--mol_theme_focus) 14%,\n\t\ttransparent 15%,\n\t\ttransparent 42%,\n\t\tvar(--mol_theme_focus) 43%,\n\t\tvar(--mol_theme_focus) 57%,\n\t\ttransparent 58%,\n\t\ttransparent 85%,\n\t\tvar(--mol_theme_focus) 86%,\n\t\tvar(--mol_theme_focus) 100%\n\t);\n\topacity: .5;\n\tz-index: var(--mol_layer_speck);\n}\n[mol_book2] > *:not(:first-of-type):before {\n\tleft: -1px;\n}\n[mol_book2] > *:not(:last-of-type)::after {\n\tright: -1px;\n}\n\n:where([mol_book2]) > * {\n\tbackground-color: var(--mol_theme_card);\n\t/* box-shadow: 0 0 0 1px var(--mol_theme_back); */\n}\n\n[mol_book2] > [mol_book2] {\n\tdisplay: contents;\n}\n\n[mol_book2] > *:first-child {\n\tscroll-snap-align: start;\n}\n\n[mol_book2] > [mol_view] {\n\ttransform: none; /* prevent content clipping */\n}\n\n[mol_book2_placeholder] {\n\tflex: 1 1 0;\n\tbackground: none;\n}\n\n[mol_book2_gap] {\n\tbackground: none;\n\tflex-grow: 1;\n\tscroll-snap-align: none;\n\tmargin-right: -1px;\n\tbox-shadow: none;\n}\n\n[mol_book2_gap]::before,\n[mol_book2_gap]::after {\n\tdisplay: none;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -4479,7 +4961,7 @@ var $;
 			return "";
 		}
 		hint_safe(){
-			return (this?.hint());
+			return (this.hint());
 		}
 		target(){
 			return "_self";
@@ -4498,7 +4980,7 @@ var $;
 			return null;
 		}
 		click(next){
-			return (this?.event_click(next));
+			return (this.event_click(next));
 		}
 		uri(){
 			return "";
@@ -4518,22 +5000,22 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"href": (this?.uri_toggle()), 
-				"title": (this?.hint_safe()), 
-				"target": (this?.target()), 
-				"download": (this?.file_name()), 
-				"mol_link_current": (this?.current()), 
-				"rel": (this?.relation())
+				"href": (this.uri_toggle()), 
+				"title": (this.hint_safe()), 
+				"target": (this.target()), 
+				"download": (this.file_name()), 
+				"mol_link_current": (this.current()), 
+				"rel": (this.relation())
 			};
 		}
 		sub(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		arg(){
 			return {};
 		}
 		event(){
-			return {...(super.event()), "click": (next) => (this?.click(next))};
+			return {...(super.event()), "click": (next) => (this.click(next))};
 		}
 	};
 	($mol_mem(($.$mol_link.prototype), "event_click"));
@@ -4694,22 +5176,22 @@ var $;
 		field(){
 			return {
 				...(super.field()), 
-				"src": (this?.uri()), 
-				"alt": (this?.title()), 
-				"loading": (this?.loading()), 
-				"decoding": (this?.decoding()), 
-				"crossOrigin": (this?.cors())
+				"src": (this.uri()), 
+				"alt": (this.title()), 
+				"loading": (this.loading()), 
+				"decoding": (this.decoding()), 
+				"crossOrigin": (this.cors())
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"width": (this?.natural_width()), 
-				"height": (this?.natural_height())
+				"width": (this.natural_width()), 
+				"height": (this.natural_height())
 			};
 		}
 		event(){
-			return {"load": (next) => (this?.load(next))};
+			return {"load": (next) => (this.load(next))};
 		}
 		minimal_width(){
 			return 16;
@@ -4774,18 +5256,18 @@ var $;
 		}
 		Icon(){
 			const obj = new this.$.$mol_image();
-			(obj.uri) = () => ((this?.icon()));
+			(obj.uri) = () => ((this.icon()));
 			(obj.title) = () => ("");
 			return obj;
 		}
 		title(){
-			return (this?.uri());
+			return (this.uri());
 		}
 		sub(){
-			return [(this?.Icon())];
+			return [(this.Icon())];
 		}
 		content(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		host(){
 			return "";
@@ -4857,13 +5339,13 @@ var $;
 			return null;
 		}
 		attr(){
-			return {...(super.attr()), "mol_theme": (this?.theme())};
+			return {...(super.attr()), "mol_theme": (this.theme())};
 		}
 		style(){
 			return {...(super.style()), "minHeight": "1em"};
 		}
 		sub(){
-			return [(this?.value())];
+			return [(this.value())];
 		}
 	};
 
@@ -4902,7 +5384,7 @@ var $;
 			return "";
 		}
 		hint_safe(){
-			return (this?.hint());
+			return (this.hint());
 		}
 		error(){
 			return "";
@@ -4921,26 +5403,26 @@ var $;
 		event(){
 			return {
 				...(super.event()), 
-				"click": (next) => (this?.event_activate(next)), 
-				"dblclick": (next) => (this?.clicks(next)), 
-				"keydown": (next) => (this?.event_key_press(next))
+				"click": (next) => (this.event_activate(next)), 
+				"dblclick": (next) => (this.clicks(next)), 
+				"keydown": (next) => (this.event_key_press(next))
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"disabled": (this?.disabled()), 
+				"disabled": (this.disabled()), 
 				"role": "button", 
-				"tabindex": (this?.tab_index()), 
-				"title": (this?.hint_safe())
+				"tabindex": (this.tab_index()), 
+				"title": (this.hint_safe())
 			};
 		}
 		sub(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		Speck(){
 			const obj = new this.$.$mol_speck();
-			(obj.value) = () => ((this?.error()));
+			(obj.value) = () => ((this.error()));
 			return obj;
 		}
 	};
@@ -5192,22 +5674,22 @@ var $;
 		}
 		Title(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.title())]);
+			(obj.sub) = () => ([(this.title())]);
 			return obj;
 		}
 		label(){
-			return [(this?.Title())];
+			return [(this.Title())];
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_check_checked": (this?.checked()), 
-				"aria-checked": (this?.aria_checked()), 
-				"role": (this?.aria_role())
+				"mol_check_checked": (this.checked()), 
+				"aria-checked": (this.aria_checked()), 
+				"role": (this.aria_role())
 			};
 		}
 		sub(){
-			return [(this?.Icon()), (this?.label())];
+			return [(this.Icon()), (this.label())];
 		}
 	};
 	($mol_mem(($.$mol_check.prototype), "checked"));
@@ -5377,8 +5859,8 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"viewBox": (this?.view_box()), 
-				"preserveAspectRatio": (this?.aspect())
+				"viewBox": (this.view_box()), 
+				"preserveAspectRatio": (this.aspect())
 			};
 		}
 	};
@@ -5403,7 +5885,7 @@ var $;
 			return "path";
 		}
 		attr(){
-			return {...(super.attr()), "d": (this?.geometry())};
+			return {...(super.attr()), "d": (this.geometry())};
 		}
 	};
 
@@ -5418,7 +5900,7 @@ var $;
 		}
 		Path(){
 			const obj = new this.$.$mol_svg_path();
-			(obj.geometry) = () => ((this?.path()));
+			(obj.geometry) = () => ((this.path()));
 			return obj;
 		}
 		view_box(){
@@ -5431,7 +5913,7 @@ var $;
 			return 16;
 		}
 		sub(){
-			return [(this?.Path())];
+			return [(this.Path())];
 		}
 	};
 	($mol_mem(($.$mol_icon.prototype), "Path"));
@@ -5448,9 +5930,9 @@ var $;
 "use strict";
 
 ;
-	($.$mol_icon_brightness_6) = class $mol_icon_brightness_6 extends ($.$mol_icon) {
+	($.$mol_icon_brightness_4) = class $mol_icon_brightness_4 extends ($.$mol_icon) {
 		path(){
-			return "M12,18V6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z";
+			return "M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z";
 		}
 	};
 
@@ -5527,7 +6009,7 @@ var $;
 ;
 	($.$mol_lights_toggle) = class $mol_lights_toggle extends ($.$mol_check_icon) {
 		Lights_icon(){
-			const obj = new this.$.$mol_icon_brightness_6();
+			const obj = new this.$.$mol_icon_brightness_4();
 			return obj;
 		}
 		lights(next){
@@ -5535,13 +6017,13 @@ var $;
 			return false;
 		}
 		Icon(){
-			return (this?.Lights_icon());
+			return (this.Lights_icon());
 		}
 		hint(){
 			return (this.$.$mol_locale.text("$mol_lights_toggle_hint"));
 		}
 		checked(next){
-			return (this?.lights(next));
+			return (this.lights(next));
 		}
 	};
 	($mol_mem(($.$mol_lights_toggle.prototype), "Lights_icon"));
@@ -5595,13 +6077,13 @@ var $;
 		}
 		Native(){
 			const obj = new this.$.$mol_button_open_native();
-			(obj.files) = (next) => ((this?.files(next)));
-			(obj.accept) = () => ((this?.accept()));
-			(obj.multiple) = () => ((this?.multiple()));
+			(obj.files) = (next) => ((this.files(next)));
+			(obj.accept) = () => ((this.accept()));
+			(obj.multiple) = () => ((this.multiple()));
 			return obj;
 		}
 		sub(){
-			return [(this?.Icon()), (this?.Native())];
+			return [(this.Icon()), (this.Native())];
 		}
 	};
 	($mol_mem(($.$mol_button_open.prototype), "Icon"));
@@ -5628,12 +6110,12 @@ var $;
 		attr(){
 			return {
 				"type": "file", 
-				"accept": (this?.accept()), 
-				"multiple": (this?.multiple())
+				"accept": (this.accept()), 
+				"multiple": (this.multiple())
 			};
 		}
 		event(){
-			return {"change": (next) => (this?.picked(next))};
+			return {"change": (next) => (this.picked(next))};
 		}
 	};
 	($mol_mem(($.$mol_button_open_native.prototype), "picked"));
@@ -5686,6 +6168,59 @@ var $;
 "use strict";
 
 ;
+"use strict";
+var $;
+(function ($) {
+    class $mol_syntax2 {
+        lexems;
+        constructor(lexems) {
+            this.lexems = lexems;
+            for (let name in lexems) {
+                this.rules.push({
+                    name: name,
+                    regExp: lexems[name],
+                    size: RegExp('^$|' + lexems[name].source).exec('').length - 1,
+                });
+            }
+            const parts = '(' + this.rules.map(rule => rule.regExp.source).join(')|(') + ')';
+            this.regexp = RegExp(`([\\s\\S]*?)(?:(${parts})|$(?![^]))`, 'gmu');
+        }
+        rules = [];
+        regexp;
+        tokenize(text, handle) {
+            let end = 0;
+            lexing: while (end < text.length) {
+                const start = end;
+                this.regexp.lastIndex = start;
+                var found = this.regexp.exec(text);
+                end = this.regexp.lastIndex;
+                if (start === end)
+                    throw new Error('Empty token');
+                var prefix = found[1];
+                if (prefix)
+                    handle('', prefix, [prefix], start);
+                var suffix = found[2];
+                if (!suffix)
+                    continue;
+                let offset = 4;
+                for (let rule of this.rules) {
+                    if (found[offset - 1]) {
+                        handle(rule.name, suffix, found.slice(offset, offset + rule.size), start + prefix.length);
+                        continue lexing;
+                    }
+                    offset += rule.size + 1;
+                }
+                $mol_fail(new Error('$mol_syntax2 is broken'));
+            }
+        }
+        parse(text, handlers) {
+            this.tokenize(text, (name, ...args) => handlers[name](...args));
+        }
+    }
+    $.$mol_syntax2 = $mol_syntax2;
+})($ || ($ = {}));
+
+;
 	($.$mol_paragraph) = class $mol_paragraph extends ($.$mol_view) {
 		line_height(){
 			return 24;
@@ -5700,7 +6235,7 @@ var $;
 			return 0;
 		}
 		sub(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 	};
 
@@ -5778,16 +6313,16 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this?.parts());
+			return (this.parts());
 		}
 		Low(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ([(this?.string(id))]);
+			(obj.sub) = () => ([(this.string(id))]);
 			return obj;
 		}
 		High(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ([(this?.string(id))]);
+			(obj.sub) = () => ([(this.string(id))]);
 			return obj;
 		}
 	};
@@ -6142,7 +6677,7 @@ var $;
 			return "";
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_code_token_type": (this?.type())};
+			return {...(super.attr()), "mol_text_code_token_type": (this.type())};
 		}
 	};
 	($.$mol_text_code_token_link) = class $mol_text_code_token_link extends ($.$mol_text_code_token) {
@@ -6158,7 +6693,7 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"href": (this?.uri()), 
+				"href": (this.uri()), 
 				"target": "_blank"
 			};
 		}
@@ -6226,7 +6761,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_text_code_row) = class $mol_text_code_row extends ($.$mol_paragraph) {
+	($.$mol_text_code_line) = class $mol_text_code_line extends ($.$mol_paragraph) {
 		numb(){
 			return 0;
 		}
@@ -6259,84 +6794,31 @@ var $;
 		}
 		Numb(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.numb())]);
+			(obj.sub) = () => ([(this.numb())]);
 			return obj;
 		}
 		Token(id){
 			const obj = new this.$.$mol_text_code_token();
-			(obj.type) = () => ((this?.token_type(id)));
-			(obj.haystack) = () => ((this?.token_text(id)));
-			(obj.needle) = () => ((this?.highlight()));
+			(obj.type) = () => ((this.token_type(id)));
+			(obj.haystack) = () => ((this.token_text(id)));
+			(obj.needle) = () => ((this.highlight()));
 			return obj;
 		}
 		Token_link(id){
 			const obj = new this.$.$mol_text_code_token_link();
-			(obj.haystack) = () => ((this?.token_text(id)));
-			(obj.needle) = () => ((this?.highlight()));
-			(obj.uri) = () => ((this?.token_uri(id)));
+			(obj.haystack) = () => ((this.token_text(id)));
+			(obj.needle) = () => ((this.highlight()));
+			(obj.uri) = () => ((this.token_uri(id)));
 			return obj;
 		}
 		find_pos(id){
 			return null;
 		}
 	};
-	($mol_mem(($.$mol_text_code_row.prototype), "Numb"));
-	($mol_mem_key(($.$mol_text_code_row.prototype), "Token"));
-	($mol_mem_key(($.$mol_text_code_row.prototype), "Token_link"));
+	($mol_mem(($.$mol_text_code_line.prototype), "Numb"));
+	($mol_mem_key(($.$mol_text_code_line.prototype), "Token"));
+	($mol_mem_key(($.$mol_text_code_line.prototype), "Token_link"));
 
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_syntax2 {
-        lexems;
-        constructor(lexems) {
-            this.lexems = lexems;
-            for (let name in lexems) {
-                this.rules.push({
-                    name: name,
-                    regExp: lexems[name],
-                    size: RegExp('^$|' + lexems[name].source).exec('').length - 1,
-                });
-            }
-            const parts = '(' + this.rules.map(rule => rule.regExp.source).join(')|(') + ')';
-            this.regexp = RegExp(`([\\s\\S]*?)(?:(${parts})|$(?![^]))`, 'gmu');
-        }
-        rules = [];
-        regexp;
-        tokenize(text, handle) {
-            let end = 0;
-            lexing: while (end < text.length) {
-                const start = end;
-                this.regexp.lastIndex = start;
-                var found = this.regexp.exec(text);
-                end = this.regexp.lastIndex;
-                if (start === end)
-                    throw new Error('Empty token');
-                var prefix = found[1];
-                if (prefix)
-                    handle('', prefix, [prefix], start);
-                var suffix = found[2];
-                if (!suffix)
-                    continue;
-                let offset = 4;
-                for (let rule of this.rules) {
-                    if (found[offset - 1]) {
-                        handle(rule.name, suffix, found.slice(offset, offset + rule.size), start + prefix.length);
-                        continue lexing;
-                    }
-                    offset += rule.size + 1;
-                }
-                $mol_fail(new Error('$mol_syntax2 is broken'));
-            }
-        }
-        parse(text, handlers) {
-            this.tokenize(text, (name, ...args) => handlers[name](...args));
-        }
-    }
-    $.$mol_syntax2 = $mol_syntax2;
-})($ || ($ = {}));
 
 ;
 "use strict";
@@ -6371,8 +6853,8 @@ var $;
         'code-docs': /\/\/\/.*?$/,
         'code-comment-block': /(?:\/\*[^]*?\*\/|\/\+[^]*?\+\/|<![^]*?>)/,
         'code-link': /(?:\w+:\/\/|#)\S+?(?=\s|\\\\|""|$)/,
-        'code-comment-inline': /\/\/.*?(?:$|\/\/)/,
-        'code-string': /(?:".*?"|'.*?'|`.*?`|\/.+?\/[dygimsu]*(?!\p{Letter})|(?:^|[ \t])\\[^\n]*\n)/u,
+        'code-comment-inline': /\/\/.*?(?:$|\/\/)|- \\(?!\\).*|#!? .*/,
+        'code-string': /(?:".*?"|'.*?'|`.*?`| ?\\\\.+?\\\\|\/.+?\/[dygimsu]*(?!\p{Letter})|[ \t]*\\[^\n]*)/u,
         'code-number': /[+-]?(?:\d*\.)?\d+\w*/,
         'code-call': /\.?\w+ *(?=\()/,
         'code-sexpr': /\((\w+ )/,
@@ -6380,7 +6862,7 @@ var $;
         'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|struct|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|val|let|const|for|do|while|until|in|out|of|new|if|then|else|switch|case|this|return|async|await|yield|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void|int|float|ref)\b/,
         'code-global': /[$]+\w*|\b[A-Z][a-z0-9]+[A-Z]\w*/,
         'code-word': /\w+/,
-        'code-decorator': /@\s*\S+/,
+        'code-decorator': /@.+/,
         'code-tag': /<\/?[\w-]+\/?>?|&\w+;/,
         'code-punctuation': /[\-\[\]\{\}\(\)<=>~!\?@#%&\*_\+\\\/\|;:\.,\^]+?/,
     });
@@ -6395,7 +6877,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $mol_text_code_row extends $.$mol_text_code_row {
+        class $mol_text_code_line extends $.$mol_text_code_line {
             maximal_width() {
                 return this.text().length * this.letter_width();
             }
@@ -6477,29 +6959,29 @@ var $;
         }
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "tokens", null);
+        ], $mol_text_code_line.prototype, "tokens", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "row_content", null);
+        ], $mol_text_code_line.prototype, "row_content", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_type", null);
+        ], $mol_text_code_line.prototype, "token_type", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_content", null);
+        ], $mol_text_code_line.prototype, "token_content", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_text", null);
+        ], $mol_text_code_line.prototype, "token_text", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_uri", null);
+        ], $mol_text_code_line.prototype, "token_uri", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "find_pos", null);
+        ], $mol_text_code_line.prototype, "find_pos", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "find_token_pos", null);
-        $$.$mol_text_code_row = $mol_text_code_row;
+        ], $mol_text_code_line.prototype, "find_token_pos", null);
+        $$.$mol_text_code_line = $mol_text_code_line;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -6510,7 +6992,7 @@ var $;
     var $$;
     (function ($$) {
         const { rem } = $mol_style_unit;
-        $mol_style_define($mol_text_code_row, {
+        $mol_style_define($mol_text_code_line, {
             display: 'block',
             position: 'relative',
             font: {
@@ -6550,7 +7032,7 @@ var $;
 			return 0;
 		}
 		sub(){
-			return (this?.rows());
+			return (this.rows());
 		}
 		Empty(){
 			const obj = new this.$.$mol_view();
@@ -6558,12 +7040,12 @@ var $;
 		}
 		Gap_before(){
 			const obj = new this.$.$mol_view();
-			(obj.style) = () => ({"paddingTop": (this?.gap_before())});
+			(obj.style) = () => ({"paddingTop": (this.gap_before())});
 			return obj;
 		}
 		Gap_after(){
 			const obj = new this.$.$mol_view();
-			(obj.style) = () => ({"paddingTop": (this?.gap_after())});
+			(obj.style) = () => ({"paddingTop": (this.gap_after())});
 			return obj;
 		}
 		view_window(){
@@ -6760,11 +7242,11 @@ var $;
 ;
 	($.$mol_button_copy) = class $mol_button_copy extends ($.$mol_button_minor) {
 		text(){
-			return (this?.title());
+			return (this.title());
 		}
 		text_blob(next){
 			if(next !== undefined) return next;
-			const obj = new this.$.$mol_blob([(this?.text())], {"type": "text/plain"});
+			const obj = new this.$.$mol_blob([(this.text())], {"type": "text/plain"});
 			return obj;
 		}
 		html(){
@@ -6772,7 +7254,7 @@ var $;
 		}
 		html_blob(next){
 			if(next !== undefined) return next;
-			const obj = new this.$.$mol_blob([(this?.html())], {"type": "text/html"});
+			const obj = new this.$.$mol_blob([(this.html())], {"type": "text/html"});
 			return obj;
 		}
 		Icon(){
@@ -6783,13 +7265,13 @@ var $;
 			return "";
 		}
 		blobs(){
-			return [(this?.text_blob()), (this?.html_blob())];
+			return [(this.text_blob()), (this.html_blob())];
 		}
 		data(){
 			return {};
 		}
 		sub(){
-			return [(this?.Icon()), (this?.title())];
+			return [(this.Icon()), (this.title())];
 		}
 	};
 	($mol_mem(($.$mol_button_copy.prototype), "text_blob"));
@@ -6875,22 +7357,22 @@ var $;
 			return "";
 		}
 		Row(id){
-			const obj = new this.$.$mol_text_code_row();
-			(obj.numb_showed) = () => ((this?.sidebar_showed()));
-			(obj.numb) = () => ((this?.row_numb(id)));
-			(obj.text) = () => ((this?.row_text(id)));
-			(obj.syntax) = () => ((this?.syntax()));
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.highlight) = () => ((this?.highlight()));
+			const obj = new this.$.$mol_text_code_line();
+			(obj.numb_showed) = () => ((this.sidebar_showed()));
+			(obj.numb) = () => ((this.row_numb(id)));
+			(obj.text) = () => ((this.row_text(id)));
+			(obj.syntax) = () => ((this.syntax()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.highlight) = () => ((this.highlight()));
 			return obj;
 		}
 		rows(){
-			return [(this?.Row("0"))];
+			return [(this.Row("0"))];
 		}
 		Rows(){
 			const obj = new this.$.$mol_list();
-			(obj.render_visible_only) = () => ((this?.render_visible_only()));
-			(obj.rows) = () => ((this?.rows()));
+			(obj.render_visible_only) = () => ((this.render_visible_only()));
+			(obj.rows) = () => ((this.rows()));
 			return obj;
 		}
 		text_export(){
@@ -6899,11 +7381,11 @@ var $;
 		Copy(){
 			const obj = new this.$.$mol_button_copy();
 			(obj.hint) = () => ((this.$.$mol_locale.text("$mol_text_code_Copy_hint")));
-			(obj.text) = () => ((this?.text_export()));
+			(obj.text) = () => ((this.text_export()));
 			return obj;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_code_sidebar_showed": (this?.sidebar_showed())};
+			return {...(super.attr()), "mol_text_code_sidebar_showed": (this.sidebar_showed())};
 		}
 		text(){
 			return "";
@@ -6918,7 +7400,7 @@ var $;
 			return "";
 		}
 		sub(){
-			return [(this?.Rows()), (this?.Copy())];
+			return [(this.Rows()), (this.Copy())];
 		}
 	};
 	($mol_mem_key(($.$mol_text_code.prototype), "Row"));
@@ -7027,6 +7509,11 @@ var $;
             Rows: {
                 padding: $mol_gap.text,
             },
+            Row: {
+                font: {
+                    family: 'inherit',
+                },
+            },
             Copy: {
                 alignSelf: 'flex-start',
                 justifySelf: 'flex-start',
@@ -7034,7 +7521,7 @@ var $;
             '@': {
                 'mol_text_code_sidebar_showed': {
                     true: {
-                        $mol_text_code_row: {
+                        $mol_text_code_line: {
                             margin: {
                                 left: rem(1.75),
                             },
@@ -7053,7 +7540,7 @@ var $;
 			return null;
 		}
 		event(){
-			return {...(super.event()), "keydown": (next) => (this?.keydown(next))};
+			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
 		}
 		key(){
 			return {};
@@ -7121,13 +7608,13 @@ var $;
 			return "";
 		}
 		value_changed(next){
-			return (this?.value(next));
+			return (this.value(next));
 		}
 		hint(){
 			return "";
 		}
 		hint_visible(){
-			return (this?.hint());
+			return (this.hint());
 		}
 		spellcheck(){
 			return true;
@@ -7167,8 +7654,8 @@ var $;
 		}
 		Submit(){
 			const obj = new this.$.$mol_hotkey();
-			(obj.mod_ctrl) = () => ((this?.submit_with_ctrl()));
-			(obj.key) = () => ({"enter": (next) => (this?.submit(next))});
+			(obj.mod_ctrl) = () => ((this.submit_with_ctrl()));
+			(obj.key) = () => ({"enter": (next) => (this.submit(next))});
 			return obj;
 		}
 		dom_name(){
@@ -7188,34 +7675,34 @@ var $;
 			return [0, 0];
 		}
 		auto(){
-			return [(this?.selection_watcher()), (this?.error_report())];
+			return [(this.selection_watcher()), (this.error_report())];
 		}
 		field(){
 			return {
 				...(super.field()), 
-				"disabled": (this?.disabled()), 
-				"value": (this?.value_changed()), 
-				"placeholder": (this?.hint_visible()), 
-				"spellcheck": (this?.spellcheck()), 
-				"autocomplete": (this?.autocomplete_native()), 
-				"selectionEnd": (this?.selection_end()), 
-				"selectionStart": (this?.selection_start()), 
-				"inputMode": (this?.keyboard()), 
-				"enterkeyhint": (this?.enter())
+				"disabled": (this.disabled()), 
+				"value": (this.value_changed()), 
+				"placeholder": (this.hint_visible()), 
+				"spellcheck": (this.spellcheck()), 
+				"autocomplete": (this.autocomplete_native()), 
+				"selectionEnd": (this.selection_end()), 
+				"selectionStart": (this.selection_start()), 
+				"inputMode": (this.keyboard()), 
+				"enterkeyhint": (this.enter())
 			};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"maxlength": (this?.length_max()), 
-				"type": (this?.type())
+				"maxlength": (this.length_max()), 
+				"type": (this.type())
 			};
 		}
 		event(){
-			return {...(super.event()), "input": (next) => (this?.event_change(next))};
+			return {...(super.event()), "input": (next) => (this.event_change(next))};
 		}
 		plugins(){
-			return [(this?.Submit())];
+			return [(this.Submit())];
 		}
 	};
 	($mol_mem(($.$mol_string.prototype), "value"));
@@ -7369,7 +7856,7 @@ var $;
 			return [];
 		}
 		bring(){
-			return (this?.Edit()?.bring());
+			return (this.Edit().bring());
 		}
 		submit(next){
 			if(next !== undefined) return next;
@@ -7380,14 +7867,14 @@ var $;
 		}
 		Edit(){
 			const obj = new this.$.$mol_textarea_edit();
-			(obj.value) = (next) => ((this?.value(next)));
-			(obj.hint) = () => ((this?.hint()));
-			(obj.enabled) = () => ((this?.enabled()));
-			(obj.spellcheck) = () => ((this?.spellcheck()));
-			(obj.length_max) = () => ((this?.length_max()));
-			(obj.selection) = (next) => ((this?.selection(next)));
-			(obj.submit) = (next) => ((this?.submit(next)));
-			(obj.submit_with_ctrl) = () => ((this?.submit_with_ctrl()));
+			(obj.value) = (next) => ((this.value(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.enabled()));
+			(obj.spellcheck) = () => ((this.spellcheck()));
+			(obj.length_max) = () => ((this.length_max()));
+			(obj.selection) = (next) => ((this.selection(next)));
+			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.submit_with_ctrl) = () => ((this.submit_with_ctrl()));
 			return obj;
 		}
 		row_numb(id){
@@ -7396,27 +7883,32 @@ var $;
 		highlight(){
 			return "";
 		}
+		syntax(){
+			const obj = new this.$.$mol_syntax2();
+			return obj;
+		}
 		View(){
 			const obj = new this.$.$mol_text_code();
-			(obj.text) = () => ((this?.value()));
+			(obj.text) = () => ((this.value()));
 			(obj.render_visible_only) = () => (false);
-			(obj.row_numb) = (id) => ((this?.row_numb(id)));
-			(obj.sidebar_showed) = () => ((this?.sidebar_showed()));
-			(obj.highlight) = () => ((this?.highlight()));
+			(obj.row_numb) = (id) => ((this.row_numb(id)));
+			(obj.sidebar_showed) = () => ((this.sidebar_showed()));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.syntax) = () => ((this.syntax()));
 			return obj;
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_textarea_clickable": (this?.clickable()), 
-				"mol_textarea_sidebar_showed": (this?.sidebar_showed())
+				"mol_textarea_clickable": (this.clickable()), 
+				"mol_textarea_sidebar_showed": (this.sidebar_showed())
 			};
 		}
 		event(){
-			return {"keydown": (next) => (this?.press(next)), "pointermove": (next) => (this?.hover(next))};
+			return {"keydown": (next) => (this.press(next)), "pointermove": (next) => (this.hover(next))};
 		}
 		sub(){
-			return [(this?.Edit()), (this?.View())];
+			return [(this.Edit()), (this.View())];
 		}
 		symbols_alt(){
 			return {
@@ -7474,6 +7966,7 @@ var $;
 	($mol_mem(($.$mol_textarea.prototype), "selection"));
 	($mol_mem(($.$mol_textarea.prototype), "submit"));
 	($mol_mem(($.$mol_textarea.prototype), "Edit"));
+	($mol_mem(($.$mol_textarea.prototype), "syntax"));
 	($mol_mem(($.$mol_textarea.prototype), "View"));
 	($.$mol_textarea_edit) = class $mol_textarea_edit extends ($.$mol_string) {
 		dom_name(){
@@ -7574,6 +8067,9 @@ var $;
             row_numb(index) {
                 return index;
             }
+            syntax() {
+                return this.$.$mol_syntax2_md_code;
+            }
         }
         __decorate([
             $mol_mem
@@ -7598,12 +8094,12 @@ var $;
 			return null;
 		}
 		title_content(){
-			return [(this?.Logo()), (this?.title())];
+			return [(this.Logo()), (this.title())];
 		}
 		Title(){
 			const obj = new this.$.$mol_view();
 			(obj.dom_name) = () => ("h1");
-			(obj.sub) = () => ((this?.title_content()));
+			(obj.sub) = () => ((this.title_content()));
 			return obj;
 		}
 		tools(){
@@ -7611,36 +8107,36 @@ var $;
 		}
 		Tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.tools()));
+			(obj.sub) = () => ((this.tools()));
 			return obj;
 		}
 		head(){
-			return [(this?.Title()), (this?.Tools())];
+			return [(this.Title()), (this.Tools())];
 		}
 		Head(){
 			const obj = new this.$.$mol_view();
 			(obj.minimal_height) = () => (64);
 			(obj.dom_name) = () => ("header");
-			(obj.sub) = () => ((this?.head()));
+			(obj.sub) = () => ((this.head()));
 			return obj;
 		}
 		body_scroll_top(next){
-			return (this?.Body()?.scroll_top(next));
+			return (this.Body().scroll_top(next));
 		}
 		body(){
 			return [];
 		}
 		Body_content(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.body()));
+			(obj.sub) = () => ((this.body()));
 			return obj;
 		}
 		body_content(){
-			return [(this?.Body_content())];
+			return [(this.Body_content())];
 		}
 		Body(){
 			const obj = new this.$.$mol_scroll();
-			(obj.sub) = () => ((this?.body_content()));
+			(obj.sub) = () => ((this.body_content()));
 			return obj;
 		}
 		foot(){
@@ -7649,20 +8145,20 @@ var $;
 		Foot(){
 			const obj = new this.$.$mol_view();
 			(obj.dom_name) = () => ("footer");
-			(obj.sub) = () => ((this?.foot()));
+			(obj.sub) = () => ((this.foot()));
 			return obj;
 		}
 		dom_name(){
 			return "article";
 		}
-		field(){
-			return {...(super.field()), "tabIndex": (this?.tabindex())};
+		attr(){
+			return {...(super.attr()), "tabIndex": (this.tabindex())};
 		}
 		sub(){
 			return [
-				(this?.Head()), 
-				(this?.Body()), 
-				(this?.Foot())
+				(this.Head()), 
+				(this.Body()), 
+				(this.Foot())
 			];
 		}
 	};
@@ -7684,7 +8180,7 @@ var $;
     var $$;
     (function ($$) {
         const { per, rem } = $mol_style_unit;
-        const { hsla } = $mol_style_func;
+        const { hsla, blur } = $mol_style_func;
         $mol_style_define($mol_page, {
             display: 'flex',
             flex: {
@@ -7719,6 +8215,13 @@ var $;
                     shadow: [[0, `0.5rem`, `0.5rem`, `-0.5rem`, hsla(0, 0, 0, .25)]],
                 },
                 zIndex: 2,
+                '@media': {
+                    'print': {
+                        box: {
+                            shadow: [[0, `1px`, 0, 0, hsla(0, 0, 0, .25)]],
+                        },
+                    },
+                },
             },
             Title: {
                 minHeight: rem(2),
@@ -7740,13 +8243,18 @@ var $;
             Tools: {
                 flex: {
                     basis: 'auto',
-                    grow: 1000,
+                    grow: 0,
                     shrink: 1,
                 },
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'flex-start',
                 flexWrap: 'wrap',
+                '@media': {
+                    'print': {
+                        display: 'none',
+                    },
+                },
             },
             Body: {
                 flex: {
@@ -7820,7 +8328,7 @@ $node[ "../optimade/cifplayer/lib/three/_three" ] = $node[ "../optimade/cifplaye
 			return null;
 		}
 		sub(){
-			return [(this?.canvas())];
+			return [(this.canvas())];
 		}
 		scene(){
 			return null;
@@ -7847,9 +8355,9 @@ $node[ "../optimade/cifplayer/lib/three/_three" ] = $node[ "../optimade/cifplaye
 		}
 		auto(){
 			return [
-				(this?.controls_target_changed()), 
-				(this?.resize()), 
-				(this?.start_render_loop())
+				(this.controls_target_changed()), 
+				(this.resize()), 
+				(this.start_render_loop())
 			];
 		}
 	};
@@ -7944,9 +8452,9 @@ var $;
 		}
 		Bubble(){
 			const obj = new this.$.$mol_pop_bubble();
-			(obj.align) = () => ((this?.align()));
-			(obj.content) = () => ((this?.bubble_content()));
-			(obj.height_max) = () => ((this?.height_max()));
+			(obj.align) = () => ((this.align()));
+			(obj.content) = () => ((this.bubble_content()));
+			(obj.height_max) = () => ((this.height_max()));
 			return obj;
 		}
 		showed(next){
@@ -7963,10 +8471,10 @@ var $;
 			return "vert";
 		}
 		sub(){
-			return [(this?.Anchor())];
+			return [(this.Anchor())];
 		}
 		sub_visible(){
-			return [(this?.Anchor()), (this?.Bubble())];
+			return [(this.Anchor()), (this.Bubble())];
 		}
 	};
 	($mol_mem(($.$mol_pop.prototype), "Bubble"));
@@ -7982,15 +8490,15 @@ var $;
 			return "";
 		}
 		sub(){
-			return (this?.content());
+			return (this.content());
 		}
 		style(){
-			return {...(super.style()), "maxHeight": (this?.height_max())};
+			return {...(super.style()), "maxHeight": (this.height_max())};
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"mol_pop_align": (this?.align()), 
+				"mol_pop_align": (this.align()), 
 				"tabindex": 0
 			};
 		}
@@ -8113,7 +8621,7 @@ var $;
 			return null;
 		}
 		trigger_content(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		hint(){
 			return "";
@@ -8122,18 +8630,18 @@ var $;
 			const obj = new this.$.$mol_check();
 			(obj.minimal_width) = () => (40);
 			(obj.minimal_height) = () => (40);
-			(obj.enabled) = () => ((this?.trigger_enabled()));
-			(obj.checked) = (next) => ((this?.showed(next)));
-			(obj.clicks) = (next) => ((this?.clicks(next)));
-			(obj.sub) = () => ((this?.trigger_content()));
-			(obj.hint) = () => ((this?.hint()));
+			(obj.enabled) = () => ((this.trigger_enabled()));
+			(obj.checked) = (next) => ((this.showed(next)));
+			(obj.clicks) = (next) => ((this.clicks(next)));
+			(obj.sub) = () => ((this.trigger_content()));
+			(obj.hint) = () => ((this.hint()));
 			return obj;
 		}
 		event(){
-			return {...(super.event()), "keydown": (next) => (this?.keydown(next))};
+			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
 		}
 		Anchor(){
-			return (this?.Trigger());
+			return (this.Trigger());
 		}
 	};
 	($mol_mem(($.$mol_pick.prototype), "keydown"));
@@ -8213,7 +8721,7 @@ var $;
 			return " ";
 		}
 		string_enabled(){
-			return (this?.enabled());
+			return (this.enabled());
 		}
 		submit(next){
 			if(next !== undefined) return next;
@@ -8221,11 +8729,11 @@ var $;
 		}
 		String(){
 			const obj = new this.$.$mol_string();
-			(obj.type) = () => ((this?.type()));
-			(obj.value) = (next) => ((this?.value_string(next)));
-			(obj.hint) = () => ((this?.hint()));
-			(obj.enabled) = () => ((this?.string_enabled()));
-			(obj.submit) = (next) => ((this?.submit(next)));
+			(obj.type) = () => ((this.type()));
+			(obj.value) = (next) => ((this.value_string(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.string_enabled()));
+			(obj.submit) = (next) => ((this.submit(next)));
 			return obj;
 		}
 		event_dec(next){
@@ -8233,7 +8741,7 @@ var $;
 			return null;
 		}
 		dec_enabled(){
-			return (this?.enabled());
+			return (this.enabled());
 		}
 		dec_icon(){
 			const obj = new this.$.$mol_icon_minus();
@@ -8241,9 +8749,9 @@ var $;
 		}
 		Dec(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.event_click) = (next) => ((this?.event_dec(next)));
-			(obj.enabled) = () => ((this?.dec_enabled()));
-			(obj.sub) = () => ([(this?.dec_icon())]);
+			(obj.event_click) = (next) => ((this.event_dec(next)));
+			(obj.enabled) = () => ((this.dec_enabled()));
+			(obj.sub) = () => ([(this.dec_icon())]);
 			return obj;
 		}
 		event_inc(next){
@@ -8251,7 +8759,7 @@ var $;
 			return null;
 		}
 		inc_enabled(){
-			return (this?.enabled());
+			return (this.enabled());
 		}
 		inc_icon(){
 			const obj = new this.$.$mol_icon_plus();
@@ -8259,16 +8767,16 @@ var $;
 		}
 		Inc(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.event_click) = (next) => ((this?.event_inc(next)));
-			(obj.enabled) = () => ((this?.inc_enabled()));
-			(obj.sub) = () => ([(this?.inc_icon())]);
+			(obj.event_click) = (next) => ((this.event_inc(next)));
+			(obj.enabled) = () => ((this.inc_enabled()));
+			(obj.sub) = () => ([(this.inc_icon())]);
 			return obj;
 		}
 		precision_view(){
-			return (this?.precision());
+			return (this.precision());
 		}
 		precision_change(){
-			return (this?.precision());
+			return (this.precision());
 		}
 		value_min(){
 			return -Infinity;
@@ -8285,9 +8793,9 @@ var $;
 		}
 		sub(){
 			return [
-				(this?.String()), 
-				(this?.Dec()), 
-				(this?.Inc())
+				(this.String()), 
+				(this.Dec()), 
+				(this.Inc())
 			];
 		}
 	};
@@ -8320,14 +8828,13 @@ var $;
     var $$;
     (function ($$) {
         class $mol_number extends $.$mol_number {
-            value_limited(next) {
-                if (next === undefined)
+            value_limited(val) {
+                if (Number.isNaN(val))
+                    return this.value(val);
+                if (val === undefined)
                     return this.value();
-                if (next === '')
-                    return this.value(Number.NaN);
                 const min = this.value_min();
                 const max = this.value_max();
-                const val = Number(next);
                 if (val < min)
                     return this.value(min);
                 if (val > max)
@@ -8340,20 +8847,50 @@ var $;
             event_inc(next) {
                 this.value_limited((this.value_limited() || 0) + this.precision_change());
             }
-            value_string(next) {
-                const next_num = this.value_limited(next);
-                const precisionView = this.precision_view();
-                if (next_num === 0)
-                    return '0';
-                if (!next_num)
+            round(val) {
+                if (Number.isNaN(val))
                     return '';
-                if (precisionView >= 1) {
-                    return (next_num / precisionView).toFixed();
+                if (val === 0)
+                    return '0';
+                if (!val)
+                    return '';
+                const precision_view = this.precision_view();
+                if (!precision_view)
+                    return val.toFixed();
+                if (precision_view >= 1) {
+                    return (val / precision_view).toFixed();
                 }
                 else {
-                    const fixedNumber = Math.log10(1 / precisionView);
-                    return next_num.toFixed(Math.ceil(fixedNumber));
+                    const fixed_number = Math.log10(1 / precision_view);
+                    return val.toFixed(Math.ceil(fixed_number));
                 }
+            }
+            value_string(next) {
+                const current = this.round(this.value_limited());
+                if (next === undefined)
+                    return current;
+                const precision = this.precision_view();
+                if (precision - Math.floor(precision) === 0)
+                    next = next.replace(/[.,]/g, '');
+                next = (this.value_min() < 0 && next.startsWith('-') ? '-' : '')
+                    + next.replace(/,/g, '.').replace(/[^\d\.]/g, '').replace(/^0{2,}/, '0');
+                let dot_pos = next.indexOf('.');
+                if (dot_pos !== -1) {
+                    const prev = $mol_wire_probe(() => this.value_string()) ?? '';
+                    const dot_pos_prev = prev.indexOf('.');
+                    if (dot_pos_prev === dot_pos)
+                        dot_pos = next.lastIndexOf('.');
+                    const frac = next.slice(dot_pos + 1).replace(/\./g, '');
+                    next = (next.slice(0, dot_pos) || '0').replace(/\./g, '') + '.' + frac;
+                }
+                if (Number.isNaN(Number(next)))
+                    return next;
+                if (next.endsWith('.'))
+                    return next;
+                if (next.endsWith('-'))
+                    return next;
+                this.value_limited(Number(next || Number.NaN));
+                return next;
             }
             dec_enabled() {
                 return this.enabled() && (!((this.value() || 0) <= this.value_min()));
@@ -8362,6 +8899,9 @@ var $;
                 return this.enabled() && (!((this.value() || 0) >= this.value_max()));
             }
         }
+        __decorate([
+            $mol_mem
+        ], $mol_number.prototype, "value_string", null);
         __decorate([
             $mol_mem
         ], $mol_number.prototype, "dec_enabled", null);
@@ -8398,28 +8938,6 @@ var $;
 	($.$mol_icon_image_filter_center_focus) = class $mol_icon_image_filter_center_focus extends ($.$mol_icon) {
 		path(){
 			return "M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M19,19H15V21H19A2,2 0 0,0 21,19V15H19M19,3H15V5H19V9H21V5A2,2 0 0,0 19,3M5,5H9V3H5A2,2 0 0,0 3,5V9H5M5,15H3V19A2,2 0 0,0 5,21H9V19H5V15Z";
-		}
-	};
-
-
-;
-"use strict";
-
-;
-	($.$mol_icon_arrow_expand) = class $mol_icon_arrow_expand extends ($.$mol_icon) {
-		path(){
-			return "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z";
-		}
-	};
-
-
-;
-"use strict";
-
-;
-	($.$mol_icon_arrow_expand_all) = class $mol_icon_arrow_expand_all extends ($.$mol_icon) {
-		path(){
-			return "M9.5,13.09L10.91,14.5L6.41,19H10V21H3V14H5V17.59L9.5,13.09M10.91,9.5L9.5,10.91L5,6.41V10H3V3H10V5H6.41L10.91,9.5M14.5,13.09L19,17.59V14H21V21H14V19H17.59L13.09,14.5L14.5,13.09M13.09,9.5L17.59,5H14V3H21V10H19V6.41L14.5,10.91L13.09,9.5Z";
 		}
 	};
 
@@ -8492,13 +9010,13 @@ var $;
 			return "";
 		}
 		option_label(id){
-			return [(this?.option_title(id))];
+			return [(this.option_title(id))];
 		}
 		enabled(){
 			return true;
 		}
 		option_enabled(id){
-			return (this?.enabled());
+			return (this.enabled());
 		}
 		option_hint(id){
 			return "";
@@ -8511,10 +9029,10 @@ var $;
 		}
 		Option(id){
 			const obj = new this.$.$mol_check();
-			(obj.checked) = (next) => ((this?.option_checked(id, next)));
-			(obj.label) = () => ((this?.option_label(id)));
-			(obj.enabled) = () => ((this?.option_enabled(id)));
-			(obj.hint) = () => ((this?.option_hint(id)));
+			(obj.checked) = (next) => ((this.option_checked(id, next)));
+			(obj.label) = () => ((this.option_label(id)));
+			(obj.enabled) = () => ((this.option_enabled(id)));
+			(obj.hint) = () => ((this.option_hint(id)));
 			(obj.minimal_height) = () => (24);
 			return obj;
 		}
@@ -8525,7 +9043,7 @@ var $;
 			return [];
 		}
 		sub(){
-			return (this?.items());
+			return (this.items());
 		}
 	};
 	($mol_mem_key(($.$mol_check_list.prototype), "option_checked"));
@@ -8676,27 +9194,27 @@ var $;
 			return "";
 		}
 		content(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		Content(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.content()));
+			(obj.sub) = () => ((this.content()));
 			return obj;
 		}
 		status_text(){
-			return (this?.status());
+			return (this.status());
 		}
 		Status(){
 			const obj = new this.$.$mol_view();
 			(obj.minimal_height) = () => (30);
-			(obj.sub) = () => ([(this?.status_text())]);
+			(obj.sub) = () => ([(this.status_text())]);
 			return obj;
 		}
 		attr(){
-			return {...(super.attr()), "mol_card_status_type": (this?.status())};
+			return {...(super.attr()), "mol_card_status_type": (this.status())};
 		}
 		rows(){
-			return [(this?.Content()), (this?.Status())];
+			return [(this.Content()), (this.Status())];
 		}
 	};
 	($mol_mem(($.$mol_card.prototype), "Content"));
@@ -8781,24 +9299,24 @@ var $;
 			return null;
 		}
 		scene(){
-			return (this?.Three()?.scene());
+			return (this.Three().scene());
 		}
 		controls(){
-			return (this?.Three()?.controls());
+			return (this.Three().controls());
 		}
 		controls_target(){
 			return null;
 		}
 		camera(){
-			return (this?.Three()?.camera());
+			return (this.Three().camera());
 		}
 		on_render(){
 			return null;
 		}
 		Three(){
 			const obj = new this.$.$optimade_cifplayer_lib_three_view();
-			(obj.controls_target) = () => ((this?.controls_target()));
-			(obj.on_render) = () => ((this?.on_render()));
+			(obj.controls_target) = () => ((this.controls_target()));
+			(obj.on_render) = () => ((this.on_render()));
 			return obj;
 		}
 		descr_a(){
@@ -8806,7 +9324,7 @@ var $;
 		}
 		Descr_a(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_a()));
+			(obj.title) = () => ((this.descr_a()));
 			return obj;
 		}
 		descr_b(){
@@ -8814,7 +9332,7 @@ var $;
 		}
 		Descr_b(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_b()));
+			(obj.title) = () => ((this.descr_b()));
 			return obj;
 		}
 		descr_c(){
@@ -8822,7 +9340,7 @@ var $;
 		}
 		Descr_c(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_c()));
+			(obj.title) = () => ((this.descr_c()));
 			return obj;
 		}
 		descr_alpha(){
@@ -8830,7 +9348,7 @@ var $;
 		}
 		Descr_alpha(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_alpha()));
+			(obj.title) = () => ((this.descr_alpha()));
 			return obj;
 		}
 		descr_beta(){
@@ -8838,7 +9356,7 @@ var $;
 		}
 		Descr_beta(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_beta()));
+			(obj.title) = () => ((this.descr_beta()));
 			return obj;
 		}
 		descr_gamma(){
@@ -8846,22 +9364,22 @@ var $;
 		}
 		Descr_gamma(){
 			const obj = new this.$.$mol_paragraph();
-			(obj.title) = () => ((this?.descr_gamma()));
+			(obj.title) = () => ((this.descr_gamma()));
 			return obj;
 		}
 		info_sub(){
 			return [
-				(this?.Descr_a()), 
-				(this?.Descr_b()), 
-				(this?.Descr_c()), 
-				(this?.Descr_alpha()), 
-				(this?.Descr_beta()), 
-				(this?.Descr_gamma())
+				(this.Descr_a()), 
+				(this.Descr_b()), 
+				(this.Descr_c()), 
+				(this.Descr_alpha()), 
+				(this.Descr_beta()), 
+				(this.Descr_gamma())
 			];
 		}
 		Info(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.info_sub()));
+			(obj.sub) = () => ((this.info_sub()));
 			return obj;
 		}
 		Sym_icon(){
@@ -8880,8 +9398,8 @@ var $;
 		}
 		Toogle_all(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.title) = () => ((this?.Toogle_all_title()));
-			(obj.click) = (next) => ((this?.toogle_all_symmetry(next)));
+			(obj.title) = () => ((this.Toogle_all_title()));
+			(obj.click) = (next) => ((this.toogle_all_symmetry(next)));
 			return obj;
 		}
 		sym_name(id){
@@ -8893,31 +9411,31 @@ var $;
 		}
 		Sym_check(id){
 			const obj = new this.$.$mol_check_box();
-			(obj.title) = () => ((this?.sym_name(id)));
-			(obj.checked) = (next) => ((this?.symmetry_visible(id, next)));
+			(obj.title) = () => ((this.sym_name(id)));
+			(obj.checked) = (next) => ((this.symmetry_visible(id, next)));
 			return obj;
 		}
 		sym_checks(){
-			return [(this?.Sym_check("0"))];
+			return [(this.Sym_check("0"))];
 		}
 		Sym_checks(){
 			const obj = new this.$.$mol_list();
-			(obj.sub) = () => ((this?.sym_checks()));
+			(obj.sub) = () => ((this.sym_checks()));
 			return obj;
 		}
 		Sym_list(){
 			const obj = new this.$.$mol_scroll();
-			(obj.sub) = () => ([(this?.Sym_checks())]);
+			(obj.sub) = () => ([(this.Sym_checks())]);
 			return obj;
 		}
 		Symlabel(){
 			const obj = new this.$.$mol_pick();
-			(obj.trigger_content) = () => ([(this?.Sym_icon()), (this?.symlabel())]);
-			(obj.bubble_content) = () => ([(this?.Toogle_all()), (this?.Sym_list())]);
+			(obj.trigger_content) = () => ([(this.Sym_icon()), (this.symlabel())]);
+			(obj.bubble_content) = () => ([(this.Toogle_all()), (this.Sym_list())]);
 			return obj;
 		}
 		symlabel_visible(){
-			return [(this?.Symlabel())];
+			return [(this.Symlabel())];
 		}
 		translate_cell_label(){
 			return "1×1×1";
@@ -8932,10 +9450,10 @@ var $;
 		}
 		Translate_a(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.translate_a(next)));
+			(obj.value) = (next) => ((this.translate_a(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.translate_limit_a()));
+			(obj.value_max) = () => ((this.translate_limit_a()));
 			return obj;
 		}
 		Translate_label_b(){
@@ -8948,10 +9466,10 @@ var $;
 		}
 		Translate_b(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.translate_b(next)));
+			(obj.value) = (next) => ((this.translate_b(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.translate_limit_b()));
+			(obj.value_max) = () => ((this.translate_limit_b()));
 			return obj;
 		}
 		Translate_label_c(){
@@ -8964,22 +9482,22 @@ var $;
 		}
 		Translate_c(){
 			const obj = new this.$.$mol_number();
-			(obj.value) = (next) => ((this?.translate_c(next)));
+			(obj.value) = (next) => ((this.translate_c(next)));
 			(obj.hint) = () => ("1");
 			(obj.value_min) = () => (1);
-			(obj.value_max) = () => ((this?.translate_limit_c()));
+			(obj.value_max) = () => ((this.translate_limit_c()));
 			return obj;
 		}
 		Translate_cells(){
 			const obj = new this.$.$mol_pick();
-			(obj.trigger_content) = () => ([(this?.translate_cell_label())]);
+			(obj.trigger_content) = () => ([(this.translate_cell_label())]);
 			(obj.bubble_content) = () => ([
-				(this?.Translate_label_a()), 
-				(this?.Translate_a()), 
-				(this?.Translate_label_b()), 
-				(this?.Translate_b()), 
-				(this?.Translate_label_c()), 
-				(this?.Translate_c())
+				(this.Translate_label_a()), 
+				(this.Translate_a()), 
+				(this.Translate_label_b()), 
+				(this.Translate_b()), 
+				(this.Translate_label_c()), 
+				(this.Translate_c())
 			]);
 			return obj;
 		}
@@ -8993,35 +9511,21 @@ var $;
 		}
 		Center(){
 			const obj = new this.$.$mol_check_icon();
-			(obj.checked) = (next) => ((this?.centered(next)));
-			(obj.Icon) = () => ((this?.Center_icon()));
+			(obj.checked) = (next) => ((this.centered(next)));
+			(obj.Icon) = () => ((this.Center_icon()));
 			return obj;
 		}
 		left_panel(){
 			return [
-				(this?.Info()), 
+				(this.Info()), 
 				...(this.symlabel_visible()), 
-				(this?.Translate_cells()), 
-				(this?.Center())
+				(this.Translate_cells()), 
+				(this.Center())
 			];
 		}
 		Left_panel(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.left_panel()));
-			return obj;
-		}
-		fullscreen(next){
-			if(next !== undefined) return next;
-			return false;
-		}
-		Expand_icon(){
-			const obj = new this.$.$mol_icon_arrow_expand_all();
-			return obj;
-		}
-		Fullscreen(){
-			const obj = new this.$.$mol_check();
-			(obj.checked) = (next) => ((this?.fullscreen(next)));
-			(obj.Icon) = () => ((this?.Expand_icon()));
+			(obj.sub) = () => ((this.left_panel()));
 			return obj;
 		}
 		zoom_up(next){
@@ -9034,8 +9538,8 @@ var $;
 		}
 		Zoom_up(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.click) = (next) => ((this?.zoom_up(next)));
-			(obj.sub) = () => ([(this?.Zoom_up_icon())]);
+			(obj.click) = (next) => ((this.zoom_up(next)));
+			(obj.sub) = () => ([(this.Zoom_up_icon())]);
 			return obj;
 		}
 		zoom_down(next){
@@ -9048,29 +9552,18 @@ var $;
 		}
 		Zoom_down(){
 			const obj = new this.$.$mol_button_minor();
-			(obj.click) = (next) => ((this?.zoom_down(next)));
-			(obj.sub) = () => ([(this?.Zoom_down_icon())]);
+			(obj.click) = (next) => ((this.zoom_down(next)));
+			(obj.sub) = () => ([(this.Zoom_down_icon())]);
 			return obj;
 		}
 		Zoom_section(){
 			const obj = new this.$.$mol_list();
-			(obj.sub) = () => ([(this?.Zoom_up()), (this?.Zoom_down())]);
+			(obj.sub) = () => ([(this.Zoom_up()), (this.Zoom_down())]);
 			return obj;
-		}
-		Lights(){
-			const obj = new this.$.$mol_lights_toggle();
-			return obj;
-		}
-		lights_toggle(){
-			return [(this?.Lights())];
 		}
 		Tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([
-				(this?.Fullscreen()), 
-				(this?.Zoom_section()), 
-				...(this.lights_toggle())
-			]);
+			(obj.sub) = () => ([(this.Zoom_section())]);
 			return obj;
 		}
 		overlay(next){
@@ -9082,16 +9575,16 @@ var $;
 		}
 		Switch_overlay(){
 			const obj = new this.$.$mol_switch();
-			(obj.value) = (next) => ((this?.overlay(next)));
-			(obj.options) = () => ((this?.available_overlays()));
+			(obj.value) = (next) => ((this.overlay(next)));
+			(obj.options) = () => ((this.available_overlays()));
 			return obj;
 		}
 		overlays_sub(){
-			return [(this?.Switch_overlay())];
+			return [(this.Switch_overlay())];
 		}
 		Overlays(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this?.overlays_sub()));
+			(obj.sub) = () => ((this.overlays_sub()));
 			return obj;
 		}
 		message(){
@@ -9100,16 +9593,16 @@ var $;
 		Message_card(){
 			const obj = new this.$.$mol_card();
 			(obj.theme) = () => ("$mol_theme_special");
-			(obj.title) = () => ((this?.message()));
+			(obj.title) = () => ((this.message()));
 			return obj;
 		}
 		Message(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.Message_card())]);
+			(obj.sub) = () => ([(this.Message_card())]);
 			return obj;
 		}
 		message_visible(){
-			return [(this?.Message())];
+			return [(this.Message())];
 		}
 		color_a(){
 			return "";
@@ -9127,6 +9620,14 @@ var $;
 		externals(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		fullscreen(next){
+			if(next !== undefined) return next;
+			return true;
+		}
+		skip_panel(next){
+			if(next !== undefined) return next;
+			return false;
 		}
 		atom_radius_scale(){
 			return 0.6;
@@ -9147,29 +9648,29 @@ var $;
 		}
 		translate_cells(){
 			return [
-				(this?.translate_a()), 
-				(this?.translate_b()), 
-				(this?.translate_c())
+				(this.translate_a()), 
+				(this.translate_b()), 
+				(this.translate_c())
 			];
 		}
 		translate_cells_limit(){
 			return 50;
 		}
 		plugins(){
-			return [(this?.Theme())];
+			return [(this.Theme())];
 		}
 		auto(){
 			return [
-				(this?.external_theme_auto()), 
-				(this?.dir_light()), 
-				(this?.ambient_light()), 
+				(this.external_theme_auto()), 
+				(this.dir_light()), 
+				(this.ambient_light()), 
 				...(this.atom_boxes()), 
 				...(this.overlay_boxes()), 
-				(this?.cell_box()), 
-				(this?.axes_box()), 
-				(this?.overlay_changed()), 
-				(this?.vibration_active()), 
-				(this?.vibration_restart())
+				(this.cell_box()), 
+				(this.axes_box()), 
+				(this.overlay_changed()), 
+				(this.vibration_active()), 
+				(this.vibration_restart())
 			];
 		}
 		atom_box(id){
@@ -9183,10 +9684,10 @@ var $;
 		}
 		sub(){
 			return [
-				(this?.Three()), 
-				(this?.Left_panel()), 
-				(this?.Tools()), 
-				(this?.Overlays()), 
+				(this.Three()), 
+				(this.Left_panel()), 
+				(this.Tools()), 
+				(this.Overlays()), 
 				...(this.message_visible())
 			];
 		}
@@ -9209,21 +9710,21 @@ var $;
 		}
 		axcolor(){
 			return [
-				(this?.color_a()), 
-				(this?.color_b()), 
-				(this?.color_c())
+				(this.color_a()), 
+				(this.color_b()), 
+				(this.color_c())
 			];
 		}
 		style(){
 			return {
 				...(super.style()), 
-				"--color_a": (this?.color_a()), 
-				"--color_b": (this?.color_b()), 
-				"--color_c": (this?.color_c())
+				"--color_a": (this.color_a()), 
+				"--color_b": (this.color_b()), 
+				"--color_c": (this.color_c())
 			};
 		}
 		attr(){
-			return {...(super.attr()), "fullscreen": (this?.fullscreen())};
+			return {...(super.attr()), "fullscreen": (this.fullscreen())};
 		}
 	};
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "translate_a"));
@@ -9258,9 +9759,6 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center_icon"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Center"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Left_panel"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "fullscreen"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Expand_icon"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Fullscreen"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "zoom_up"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_up_icon"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_up"));
@@ -9268,7 +9766,6 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_down_icon"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_down"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Zoom_section"));
-	($mol_mem(($.$optimade_cifplayer_player.prototype), "Lights"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Tools"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "overlay"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Switch_overlay"));
@@ -9277,6 +9774,8 @@ var $;
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "Message"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "data"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "externals"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "fullscreen"));
+	($mol_mem(($.$optimade_cifplayer_player.prototype), "skip_panel"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "vibrate"));
 	($mol_mem(($.$optimade_cifplayer_player.prototype), "phonon"));
 
@@ -9348,6 +9847,7 @@ var $;
                 pointerEvents: 'none',
                 position: 'absolute',
                 zIndex: 1,
+                fontSize: '13px',
                 flex: {
                     direction: 'column',
                 },
@@ -9479,13 +9979,13 @@ var $;
 			return 0;
 		}
 		style(){
-			return {...(super.style()), "paddingLeft": (this?.level_style())};
+			return {...(super.style()), "paddingLeft": (this.level_style())};
 		}
 		checked(next){
-			return (this?.expanded(next));
+			return (this.expanded(next));
 		}
 		enabled(){
-			return (this?.expandable());
+			return (this.expandable());
 		}
 	};
 	($mol_mem(($.$mol_check_expand.prototype), "expanded"));
@@ -9527,7 +10027,7 @@ var $;
 		}
 		Table(){
 			const obj = new this.$.$mol_grid_table();
-			(obj.sub) = () => ((this?.rows()));
+			(obj.sub) = () => ((this.rows()));
 			return obj;
 		}
 		head_cells(){
@@ -9540,10 +10040,10 @@ var $;
 			return [];
 		}
 		cell_content_text(id){
-			return (this?.cell_content(id));
+			return (this.cell_content(id));
 		}
 		cell_content_number(id){
-			return (this?.cell_content(id));
+			return (this.cell_content(id));
 		}
 		col_head_content(id){
 			return [];
@@ -9563,8 +10063,8 @@ var $;
 		}
 		Cell_dimmer(id){
 			const obj = new this.$.$mol_dimmer();
-			(obj.needle) = () => ((this?.needle()));
-			(obj.haystack) = () => ((this?.cell_value(id)));
+			(obj.needle) = () => ((this.needle()));
+			(obj.haystack) = () => ((this.cell_value(id)));
 			return obj;
 		}
 		row_height(){
@@ -9595,18 +10095,18 @@ var $;
 			return 0;
 		}
 		sub(){
-			return [(this?.Head()), (this?.Table())];
+			return [(this.Head()), (this.Table())];
 		}
 		Head(){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this?.head_cells()));
+			(obj.cells) = () => ((this.head_cells()));
 			return obj;
 		}
 		Row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.minimal_height) = () => ((this?.row_height()));
-			(obj.minimal_width) = () => ((this?.minimal_width()));
-			(obj.cells) = () => ((this?.cells(id)));
+			(obj.minimal_height) = () => ((this.row_height()));
+			(obj.minimal_width) = () => ((this.minimal_width()));
+			(obj.cells) = () => ((this.cells(id)));
 			return obj;
 		}
 		Cell(id){
@@ -9618,29 +10118,29 @@ var $;
 		}
 		Cell_text(id){
 			const obj = new this.$.$mol_grid_cell();
-			(obj.sub) = () => ((this?.cell_content_text(id)));
+			(obj.sub) = () => ((this.cell_content_text(id)));
 			return obj;
 		}
 		Cell_number(id){
 			const obj = new this.$.$mol_grid_number();
-			(obj.sub) = () => ((this?.cell_content_number(id)));
+			(obj.sub) = () => ((this.cell_content_number(id)));
 			return obj;
 		}
 		Col_head(id){
 			const obj = new this.$.$mol_float();
 			(obj.dom_name) = () => ("th");
-			(obj.sub) = () => ((this?.col_head_content(id)));
+			(obj.sub) = () => ((this.col_head_content(id)));
 			return obj;
 		}
 		Cell_branch(id){
 			const obj = new this.$.$mol_check_expand();
-			(obj.level) = () => ((this?.cell_level(id)));
-			(obj.label) = () => ((this?.cell_content(id)));
-			(obj.expanded) = (next) => ((this?.cell_expanded(id, next)));
+			(obj.level) = () => ((this.cell_level(id)));
+			(obj.label) = () => ((this.cell_content(id)));
+			(obj.expanded) = (next) => ((this.cell_expanded(id, next)));
 			return obj;
 		}
 		Cell_content(id){
-			return [(this?.Cell_dimmer(id))];
+			return [(this.Cell_dimmer(id))];
 		}
 	};
 	($mol_mem(($.$mol_grid.prototype), "Table"));
@@ -9659,7 +10159,7 @@ var $;
 			return [];
 		}
 		sub(){
-			return (this?.cells());
+			return (this.cells());
 		}
 	};
 	($.$mol_grid_cell) = class $mol_grid_cell extends ($.$mol_view) {
@@ -9811,7 +10311,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 0 1 auto;\n\tposition: relative;\n\toverflow-x: auto;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > *,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\tpadding: var(--mol_gap_text);\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 1px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_row]:where(:first-child) > * {\n\tbox-shadow: inset 1px 0 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > * > *:where(:first-child) {\n\tbox-shadow: inset 0px 1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > * {\n\tbox-shadow: inset 1px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_head] > *:where(:first-child) {\n\tbox-shadow: inset 0px -1px 0 0 var(--mol_theme_line);\n}\n\n[mol_grid_table] > [mol_grid_row]:where(:first-child) > *:where(:first-child) {\n\tbox-shadow: none;\n}\t\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none !important;\n}\n\n/* [mol_grid_cell_number] {\n\ttext-align: right;\n} */\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
+    $mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 0 1 auto;\n\tposition: relative;\n\toverflow-x: auto;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > *,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\tpadding: var(--mol_gap_text);\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 2px 2px 0 -1px var(--mol_theme_line);\n}\n\n[mol_grid_row]:where(:first-child) > * {\n\tbox-shadow: inset 2px 0 0 -1px var(--mol_theme_line);\n}\n\n[mol_grid_table] > * > *:where(:first-child) {\n\tbox-shadow: inset 0px 2px 0 -1px var(--mol_theme_line);\n}\n\n[mol_grid_head] > * {\n\tbox-shadow: inset 2px -2px 0 -1px var(--mol_theme_line);\n}\n\n[mol_grid_head] > *:where(:first-child) {\n\tbox-shadow: inset 0px -2px 0 -1px var(--mol_theme_line);\n}\n\n[mol_grid_table] > [mol_grid_row]:where(:first-child) > *:where(:first-child) {\n\tbox-shadow: none;\n}\t\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none !important;\n}\n\n/* [mol_grid_cell_number] {\n\ttext-align: right;\n} */\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -9824,8 +10324,8 @@ var $;
 		}
 		Fallback(){
 			const obj = new this.$.$mol_link();
-			(obj.uri) = () => ((this?.uri()));
-			(obj.sub) = () => ([(this?.title())]);
+			(obj.uri) = () => ((this.uri()));
+			(obj.sub) = () => ([(this.title())]);
 			return obj;
 		}
 		uri_change(next){
@@ -9845,15 +10345,15 @@ var $;
 		attr(){
 			return {
 				...(super.attr()), 
-				"data": (this?.uri()), 
-				"type": (this?.mime())
+				"data": (this.uri()), 
+				"type": (this.mime())
 			};
 		}
 		sub(){
-			return [(this?.Fallback())];
+			return [(this.Fallback())];
 		}
 		message(){
-			return {"hashchange": (next) => (this?.uri_change(next))};
+			return {"hashchange": (next) => (this.uri_change(next))};
 		}
 	};
 	($mol_mem(($.$mol_embed_native.prototype), "Fallback"));
@@ -10005,9 +10505,9 @@ var $;
 				...(super.attr()), 
 				"data": null, 
 				"type": null, 
-				"allow": (this?.allow()), 
-				"src": (this?.uri()), 
-				"srcdoc": (this?.html())
+				"allow": (this.allow()), 
+				"src": (this.uri()), 
+				"srcdoc": (this.html())
 			};
 		}
 		fullscreen(){
@@ -10094,8 +10594,8 @@ var $;
 		}
 		Image(){
 			const obj = new this.$.$mol_image();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.video_preview()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.video_preview()));
 			return obj;
 		}
 		Hint(){
@@ -10107,8 +10607,8 @@ var $;
 		}
 		Frame(){
 			const obj = new this.$.$mol_frame();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.video_embed()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.video_embed()));
 			return obj;
 		}
 		uri(){
@@ -10118,13 +10618,13 @@ var $;
 			return "";
 		}
 		checked(next){
-			return (this?.active(next));
+			return (this.active(next));
 		}
 		sub(){
 			return [
-				(this?.Image()), 
-				(this?.Hint()), 
-				(this?.Frame())
+				(this.Image()), 
+				(this.Hint()), 
+				(this.Frame())
 			];
 		}
 	};
@@ -10250,26 +10750,26 @@ var $;
 		}
 		Image(){
 			const obj = new this.$.$mol_image();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.uri()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.uri()));
 			return obj;
 		}
 		Object(){
 			const obj = new this.$.$mol_embed_native();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.uri()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.uri()));
 			return obj;
 		}
 		Youtube(){
 			const obj = new this.$.$mol_embed_youtube();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.uri()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.uri()));
 			return obj;
 		}
 		Rutube(){
 			const obj = new this.$.$mol_embed_rutube();
-			(obj.title) = () => ((this?.title()));
-			(obj.uri) = () => ((this?.uri()));
+			(obj.title) = () => ((this.title()));
+			(obj.uri) = () => ((this.uri()));
 			return obj;
 		}
 	};
@@ -10336,13 +10836,13 @@ var $;
 			return true;
 		}
 		label(){
-			return [(this?.title())];
+			return [(this.title())];
 		}
 		Trigger(){
 			const obj = new this.$.$mol_check_expand();
-			(obj.checked) = (next) => ((this?.expanded(next)));
-			(obj.expandable) = () => ((this?.expandable()));
-			(obj.label) = () => ((this?.label()));
+			(obj.checked) = (next) => ((this.expanded(next)));
+			(obj.expandable) = () => ((this.expandable()));
+			(obj.label) = () => ((this.label()));
 			return obj;
 		}
 		Tools(){
@@ -10350,7 +10850,7 @@ var $;
 		}
 		Label(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.Trigger()), (this?.Tools())]);
+			(obj.sub) = () => ([(this.Trigger()), (this.Tools())]);
 			return obj;
 		}
 		content(){
@@ -10358,11 +10858,11 @@ var $;
 		}
 		Content(){
 			const obj = new this.$.$mol_list();
-			(obj.rows) = () => ((this?.content()));
+			(obj.rows) = () => ((this.content()));
 			return obj;
 		}
 		rows(){
-			return [(this?.Label()), (this?.Content())];
+			return [(this.Label()), (this.Content())];
 		}
 	};
 	($mol_mem(($.$mol_expander.prototype), "expanded"));
@@ -10441,7 +10941,7 @@ var $;
 			return true;
 		}
 		pre_sidebar_showed(){
-			return (this?.code_sidebar_showed());
+			return (this.code_sidebar_showed());
 		}
 		table_head_cells(id){
 			return [];
@@ -10487,7 +10987,7 @@ var $;
 		}
 		Spoiler_label(id){
 			const obj = new this.$.$mol_text();
-			(obj.text) = () => ((this?.spoiler_label(id)));
+			(obj.text) = () => ((this.spoiler_label(id)));
 			return obj;
 		}
 		spoiler_content(id){
@@ -10495,7 +10995,7 @@ var $;
 		}
 		Spoiler_content(id){
 			const obj = new this.$.$mol_text();
-			(obj.text) = () => ((this?.spoiler_content(id)));
+			(obj.text) = () => ((this.spoiler_content(id)));
 			return obj;
 		}
 		uri_base(){
@@ -10514,27 +11014,27 @@ var $;
 			return "";
 		}
 		auto(){
-			return [(this?.auto_scroll())];
+			return [(this.auto_scroll())];
 		}
 		Paragraph(id){
 			const obj = new this.$.$mol_paragraph();
-			(obj.sub) = () => ((this?.block_content(id)));
+			(obj.sub) = () => ((this.block_content(id)));
 			return obj;
 		}
 		Quote(id){
 			const obj = new this.$.$mol_text();
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.text) = () => ((this?.quote_text(id)));
-			(obj.highlight) = () => ((this?.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.text) = () => ((this.quote_text(id)));
+			(obj.highlight) = () => ((this.highlight()));
 			(obj.auto_scroll) = () => (null);
 			return obj;
 		}
 		List(id){
 			const obj = new this.$.$mol_text_list();
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.type) = () => ((this?.list_type(id)));
-			(obj.text) = () => ((this?.list_text(id)));
-			(obj.highlight) = () => ((this?.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.type) = () => ((this.list_type(id)));
+			(obj.text) = () => ((this.list_text(id)));
+			(obj.highlight) = () => ((this.highlight()));
 			return obj;
 		}
 		item_index(id){
@@ -10543,17 +11043,17 @@ var $;
 		Header(id){
 			const obj = new this.$.$mol_text_header();
 			(obj.minimal_height) = () => (40);
-			(obj.level) = () => ((this?.header_level(id)));
-			(obj.content) = () => ((this?.block_content(id)));
-			(obj.arg) = () => ((this?.header_arg(id)));
+			(obj.level) = () => ((this.header_level(id)));
+			(obj.content) = () => ((this.block_content(id)));
+			(obj.arg) = () => ((this.header_arg(id)));
 			return obj;
 		}
 		Pre(id){
 			const obj = new this.$.$mol_text_code();
-			(obj.text) = () => ((this?.pre_text(id)));
-			(obj.highlight) = () => ((this?.highlight()));
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.sidebar_showed) = () => ((this?.pre_sidebar_showed()));
+			(obj.text) = () => ((this.pre_text(id)));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.sidebar_showed) = () => ((this.pre_sidebar_showed()));
 			return obj;
 		}
 		Cut(id){
@@ -10563,86 +11063,86 @@ var $;
 		}
 		Table(id){
 			const obj = new this.$.$mol_grid();
-			(obj.head_cells) = () => ((this?.table_head_cells(id)));
-			(obj.rows) = () => ((this?.table_rows(id)));
+			(obj.head_cells) = () => ((this.table_head_cells(id)));
+			(obj.rows) = () => ((this.table_rows(id)));
 			return obj;
 		}
 		Table_row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this?.table_cells(id)));
+			(obj.cells) = () => ((this.table_cells(id)));
 			return obj;
 		}
 		Table_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
-			(obj.highlight) = () => ((this?.highlight()));
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.text) = () => ((this?.table_cell_text(id)));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.text) = () => ((this.table_cell_text(id)));
 			return obj;
 		}
 		Grid(id){
 			const obj = new this.$.$mol_grid();
-			(obj.rows) = () => ((this?.grid_rows(id)));
+			(obj.rows) = () => ((this.grid_rows(id)));
 			return obj;
 		}
 		Grid_row(id){
 			const obj = new this.$.$mol_grid_row();
-			(obj.cells) = () => ((this?.grid_cells(id)));
+			(obj.cells) = () => ((this.grid_cells(id)));
 			return obj;
 		}
 		Grid_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
-			(obj.highlight) = () => ((this?.highlight()));
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.text) = () => ((this?.grid_cell_text(id)));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.text) = () => ((this.grid_cell_text(id)));
 			return obj;
 		}
 		String(id){
 			const obj = new this.$.$mol_dimmer();
 			(obj.dom_name) = () => ("span");
-			(obj.needle) = () => ((this?.highlight()));
-			(obj.haystack) = () => ((this?.line_text(id)));
+			(obj.needle) = () => ((this.highlight()));
+			(obj.haystack) = () => ((this.line_text(id)));
 			return obj;
 		}
 		Span(id){
 			const obj = new this.$.$mol_text_span();
 			(obj.dom_name) = () => ("span");
-			(obj.type) = () => ((this?.line_type(id)));
-			(obj.sub) = () => ((this?.line_content(id)));
+			(obj.type) = () => ((this.line_type(id)));
+			(obj.sub) = () => ((this.line_content(id)));
 			return obj;
 		}
 		Code_line(id){
-			const obj = new this.$.$mol_text_code_row();
+			const obj = new this.$.$mol_text_code_line();
 			(obj.numb_showed) = () => (false);
-			(obj.highlight) = () => ((this?.highlight()));
-			(obj.text) = () => ((this?.line_text(id)));
-			(obj.uri_resolve) = (id) => ((this?.uri_resolve(id)));
-			(obj.syntax) = () => ((this?.code_syntax()));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.text) = () => ((this.line_text(id)));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.syntax) = () => ((this.code_syntax()));
 			return obj;
 		}
 		Link(id){
 			const obj = new this.$.$mol_link_iconed();
-			(obj.uri) = () => ((this?.link_uri(id)));
-			(obj.content) = () => ((this?.line_content(id)));
+			(obj.uri) = () => ((this.link_uri(id)));
+			(obj.content) = () => ((this.line_content(id)));
 			return obj;
 		}
 		Link_http(id){
 			const obj = new this.$.$mol_link_iconed();
-			(obj.uri) = () => ((this?.link_uri(id)));
-			(obj.content) = () => ([(this?.link_host(id))]);
+			(obj.uri) = () => ((this.link_uri(id)));
+			(obj.content) = () => ([(this.link_host(id))]);
 			return obj;
 		}
 		Embed(id){
 			const obj = new this.$.$mol_embed_any();
-			(obj.uri) = () => ((this?.link_uri(id)));
-			(obj.title) = () => ((this?.line_text(id)));
+			(obj.uri) = () => ((this.link_uri(id)));
+			(obj.title) = () => ((this.line_text(id)));
 			return obj;
 		}
 		Spoiler(id){
 			const obj = new this.$.$mol_expander();
-			(obj.label) = () => ([(this?.Spoiler_label(id))]);
-			(obj.content) = () => ([(this?.Spoiler_content(id))]);
+			(obj.label) = () => ([(this.Spoiler_label(id))]);
+			(obj.content) = () => ([(this.Spoiler_content(id))]);
 			return obj;
 		}
 	};
@@ -10676,16 +11176,16 @@ var $;
 		}
 		Link(){
 			const obj = new this.$.$mol_link();
-			(obj.arg) = () => ((this?.arg()));
+			(obj.arg) = () => ((this.arg()));
 			(obj.hint) = () => ((this.$.$mol_locale.text("$mol_text_header_Link_hint")));
-			(obj.sub) = () => ((this?.content()));
+			(obj.sub) = () => ((this.content()));
 			return obj;
 		}
 		level(){
 			return 1;
 		}
 		sub(){
-			return [(this?.Link())];
+			return [(this.Link())];
 		}
 	};
 	($mol_mem(($.$mol_text_header.prototype), "Link"));
@@ -10697,7 +11197,7 @@ var $;
 			return "span";
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_type": (this?.type())};
+			return {...(super.attr()), "mol_text_type": (this.type())};
 		}
 	};
 
@@ -11030,7 +11530,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n}\n\n[mol_text_spoiler_label_paragraph] {\n\tpadding: 0;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
+    $mol_style_attach("mol/text/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tborder-radius: var(--mol_gap_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_paragraph] {\n\tpadding: var(--mol_gap_text);\n\toverflow: auto;\n\toverflow-x: overlay;\n\tmax-width: 100%;\n\tdisplay: block;\n\tmax-width: 60rem;\n\tbreak-inside: avoid;\n}\n\n[mol_text_spoiler_label_paragraph] {\n\tpadding: 0;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_string] {\n\tdisplay: inline;\n\tflex: 0 1 auto;\n\twhite-space: normal;\n}\n\n[mol_text_quote] {\n\tmargin: var(--mol_gap_block);\n\tpadding: var(--mol_gap_block);\n\tbackground: var(--mol_theme_card);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_back);\n\tbreak-inside: avoid;\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\ttext-shadow: 0 0;\n\tfont-weight: normal;\n\tbreak-after: avoid;\n}\n\n* + [mol_text_header] {\n\tmargin-top: 0.75rem;\n}\n\nh1[mol_text_header] {\n\tfont-size: 1.5rem;\n}\n\nh2[mol_text_header] {\n\tfont-size: 1.5rem;\n\tfont-style: italic;\n}\n\nh3[mol_text_header] {\n\tfont-size: 1.25rem;\n}\n\nh4[mol_text_header] {\n\tfont-size: 1.25em;\n\tfont-style: italic;\n}\n\nh5[mol_text_header] {\n\tfont-size: 1rem;\n}\n\nh6[mol_text_header] {\n\tfont-size: 1rem;\n\tfont-style: italic;\n}\n\n[mol_text_header_link] {\n\tcolor: inherit;\n}\n\n[mol_text_table] {\n\tbreak-inside: avoid;\n}\n\n[mol_text_table_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: baseline;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_grid] {\n\tbreak-inside: avoid;\n}\n\n[mol_text_grid_cell] {\n\twidth: auto;\n\tdisplay: table-cell;\n\tvertical-align: top;\n\tpadding: 0;\n\tborder-radius: 0;\n}\n\n[mol_text_cut] {\n\tborder: none;\n\twidth: 100%;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_text_link_http],\n[mol_text_link] {\n\tpadding: 0;\n\tdisplay: inline;\n\twhite-space: nowrap;\n}\n\n[mol_text_link_icon] + [mol_text_embed] {\n\tmargin-left: -1.5rem;\n}\n\n[mol_text_embed_youtube] {\n\tdisplay: inline;\n}\n\n[mol_text_embed_youtube_image],\n[mol_text_embed_youtube_frame],\n[mol_text_embed_object] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\twidth: 100vw;\n\tmax-height: calc( 100vh - 6rem );\n\tvertical-align: top;\n}\n[mol_text_embed_object_fallback] {\n\tpadding: 0;\n}\n[mol_text_embed_image] {\n\tobject-fit: contain;\n\tobject-position: center;\n\tdisplay: inline;\n\t/* max-height: calc( 100vh - 6rem ); */\n\tvertical-align: top;\n}\n\n[mol_text_pre] {\n\twhite-space: pre;\n\toverflow-x: auto;\n\toverflow-x: overlay;\n\ttab-size: 2;\n\tbreak-inside: avoid;\n}\n\n[mol_text_code_line] {\n\tdisplay: inline-block;\n}\n\n[mol_text_type=\"strong\"] {\n\ttext-shadow: 0 0;\n\tfilter: contrast(1.5);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"insert\"] {\n\tcolor: var(--mol_theme_special);\n}\n\n[mol_text_type=\"delete\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"remark\"] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"quote\"] {\n\tfont-style: italic;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -11045,8 +11545,8 @@ var $;
 		}
 		Book(){
 			const obj = new this.$.$mol_book2();
-			(obj.plugins) = () => ([(this?.Theme())]);
-			(obj.pages) = () => ((this?.pages()));
+			(obj.plugins) = () => ([(this.Theme())]);
+			(obj.pages) = () => ((this.pages()));
 			(obj.Placeholder) = () => (null);
 			return obj;
 		}
@@ -11061,10 +11561,10 @@ var $;
 			return obj;
 		}
 		Upload_icon(){
-			return (this?.Upload()?.Icon());
+			return (this.Upload().Icon());
 		}
 		Upload_native(){
-			return (this?.Upload()?.Native());
+			return (this.Upload().Native());
 		}
 		files_read(next){
 			if(next !== undefined) return next;
@@ -11072,30 +11572,30 @@ var $;
 		}
 		Upload(){
 			const obj = new this.$.$mol_button_open();
-			(obj.files) = (next) => ((this?.files_read(next)));
+			(obj.files) = (next) => ((this.files_read(next)));
 			(obj.sub) = () => ([
-				(this?.Upload_icon()), 
-				(this?.Upload_native()), 
+				(this.Upload_icon()), 
+				(this.Upload_native()), 
 				"Choose file"
 			]);
 			return obj;
 		}
 		Data_text(){
 			const obj = new this.$.$mol_textarea();
-			(obj.value) = (next) => ((this?.data_str(next)));
+			(obj.value) = (next) => ((this.data_str(next)));
 			(obj.hint) = () => ("or paste here...");
 			return obj;
 		}
 		Body(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.Upload()), (this?.Data_text())]);
+			(obj.sub) = () => ([(this.Upload()), (this.Data_text())]);
 			return obj;
 		}
 		Menu(){
 			const obj = new this.$.$mol_page();
 			(obj.title) = () => ("Crystal structure web-viewer");
-			(obj.tools) = () => ([(this?.Source()), (this?.Lights())]);
-			(obj.body) = () => ([(this?.Body())]);
+			(obj.tools) = () => ([(this.Source()), (this.Lights())]);
+			(obj.body) = () => ([(this.Body())]);
 			return obj;
 		}
 		data_str(next){
@@ -11103,14 +11603,14 @@ var $;
 			return "";
 		}
 		vibrate(next){
-			return (this?.Player()?.vibrate(next));
+			return (this.Player().vibrate(next));
 		}
 		unvibrate(){
-			return (this?.Player()?.unvibrate());
+			return (this.Player().unvibrate());
 		}
 		Player(){
 			const obj = new this.$.$optimade_cifplayer_player();
-			(obj.data) = () => ((this?.data_str()));
+			(obj.data) = () => ((this.data_str()));
 			return obj;
 		}
 		Start_message(){
@@ -11125,21 +11625,21 @@ var $;
 		Paste_example(){
 			const obj = new this.$.$mol_button_minor();
 			(obj.title) = () => ("Show example");
-			(obj.click) = (next) => ((this?.paste_example(next)));
+			(obj.click) = (next) => ((this.paste_example(next)));
 			return obj;
 		}
 		receive(next){
-			return (this?.drop_file(next));
+			return (this.drop_file(next));
 		}
 		Sub(){
-			return (this?.Book());
+			return (this.Book());
 		}
 		pages(){
-			return [(this?.Menu()), (this?.Player())];
+			return [(this.Menu()), (this.Player())];
 		}
 		Start(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this?.Start_message()), (this?.Paste_example())]);
+			(obj.sub) = () => ([(this.Start_message()), (this.Paste_example())]);
 			return obj;
 		}
 	};
@@ -11170,12 +11670,12 @@ var $;
 			return null;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_list_type": (this?.type())};
+			return {...(super.attr()), "mol_text_list_type": (this.type())};
 		}
 		Paragraph(id){
 			const obj = new this.$.$mol_text_list_item();
-			(obj.index) = () => ((this?.item_index(id)));
-			(obj.sub) = () => ((this?.block_content(id)));
+			(obj.index) = () => ((this.item_index(id)));
+			(obj.sub) = () => ((this.block_content(id)));
 			return obj;
 		}
 	};
@@ -11185,7 +11685,7 @@ var $;
 			return 0;
 		}
 		attr(){
-			return {...(super.attr()), "mol_text_list_item_index": (this?.index())};
+			return {...(super.attr()), "mol_text_list_item_index": (this.index())};
 		}
 	};
 
