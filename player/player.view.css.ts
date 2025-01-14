@@ -62,6 +62,7 @@ namespace $.$$ {
 			pointerEvents: 'none',
 			position: 'absolute',
 			zIndex: 1,
+			fontSize: '13px',
 			flex: {
 				direction: 'column',
 			},

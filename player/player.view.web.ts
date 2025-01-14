@@ -12,15 +12,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		external_theme_auto() {
-			const external = this.externals()?.theme
-			if( !external ) return
-
-			this.$.$mol_lights( external == 'light' ? true : false )
-		}
-
-		@ $mol_mem
-		lights_toggle() {
-			return this.externals()?.theme ? [] : super.lights_toggle()
+			this.$.$mol_lights( true )
 		}
 
 		@ $mol_mem
@@ -136,7 +128,7 @@ namespace $.$$ {
 			canvas.width = metrics.width * 3.5
 			canvas.height = 30
 
-			context.font = "italic 28px sans-serif"
+			context.font = "28px sans-serif"
 			context.textAlign = "center"
 			context.textBaseline = "middle"
 			context.fillStyle = this.$.$mol_lights() ? "#000" : "#fff"
@@ -508,7 +500,7 @@ namespace $.$$ {
 				atoms.forEach( ( atom: InstanceType< THREE["Object3D"] >, i: number ) => {
 					const start = atom.position.toArray()
 					const [ x, y, z ] = phonon[ i ].map( ( v, i ) => start[ i ] + v * phonon_amp )
-	
+
 					this.tweens.add( new TWEEN.Tween( atom.position ).to( { x, y, z }, 750 )
 						.easing( TWEEN.Easing.Cubic.InOut ).repeat( Infinity ).yoyo( true ).start()
 					)
@@ -578,7 +570,7 @@ namespace $.$$ {
 		@ $mol_mem
 		left_panel(): readonly any[] {
 
-			if (this.externals()?.skip_panel) return []
+			if (this.skip_panel()) return []
 
 			try {
 				this.structure_3d_data()

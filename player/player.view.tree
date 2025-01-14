@@ -1,6 +1,8 @@
 $optimade_cifplayer_player $mol_view
 	data? null
 	externals? null
+	fullscreen? true
+	skip_panel? false
 	atom_radius_scale 0.6
 	zoom_scale_step 0.3
 	-
@@ -100,9 +102,6 @@ $optimade_cifplayer_player $mol_view
 					Icon <= Center_icon $mol_icon_image_filter_center_focus
 		<= Tools $mol_view
 			sub /
-				<= Fullscreen $mol_check
-					checked? <=> fullscreen? false
-					Icon <= Expand_icon $mol_icon_arrow_expand_all
 				<= Zoom_section $mol_list
 					sub /
 						<= Zoom_up $mol_button_minor
@@ -111,7 +110,6 @@ $optimade_cifplayer_player $mol_view
 						<= Zoom_down $mol_button_minor
 							click? <=> zoom_down? null
 							sub / <= Zoom_down_icon $mol_icon_magnify_minus_outline
-				^ lights_toggle / <= Lights $mol_lights_toggle
 		<= Overlays $mol_view
 			sub <= overlays_sub /
 				<= Switch_overlay $mol_switch
