@@ -11,7 +11,7 @@ namespace $.$$ {
 	export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
 
 		@ $mol_mem
-		external_theme_auto() {
+		light_theme_auto() {
 			this.$.$mol_lights( true )
 		}
 
