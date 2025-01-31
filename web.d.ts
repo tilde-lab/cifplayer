@@ -928,6 +928,7 @@ declare namespace $ {
         static make_link(next: {
             [key: string]: string | null;
         }): string;
+        static commit(): void;
         static go(next: {
             [key: string]: string | null;
         }): void;
@@ -2882,6 +2883,9 @@ declare namespace $ {
 		new_object( id: any, next?: any ): any
 		object( id: any, next?: any ): any
 		auto( ): readonly(any)[]
+		attr( ): ({ 
+			'tabindex': number,
+		})  & ReturnType< $mol_view['attr'] >
 	}
 	
 }
@@ -3966,6 +3970,9 @@ declare namespace $ {
 declare namespace $ {
 }
 
+declare namespace $.$$ {
+}
+
 declare namespace $ {
 
 	type $optimade_cifplayer_lib_three_view__controls_target_optimade_cifplayer_player_1 = $mol_type_enforce<
@@ -4218,7 +4225,7 @@ declare namespace $ {
 		translate_b( next?: number ): number
 		translate_c( next?: number ): number
 		Theme( ): $mol_theme_auto
-		external_theme_auto( ): any
+		light_theme_auto( ): any
 		dir_light( ): any
 		ambient_light( ): any
 		atom_boxes( ): readonly(any)[]
@@ -4338,15 +4345,12 @@ declare namespace $ {
 	
 }
 
-//# sourceMappingURL=player.view.tree.d.ts.map
-declare namespace $.$$ {
-}
-
+//# sourceMappingURL=player.web.view.tree.d.ts.map
 declare namespace $.$$ {
     const THREE: typeof import("../lib/three/_three");
     type THREE = typeof THREE;
     export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
-        external_theme_auto(): void;
+        light_theme_auto(): void;
         available_overlays(): {
             [x: string]: string;
         };
@@ -5387,10 +5391,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_blob_text(blob: $mol_blob): Promise<string>;
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -5424,6 +5424,10 @@ declare namespace $ {
 }
 
 //# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $ {
+    function $mol_blob_text(blob: $mol_blob): Promise<string>;
+}
+
 declare namespace $ {
 
 	type $mol_book2__plugins_optimade_cifplayer_app_1 = $mol_type_enforce<
@@ -5501,22 +5505,32 @@ declare namespace $ {
 		,
 		ReturnType< $optimade_cifplayer_player['data'] >
 	>
-	type $mol_text__text_optimade_cifplayer_app_16 = $mol_type_enforce<
+	type $optimade_cifplayer_player__fullscreen_optimade_cifplayer_app_16 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $optimade_cifplayer_player['fullscreen'] >
+	>
+	type $optimade_cifplayer_player__light_theme_auto_optimade_cifplayer_app_17 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $optimade_cifplayer_player['light_theme_auto'] >
+	>
+	type $mol_text__text_optimade_cifplayer_app_18 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_button_minor__title_optimade_cifplayer_app_17 = $mol_type_enforce<
+	type $mol_button_minor__title_optimade_cifplayer_app_19 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_button_minor['title'] >
 	>
-	type $mol_button_minor__click_optimade_cifplayer_app_18 = $mol_type_enforce<
+	type $mol_button_minor__click_optimade_cifplayer_app_20 = $mol_type_enforce<
 		ReturnType< $optimade_cifplayer_app['paste_example'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $mol_view__sub_optimade_cifplayer_app_19 = $mol_type_enforce<
+	type $mol_view__sub_optimade_cifplayer_app_21 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -5549,10 +5563,7 @@ declare namespace $ {
 	
 }
 
-//# sourceMappingURL=app.view.tree.d.ts.map
-declare namespace $.$$ {
-}
-
+//# sourceMappingURL=app.web.view.tree.d.ts.map
 declare namespace $.$$ {
     class $optimade_cifplayer_app extends $.$optimade_cifplayer_app {
         pages(): readonly any[];
@@ -5561,6 +5572,9 @@ declare namespace $.$$ {
         paste_example(): void;
         data_example(): string;
     }
+}
+
+declare namespace $.$$ {
 }
 
 export = $;

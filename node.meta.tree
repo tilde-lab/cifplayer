@@ -11,15 +11,8 @@
 	pack optimade git \https://github.com/mpds-io/mam_optimade.git
 	pack piterjs git \https://github.com/piterjs/piterjs.git
 	pack psb git \https://github.com/MolDevHack/psb.git
+	pack rise git \https://github.com/stan-donarise/mam_rise.git
 	pack yuf git \https://github.com/zerkalica/yuf.git
 \/optimade
 	pack cifplayer git \https://github.com/tilde-lab/cifplayer
 	pack tmdne git \https://github.com/mpds-io/this-material-does-not-exist
-\/mol
-	pack icon git \https://github.com/nin-jin/mol_icon.git
-\/mol/view
-	include \/mol/view/tree/test
-\/optimade/cifplayer/lib/three
-	require \/optimade/cifplayer/lib/three/_three.js
-\/optimade/cifplayer/player
-	deploy \/optimade/cifplayer/player/spacegroup.tree
