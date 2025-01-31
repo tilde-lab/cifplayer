@@ -129,10 +129,6 @@ namespace $.$$ {
 			this.renderer()?.dispose()
 		}
 
-		pointerdown() {
-			this.focused( true )
-		}
-
 	}
 
 
