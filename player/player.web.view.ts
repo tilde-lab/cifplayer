@@ -120,6 +120,7 @@ namespace $.$$ {
 				return ''
 
 			} catch( error: any ) {
+				$mol_fail_log( error )
 				return error.message || error
 			}
 		}
