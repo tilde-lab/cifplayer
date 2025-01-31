@@ -12,3 +12,6 @@ $optimade_cifplayer_lib_three_view $mol_view
 		<= controls_target_changed null
 		<= resize null
 		<= start_render_loop null
+	attr *
+		^
+		tabindex -1
