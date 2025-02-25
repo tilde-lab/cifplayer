@@ -496,6 +496,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_promise<Result = void> extends Promise<Result> {
+        done: (value: Result | PromiseLike<Result>) => void;
+        fail: (reason?: any) => void;
+        constructor(executor?: (done: (value: Result | PromiseLike<Result>) => void, fail: (reason?: any) => void) => void);
+    }
+}
+
+declare namespace $ {
+    class $mol_promise_blocker<Result> extends $mol_promise<Result> {
+        static [Symbol.toStringTag]: string;
+    }
+}
+
+declare namespace $ {
     class $mol_decor<Value> {
         readonly value: Value;
         constructor(value: Value);
@@ -1088,9 +1102,9 @@ declare namespace $ {
 		event_scroll( next?: any ): any
 		scroll_top( next?: number ): number
 		scroll_left( next?: number ): number
-		field( ): ({ 
-			'tabIndex': ReturnType< $mol_scroll['tabindex'] >,
-		})  & ReturnType< $mol_view['field'] >
+		attr( ): ({ 
+			'tabindex': ReturnType< $mol_scroll['tabindex'] >,
+		})  & ReturnType< $mol_view['attr'] >
 		event( ): ({ 
 			scroll( next?: ReturnType< $mol_scroll['event_scroll'] > ): ReturnType< $mol_scroll['event_scroll'] >,
 		})  & ReturnType< $mol_view['event'] >
@@ -2864,6 +2878,13 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    const $optimade_cifplayer_theme: Record<"error" | "warning", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     const $optimade_cifplayer_lib_three: typeof import("./_three");
 }
 
@@ -3432,7 +3453,7 @@ declare namespace $ {
     class $mol_error_mix<Cause extends {} = {}> extends AggregateError {
         readonly cause: Cause;
         name: string;
-        constructor(message: string, cause?: Cause, ...errors: Error[]);
+        constructor(message: string, cause?: Cause, ...errors: readonly Error[]);
         static [Symbol.toPrimitive](): string;
         static toString(): string;
         static make(...params: ConstructorParameters<typeof $mol_error_mix>): $mol_error_mix<{}>;
@@ -3503,6 +3524,7 @@ declare namespace $ {
         cartesian: boolean;
         mpds_demo: boolean;
         mpds_data: boolean;
+        warning?: string;
     };
     export type $optimade_cifplayer_matinfio_player_obj = {
         cell_matrix?: number[][];
@@ -3517,6 +3539,7 @@ declare namespace $ {
         info: string;
         mpds_demo: boolean;
         mpds_data: boolean;
+        warning?: string;
     };
     export class $optimade_cifplayer_matinfio extends $mol_object2 {
         static pos_overlap_limit: number;
@@ -3566,13 +3589,6 @@ declare namespace $ {
         symmetric_atom(symmetry: string, atom: $optimade_cifplayer_matinfio_internal_obj_atom, cell: number[][]): $optimade_cifplayer_matinfio_internal_obj_atom;
         symmetric_atoms(atom: $optimade_cifplayer_matinfio_internal_obj_atom, cell_matrix: number[][]): $optimade_cifplayer_matinfio_internal_obj_atom[];
     }
-}
-
-declare namespace $ {
-    function $mol_promise<Result = void>(): Promise<Result> & {
-        done: (res: Result | PromiseLike<Result>) => void;
-        fail: (error?: any) => void;
-    };
 }
 
 declare namespace $ {
@@ -4205,20 +4221,15 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_card__theme_optimade_cifplayer_player_47 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_card['theme'] >
-	>
-	type $mol_card__title_optimade_cifplayer_player_48 = $mol_type_enforce<
-		ReturnType< $optimade_cifplayer_player['message'] >
+	type $mol_card__title_optimade_cifplayer_player_47 = $mol_type_enforce<
+		ReturnType< $optimade_cifplayer_player['error'] >
 		,
 		ReturnType< $mol_card['title'] >
 	>
-	type $mol_view__sub_optimade_cifplayer_player_49 = $mol_type_enforce<
-		readonly(any)[]
+	type $mol_card__title_optimade_cifplayer_player_48 = $mol_type_enforce<
+		ReturnType< $optimade_cifplayer_player['warning'] >
 		,
-		ReturnType< $mol_view['sub'] >
+		ReturnType< $mol_card['title'] >
 	>
 	export class $optimade_cifplayer_player extends $mol_view {
 		translate_a( next?: number ): number
@@ -4297,9 +4308,10 @@ declare namespace $ {
 		Switch_overlay( ): $mol_switch
 		overlays_sub( ): readonly(any)[]
 		Overlays( ): $mol_view
-		message( ): string
-		Message_card( ): $mol_card
-		Message( ): $mol_view
+		error( ): string
+		Error_card( ): $mol_card
+		warning( ): string
+		Warning_card( ): $mol_card
 		message_visible( ): readonly(any)[]
 		color_a( ): string
 		color_b( ): string
@@ -4367,8 +4379,9 @@ declare namespace $.$$ {
         camera_distance(): any;
         zoom_up(): void;
         zoom_down(): void;
-        message_visible(): readonly any[];
-        message(): string;
+        message_visible(): $.$mol_card[];
+        warning(): string;
+        error(): string;
         structure_3d_data(): $optimade_cifplayer_matinfio_player_obj;
         text_canvas(text: string): HTMLCanvasElement;
         create_sprite(text: string): any;
