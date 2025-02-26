@@ -2878,13 +2878,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    const $optimade_cifplayer_theme: Record<"error" | "warning", $mol_style_func<"var", unknown>>;
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     const $optimade_cifplayer_lib_three: typeof import("./_three");
 }
 
@@ -3946,6 +3939,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    const $optimade_cifplayer_theme: Record<"error" | "warning", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     function $optimade_cifplayer_matinfio_cif_to_obj(this: $, str: string): $optimade_cifplayer_matinfio_internal_obj;
     function $optimade_cifplayer_matinfio_cif_from_obj(this: $, crystal: any): string;
 }
@@ -3984,9 +3984,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -4442,6 +4439,9 @@ declare namespace $.$$ {
         translate_limit_c(): number;
     }
     export {};
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
