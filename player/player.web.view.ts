@@ -10,6 +10,10 @@ namespace $.$$ {
 
 	export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
 
+		sub() {
+			return this.data() ? super.sub() : []
+		}
+
 		@ $mol_mem
 		light_theme_auto() {
 			this.$.$mol_lights( true )
