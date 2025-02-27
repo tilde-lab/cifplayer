@@ -4359,6 +4359,7 @@ declare namespace $.$$ {
     const THREE: typeof import("../lib/three/_three");
     type THREE = typeof THREE;
     export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
+        sub(): readonly any[];
         light_theme_auto(): void;
         available_overlays(): {
             [x: string]: string;

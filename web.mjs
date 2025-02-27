@@ -2510,11 +2510,11 @@ var $;
         }
         *view_find(check, path = []) {
             if (path.length === 0 && check(this))
-                return yield [...path, this];
+                return yield [this];
             try {
                 for (const item of this.sub()) {
                     if (item instanceof $mol_view && check(item)) {
-                        return yield [...path, item];
+                        return yield [...path, this, item];
                     }
                 }
                 for (const item of this.sub()) {
@@ -6381,7 +6381,7 @@ var $;
         'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|struct|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|val|let|const|for|do|while|until|in|out|of|new|if|then|else|switch|case|this|return|async|await|yield|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void|int|float|ref)\b/,
         'code-global': /[$]+\w*|\b[A-Z][a-z0-9]+[A-Z]\w*/,
         'code-word': /\w+/,
-        'code-decorator': /@.+/,
+        'code-decorator': /@\s*\S+/,
         'code-tag': /<\/?[\w-]+\/?>?|&\w+;/,
         'code-punctuation': /[\-\[\]\{\}\(\)<=>~!\?@#%&\*_\+\\\/\|;:\.,\^]+?/,
     });
@@ -10560,6 +10560,9 @@ var $;
         const TWEEN = $optimade_cifplayer_lib_tween.TWEEN;
         const phonon_amp = 6;
         class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
+            sub() {
+                return this.data() ? super.sub() : [];
+            }
             light_theme_auto() {
                 this.$.$mol_lights(true);
             }
