@@ -1139,17 +1139,29 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__title_mol_book2_1 = $mol_type_enforce<
+	type $mol_book2_sub__1 = $mol_type_enforce<
+		ReturnType< $mol_book2['pages'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_book2_sub__2 = $mol_type_enforce<
+		ReturnType< $mol_book2['placeholders'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_view__title_mol_book2_3 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_view['title'] >
 	>
 	export class $mol_book2 extends $mol_scroll {
-		pages( ): readonly($mol_view)[]
-		menu_title( ): string
-		sub( ): ReturnType< $mol_book2['pages'] >
-		minimal_width( ): number
+		pages_deep( ): readonly($mol_view)[]
+		pages( ): ReturnType< $mol_book2['pages_deep'] >
 		Placeholder( ): $mol_view
+		placeholders( ): readonly($mol_view)[]
+		menu_title( ): string
+		sub( ): readonly($mol_view)[]
+		minimal_width( ): number
 		Gap( id: any): $mol_view
 	}
 	
@@ -1158,6 +1170,7 @@ declare namespace $ {
 //# sourceMappingURL=book2.view.tree.d.ts.map
 declare namespace $.$$ {
     class $mol_book2 extends $.$mol_book2 {
+        pages_deep(): $mol_view[];
         title(): string;
         menu_title(): string;
         sub(): readonly $mol_view[];
@@ -3622,13 +3635,14 @@ declare namespace $ {
             click(): void;
             hidePopover(): void;
             showPopover(): void;
-            togglePopover(force?: boolean): boolean;
+            togglePopover(options?: boolean): boolean;
             addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
             addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
             removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
             removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
             readonly attributes: NamedNodeMap;
-            readonly classList: DOMTokenList;
+            get classList(): DOMTokenList;
+            set classList(value: string);
             className: string;
             readonly clientHeight: number;
             readonly clientLeft: number;
@@ -3643,7 +3657,8 @@ declare namespace $ {
             onfullscreenerror: ((this: Element, ev: Event) => any) | null;
             outerHTML: string;
             readonly ownerDocument: Document;
-            readonly part: DOMTokenList;
+            get part(): DOMTokenList;
+            set part(value: string);
             readonly prefix: string | null;
             readonly scrollHeight: number;
             scrollLeft: number;
@@ -3720,7 +3735,7 @@ declare namespace $ {
             readonly previousSibling: ChildNode | null;
             textContent: string | null;
             appendChild<T extends Node>(node: T): T;
-            cloneNode(deep?: boolean): Node;
+            cloneNode(subtree?: boolean): Node;
             compareDocumentPosition(other: Node): number;
             contains(other: Node | null): boolean;
             getRootNode(options?: GetRootNodeOptions): Node;
@@ -3782,6 +3797,7 @@ declare namespace $ {
             ariaPosInSet: string | null;
             ariaPressed: string | null;
             ariaReadOnly: string | null;
+            ariaRelevant: string | null;
             ariaRequired: string | null;
             ariaRoleDescription: string | null;
             ariaRowCount: string | null;
@@ -3823,7 +3839,8 @@ declare namespace $ {
             replaceChildren(...nodes: (Node | string)[]): void;
             readonly assignedSlot: HTMLSlotElement | null;
             readonly attributeStyleMap: StylePropertyMap;
-            readonly style: CSSStyleDeclaration;
+            get style(): CSSStyleDeclaration;
+            set style(cssText: string);
             contentEditable: string;
             enterKeyHint: string;
             inputMode: string;
@@ -4396,9 +4413,9 @@ declare namespace $.$$ {
         symmetry_list(): string[];
         visible_atoms(): $optimade_cifplayer_matinfio_internal_obj_atom[];
         visible_atoms_translated(fract_translate: [number, number, number]): {
-            x: number;
-            y: number;
-            z: number;
+            x: any;
+            y: any;
+            z: any;
             fract: {
                 x: number;
                 y: number;
@@ -4709,6 +4726,7 @@ declare namespace $.$$ {
         load(frame: HTMLIFrameElement): Promise<Window>;
         uri_resource(): string;
         message_listener(): $mol_dom_listener;
+        sub(): readonly any[];
         message_receive(event?: MessageEvent<[string, string]>): void;
         uri_change(event: MessageEvent<[string, string]>): void;
         auto(): (Window | $mol_dom_listener)[];
