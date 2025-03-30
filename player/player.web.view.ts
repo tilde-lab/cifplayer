@@ -286,21 +286,21 @@ namespace $.$$ {
 
 		@ $mol_mem_key
 		visible_atoms_translated( fract_translate: [ number, number, number ] ){
-			const cell = this.structure_3d_data().cell
-			const cart_translate = cell ? [
-				cell.a * fract_translate[0],
-				cell.b * fract_translate[1],
-				cell.c * fract_translate[2],
-			] : [ 0, 0, 0 ]
+			const axis = this.axis_vectors()
+			if (!axis) return this.visible_atoms()
 
-			return this.visible_atoms().map( data => {
-				return {
-					... data,
-					x: data.x + cart_translate[0],
-					y: data.y + cart_translate[1],
-					z: data.z + cart_translate[2],
-				}
-			} )
+			const [a, b, c] = axis
+
+			const cart_translate = a.clone().multiplyScalar(fract_translate[0])
+				.add(b.clone().multiplyScalar(fract_translate[1]))
+				.add(c.clone().multiplyScalar(fract_translate[2]))
+
+			return this.visible_atoms().map(data => ({
+				...data,
+				x: data.x + cart_translate.x,
+				y: data.y + cart_translate.y,
+				z: data.z + cart_translate.z,
+			}))
 		}
 
 		atom_width_segments = 32
