@@ -10,6 +10,17 @@ namespace $.$$ {
 
 	export class $optimade_cifplayer_player extends $.$optimade_cifplayer_player {
 
+		@ $mol_mem
+		data_listener() {
+			return new this.$.$mol_dom_listener(
+				this.$.$mol_dom_context,
+				'message',
+				$mol_wire_async( event => {
+					this.data( event.data )
+				} )
+			)
+		}
+
 		sub() {
 			return this.data() ? super.sub() : []
 		}
