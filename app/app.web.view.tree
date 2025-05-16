@@ -5,6 +5,8 @@ $optimade_cifplayer_app $mol_drop
 			<= Theme $mol_theme_auto
 		pages <= pages
 		Placeholder null
+	auto /
+		<= data_listener $mol_dom_listener
 	pages /
 		<= Menu $mol_page
 			title \Crystal structure web-viewer

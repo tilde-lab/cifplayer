@@ -20,7 +20,6 @@ $optimade_cifplayer_player $mol_view
 		<= Theme $mol_theme_auto
 	-
 	auto /
-		<= data_listener $mol_dom_listener
 		<= light_theme_auto null
 		<= dir_light null
 		<= ambient_light null
