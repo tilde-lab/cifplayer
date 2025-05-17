@@ -8,8 +8,7 @@ namespace $.$$ {
 				'message',
 				
 				$mol_wire_async( event => {
-					if( event.data?.data == undefined ) return
-					this.data_str( event.data.data )
+					this.data_str( event.data )
 				} )
 			)
 		}
