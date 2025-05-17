@@ -2,10 +2,26 @@ namespace $.$$ {
 	export class $optimade_cifplayer_app extends $.$optimade_cifplayer_app {
 
 		@ $mol_mem
+		data_listener() {
+			return new this.$.$mol_dom_listener(
+				this.$.$mol_dom_context,
+				'message',
+				
+				$mol_wire_async( event => {
+					if( event.data?.data == undefined ) return
+					this.data_str( event.data.data )
+				} )
+			)
+		}
+
+		@ $mol_mem
 		pages(): readonly any[] {
-			return this.data_str()
-				? super.pages()
-				: [ this.Menu(), this.Start() ]
+			const in_iframe = window.self !== window.top
+			
+			return [
+				...in_iframe ? [] : [ this.Menu() ],
+				...this.data_str() ? [ this.Player() ] : [ this.Start() ],
+			]
 		}
 
 		@ $mol_action
