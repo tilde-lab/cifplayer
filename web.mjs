@@ -13302,9 +13302,7 @@ var $;
         class $optimade_cifplayer_app extends $.$optimade_cifplayer_app {
             data_listener() {
                 return new this.$.$mol_dom_listener(this.$.$mol_dom_context, 'message', $mol_wire_async(event => {
-                    if (event.data?.data == undefined)
-                        return;
-                    this.data_str(event.data.data);
+                    this.data_str(event.data);
                 }));
             }
             pages() {
