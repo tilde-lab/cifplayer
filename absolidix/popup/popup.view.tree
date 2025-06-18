@@ -1,0 +1,4 @@
+$optimade_cifplayer_absolidix_popup $mol_view
+	sub /
+		<= Login $mol_button_major
+			click? <=> login? null

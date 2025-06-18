@@ -115,6 +115,12 @@ namespace $.$$ {
 			zIndex: 1,
 		},
 
+		Absolidix: {
+			position: 'absolute',
+			bottom: 0,
+			right: 0,
+		},
+
 		Switch_overlay: {
 			justify: {
 				content: 'center'

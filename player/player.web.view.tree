@@ -118,6 +118,7 @@ $optimade_cifplayer_player $mol_view
 						\
 							\display none
 						S \elements
+		<= Absolidix $optimade_cifplayer_absolidix_embed
 		^ message_visible /
 			<= Error_card $mol_card
 				title <= error \
