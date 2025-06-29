@@ -778,7 +778,7 @@ declare namespace $ {
             image?: readonly (readonly [$mol_style_func<$mol_style_func_image> | string & {}])[] | 'none' | Common;
             repeat?: Repeat | [Repeat, Repeat] | Common;
             position?: 'left' | 'right' | 'top' | 'bottom' | 'center' | Common;
-            size?: (BG_size | [BG_size, BG_size])[];
+            size?: (BG_size | [BG_size] | [BG_size, BG_size])[];
         };
         box?: {
             shadow?: readonly ([
@@ -862,7 +862,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $mol_theme: Record<"image" | "line" | "text" | "field" | "focus" | "back" | "hover" | "card" | "current" | "special" | "control" | "shade" | "spirit", $mol_style_func<"var", unknown>>;
+    const $mol_theme: Record<"image" | "line" | "text" | "focus" | "back" | "hover" | "card" | "current" | "special" | "control" | "shade" | "field" | "spirit", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -1118,7 +1118,9 @@ declare namespace $ {
 declare namespace $ {
 
 	export class $mol_theme_auto extends $mol_plugin {
-		theme( ): string
+		dark( ): string
+		theme( ): ReturnType< $mol_theme_auto['dark'] >
+		light( ): string
 		attr( ): ({ 
 			'mol_theme': ReturnType< $mol_theme_auto['theme'] >,
 		}) 
@@ -1129,7 +1131,7 @@ declare namespace $ {
 //# sourceMappingURL=auto.view.tree.d.ts.map
 declare namespace $.$$ {
     class $mol_theme_auto extends $.$mol_theme_auto {
-        theme(): "$mol_theme_light" | "$mol_theme_dark";
+        theme(): string;
     }
 }
 
@@ -1278,7 +1280,7 @@ declare namespace $.$$ {
         pages_deep(): $mol_view[];
         title(): string;
         menu_title(): string;
-        sub(): readonly $mol_view[];
+        sub(): $mol_view[];
         bring(): void;
     }
 }
@@ -1350,7 +1352,6 @@ declare namespace $ {
 		natural_height( ): number
 		load( next?: any ): any
 		dom_name( ): string
-		field( ): Record<string, any> & ReturnType< $mol_view['field'] >
 		attr( ): Record<string, any> & ReturnType< $mol_view['attr'] >
 		event( ): Record<string, any>
 		minimal_width( ): number
@@ -1415,6 +1416,7 @@ declare namespace $ {
 	export class $mol_speck extends $mol_view {
 		theme( ): string
 		value( ): any
+		minimal_width( ): number
 		attr( ): ({ 
 			'mol_theme': ReturnType< $mol_speck['theme'] >,
 		})  & ReturnType< $mol_view['attr'] >
@@ -4708,6 +4710,7 @@ declare namespace $.$$ {
         cell_expanded(id: {
             row: string[];
         }, next?: boolean): boolean;
+        sub(): readonly any[];
     }
 }
 
@@ -4727,16 +4730,14 @@ declare namespace $ {
 		ReturnType< $mol_link['sub'] >
 	>
 	export class $mol_embed_native extends $mol_scroll {
-		mime( ): string
+		uri( next?: string ): string
 		title( ): string
 		Fallback( ): $mol_link
 		uri_change( next?: any ): any
-		uri( next?: string ): string
 		dom_name( ): string
 		window( ): any
 		attr( ): ({ 
-			'data': ReturnType< $mol_embed_native['uri'] >,
-			'type': ReturnType< $mol_embed_native['mime'] >,
+			'src': ReturnType< $mol_embed_native['uri'] >,
 		})  & ReturnType< $mol_scroll['attr'] >
 		sub( ): readonly(any)[]
 		message( ): ({ 
@@ -4776,14 +4777,9 @@ declare namespace $ {
 
 	export class $mol_frame extends $mol_embed_native {
 		allow( ): string
-		uri( next?: string ): string
 		html( ): any
-		dom_name( ): string
 		attr( ): ({ 
-			'data': any,
-			'type': any,
 			'allow': ReturnType< $mol_frame['allow'] >,
-			'src': ReturnType< $mol_frame['uri'] >,
 			'srcdoc': ReturnType< $mol_frame['html'] >,
 		})  & ReturnType< $mol_embed_native['attr'] >
 		fullscreen( ): boolean

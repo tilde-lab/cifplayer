@@ -3055,8 +3055,14 @@ var $;
 
 ;
 	($.$mol_theme_auto) = class $mol_theme_auto extends ($.$mol_plugin) {
+		dark(){
+			return "$mol_theme_dark";
+		}
 		theme(){
-			return "";
+			return (this.dark());
+		}
+		light(){
+			return "$mol_theme_light";
 		}
 		attr(){
 			return {"mol_theme": (this.theme())};
@@ -3460,7 +3466,7 @@ var $;
     (function ($$) {
         class $mol_theme_auto extends $.$mol_theme_auto {
             theme() {
-                return this.$.$mol_lights() ? '$mol_theme_light' : '$mol_theme_dark';
+                return this.$.$mol_lights() ? this.light() : this.dark();
             }
         }
         $$.$mol_theme_auto = $mol_theme_auto;
@@ -3605,7 +3611,7 @@ var $;
                             props.push(`\t${keys.join('-')}: ${val};\n`);
                         }
                         else if (val.constructor === Object) {
-                            for (let suffix in val) {
+                            for (let suffix of Object.keys(val).reverse()) {
                                 addProp([...keys, kebab(suffix)], val[suffix]);
                             }
                         }
@@ -3623,13 +3629,13 @@ var $;
                 }
                 else if (key === '>') {
                     const types = config[key];
-                    for (let type in types) {
+                    for (let type of Object.keys(types).reverse()) {
                         make_class(selector(prefix, path) + ' > :where([' + $mol_dom_qname(type) + '])', [], types[type]);
                     }
                 }
                 else if (key === '@') {
                     const attrs = config[key];
-                    for (let name in attrs) {
+                    for (let name of Object.keys(attrs).reverse()) {
                         for (let val in attrs[name]) {
                             make_class(selector(prefix, path) + ':where([' + name + '=' + JSON.stringify(val) + '])', [], attrs[name][val]);
                         }
@@ -3637,7 +3643,7 @@ var $;
                 }
                 else if (key === '@media') {
                     const media = config[key];
-                    for (let query in media) {
+                    for (let query of Object.keys(media).reverse()) {
                         rules.push('}\n');
                         make_class(prefix, path, media[query]);
                         rules.push(`${key} ${query} {\n`);
@@ -3646,7 +3652,7 @@ var $;
                 else if (key[0] === '[' && key[key.length - 1] === ']') {
                     const attr = key.slice(1, -1);
                     const vals = config[key];
-                    for (let val in vals) {
+                    for (let val of Object.keys(vals).reverse()) {
                         make_class(selector(prefix, path) + ':where([' + attr + '=' + JSON.stringify(val) + '])', [], vals[val]);
                     }
                 }
@@ -3865,16 +3871,14 @@ var $;
             }
             sub() {
                 const placeholders = this.placeholders();
-                const next = [...this.pages_deep(), ...placeholders];
-                const prev = $mol_mem_cached(() => this.sub()) ?? [];
-                for (let i = 1; i++;) {
+                const next = this.pages_deep().filter(Boolean);
+                const prev = $mol_mem_cached(() => this.sub())?.filter(page => !placeholders.includes(page)) ?? [];
+                for (let i = 1; i; ++i) {
                     const p = prev[prev.length - i];
                     const n = next[next.length - i];
                     if (!n)
                         break;
                     if (p === n)
-                        continue;
-                    if (placeholders.includes(n))
                         continue;
                     new this.$.$mol_after_tick(() => {
                         const b = this.dom_node();
@@ -3886,7 +3890,7 @@ var $;
                     });
                     break;
                 }
-                return next;
+                return [...next, ...placeholders];
             }
             bring() {
                 const pages = this.pages_deep();
@@ -4134,19 +4138,14 @@ var $;
 		dom_name(){
 			return "img";
 		}
-		field(){
+		attr(){
 			return {
-				...(super.field()), 
+				...(super.attr()), 
 				"src": (this.uri()), 
 				"alt": (this.title()), 
 				"loading": (this.loading()), 
 				"decoding": (this.decoding()), 
-				"crossOrigin": (this.cors())
-			};
-		}
-		attr(){
-			return {
-				...(super.attr()), 
+				"crossOrigin": (this.cors()), 
 				"width": (this.natural_width()), 
 				"height": (this.natural_height())
 			};
@@ -4299,6 +4298,9 @@ var $;
 		value(){
 			return null;
 		}
+		minimal_width(){
+			return 12;
+		}
 		attr(){
 			return {...(super.attr()), "mol_theme": (this.theme())};
 		}
@@ -4315,7 +4317,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/speck/speck.view.css", "[mol_speck] {\n\tfont-size: .625rem;\n\tborder-radius: 1rem;\n\tmargin: -0.5rem -0.25rem;\n\talign-self: flex-start;\n\tmin-height: 1em;\n\tmin-width: .5em;\n\tvertical-align: sub;\n\tpadding: .25em .5em;\n\tposition: absolute;\n\tz-index: var(--mol_layer_speck);\n\ttext-align: center;\n\tline-height: 1;\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n\ttext-overflow: ellipsis;\n\tuser-select: none;\n}\n");
+    $mol_style_attach("mol/speck/speck.view.css", "[mol_speck] {\n\tfont-size: .75rem;\n\tborder-radius: 1rem;\n\tmargin: -0.5rem -0.2rem;\n\talign-self: flex-start;\n\tmin-height: 1em;\n\tvertical-align: sub;\n\tpadding: 0 .2rem;\n\tposition: absolute;\n\tz-index: var(--mol_layer_speck);\n\ttext-align: center;\n\tline-height: .9;\n\tdisplay: inline-block;\n\twhite-space: nowrap;\n\ttext-overflow: ellipsis;\n\tuser-select: none;\n\tbox-shadow: 0 0 3px rgba(0,0,0,.5);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -11882,6 +11884,11 @@ var $;
             cell_expanded(id, next) {
                 return this.row_expanded(id.row, next);
             }
+            sub() {
+                this.head_cells();
+                this.rows();
+                return super.sub();
+            }
         }
         __decorate([
             $mol_mem
@@ -11914,8 +11921,9 @@ var $;
 
 ;
 	($.$mol_embed_native) = class $mol_embed_native extends ($.$mol_scroll) {
-		mime(){
-			return "";
+		uri(next){
+			if(next !== undefined) return next;
+			return "about:config";
 		}
 		title(){
 			return "";
@@ -11930,22 +11938,14 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
-		uri(next){
-			if(next !== undefined) return next;
-			return "";
-		}
 		dom_name(){
-			return "object";
+			return "iframe";
 		}
 		window(){
 			return null;
 		}
 		attr(){
-			return {
-				...(super.attr()), 
-				"data": (this.uri()), 
-				"type": (this.mime())
-			};
+			return {...(super.attr()), "src": (this.uri())};
 		}
 		sub(){
 			return [(this.Fallback())];
@@ -11954,9 +11954,9 @@ var $;
 			return {"hashchange": (next) => (this.uri_change(next))};
 		}
 	};
+	($mol_mem(($.$mol_embed_native.prototype), "uri"));
 	($mol_mem(($.$mol_embed_native.prototype), "Fallback"));
 	($mol_mem(($.$mol_embed_native.prototype), "uri_change"));
-	($mol_mem(($.$mol_embed_native.prototype), "uri"));
 
 
 ;
@@ -12036,7 +12036,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n}\n");
+    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n\tborder: none;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -12055,23 +12055,13 @@ var $;
 		allow(){
 			return "";
 		}
-		uri(next){
-			if(next !== undefined) return next;
-			return "about:config";
-		}
 		html(){
 			return null;
-		}
-		dom_name(){
-			return "iframe";
 		}
 		attr(){
 			return {
 				...(super.attr()), 
-				"data": null, 
-				"type": null, 
 				"allow": (this.allow()), 
-				"src": (this.uri()), 
 				"srcdoc": (this.html())
 			};
 		}
@@ -12100,7 +12090,6 @@ var $;
 			return true;
 		}
 	};
-	($mol_mem(($.$mol_frame.prototype), "uri"));
 
 
 ;
