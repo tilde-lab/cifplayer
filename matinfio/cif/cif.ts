@@ -51,6 +51,7 @@ namespace $ {
 		}
 
 		for( let i = 0; i < lines.length; i++ ) {
+
 			if( lines[ i ].startsWith('#') ) continue
 			cur_line = lines[ i ].trim()
 			if( !cur_line ) {
@@ -83,8 +84,8 @@ namespace $ {
 				}
 				continue
 
-			} else if( 
-				fingerprt.startsWith( '_symmetry_space_group_name_h-m' ) 
+			} else if(
+				fingerprt.startsWith( '_symmetry_space_group_name_h-m' )
 				|| fingerprt.startsWith( '_space_group.patterson_name_h-m' )
 				|| fingerprt.startsWith( '_space_group_name_h-m_alt' )
 			) {
@@ -178,6 +179,8 @@ namespace $ {
 				symops = []
 			}
 		}
+
+		if (!cur_structure.atoms.length) return this.$mol_fail( new $mol_data_error( 'Error: no atomic positions available' ) )
 
 		cur_structure.info = data_info
 		if( symops.length > 1 ) cur_structure.symops = symops
