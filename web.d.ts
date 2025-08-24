@@ -82,6 +82,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
+}
+
+declare namespace $ {
     enum $mol_wire_cursor {
         stale = -1,
         doubt = -2,
@@ -92,6 +96,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_wire_pub extends Object {
+        constructor(id?: string);
+        [Symbol.toStringTag]: string;
         data: unknown[];
         static get [Symbol.species](): ArrayConstructor;
         protected sub_from: number;
@@ -119,7 +125,7 @@ declare namespace $ {
         pub_off(pub_pos: number): void;
         track_cut(sub: $mol_wire_pub | null): void;
         track_off(sub: $mol_wire_pub | null): void;
-        absorb(quant: $mol_wire_cursor): void;
+        absorb(quant: $mol_wire_cursor, pos: number): void;
         destructor(): void;
     }
 }
@@ -173,7 +179,7 @@ declare namespace $ {
         track_cut(): void;
         complete(): void;
         complete_pubs(): void;
-        absorb(quant?: $mol_wire_cursor): void;
+        absorb(quant?: $mol_wire_cursor, pos?: number): void;
         [$mol_dev_format_head](): any[];
         get pub_empty(): boolean;
     }
@@ -203,7 +209,6 @@ declare namespace $ {
         static plan_task: $mol_after_tick | null;
         static plan(): void;
         static sync(): void;
-        [Symbol.toStringTag]: string;
         cache: Result | Error | Promise<Result | Error>;
         get args(): Args;
         result(): Result | undefined;
@@ -228,10 +233,6 @@ declare namespace $ {
         step(): Promise<null>;
         destructor(): void;
     }
-}
-
-declare namespace $ {
-    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
 }
 
 declare namespace $ {
@@ -319,6 +320,10 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_fail_catch(error: unknown): boolean;
+}
+
+declare namespace $ {
+    function $mol_try<Result>(handler2: () => Result): Result | Error;
 }
 
 declare namespace $ {
@@ -676,6 +681,7 @@ declare namespace $ {
         prefix(): string;
         postfix(): string;
         static linear_gradient<Value>(value: Value): $mol_style_func<"linear-gradient", Value>;
+        static radial_gradient<Value>(value: Value): $mol_style_func<"radial-gradient", Value>;
         static calc<Value>(value: Value): $mol_style_func<"calc", Value>;
         static vary<Name extends string, Value extends string>(name: Name, defaultValue?: Value): $mol_style_func<"var", Name | (Name | Value)[]>;
         static url<Href extends string>(href: Href): $mol_style_func<"url", string>;
@@ -1794,7 +1800,7 @@ declare namespace $ {
         message(): string;
         headers(): Headers;
         mime(): string | null;
-        stream(): ReadableStream<Uint8Array<ArrayBufferLike>> | null;
+        stream(): ReadableStream<Uint8Array<ArrayBuffer>> | null;
         text(): string;
         json(): unknown;
         blob(): Blob;
@@ -1809,7 +1815,7 @@ declare namespace $ {
         };
         static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static success(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
-        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array<ArrayBufferLike>> | null;
+        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array<ArrayBuffer>> | null;
         static text(input: RequestInfo, init?: RequestInit): string;
         static json(input: RequestInfo, init?: RequestInit): unknown;
         static blob(input: RequestInfo, init?: RequestInit): Blob;
@@ -2456,42 +2462,47 @@ declare namespace $ {
 		,
 		ReturnType< $mol_text_code_line['numb'] >
 	>
-	type $mol_text_code_line__text_mol_text_code_3 = $mol_type_enforce<
+	type $mol_text_code_line__theme_mol_text_code_3 = $mol_type_enforce<
+		ReturnType< $mol_text_code['row_theme'] >
+		,
+		ReturnType< $mol_text_code_line['theme'] >
+	>
+	type $mol_text_code_line__text_mol_text_code_4 = $mol_type_enforce<
 		ReturnType< $mol_text_code['row_text'] >
 		,
 		ReturnType< $mol_text_code_line['text'] >
 	>
-	type $mol_text_code_line__syntax_mol_text_code_4 = $mol_type_enforce<
+	type $mol_text_code_line__syntax_mol_text_code_5 = $mol_type_enforce<
 		ReturnType< $mol_text_code['syntax'] >
 		,
 		ReturnType< $mol_text_code_line['syntax'] >
 	>
-	type $mol_text_code_line__uri_resolve_mol_text_code_5 = $mol_type_enforce<
+	type $mol_text_code_line__uri_resolve_mol_text_code_6 = $mol_type_enforce<
 		ReturnType< $mol_text_code['uri_resolve'] >
 		,
 		ReturnType< $mol_text_code_line['uri_resolve'] >
 	>
-	type $mol_text_code_line__highlight_mol_text_code_6 = $mol_type_enforce<
+	type $mol_text_code_line__highlight_mol_text_code_7 = $mol_type_enforce<
 		ReturnType< $mol_text_code['highlight'] >
 		,
 		ReturnType< $mol_text_code_line['highlight'] >
 	>
-	type $mol_list__render_visible_only_mol_text_code_7 = $mol_type_enforce<
+	type $mol_list__render_visible_only_mol_text_code_8 = $mol_type_enforce<
 		ReturnType< $mol_text_code['render_visible_only'] >
 		,
 		ReturnType< $mol_list['render_visible_only'] >
 	>
-	type $mol_list__rows_mol_text_code_8 = $mol_type_enforce<
+	type $mol_list__rows_mol_text_code_9 = $mol_type_enforce<
 		ReturnType< $mol_text_code['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $mol_button_copy__hint_mol_text_code_9 = $mol_type_enforce<
+	type $mol_button_copy__hint_mol_text_code_10 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_button_copy['hint'] >
 	>
-	type $mol_button_copy__text_mol_text_code_10 = $mol_type_enforce<
+	type $mol_button_copy__text_mol_text_code_11 = $mol_type_enforce<
 		ReturnType< $mol_text_code['text_export'] >
 		,
 		ReturnType< $mol_button_copy['text'] >
@@ -2500,6 +2511,7 @@ declare namespace $ {
 		sidebar_showed( ): boolean
 		render_visible_only( ): boolean
 		row_numb( id: any): number
+		row_theme( id: any): string
 		row_text( id: any): string
 		syntax( ): any
 		uri_resolve( id: any): string
@@ -2516,6 +2528,7 @@ declare namespace $ {
 		text_lines( ): readonly(string)[]
 		find_pos( id: any): any
 		uri_base( ): string
+		row_themes( ): readonly(string)[]
 		sub( ): readonly(any)[]
 	}
 	
@@ -2552,6 +2565,7 @@ declare namespace $.$$ {
         uri_base(): string;
         uri_resolve(uri: string): string;
         text_export(): string;
+        row_theme(row: number): string;
     }
 }
 
@@ -3527,6 +3541,30 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $optimade_cifplayer_matinfio_poscar_to_obj(this: $, str: string): {
+        cell_matrix: number[][];
+        atoms: any[];
+        types: number[];
+        cartesian: boolean;
+    };
+}
+
+declare namespace $ {
+    function $optimade_cifplayer_matinfio_optimade_str_to_obj(this: $, str: string): {
+        cell_matrix: any;
+        atoms: any[];
+        info: string;
+        cartesian: boolean;
+    };
+    function $optimade_cifplayer_matinfio_optimade_to_obj(this: $, payload: Record<string, any>): {
+        cell_matrix: any;
+        atoms: any[];
+        info: string;
+        cartesian: boolean;
+    };
+}
+
+declare namespace $ {
     export const $optimade_cifplayer_matinfio_chemical_elements: {
         JmolColors: Record<string, string>;
         AseRadii: Record<string, number>;
@@ -3652,6 +3690,7 @@ declare namespace $ {
             accessKey: string;
             readonly accessKeyLabel: string;
             autocapitalize: string;
+            autocorrect: boolean;
             dir: string;
             draggable: boolean;
             hidden: boolean;
@@ -3759,6 +3798,8 @@ declare namespace $ {
             setPointerCapture(pointerId: number): void;
             toggleAttribute(qualifiedName: string, force?: boolean): boolean;
             webkitMatchesSelector(selectors: string): boolean;
+            get textContent(): string;
+            set textContent(value: string | null);
             readonly baseURI: string;
             readonly childNodes: NodeListOf<ChildNode>;
             readonly firstChild: ChildNode | null;
@@ -3771,7 +3812,6 @@ declare namespace $ {
             readonly parentElement: HTMLElement | null;
             readonly parentNode: ParentNode | null;
             readonly previousSibling: ChildNode | null;
-            textContent: string | null;
             appendChild<T extends Node>(node: T): T;
             cloneNode(subtree?: boolean): Node;
             compareDocumentPosition(other: Node): number;
@@ -3806,6 +3846,7 @@ declare namespace $ {
             readonly DOCUMENT_POSITION_CONTAINED_BY: 16;
             readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32;
             dispatchEvent(event: Event): boolean;
+            ariaActiveDescendantElement: Element | null;
             ariaAtomic: string | null;
             ariaAutoComplete: string | null;
             ariaBrailleLabel: string | null;
@@ -3816,21 +3857,28 @@ declare namespace $ {
             ariaColIndex: string | null;
             ariaColIndexText: string | null;
             ariaColSpan: string | null;
+            ariaControlsElements: ReadonlyArray<Element> | null;
             ariaCurrent: string | null;
+            ariaDescribedByElements: ReadonlyArray<Element> | null;
             ariaDescription: string | null;
+            ariaDetailsElements: ReadonlyArray<Element> | null;
             ariaDisabled: string | null;
+            ariaErrorMessageElements: ReadonlyArray<Element> | null;
             ariaExpanded: string | null;
+            ariaFlowToElements: ReadonlyArray<Element> | null;
             ariaHasPopup: string | null;
             ariaHidden: string | null;
             ariaInvalid: string | null;
             ariaKeyShortcuts: string | null;
             ariaLabel: string | null;
+            ariaLabelledByElements: ReadonlyArray<Element> | null;
             ariaLevel: string | null;
             ariaLive: string | null;
             ariaModal: string | null;
             ariaMultiLine: string | null;
             ariaMultiSelectable: string | null;
             ariaOrientation: string | null;
+            ariaOwnsElements: ReadonlyArray<Element> | null;
             ariaPlaceholder: string | null;
             ariaPosInSet: string | null;
             ariaPressed: string | null;
@@ -3888,18 +3936,19 @@ declare namespace $ {
             onanimationend: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
             onanimationiteration: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
             onanimationstart: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
-            onauxclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            onauxclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onbeforeinput: ((this: GlobalEventHandlers, ev: InputEvent) => any) | null;
-            onbeforetoggle: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            onbeforematch: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            onbeforetoggle: ((this: GlobalEventHandlers, ev: ToggleEvent) => any) | null;
             onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
             oncancel: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncanplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncanplaythrough: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            onclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            onclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onclose: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncontextlost: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            oncontextmenu: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            oncontextmenu: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             oncontextrestored: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncopy: ((this: GlobalEventHandlers, ev: ClipboardEvent) => any) | null;
             oncuechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -3947,6 +3996,7 @@ declare namespace $ {
             onpointermove: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onpointerout: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onpointerover: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+            onpointerrawupdate: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onpointerup: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
             onratechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -3965,7 +4015,7 @@ declare namespace $ {
             onsubmit: ((this: GlobalEventHandlers, ev: SubmitEvent) => any) | null;
             onsuspend: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             ontimeupdate: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            ontoggle: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            ontoggle: ((this: GlobalEventHandlers, ev: ToggleEvent) => any) | null;
             ontouchcancel?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
             ontouchend?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
             ontouchmove?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
@@ -4003,30 +4053,6 @@ declare namespace $ {
 declare namespace $ {
     function $optimade_cifplayer_matinfio_cif_to_obj(this: $, str: string): $optimade_cifplayer_matinfio_internal_obj;
     function $optimade_cifplayer_matinfio_cif_from_obj(this: $, crystal: any): string;
-}
-
-declare namespace $ {
-    function $optimade_cifplayer_matinfio_poscar_to_obj(this: $, str: string): false | {
-        cell_matrix: number[][];
-        atoms: any[];
-        types: number[];
-        cartesian: boolean;
-    };
-}
-
-declare namespace $ {
-    function $optimade_cifplayer_matinfio_optimade_str_to_obj(this: $, str: string): false | {
-        cell_matrix: any;
-        atoms: any[];
-        info: string;
-        cartesian: boolean;
-    };
-    function $optimade_cifplayer_matinfio_optimade_to_obj(this: $, payload: Record<string, any>): false | {
-        cell_matrix: any;
-        atoms: any[];
-        info: string;
-        cartesian: boolean;
-    };
 }
 
 declare namespace $ {
@@ -4754,7 +4780,7 @@ declare namespace $.$$ {
         load(frame: HTMLIFrameElement): Promise<Window>;
         uri_resource(): string;
         message_listener(): $mol_dom_listener;
-        sub(): readonly any[];
+        sub_visible(): readonly $mol_view_content[];
         message_receive(event?: MessageEvent<[string, string]>): void;
         uri_change(event: MessageEvent<[string, string]>): void;
         auto(): (Window | $mol_dom_listener)[];
@@ -4779,9 +4805,11 @@ declare namespace $ {
 		allow( ): string
 		html( ): any
 		attr( ): ({ 
+			'tabindex': ReturnType< $mol_frame['tabindex'] >,
 			'allow': ReturnType< $mol_frame['allow'] >,
+			'src': ReturnType< $mol_frame['uri'] >,
 			'srcdoc': ReturnType< $mol_frame['html'] >,
-		})  & ReturnType< $mol_embed_native['attr'] >
+		}) 
 		fullscreen( ): boolean
 		accelerometer( ): boolean
 		autoplay( ): boolean
@@ -5080,182 +5108,187 @@ declare namespace $ {
 		,
 		ReturnType< $mol_text_code['text'] >
 	>
-	type $mol_text_code__highlight_mol_text_17 = $mol_type_enforce<
+	type $mol_text_code__row_themes_mol_text_17 = $mol_type_enforce<
+		ReturnType< $mol_text['pre_themes'] >
+		,
+		ReturnType< $mol_text_code['row_themes'] >
+	>
+	type $mol_text_code__highlight_mol_text_18 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text_code['highlight'] >
 	>
-	type $mol_text_code__uri_resolve_mol_text_18 = $mol_type_enforce<
+	type $mol_text_code__uri_resolve_mol_text_19 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text_code['uri_resolve'] >
 	>
-	type $mol_text_code__sidebar_showed_mol_text_19 = $mol_type_enforce<
+	type $mol_text_code__sidebar_showed_mol_text_20 = $mol_type_enforce<
 		ReturnType< $mol_text['pre_sidebar_showed'] >
 		,
 		ReturnType< $mol_text_code['sidebar_showed'] >
 	>
-	type $mol_view__dom_name_mol_text_20 = $mol_type_enforce<
+	type $mol_view__dom_name_mol_text_21 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_view['dom_name'] >
 	>
-	type $mol_grid__head_cells_mol_text_21 = $mol_type_enforce<
+	type $mol_grid__head_cells_mol_text_22 = $mol_type_enforce<
 		ReturnType< $mol_text['table_head_cells'] >
 		,
 		ReturnType< $mol_grid['head_cells'] >
 	>
-	type $mol_grid__rows_mol_text_22 = $mol_type_enforce<
+	type $mol_grid__rows_mol_text_23 = $mol_type_enforce<
 		ReturnType< $mol_text['table_rows'] >
 		,
 		ReturnType< $mol_grid['rows'] >
 	>
-	type $mol_grid_row__cells_mol_text_23 = $mol_type_enforce<
+	type $mol_grid_row__cells_mol_text_24 = $mol_type_enforce<
 		ReturnType< $mol_text['table_cells'] >
 		,
 		ReturnType< $mol_grid_row['cells'] >
 	>
-	type $mol_text__auto_scroll_mol_text_24 = $mol_type_enforce<
+	type $mol_text__auto_scroll_mol_text_25 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_text['auto_scroll'] >
 	>
-	type $mol_text__highlight_mol_text_25 = $mol_type_enforce<
+	type $mol_text__highlight_mol_text_26 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text['highlight'] >
 	>
-	type $mol_text__uri_resolve_mol_text_26 = $mol_type_enforce<
+	type $mol_text__uri_resolve_mol_text_27 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text['uri_resolve'] >
 	>
-	type $mol_text__text_mol_text_27 = $mol_type_enforce<
+	type $mol_text__text_mol_text_28 = $mol_type_enforce<
 		ReturnType< $mol_text['table_cell_text'] >
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_grid__rows_mol_text_28 = $mol_type_enforce<
+	type $mol_grid__rows_mol_text_29 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_rows'] >
 		,
 		ReturnType< $mol_grid['rows'] >
 	>
-	type $mol_grid_row__cells_mol_text_29 = $mol_type_enforce<
+	type $mol_grid_row__cells_mol_text_30 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_cells'] >
 		,
 		ReturnType< $mol_grid_row['cells'] >
 	>
-	type $mol_text__auto_scroll_mol_text_30 = $mol_type_enforce<
+	type $mol_text__auto_scroll_mol_text_31 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_text['auto_scroll'] >
 	>
-	type $mol_text__highlight_mol_text_31 = $mol_type_enforce<
+	type $mol_text__highlight_mol_text_32 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text['highlight'] >
 	>
-	type $mol_text__uri_resolve_mol_text_32 = $mol_type_enforce<
+	type $mol_text__uri_resolve_mol_text_33 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text['uri_resolve'] >
 	>
-	type $mol_text__text_mol_text_33 = $mol_type_enforce<
+	type $mol_text__text_mol_text_34 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_cell_text'] >
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_dimmer__dom_name_mol_text_34 = $mol_type_enforce<
+	type $mol_dimmer__dom_name_mol_text_35 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_dimmer['dom_name'] >
 	>
-	type $mol_dimmer__needle_mol_text_35 = $mol_type_enforce<
+	type $mol_dimmer__needle_mol_text_36 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_dimmer__haystack_mol_text_36 = $mol_type_enforce<
+	type $mol_dimmer__haystack_mol_text_37 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_dimmer['haystack'] >
 	>
-	type $mol_text_span__dom_name_mol_text_37 = $mol_type_enforce<
+	type $mol_text_span__dom_name_mol_text_38 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_text_span['dom_name'] >
 	>
-	type $mol_text_span__type_mol_text_38 = $mol_type_enforce<
+	type $mol_text_span__type_mol_text_39 = $mol_type_enforce<
 		ReturnType< $mol_text['line_type'] >
 		,
 		ReturnType< $mol_text_span['type'] >
 	>
-	type $mol_text_span__sub_mol_text_39 = $mol_type_enforce<
+	type $mol_text_span__sub_mol_text_40 = $mol_type_enforce<
 		ReturnType< $mol_text['line_content'] >
 		,
 		ReturnType< $mol_text_span['sub'] >
 	>
-	type $mol_text_code_line__numb_showed_mol_text_40 = $mol_type_enforce<
+	type $mol_text_code_line__numb_showed_mol_text_41 = $mol_type_enforce<
 		boolean
 		,
 		ReturnType< $mol_text_code_line['numb_showed'] >
 	>
-	type $mol_text_code_line__highlight_mol_text_41 = $mol_type_enforce<
+	type $mol_text_code_line__highlight_mol_text_42 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text_code_line['highlight'] >
 	>
-	type $mol_text_code_line__text_mol_text_42 = $mol_type_enforce<
+	type $mol_text_code_line__text_mol_text_43 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_text_code_line['text'] >
 	>
-	type $mol_text_code_line__uri_resolve_mol_text_43 = $mol_type_enforce<
+	type $mol_text_code_line__uri_resolve_mol_text_44 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text_code_line['uri_resolve'] >
 	>
-	type $mol_text_code_line__syntax_mol_text_44 = $mol_type_enforce<
+	type $mol_text_code_line__syntax_mol_text_45 = $mol_type_enforce<
 		ReturnType< $mol_text['code_syntax'] >
 		,
 		ReturnType< $mol_text_code_line['syntax'] >
 	>
-	type $mol_link_iconed__uri_mol_text_45 = $mol_type_enforce<
+	type $mol_link_iconed__uri_mol_text_46 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_link_iconed['uri'] >
 	>
-	type $mol_link_iconed__content_mol_text_46 = $mol_type_enforce<
+	type $mol_link_iconed__content_mol_text_47 = $mol_type_enforce<
 		ReturnType< $mol_text['line_content'] >
 		,
 		ReturnType< $mol_link_iconed['content'] >
 	>
-	type $mol_link_iconed__uri_mol_text_47 = $mol_type_enforce<
+	type $mol_link_iconed__uri_mol_text_48 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_link_iconed['uri'] >
 	>
-	type $mol_link_iconed__content_mol_text_48 = $mol_type_enforce<
+	type $mol_link_iconed__content_mol_text_49 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_link_iconed['content'] >
 	>
-	type $mol_embed_any__uri_mol_text_49 = $mol_type_enforce<
+	type $mol_embed_any__uri_mol_text_50 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_embed_any['uri'] >
 	>
-	type $mol_embed_any__title_mol_text_50 = $mol_type_enforce<
+	type $mol_embed_any__title_mol_text_51 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_embed_any['title'] >
 	>
-	type $mol_expander__label_mol_text_51 = $mol_type_enforce<
+	type $mol_expander__label_mol_text_52 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_expander['label'] >
 	>
-	type $mol_expander__content_mol_text_52 = $mol_type_enforce<
+	type $mol_expander__content_mol_text_53 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_expander['content'] >
@@ -5271,6 +5304,7 @@ declare namespace $ {
 		header_level( id: any): number
 		header_arg( id: any): Record<string, any>
 		pre_text( id: any): string
+		pre_themes( id: any): readonly(string)[]
 		code_sidebar_showed( ): boolean
 		pre_sidebar_showed( ): ReturnType< $mol_text['code_sidebar_showed'] >
 		table_head_cells( id: any): readonly(any)[]
@@ -5369,6 +5403,7 @@ declare namespace $.$$ {
         list_type(index: number): string;
         item_index(index: number): number;
         pre_text(index: number): string;
+        pre_themes(index: number): string[];
         quote_text(index: number): string;
         list_text(index: number): string;
         cell_content(indexBlock: number): string[][];

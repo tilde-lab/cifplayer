@@ -1,5 +1,6 @@
 \/
 	pack bun git \https://github.com/spleekz/mam_bun.git
+	pack hd git \https://github.com/hd4ru/hd.git
 	pack hyoo git \https://github.com/hyoo-ru/mam_hyoo.git
 	pack iva git \https://github.com/thenesterov/mam_iva.git
 	pack jin git \https://github.com/nin-jin/mam_jin.git
@@ -13,6 +14,7 @@
 	pack psb git \https://github.com/MolDevHack/psb.git
 	pack rise git \https://github.com/stan-donarise/mam_rise.git
 	pack yuf git \https://github.com/zerkalica/yuf.git
+	pack apxu git \https://github.com/ApxuTechTop/apxu
 \/optimade
 	pack cifplayer git \https://github.com/tilde-lab/cifplayer
 	pack tmdne git \https://github.com/mpds-io/this-material-does-not-exist
