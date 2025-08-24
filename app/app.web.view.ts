@@ -6,7 +6,7 @@ namespace $.$$ {
 			return new this.$.$mol_dom_listener(
 				this.$.$mol_dom_context,
 				'message',
-				
+
 				$mol_wire_async( event => {
 					this.data_str( event.data )
 				} )
@@ -15,8 +15,9 @@ namespace $.$$ {
 
 		@ $mol_mem
 		pages(): readonly any[] {
-			const in_iframe = window.self !== window.top
-			
+			// hide menu being embedded but show upon ?menu
+			const in_iframe = (window.self !== window.top && document.location.search.indexOf('menu') == -1)
+
 			return [
 				...in_iframe ? [] : [ this.Menu() ],
 				...this.data_str() ? [ this.Player() ] : [ this.Start() ],
