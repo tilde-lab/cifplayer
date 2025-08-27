@@ -2,23 +2,22 @@ namespace $ {
 
 	export function $optimade_cifplayer_matinfio_optimade_str_to_obj( this: $, str: string ) {
 		const payload = JSON.parse( str )
-		
+
 		return this.$optimade_cifplayer_matinfio_optimade_to_obj( payload )
 	}
 
 	export function $optimade_cifplayer_matinfio_optimade_to_obj( this: $, payload: Record< string, any > ) {
+
 		const atoms: any[] = []
 		const src = payload?.data?.[ 0 ] ?? payload
 
-		if( !src ) {
-			this.$optimade_cifplayer_matinfio_log.error( "Error: unexpected OPTIMADE format" )
-			return false
+		if( !src || !src.attributes ) {
+			return this.$mol_fail( new $mol_data_error('Error: unexpected OPTIMADE format') )
 		}
 
 		var n_atoms = src.attributes.cartesian_site_positions.length
 		if( !n_atoms ) {
-			this.$optimade_cifplayer_matinfio_log.error( "Error: no atomic positions found" )
-			return false
+			return this.$mol_fail( new $mol_data_error('Error: no atomic positions found') )
 		}
 
 		if( src.attributes.species && src.attributes.species[ n_atoms - 1 ] && src.attributes.species[ n_atoms - 1 ].chemical_symbols ) {
@@ -41,8 +40,7 @@ namespace $ {
 				} )
 			} )
 		} else {
-			this.$optimade_cifplayer_matinfio_log.error( "Error: no atomic data found" )
-			return false
+			return this.$mol_fail( new $mol_data_error('Error: no atomic data found') )
 		}
 
 		return {
@@ -52,5 +50,5 @@ namespace $ {
 			'cartesian': true
 		}
 	}
-	
+
 }

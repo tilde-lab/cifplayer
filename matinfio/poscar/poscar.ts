@@ -85,8 +85,7 @@ namespace $ {
 					break
 				else if( line_data.length == 3 ) elems.length ? line_data.push( elems[ atidx ] ) : line_data.push( 'Xx' )
 				else if( line_data.length < 3 ) {
-					this.$optimade_cifplayer_matinfio_log.error( "Error: unknown atom definition" )
-					return false
+					return this.$mol_fail( new $mol_data_error( "Error: unknown atom definition" ) )
 				}
 
 				for( let j = 0; j < 4; j++ ) {
@@ -95,8 +94,7 @@ namespace $ {
 				}
 				//console.log(atom);
 				if( !atom.symbol ) {
-					this.$optimade_cifplayer_matinfio_log.error( "Error: unknown data lines order" )
-					return false
+					return this.$mol_fail( new $mol_data_error( "Error: unknown file lines order" ) )
 				}
 				atom.symbol = atom.symbol.replace( /\W+/, '' ).replace( /\d+/, '' )
 				if( !atom.symbol.length ) atom.symbol = 'Xx'
@@ -115,8 +113,7 @@ namespace $ {
 				'cartesian': cartesian
 			}
 		else {
-			this.$optimade_cifplayer_matinfio_log.error( "Error: unexpected POSCAR format" )
-			return false
+			return this.$mol_fail( new $mol_data_error( "Error: unexpected POSCAR format" ) )
 		}
 	}
 }
