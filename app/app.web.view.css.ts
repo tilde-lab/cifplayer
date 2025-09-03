@@ -66,6 +66,13 @@ namespace $.$$ {
 			},
 		},
 
+		Green_triangle_icon: {
+			position: "fixed",
+			bottom: "24px",
+			right: "24px",
+			fontSize: "32px",
+			color: 'green'
+		}
 	} )
 
 }
