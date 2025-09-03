@@ -1,78 +1,75 @@
 namespace $.$$ {
+  $mol_style_define($optimade_cifplayer_app, {
+    contain: 'none', // otherwise in fullscreen 'fixed' positions plot relative to parent is not in the viewport
 
-	$mol_style_define( $optimade_cifplayer_app, {
+    '[mol_drop_status]': {
+      drag: {
+        Menu: {
+          background: {
+            color: $mol_theme.hover,
+          },
+        },
+      },
+    },
 
-		contain: 'none', // otherwise in fullscreen 'fixed' positions plot relative to parent is not in the viewport
+    Start: {
+      background: {
+        color: $mol_theme.back,
+      },
+      padding: {
+        top: '6rem',
+      },
+      flex: {
+        grow: 1,
+        direction: 'column',
+      },
+      align: {
+        items: 'center',
+      },
+    },
 
-		'[mol_drop_status]': {
-			drag: {
-				Menu: {
-					background: {
-						color: $mol_theme.hover,
-					},
-				},
-			},
-		},
+    Menu: {
+      Body_content: {
+        gap: $mol_gap.block,
+        maxWidth: '25rem',
+        flex: {
+          direction: 'row',
+        },
+      },
+      Head: {
+        justify: {
+          content: 'flex-start',
+        },
+      },
+    },
 
-		Start: {
-			background: {
-				color: $mol_theme.back,
-			},
-			padding: {
-				top: '6rem',
-			},
-			flex: {
-				grow: 1,
-				direction: 'column',
-			},
-			align: {
-				items: 'center',
-			},
-		},
+    Data_text: {
+      font: {
+        family: 'inherit',
+      },
+    },
 
-		Menu: {
-			Body_content: {
-				gap: $mol_gap.block,
-				maxWidth: '25rem',
-				flex: {
-					direction: 'row',
-				},
-			},
-			Head: {
-				justify: {
-					content: 'flex-start'
-				},
-			},
-		},
+    Body: {
+      flex: {
+        direction: 'column',
+        grow: 1,
+        shrink: 1,
+      },
+    },
 
-		Data_text: {
-			font: {
-				family: 'inherit',
-			},
-		},
+    Player: {
+      flex: {
+        grow: 1,
+        basis: '30rem',
+      },
+    },
 
-		Body: {
-			flex: { 
-				direction: 'column',
-				grow: 1,
-				shrink: 1,
-			},
-		},
-
-		Player: {
-			flex: {
-				grow: 1,
-				basis: '30rem',
-			},
-		},
-
-		Green_triangle_icon: {
-			position: "fixed",
-			bottom: "24px",
-			right: "24px",
-			fontSize: "32px",
-			color: 'green'
-		}
-	} )
-
+    Absolidix_link: {
+      position: 'fixed',
+      bottom: '24px',
+      right: '24px',
+      fontSize: '32px',
+      color: 'green',
+    },
+  });
 }
