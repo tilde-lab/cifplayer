@@ -8,7 +8,8 @@ namespace $.$$ {
 				'message',
 
 				$mol_wire_async( event => {
-					this.data_str( event.data )
+					if (typeof event.data === 'object' || event.data.length > 128)
+						this.data_str( event.data )
 				} )
 			)
 		}
