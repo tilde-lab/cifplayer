@@ -65,7 +65,8 @@ $mol_image $mol_view
 	attr *any
 		^
 		src <= uri \
-		alt <= title
+		title <= hint
+		alt <= title \
 		loading <= loading \lazy
 		decoding <= decoding \async
 		crossOrigin <= cors null
@@ -86,13 +87,7 @@ $mol_link_iconed $mol_link
 	host \
 
 $mol_speck $mol_view
-	minimal_width 12
-	attr *
-		^
-		mol_theme <= theme \$mol_theme_accent
-	style *
-		^
-		minHeight \1em
+	theme \$mol_theme_accent
 	sub /
 		<= value null
 
@@ -100,11 +95,12 @@ $mol_button $mol_view
 	enabled true
 	click?event null
 	event_click?event null
+	status? /
 	event *
 		^
-		click?event <=> event_activate?event null
+		click?event <=> activate?event <=> event_activate?event null
 		dblclick?event <=> clicks?event null
-		keydown?event <=> event_key_press?event null 
+		keydown?event <=> key_press?event <=> event_key_press?event null
 	attr *
 		^
 		disabled <= disabled false
@@ -179,13 +175,13 @@ $mol_button_open $mol_button_minor
 	sub /
 		<= Icon $mol_icon_upload
 		<= Native $mol_button_open_native
-			files?next <=> files?next /
+			files? <=> files_handled? <=> files? /File
 			accept <= accept \
 			multiple <= multiple true
 
 $mol_button_open_native $mol_view
 	dom_name \input
-	files?next /
+	files? /File
 	attr *
 		type \file
 		accept <= accept \
@@ -247,13 +243,14 @@ $mol_text_code_line $mol_paragraph
 
 $mol_list $mol_view
 	render_visible_only true
-	render_over 0
+	render_over 0.1
 	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
+		<= Gap_before $mol_view style * paddingTop <= gap_before 0
+		<= Empty $mol_view
+		<= Gap_after $mol_view style * paddingTop <= gap_after 0
 	item_height_min* 1
 	item_width_min* 1
+	view_window_shift? 0
 	view_window /
 		0
 		0
@@ -472,19 +469,41 @@ $mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
 $mol_check_box $mol_check
 	Icon $mol_icon_tick
 
+$mol_follower $mol_ghost
+	Anchor $mol_view
+	align /number
+		-.5
+		-.5
+	offset /number
+		0
+		0
+	style *
+		^
+		transform <= transform \
+
 $mol_pop $mol_view
 	showed? false
 	align_vert \
 	align_hor \
+	align \bottom_center
 	prefer \vert
+	auto /
+		<= bubble null
 	sub /
 		<= Anchor null
 	sub_visible /
 		<= Anchor
-		<= Bubble $mol_pop_bubble
-			align <= align \bottom_center
-			content <= bubble_content /$mol_view_content
-			height_max <= height_max 9999
+		<= Follower $mol_follower
+			offset <= bubble_offset /number
+				0
+				1
+			align <= bubble_align /number
+				0
+				0
+			Anchor <= Anchor
+			Sub <= Bubble $mol_pop_bubble
+				content <= bubble_content /$mol_view_content
+				height_max <= height_max 9999
 
 $mol_pop_bubble $mol_view
 	sub <= content /$mol_view_content
@@ -493,8 +512,8 @@ $mol_pop_bubble $mol_view
 		maxHeight <= height_max 9999
 	attr *
 		^
-		mol_pop_align <= align \
 		tabindex 0
+		popover \manual
 
 $mol_pick $mol_pop
 	event *
@@ -613,11 +632,9 @@ $optimade_cifplayer_player $mol_view
 		<= translate_c? 1
 	translate_cells_limit 50
 	-
-	plugins /
-		<= Theme $mol_theme_auto
+	theme \$mol_theme_light
 	-
 	auto /
-		<= light_theme_auto null
 		<= dir_light null
 		<= ambient_light null
 		^ atom_boxes /
@@ -859,6 +876,8 @@ $mol_embed_youtube $mol_embed_service
 
 $mol_embed_rutube $mol_embed_service
 
+$mol_embed_vklive $mol_embed_service
+
 $mol_embed_any $mol_view
 	Image $mol_image
 		title <= title \
@@ -870,6 +889,9 @@ $mol_embed_any $mol_view
 		title <= title \
 		uri <= uri \
 	Rutube $mol_embed_rutube
+		title <= title \
+		uri <= uri \
+	Vklive $mol_embed_vklive
 		title <= title \
 		uri <= uri \
 
@@ -1036,7 +1058,6 @@ $optimade_cifplayer_app $mol_drop
 			vibrate? => vibrate?
 			unvibrate => unvibrate
 			fullscreen false
-			light_theme_auto null
 	Start $mol_view
 		sub /
 			<= Start_message $mol_text
