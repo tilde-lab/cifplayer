@@ -1,0 +1,7 @@
+$optimade_cifplayer_absolidix_embed $mol_view
+	sub /
+		<= Open_popup $mol_button_minor
+			sub /
+				<= Logo $mol_image
+					uri \optimade/cifplayer/absolidix/logo/logo.svg
+			click? <=> open_popup? null
